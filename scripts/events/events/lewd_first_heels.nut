@@ -65,8 +65,9 @@ this.lewd_first_heels <- this.inherit("scripts/events/event", {
 					text = "You gain Black Heels"
 				});
 				local items = w.getItems();
-				// TODO give actual items
-				items.equip(this.new("scripts/items/glowing_amulet_of_valor"));
+				local item = this.new("scripts/items/glowing_amulet_of_valor");
+				item.getFlags().set("cursed", true);
+				items.equip(item);
 				// this.World.Assets.getStash().add(this.new("scripts/items/accessory/black_heels"));
 
 				// change sprite

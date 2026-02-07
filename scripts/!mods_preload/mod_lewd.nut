@@ -4,15 +4,34 @@
 	Name = "Lewdness",
 	IsStartingNewCampaign = false
 };
+// ::Lewd.Mod <- ::MSU.Class.Mod(::Lewd.ID, ::Lewd.Version, ::Lewd.Name);
 
 // ::mods_registerMod(::Lewd.ID, ::Lewd.Version, ::Lewd.Name);
 local mod = ::Hooks.register(::Lewd.ID, ::Lewd.Version, ::Lewd.Name);
 
 mod.require("mod_legends", "mod_msu");
 
-mod.queue(">mod_legends", ">mod_msu", function()
 // ::mods_queue(modID, "mod_legends,mod_msu", function()
+mod.queue(">mod_legends", ">mod_msu", function()
 {
+	// hook item container to care about items' cursed status
+	mod.hook("scripts/items/item_container", function(q)
+	{
+		q.unequip = @(__original) function(_item) {
+			 ::logInfo("My hooked unequip was called with item: " + (_item != null ? _item.getName() : "null"));	
+			 // check item flags for cursed, if cursed, don't unequip and maybe show some kind of message about the item being cursed
+			 if (_item != null && _item.getFlags().has("cursed"))
+			 {
+				if ("onRemoveWhileCursed" in _item) {
+					_item.onRemoveWhileCursed();
+				}
+				 // TODO add some kind of message about the item being cursed and not unequipping
+				 return false;
+			 }
+			 return __original(_item);
+		};
+	});
+
 	local gt = this.getroottable();
 
 	// new perk names

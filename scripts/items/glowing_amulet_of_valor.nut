@@ -10,8 +10,8 @@ this.glowing_amulet_of_valor <- this.inherit("scripts/items/accessory/accessory"
 		this.m.IsDroppedAsLoot = true;
 		this.m.ShowOnCharacter = true;
 		this.m.IconLarge = "";
-		this.m.Icon = "accessory/black_heels.png";
-		this.m.Sprite = "black_heels";
+		this.m.Icon = "accessory/ballet_heels.png";
+		this.m.Sprite = "ballet_heels";
 
 		this.m.Value = 3000;
 		this.m.IsPrecious = true;
@@ -84,4 +84,26 @@ this.glowing_amulet_of_valor <- this.inherit("scripts/items/accessory/accessory"
 		_properties.FatigueRecoveryRate += 5;
 	}
 
+	// function onUnequip()
+	// {
+	// 	// cursed item, when you try to unequip it, it just re-equips itself
+	// 	local actor = this.getContainer().getActor();
+
+	// 	::logInfo("Trying to unequip cursed item; actor: " + (actor != null ? actor.getName() : "null"));
+
+	// 	if (actor == null)
+	// 	{
+	// 		return;
+	// 	}
+
+	// 	// this.item.equip(actor);
+	// 	this.getContainer().equip(this.item);
+	// 	// this.item.onEquip();
+	// }
+
+	function onRemoveWhileCursed()
+	{
+		::logInfo("Try to remove cursed item this: " + this.getName());
+		// TODO fire event that explains this more immersively 
+	}
 });
