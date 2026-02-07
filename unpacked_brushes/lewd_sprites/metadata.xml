@@ -1,5 +1,12 @@
 <brush name="gfx/lewd.png" version="17">
-    <sprite id="bust_lewd_charmed_body_01" offsetY="35" ic="FF6095CB" width="140" height="248" img="body\bust_hexen_charmed_body_01.png" left="-56" right="46" top="-57" bottom="23" />
+    <!-- <sprite id="bust_body_lewd_01" offsetY="35" ic="FF6095CB" width="140" height="248" img="body\bust_hexen_charmed_body_01.png" left="-41" right="61" top="-56" bottom="24"/> -->
+    <sprite id="bust_body_lewd_01" offsetY="35" ic="FF6095CB" width="140" height="248" img="body\bust_hexen_charmed_body_01.png" left="-43" right="59" top="-56" bottom="24"/>
+    <sprite id="bust_body_lewd_02" offsetY="35" ic="FF6095CB" width="140" height="248" img="body\bust_body_lewd_03.png" left="-43" right="59" top="-56" bottom="24"/>
+
+    <!-- <sprite id="bust_head_lewd_01" offsetY="35" ic="FF5B7CAD" width="104" height="142" img="body\bust_head_female_lewd_1.png" left="-23" right="31" top="-21" bottom="49"/> -->
+    <sprite id="bust_head_lewd_01" offsetY="35" ic="FF5B7CAD" width="104" height="142" img="body\bust_head_female_lewd_1.png" left="-24" right="30" top="-20" bottom="50"/>
+    <sprite id="bust_head_lewd_02" offsetY="35" ic="FF5B7CAD" width="104" height="142" img="body\bust_head_female_lewd_3.png" left="-24" right="30" top="-20" bottom="50"/>
+
     <!-- <sprite id="red_heels" offsetY="30" ic="FF6095CB" width="50" height="62" img="accessory\head_necro.png" left="-43" right="7" top="-64" bottom="-2"/> -->
     <sprite id="black_heels_short" offsetY="35" ic="FF6095CB" width="10" height="10" img="accessory\black_heels_short.png" left="-53" right="17" top="-78" bottom="-8"/>
     <sprite id="black_heels" offsetY="35" ic="FF6095CB" width="10" height="10" img="accessory\black_heels.png" left="-53" right="17" top="-78" bottom="-8"/>
