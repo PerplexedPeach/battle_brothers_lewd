@@ -67,13 +67,13 @@ this.heels_ballet <- this.inherit("scripts/items/accessory/accessory", {
 			id = 16,
 			type = "text",
 			icon = "ui/icons/special.png",
-			text = "Chance to inflict \'Dazed\' to those engaged in melee with chance scaling with [color=" + this.Const.UI.Color.PositiveValue + "]Sexiness[/color] contested by their resolve"
+			text = "Chance to inflict \'Dazed\' to those engaged in melee with chance scaling with [color=" + this.Const.UI.Color.PositiveValue + "]Allure[/color] contested by their resolve"
 		});
 		result.push({
 			id = 17,
 			type = "text",
 			icon = "ui/icons/special.png",
-			text = "Increases Sexiness by [color=" + this.Const.UI.Color.PositiveValue + "]20[/color]"
+			text = "Increases Allure by [color=" + this.Const.UI.Color.PositiveValue + "]20[/color]"
 		});
 		result.push({
 			id = 18,
@@ -116,7 +116,7 @@ this.heels_ballet <- this.inherit("scripts/items/accessory/accessory", {
 		this.accessory.onEquip();
 		local actor = this.getContainer().getActor();				
 		actor.getFlags().set("heelHeight", this.getFlags().get("heelHeight"));
-		actor.getFlags().set("sexinessHeels", 20);
+		actor.getFlags().set("allureHeels", 20);
 
 		local skill = this.new("scripts/skills/effects/entrancing_beauty_effect");
 		skill.setItem(this);
@@ -134,7 +134,7 @@ this.heels_ballet <- this.inherit("scripts/items/accessory/accessory", {
 		this.accessory.onUnequip();
 		local actor = this.getContainer().getActor();				
 		actor.getFlags().set("heelHeight", 0);
-		actor.getFlags().set("sexinessHeels", 0);
+		actor.getFlags().set("allureHeels", 0);
 		::logInfo("Unequipped heels, reset heel height to: " + actor.getFlags().get("heelHeight"));
 	}
 

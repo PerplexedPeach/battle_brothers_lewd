@@ -30,42 +30,42 @@ mod.queue(">mod_legends", ">mod_msu", function()
 	mod.hook("scripts/entity/tactical/actor", function (q)
 	{
 
-		q.sexiness <- function() {
-			local sexiness = 0;
-			// calculate sexiness based on equipped items, traits, perks, etc
-			sexiness += this.getFlags().getAsInt("sexinessBase");
+		q.allure <- function() {
+			local allure = 0;
+			// calculate allure based on equipped items, traits, perks, etc
+			allure += this.getFlags().getAsInt("allureBase");
 			// for now just return a placeholder value
-			sexiness += this.getFlags().getAsInt("sexinessHeels");
+			allure += this.getFlags().getAsInt("allureHeels");
 			// melee defense contributes half as it represents agility
-			sexiness += this.getCurrentProperties().getMeleeDefense() * 0.5;
+			allure += this.getCurrentProperties().getMeleeDefense() * 0.5;
 			// resolve contributes a quarter as it represents presence
 			// based on traits
 			local skills = this.getSkills();
 			if (skills.hasSkill("trait.legend_seductive"))
 			{
-				sexiness += 10;
+				allure += 10;
 			}
 			if (skills.hasSkill("trait.athletic"))
 			{
-				sexiness += 5;
+				allure += 5;
 			}
 			if (skills.hasSkill("trait.gluttonous"))
 			{
-				sexiness -= 5;
+				allure -= 5;
 			}
 			if (skills.hasSkill("trait.fat"))
 			{
-				sexiness -= 20;
+				allure -= 20;
 			}
 			if (skills.hasSkill("trait.ailing"))
 			{
-				sexiness -= 10;
+				allure -= 10;
 			}
 			if (skills.hasSkill("trait.old"))
 			{
-				sexiness -= 20;
+				allure -= 20;
 			}
-			return sexiness;
+			return allure;
 		}
 
 		// any extra heelHeight > heelSkill results in a fatigue penalty when moving
