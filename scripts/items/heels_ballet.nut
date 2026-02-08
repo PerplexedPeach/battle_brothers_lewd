@@ -116,6 +116,11 @@ this.heels_ballet <- this.inherit("scripts/items/accessory/accessory", {
 		local actor = this.getContainer().getActor();				
 		actor.getFlags().set("heelHeight", this.getFlags().get("heelHeight"));
 		actor.getFlags().set("sexinessHeels", 20);
+
+		local skill = this.new("scripts/skills/effects/entrancing_beauty_effect");
+		skill.setItem(this);
+		this.addSkill(skill);
+
 		::logInfo("Equipped heels with heel height: " + actor.getFlags().get("heelHeight"));
 	}
 

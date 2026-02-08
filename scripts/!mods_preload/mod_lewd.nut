@@ -36,7 +36,7 @@ mod.queue(">mod_legends", ">mod_msu", function()
 			// for now just return a placeholder value
 			sexiness += this.getFlags().getAsInt("sexinessHeels");
 			// melee defense contributes half as it represents agility
-			sexiness += this.getMeleeDefense() * 0.5;
+			sexiness += this.getCurrentProperties().getMeleeDefense() * 0.5;
 			 // resolve contributes a quarter as it represents presence
 			return sexiness;
 		}

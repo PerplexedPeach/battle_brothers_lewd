@@ -69,4 +69,25 @@ On movement athletic (athletic_trait)
 
 Movement costs hook `actor.onMovementStep` introduce actor.heelHeight and heelSkill. If height > skill the addition is added to fatigue cost per tile.
 
-Look at cursed crystal skull for reducing resolve in melee
+Look at cursed crystal skull for reducing resolve in melee, also add onMovementStep for skill that gets added by the item onEquip
+see legends
+```js
+	o.onEquip = function ()
+	{
+		onEquip();
+		::Legends.Actives.grant(this, ::Legends.Active.LegendBucklerBash, function (_skill) {
+			this.m.PrimaryOffhandAttack = ::MSU.asWeakTableRef(_skill);
+		}.bindenv(this));
+		::Legends.Effects.grant(this, ::Legends.Effect.LegendBuckler, function(_effect) {
+			_effect.m.Order = this.Const.SkillOrder.UtilityTargeted + 1;
+			_effect.setItem(this);
+			this.m.SkillPtrs.push(_effect);
+		}.bindenv(this));
+	}
+```
+
+Look at effects.distracted
+
+Use the tactical log
+
+				this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(actor) + " shook off being dazed thanks to his unnatural physiology");
