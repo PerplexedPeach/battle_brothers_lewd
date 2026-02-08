@@ -68,3 +68,5 @@ On movement athletic (athletic_trait)
 ```
 
 Movement costs hook `actor.onMovementStep` introduce actor.heelHeight and heelSkill. If height > skill the addition is added to fatigue cost per tile.
+
+Look at cursed crystal skull for reducing resolve in melee

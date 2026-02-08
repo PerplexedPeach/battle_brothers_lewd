@@ -59,21 +59,33 @@ this.heels_ballet <- this.inherit("scripts/items/accessory/accessory", {
 
 		result.push({
 			id = 15,
-			type = "text",
-			icon = "ui/icons/special.png",
-			text = "Increases Melee Skill by [color=" + this.Const.UI.Color.PositiveValue + "]+5[/color]"
+			type = "hint",
+			icon = "ui/tooltips/warning.png",
+			text = "Heel height: [color=" + this.Const.UI.Color.NegativeValue + "]5 (extreme!)[/color]"
 		});
 		result.push({
 			id = 16,
 			type = "text",
 			icon = "ui/icons/special.png",
-			text = "Increases Resolve by [color=" + this.Const.UI.Color.PositiveValue + "]+15[/color]"
+			text = "Chance to inflict \'Dazed\' to those engaged in melee with chance scaling with [color=" + this.Const.UI.Color.PositiveValue + "]Sexiness[/color] contested by their resolve"
 		});
 		result.push({
 			id = 17,
 			type = "text",
 			icon = "ui/icons/special.png",
-			text = "Increases Fatigue Recovery by [color=" + this.Const.UI.Color.PositiveValue + "]+5%[/color]"
+			text = "Increases Sexiness by [color=" + this.Const.UI.Color.PositiveValue + "]20[/color]"
+		});
+		result.push({
+			id = 18,
+			type = "text",
+			icon = "ui/icons/initiative.png",
+			text = "Reduces initiative by [color=" + this.Const.UI.Color.NegativeValue + "]-20[/color]"
+		});
+		result.push({
+			id = 19,
+			type = "text",
+			icon = "ui/icons/ranged_defense.png",
+			text = "Reduces ranged defense by [color=" + this.Const.UI.Color.NegativeValue + "]-10[/color]"
 		});
 		return result;
 	}
@@ -86,13 +98,12 @@ this.heels_ballet <- this.inherit("scripts/items/accessory/accessory", {
 		_properties.RangedDefense -= 10;
 		_properties.Initiative -= 20;
 
-		// TODO increase fatigue gain on moving
-
 		// TODO increase resolve of allies around
 		// TODO passive ability for chance to daze enemies when moving in melee range
+		// TODO increase chance to hit head
+		// TODO pain tolerance, increase damage reduction (or have it not trigger morale loss from taking damage)
 		// _properties.MeleeSkill += 5;
 		// _properties.Bravery += 15;
-		// _properties.FatigueRecoveryRate += 5;
 	}
 
 	function onEquip()
@@ -100,7 +111,7 @@ this.heels_ballet <- this.inherit("scripts/items/accessory/accessory", {
 		this.accessory.onEquip();
 		local actor = this.getContainer().getActor();				
 		actor.getFlags().set("heelHeight", this.getFlags().get("heelHeight"));
-		// actor.m.heelHeight = this.getFlags().get("heelHeight");
+		actor.getFlags().set("sexinessHeels", 20);
 		::logInfo("Equipped heels with heel height: " + actor.getFlags().get("heelHeight"));
 	}
 
@@ -109,20 +120,10 @@ this.heels_ballet <- this.inherit("scripts/items/accessory/accessory", {
 		this.accessory.onUnequip();
 		local actor = this.getContainer().getActor();				
 		actor.getFlags().set("heelHeight", 0);
+		actor.getFlags().set("sexinessHeels", 0);
 		::logInfo("Unequipped heels, reset heel height to: " + actor.getFlags().get("heelHeight"));
 	}
 
-	// function onUpdate( _properties)
-	// {
-	// 	local actor = this.getContainer().getActor();				
-	// 	if (this.getContainer().getActor().m.IsMoving)
-	// 	{
-	// 		::logInfo("Heels of subjugation triggered on move");
-	// 		// local myTile = actor.getTile();			
-	// 		// actor.setActionPoints(this.Math.min(actor.getActionPointsMax(), actor.getActionPoints() + this.Math.max(0, actor.getActionPointCosts()[myTile.Type] * _properties.MovementAPCostMult)));
-	// 		// actor.setFatigue(this.Math.max(0, actor.getFatigue() - this.Math.max(0, actor.getFatigueCosts()[myTile.Type] * _properties.MovementFatigueCostMult)));			
-	// 	}		
-	// }
 
 
 	function onRemoveWhileCursed()
