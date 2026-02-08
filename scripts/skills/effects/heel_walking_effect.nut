@@ -6,7 +6,7 @@ this.heel_walking_effect <- this.inherit("scripts/skills/skill", {
 		this.m.Name = "Heel Walking";
 		this.m.Description = "Walking in heels is much harder than it looks.";
 		this.m.Icon = "ui/perks/heels_effect.png";
-		this.m.IconMini = "heels_effect_mini";
+		// this.m.IconMini = "heels";
 		this.m.Type = this.Const.SkillType.StatusEffect;
 		this.m.Order = this.Const.SkillOrder.VeryLast;
 		this.m.IsActive = false;

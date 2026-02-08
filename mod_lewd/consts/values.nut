@@ -1,6 +1,13 @@
 ::Lewd.Const.HeelFatigueMultiplier <- 2;
-::Lewd.Const.AllureToDazeChanceMultiplier <- 2;
 ::Lewd.Const.CritChanceThreshold <- 50; // for some effects if the roll is this amount below the chance, a stronger effect gets applied
+
+// ability constants
+::Lewd.Const.AllureToDazeBaseChance <- 50; 
+::Lewd.Const.AllureToDazeChanceMultiplier <- 2;
+
+::Lewd.Const.SeduceBaseChance <- 50;
+::Lewd.Const.SeduceAllureChanceMultiplier <- 3;
+::Lewd.Const.SeduceDistancePenalty <- 5;
 
 // event occurance rates
 ::Lewd.Const.HeelFirstEventBaseScore <- 10;

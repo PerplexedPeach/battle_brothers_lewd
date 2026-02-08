@@ -3,6 +3,8 @@
 - create transformation events
 	- event images
 - create random events
+- make enemies horny (similar to the daze/stun effect, larger range)
+	- set AI agent on horny
 
 # Snipets
 Swap world party graphic (or is this actually player in battle)

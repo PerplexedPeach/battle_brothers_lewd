@@ -6,7 +6,7 @@ this.entrancing_beauty_effect <- this.inherit("scripts/skills/skill", {
 		this.m.Name = "Entrancing Beauty";
 		this.m.Description = "Your beauty enchants those around you, dazing them into submission.";
 		this.m.Icon = "ui/perks/allure_effect.png";
-		this.m.IconMini = "allure_effect_mini";
+		// this.m.IconMini = "allure";
 		this.m.Type = this.Const.SkillType.StatusEffect;
 		this.m.Order = this.Const.SkillOrder.VeryLast;
 		this.m.IsActive = false;
@@ -73,7 +73,7 @@ this.entrancing_beauty_effect <- this.inherit("scripts/skills/skill", {
 			if (entity.getTile().getDistanceTo(tile) <= 1)
 			{
 				local resolve = entity.getBravery();
-				local chance = (50 + (allure - resolve) * ::Lewd.Const.AllureToDazeChanceMultiplier); 
+				local chance = (::Lewd.Const.AllureToDazeBaseChance + (allure - resolve) * ::Lewd.Const.AllureToDazeChanceMultiplier); 
 
 				// ::logInfo("Target " + entity.getName() + " bravery: " + resolve);
 				// ::logInfo("Chance to daze " + entity.getName() + ": " + chance + "%");
