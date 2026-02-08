@@ -29,8 +29,19 @@ mod.queue(">mod_legends", ">mod_msu", function()
 	// TODO when these get large, refactor out into separate files and include them
 	mod.hook("scripts/entity/tactical/actor", function (q)
 	{
-		// any extra heelHeight > heelSkill results in a fatigue penalty when moving
 
+		q.sexiness <- function() {
+			local sexiness = 0;
+			// TODO calculate sexiness based on equipped items, traits, perks, etc
+			// for now just return a placeholder value
+			sexiness += this.getFlags().getAsInt("sexinessHeels");
+			// melee defense contributes half as it represents agility
+			sexiness += this.getMeleeDefense() * 0.5;
+			 // resolve contributes a quarter as it represents presence
+			return sexiness;
+		}
+
+		// any extra heelHeight > heelSkill results in a fatigue penalty when moving
 		q.onMovementStep = @() function ( _tile, _levelDifference )
 		{
 			// NOTE when we have to replace rather than wrap the original since the extra fatigue cost from the heels could make it so we can't actually move a tile
