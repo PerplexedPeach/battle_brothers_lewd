@@ -1,5 +1,5 @@
 # TODOS
-- create seduce ability (use existing ones from hexen)
+- create seduce ability (use existing ones from hexen) scripts/skills/actives/charm_skill
 - create transformation events
 	- event images
 - create random events
@@ -97,3 +97,10 @@ Look at effects.distracted
 Use the tactical log
 
 				this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(actor) + " shook off being dazed thanks to his unnatural physiology");
+
+Hexen transformation fadein
+```js
+			sprite = this.getSprite("charm_body");
+			sprite.Visible = true;
+			sprite.fadeIn(t);
+```

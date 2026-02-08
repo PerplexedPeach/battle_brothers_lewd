@@ -11,6 +11,18 @@ this.entrancing_beauty_effect <- this.inherit("scripts/skills/skill", {
 		this.m.Order = this.Const.SkillOrder.VeryLast;
 		this.m.IsActive = false;
 		this.m.IsStacking = false;
+		this.m.SoundOnUse = [
+			"sounds/enemies/dlc2/hexe_charm_kiss_01.wav",
+			"sounds/enemies/dlc2/hexe_charm_kiss_02.wav",
+			"sounds/enemies/dlc2/hexe_charm_kiss_03.wav",
+			"sounds/enemies/dlc2/hexe_charm_kiss_04.wav"
+		];
+		// this.m.SoundOnHit = [
+		// 	"sounds/enemies/dlc2/hexe_charm_chimes_01.wav",
+		// 	"sounds/enemies/dlc2/hexe_charm_chimes_02.wav",
+		// 	"sounds/enemies/dlc2/hexe_charm_chimes_03.wav",
+		// 	"sounds/enemies/dlc2/hexe_charm_chimes_04.wav"
+		// ];
 	}
 
 	function getTooltip()
@@ -53,6 +65,8 @@ this.entrancing_beauty_effect <- this.inherit("scripts/skills/skill", {
 		local targets = this.Tactical.Entities.getAllInstances();
 		local allure = actor.allure();
 
+		local dazedEntities = [];
+
 		foreach (entity in enemies)
 		{
 			// if (!entity.isAlliedWith(actor) && entity.getTile().getDistanceTo(tile) <= 1)
@@ -79,8 +93,15 @@ this.entrancing_beauty_effect <- this.inherit("scripts/skills/skill", {
 					{
 						this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(entity) + " is dazed!");
 					}
+
+					dazedEntities.push(entity);
 				}
 			}
+		}
+
+		if (dazedEntities.len() > 0)
+		{
+			this.Sound.play(this.m.SoundOnUse[this.Math.rand(0, this.m.SoundOnUse.len() - 1)], this.Const.Sound.Volume.Skill * this.m.SoundVolume, actor.getPos());
 		}
 	}
 
