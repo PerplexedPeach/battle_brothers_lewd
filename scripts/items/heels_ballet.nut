@@ -104,6 +104,10 @@ this.heels_ballet <- this.inherit("scripts/items/accessory/accessory", {
 		// TODO pain tolerance, increase damage reduction (or have it not trigger morale loss from taking damage)
 		// _properties.MeleeSkill += 5;
 		// _properties.Bravery += 15;
+
+		local actor = this.getContainer().getActor();				
+		local morale = actor.getSprite("morale");
+		morale.Visible = false;
 	}
 
 	function onEquip()
