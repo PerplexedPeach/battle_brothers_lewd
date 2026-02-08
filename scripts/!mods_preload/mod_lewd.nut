@@ -32,12 +32,39 @@ mod.queue(">mod_legends", ">mod_msu", function()
 
 		q.sexiness <- function() {
 			local sexiness = 0;
-			// TODO calculate sexiness based on equipped items, traits, perks, etc
+			// calculate sexiness based on equipped items, traits, perks, etc
+			sexiness += this.getFlags().getAsInt("sexinessBase");
 			// for now just return a placeholder value
 			sexiness += this.getFlags().getAsInt("sexinessHeels");
 			// melee defense contributes half as it represents agility
 			sexiness += this.getCurrentProperties().getMeleeDefense() * 0.5;
-			 // resolve contributes a quarter as it represents presence
+			// resolve contributes a quarter as it represents presence
+			// based on traits
+			local skills = this.getSkills();
+			if (skills.hasSkill("trait.legend_seductive"))
+			{
+				sexiness += 10;
+			}
+			if (skills.hasSkill("trait.athletic"))
+			{
+				sexiness += 5;
+			}
+			if (skills.hasSkill("trait.gluttonous"))
+			{
+				sexiness -= 5;
+			}
+			if (skills.hasSkill("trait.fat"))
+			{
+				sexiness -= 20;
+			}
+			if (skills.hasSkill("trait.ailing"))
+			{
+				sexiness -= 10;
+			}
+			if (skills.hasSkill("trait.old"))
+			{
+				sexiness -= 20;
+			}
 			return sexiness;
 		}
 
