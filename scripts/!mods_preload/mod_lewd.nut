@@ -4,7 +4,6 @@
 	Name = "Lewdness",
 	IsStartingNewCampaign = false
 };
-// ::Lewd.Mod <- ::MSU.Class.Mod(::Lewd.ID, ::Lewd.Version, ::Lewd.Name);
 
 // ::mods_registerMod(::Lewd.ID, ::Lewd.Version, ::Lewd.Name);
 local mod = ::Hooks.register(::Lewd.ID, ::Lewd.Version, ::Lewd.Name);
@@ -14,6 +13,17 @@ mod.require("mod_legends", "mod_msu");
 // ::mods_queue(modID, "mod_legends,mod_msu", function()
 mod.queue(">mod_legends", ">mod_msu", function()
 {
+	::Lewd.Mod <- ::MSU.Class.Mod(::Lewd.ID, ::Lewd.Version, ::Lewd.Name);
+	// TODO registery for updates
+
+	// includes in order
+	foreach (dir in [
+	"mod_lewd",
+	]) {
+		foreach (file in ::IO.enumerateFiles(dir))
+			::include(file);
+	}
+
 	// hook item container to care about items' cursed status
 	mod.hook("scripts/items/item_container", function(q)
 	{

@@ -70,14 +70,7 @@ this.lewd_first_heels <- this.inherit("scripts/events/event", {
 				items.equip(item);
 				// this.World.Assets.getStash().add(this.new("scripts/items/accessory/black_heels"));
 
-				// change sprite
-				w.getSprite("head").setBrush("bust_head_lewd_02");
-				w.getSprite("body").setBrush("bust_body_lewd_02");
-				// w.getSprite("body").setHorizontalFlipping(true);
-				// clear scars and tattoos
-				w.getSprite("tattoo_body").setBrush("");
-				// clear bust so accessories are visible
-				w.getSprite("miniboss").setBrush("");
+				::Lewd.Transform.sexy_stage_2(w);
 
 				this.List.push(::Legends.EventList.changeMood(w, 2.0, "Got new footwear"));
 			}
