@@ -121,6 +121,10 @@ this.heels_ballet <- this.inherit("scripts/items/accessory/accessory", {
 		skill.setItem(this);
 		this.addSkill(skill);
 
+		skill = this.new("scripts/skills/effects/heel_walking_effect");
+		skill.setItem(this);
+		this.addSkill(skill);
+
 		::logInfo("Equipped heels with heel height: " + actor.getFlags().get("heelHeight"));
 	}
 
