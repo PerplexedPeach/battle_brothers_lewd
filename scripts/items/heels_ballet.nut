@@ -72,7 +72,7 @@ this.heels_ballet <- this.inherit("scripts/items/accessory/accessory", {
 		result.push({
 			id = 17,
 			type = "text",
-			icon = "ui/icons/special.png",
+			icon = "ui/icons/allure.png",
 			text = "Increases Allure by [color=" + this.Const.UI.Color.PositiveValue + "]20[/color]"
 		});
 		result.push({

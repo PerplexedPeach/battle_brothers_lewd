@@ -5,9 +5,8 @@ this.entrancing_beauty_effect <- this.inherit("scripts/skills/skill", {
 		this.m.ID = "effects.entrancing_beauty";
 		this.m.Name = "Entrancing Beauty";
 		this.m.Description = "Your beauty enchants those around you, dazing them into submission.";
-		// TODO add icons
-		this.m.Icon = "ui/perks/perk_29.png";
-		this.m.IconMini = "perk_29_mini";
+		this.m.Icon = "ui/perks/allure_effect.png";
+		this.m.IconMini = "allure_effect_mini";
 		this.m.Type = this.Const.SkillType.StatusEffect;
 		this.m.Order = this.Const.SkillOrder.VeryLast;
 		this.m.IsActive = false;

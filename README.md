@@ -1,4 +1,10 @@
 # TODOS
+- create seduce ability (use existing ones from hexen)
+- create transformation events
+	- event images
+- create random events
+
+# Snipets
 Swap world party graphic (or is this actually player in battle)
 ```js
 		this.World.State.m.Player.getSprite("body").setBrush("figure_vampire_01"); // World map look, could be 02.
