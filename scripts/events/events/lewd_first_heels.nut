@@ -68,7 +68,6 @@ this.lewd_first_heels <- this.inherit("scripts/events/event", {
 				local item = this.new("scripts/items/heels_ballet");
 				item.getFlags().set("cursed", true);
 				items.equip(item);
-				// this.World.Assets.getStash().add(this.new("scripts/items/accessory/black_heels"));
 
 				::Lewd.Transform.sexy_stage_2(w);
 
@@ -86,11 +85,27 @@ this.lewd_first_heels <- this.inherit("scripts/events/event", {
 		foreach( bro in brothers )
 		{
 			if(bro.getGender() == 1 && bro.getFlags().get("IsPlayerCharacter")){
-				// TODO check against having this item or traits
-				this.m.Woman = bro;
-				// scale with reputation
-				this.m.Score = 5 + this.World.Assets.getBusinessReputation() / 50;
+				if (bro.getFlags().get("IsPlayerCharacter")) {
+					this.m.Woman = bro;
+					break;
+				} else {
+					candidates.push(bro);
+				}
 			}
+		}
+
+		// prefer avatar/player character if possible, otherwise randomly select a woman
+		if (this.m.Woman == null && candidates.len() > 0)
+		{
+			this.m.Woman = candidates[this.Math.rand(0, candidates.len() - 1)];
+		}
+
+		if (this.m.Woman == null)
+		{
+			this.m.Score = 0;
+		} else {
+			// scale with reputation
+			this.m.Score = ::Lewd.Const.HeelFirstEventBaseScore + this.World.Assets.getBusinessReputation() * ::Lewd.Const.HeelFirstEventScoreRenownScale;
 		}
 	}
 
