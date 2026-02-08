@@ -87,23 +87,24 @@ this.heels_ballet <- this.inherit("scripts/items/accessory/accessory", {
 			icon = "ui/icons/ranged_defense.png",
 			text = "Reduces ranged defense by [color=" + this.Const.UI.Color.NegativeValue + "]-10[/color]"
 		});
+		result.push({
+			id = 20,
+			type = "text",
+			icon = "ui/icons/chance_to_hit_head.png",
+			text = "[color=" + this.Const.UI.Color.PositiveValue + "]+10%[/color] Chance To Hit Head"
+		});
 		return result;
 	}
 
 	function onUpdateProperties( _properties )
 	{
 		this.accessory.onUpdateProperties(_properties);
-		// TODO adjust stats
 		// reduce ranged defense and initiative
 		_properties.RangedDefense -= 10;
 		_properties.Initiative -= 20;
+		_properties.HitChance[this.Const.BodyPart.Head] += 10;
 
-		// TODO increase resolve of allies around
-		// TODO passive ability for chance to daze enemies when moving in melee range
-		// TODO increase chance to hit head
 		// TODO pain tolerance, increase damage reduction (or have it not trigger morale loss from taking damage)
-		// _properties.MeleeSkill += 5;
-		// _properties.Bravery += 15;
 
 		local actor = this.getContainer().getActor();				
 		local morale = actor.getSprite("morale");
