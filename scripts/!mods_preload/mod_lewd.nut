@@ -30,10 +30,6 @@ mod.queue(">mod_legends", ">mod_msu", function()
 	mod.hook("scripts/entity/tactical/actor", function (q)
 	{
 		// any extra heelHeight > heelSkill results in a fatigue penalty when moving
-		q.m.heelHeight <- 0;
-		q.m.heelSkill <- 0;
-
-		::logInfo("Hooked into actor, added heelHeight and heelSkill properties, heel height: " + q.m.heelHeight + ", heel skill: " + q.m.heelSkill);
 
 		q.onMovementStep = @() function ( _tile, _levelDifference )
 		{
@@ -47,11 +43,13 @@ mod.queue(">mod_legends", ">mod_msu", function()
 			local apCost = this.Math.max(1, (this.m.ActionPointCosts[_tile.Type] + this.m.CurrentProperties.MovementAPCostAdditional) * this.m.CurrentProperties.MovementAPCostMult);
 			local fatigueCost = this.Math.round((this.m.FatigueCosts[_tile.Type] + this.m.CurrentProperties.MovementFatigueCostAdditional) * this.m.CurrentProperties.MovementFatigueCostMult);
 
-			if (this.m.heelHeight > this.m.heelSkill)
+			local heelHeight = this.getFlags().getAsInt("heelHeight");
+			local heelSkill = this.getFlags().getAsInt("heelSkill");
+			if (heelHeight > heelSkill)
 			{
-				local extraHeelFatigue = (this.m.heelHeight - this.m.heelSkill) * ::Lewd.Const.HeelFatigueMultiplier; // TODO balance this
+				local extraHeelFatigue = (heelHeight - heelSkill) * ::Lewd.Const.HeelFatigueMultiplier; // TODO balance this
 				fatigueCost = fatigueCost + extraHeelFatigue;
-				::logInfo("Applying extra fatigue cost from heels: " + extraHeelFatigue + " (heel height: " + this.m.heelHeight + ", heel skill: " + this.m.heelSkill + ")");
+				::logInfo("Applying extra fatigue cost from heels: " + extraHeelFatigue + " (heel height: " + heelHeight + ", heel skill: " + heelSkill + ")");
 			}
 
 			if (_levelDifference != 0)
@@ -91,7 +89,6 @@ mod.queue(">mod_legends", ">mod_msu", function()
 	mod.hook("scripts/items/item_container", function(q)
 	{
 		q.unequip = @(__original) function(_item) {
-			 ::logInfo("My hooked unequip was called with item: " + (_item != null ? _item.getName() : "null"));	
 			 // check item flags for cursed, if cursed, don't unequip and maybe show some kind of message about the item being cursed
 			 if (_item != null && _item.getFlags().has("cursed"))
 			 {

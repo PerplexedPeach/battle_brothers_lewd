@@ -99,16 +99,17 @@ this.heels_ballet <- this.inherit("scripts/items/accessory/accessory", {
 	{
 		this.accessory.onEquip();
 		local actor = this.getContainer().getActor();				
-		actor.m.heelHeight = this.getFlags().get("heelHeight");
-		::logInfo("Equipped heels with heel height: " + actor.m.heelHeight);
+		actor.getFlags().set("heelHeight", this.getFlags().get("heelHeight"));
+		// actor.m.heelHeight = this.getFlags().get("heelHeight");
+		::logInfo("Equipped heels with heel height: " + actor.getFlags().get("heelHeight"));
 	}
 
 	function onUnequip()
 	{
 		this.accessory.onUnequip();
 		local actor = this.getContainer().getActor();				
-		actor.m.heelHeight = 0;
-		::logInfo("Unequipped heels, reset heel height to: " + actor.m.heelHeight);
+		actor.getFlags().set("heelHeight", 0);
+		::logInfo("Unequipped heels, reset heel height to: " + actor.getFlags().get("heelHeight"));
 	}
 
 	// function onUpdate( _properties)
