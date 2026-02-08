@@ -49,15 +49,22 @@ Skill on equipment
 	}
 ```
 
-Cursed unequip
+On movement athletic (athletic_trait)
 ```js
-	function onUnequip()
-	{
-		local actor = this.getContainer().getActor();
+	o.m.HasMoved <- false;
 
-		if (actor == null)
+	o.onUpdate = function ( _properties )
+	{
+		local actor = this.getContainer().getActor();				
+		if (this.m.HasMoved == false && this.getContainer().getActor().m.IsMoving)
 		{
-			return;
-		}
+			this.m.HasMoved = true;
+			local myTile = actor.getTile();			
+			actor.setActionPoints(this.Math.min(actor.getActionPointsMax(), actor.getActionPoints() + this.Math.max(0, actor.getActionPointCosts()[myTile.Type] * _properties.MovementAPCostMult)));
+			actor.setFatigue(this.Math.max(0, actor.getFatigue() - this.Math.max(0, actor.getFatigueCosts()[myTile.Type] * _properties.MovementFatigueCostMult)));			
+		}		
+	
 	}
 ```
+
+Movement costs hook `actor.onMovementStep` introduce actor.heelHeight and heelSkill. If height > skill the addition is added to fatigue cost per tile.

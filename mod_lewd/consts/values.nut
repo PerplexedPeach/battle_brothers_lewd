@@ -1,0 +1,1 @@
+::Lewd.Const.HeelFatigueMultiplier <- 2;

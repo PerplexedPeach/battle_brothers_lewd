@@ -5,6 +5,8 @@
 	IsStartingNewCampaign = false
 };
 
+::Lewd.Const <- {};
+
 // ::mods_registerMod(::Lewd.ID, ::Lewd.Version, ::Lewd.Name);
 local mod = ::Hooks.register(::Lewd.ID, ::Lewd.Version, ::Lewd.Name);
 
@@ -18,11 +20,72 @@ mod.queue(">mod_legends", ">mod_msu", function()
 
 	// includes in order
 	foreach (dir in [
-	"mod_lewd",
+		"mod_lewd/consts"
 	]) {
 		foreach (file in ::IO.enumerateFiles(dir))
 			::include(file);
 	}
+
+	// TODO when these get large, refactor out into separate files and include them
+	mod.hook("scripts/entity/tactical/actor", function (q)
+	{
+		// any extra heelHeight > heelSkill results in a fatigue penalty when moving
+		q.m.heelHeight <- 0;
+		q.m.heelSkill <- 0;
+
+		::logInfo("Hooked into actor, added heelHeight and heelSkill properties, heel height: " + q.m.heelHeight + ", heel skill: " + q.m.heelSkill);
+
+		q.onMovementStep = @() function ( _tile, _levelDifference )
+		{
+			// NOTE when we have to replace rather than wrap the original since the extra fatigue cost from the heels could make it so we can't actually move a tile
+			// there is a lot of code duplication as a result
+			if (this.m.CurrentProperties.IsRooted || this.m.CurrentProperties.IsStunned)
+			{
+				return false;
+			}
+
+			local apCost = this.Math.max(1, (this.m.ActionPointCosts[_tile.Type] + this.m.CurrentProperties.MovementAPCostAdditional) * this.m.CurrentProperties.MovementAPCostMult);
+			local fatigueCost = this.Math.round((this.m.FatigueCosts[_tile.Type] + this.m.CurrentProperties.MovementFatigueCostAdditional) * this.m.CurrentProperties.MovementFatigueCostMult);
+
+			if (this.m.heelHeight > this.m.heelSkill)
+			{
+				local extraHeelFatigue = (this.m.heelHeight - this.m.heelSkill) * ::Lewd.Const.HeelFatigueMultiplier; // TODO balance this
+				fatigueCost = fatigueCost + extraHeelFatigue;
+				::logInfo("Applying extra fatigue cost from heels: " + extraHeelFatigue + " (heel height: " + this.m.heelHeight + ", heel skill: " + this.m.heelSkill + ")");
+			}
+
+			if (_levelDifference != 0)
+			{
+				apCost = apCost + this.m.LevelActionPointCost;
+				fatigueCost = fatigueCost + this.m.LevelFatigueCost;
+
+				if (_levelDifference > 0)
+				{
+					fatigueCost = fatigueCost + this.Const.Movement.LevelClimbingFatigueCost;
+				}
+			}
+
+			fatigueCost = fatigueCost * this.m.CurrentProperties.FatigueEffectMult;
+
+			if (this.m.ActionPoints >= apCost && this.m.Fatigue + fatigueCost <= this.getFatigueMax())
+			{
+				this.m.ActionPoints = this.Math.round(this.m.ActionPoints - apCost);
+				this.m.Fatigue = this.Math.min(this.getFatigueMax(), this.Math.round(this.m.Fatigue + fatigueCost));
+				this.updateVisibility(_tile, this.m.CurrentProperties.getVision(), this.getFaction());
+
+				if (this.getFaction() == this.Const.Faction.PlayerAnimals)
+				{
+					this.updateVisibility(_tile, this.m.CurrentProperties.getVision(), this.Const.Faction.Player);
+				}
+
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+	});
 
 	// hook item container to care about items' cursed status
 	mod.hook("scripts/items/item_container", function(q)
@@ -135,4 +198,11 @@ mod.queue(">mod_legends", ">mod_msu", function()
 	// 		[] //7 gt.Const.Perks.PerkDefs.VampireDemoralise
 	// 	]
 	// };
+
+	foreach (dir in [
+		"mod_lewd/lib",
+	]) {
+		foreach (file in ::IO.enumerateFiles(dir))
+			::include(file);
+	}
 });

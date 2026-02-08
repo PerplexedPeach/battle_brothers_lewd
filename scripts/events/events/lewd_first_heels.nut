@@ -61,11 +61,11 @@ this.lewd_first_heels <- this.inherit("scripts/events/event", {
 				this.Characters.push(w.getImagePath());
 				this.List.push({
 					id = 10,
-					icon = "ui/items/accessory/black_heels.png",
-					text = "You gain Black Heels"
+					icon = "ui/items/accessory/ballet_heels.png",
+					text = "You gain Ballet Heels"
 				});
 				local items = w.getItems();
-				local item = this.new("scripts/items/glowing_amulet_of_valor");
+				local item = this.new("scripts/items/heels_ballet");
 				item.getFlags().set("cursed", true);
 				items.equip(item);
 				// this.World.Assets.getStash().add(this.new("scripts/items/accessory/black_heels"));
