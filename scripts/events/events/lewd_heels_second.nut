@@ -111,27 +111,7 @@ this.lewd_heels_second <- this.inherit("scripts/events/event", {
 
 	function onUpdateScore()
 	{
-		local brothers = this.World.getPlayerRoster().getAll();
-		local candidates = [];
-
-		foreach( bro in brothers )
-		{
-			if(bro.getGender() == 1 && bro.getFlags().get("IsPlayerCharacter")){
-				if (bro.getFlags().get("IsPlayerCharacter")) {
-					this.m.Woman = bro;
-					break;
-				} else {
-					candidates.push(bro);
-				}
-			}
-		}
-
-		// TODO handle when you are not playing as avatar, but for now only support avatar due to narrative perspective
-		// prefer avatar/player character if possible, otherwise randomly select a woman
-		// if (this.m.Woman == null && candidates.len() > 0)
-		// {
-		// 	this.m.Woman = candidates[this.Math.rand(0, candidates.len() - 1)];
-		// }
+		this.m.Woman = ::Lewd.Transform.target(this);
 
 		if (this.m.Woman == null)
 		{
