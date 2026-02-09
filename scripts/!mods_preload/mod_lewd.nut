@@ -49,6 +49,14 @@ mod.queue(">mod_legends", ">mod_msu", function()
 			{
 				allure += 5;
 			}
+			if (skills.hasSkill("trait.dainty"))
+			{
+				allure += 5;
+			}
+			if (skills.hasSkill("trait.delicate"))
+			{
+				allure += 10;
+			}
 			if (skills.hasSkill("trait.gluttonous"))
 			{
 				allure -= 5;
