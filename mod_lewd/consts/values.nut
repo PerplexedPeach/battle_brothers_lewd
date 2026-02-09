@@ -3,6 +3,7 @@
 
 ::Lewd.Const.AllurePenaltyHeadFatigue <- 2; // allure penalty per point of fatigue from head items
 ::Lewd.Const.AllurePenaltyBodyFatigue <- 1;
+::Lewd.Const.AllurePenaltyOffhandFatigue <- 2;
 
 // ability constants
 ::Lewd.Const.AllureToDazeBaseChance <- 50; 

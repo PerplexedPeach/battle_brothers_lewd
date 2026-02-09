@@ -50,12 +50,14 @@ this.entrancing_beauty_effect <- this.inherit("scripts/skills/skill", {
 				id = 17,
 				type = "text",
 				icon = "ui/icons/allure.png",
-				text = "Allure increases with melee defense as it represents your agility. It also is influenced by various traits and items. Events can also influence your base allure (" + actor.getFlags().getAsInt("allureBase") + "). Wearing armor will reduce allure."
+				text = "Allure increases with melee defense as it represents your agility. It also is influenced by various traits and items. Events can also influence your base allure (" + actor.getFlags().getAsInt("allureBase") + "). Wearing armor and a shield will reduce allure."
 			}
 		];
 
 		local headPenalty = ::Lewd.Allure.penaltyFromHead(actor);
 		local bodyPenalty = ::Lewd.Allure.penaltyFromBody(actor);
+		local offhandPenalty = ::Lewd.Allure.penaltyFromOffhand(actor);
+
 		if (headPenalty > 0)
 		{
 			result.push({
@@ -74,7 +76,15 @@ this.entrancing_beauty_effect <- this.inherit("scripts/skills/skill", {
 				text = "Allure penalty from body: [color=" + this.Const.UI.Color.NegativeValue + "]" + bodyPenalty + "[/color] (every point of fatigue reduces allure by " + ::Lewd.Const.AllurePenaltyBodyFatigue + ")"
 			});
 		}
-
+		if (offhandPenalty > 0)
+		{
+			result.push({
+				id = 20,
+				type = "hint",
+				icon = "ui/icons/warning.png",
+				text = "Allure penalty from offhand: [color=" + this.Const.UI.Color.NegativeValue + "]" + offhandPenalty + "[/color] (every point of fatigue reduces allure by " + ::Lewd.Const.AllurePenaltyOffhandFatigue + ")"
+			});
+		}
 		return result;
 	}
 

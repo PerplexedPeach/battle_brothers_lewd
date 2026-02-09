@@ -21,4 +21,15 @@
 
 		return 0;
 	}
+
+	function penaltyFromOffhand( _actor )
+	{
+		local offhand = _actor.getItems().getItemAtSlot(this.Const.ItemSlot.Offhand);
+		if (offhand != null)
+		{
+			return -offhand.getStaminaModifier() * ::Lewd.Const.AllurePenaltyOffhandFatigue;
+		}
+
+		return 0;
+	}
 };

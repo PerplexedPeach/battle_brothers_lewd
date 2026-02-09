@@ -41,6 +41,7 @@ mod.queue(">mod_legends", ">mod_msu", function()
 			// penalize by armor
 			allure -= ::Lewd.Allure.penaltyFromHead(this);
 			allure -= ::Lewd.Allure.penaltyFromBody(this);
+			allure -= ::Lewd.Allure.penaltyFromOffhand(this);
 			// resolve contributes a quarter as it represents presence
 			// based on traits
 			local skills = this.getSkills();
