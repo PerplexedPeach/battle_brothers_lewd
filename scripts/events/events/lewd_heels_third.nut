@@ -1,10 +1,10 @@
-this.lewd_first_heels <- this.inherit("scripts/events/event", {
+this.lewd_heels_third <- this.inherit("scripts/events/event", {
 	m = {
 		Woman = null
 	},
 	function create()
 	{
-		this.m.ID = "event.lewd_first_heels";
+		this.m.ID = "event.lewd_heels_third";
 		this.m.Title = "At interesting offer..";
 		// never fire this event again, as it is a one time thing
 		this.m.Cooldown = 999999 * this.World.getTime().SecondsPerDay;
