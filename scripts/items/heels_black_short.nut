@@ -93,7 +93,7 @@ this.heels_black_short <- this.inherit("scripts/items/accessory/accessory", {
 
 		// TODO pain tolerance, increase damage reduction (or have it not trigger morale loss from taking damage)
 
-		local actor = this.getContainer().getActor();				
+		local actor = this.getContainer().getActor();
 		local morale = actor.getSprite("morale");
 		morale.Visible = false;
 	}
@@ -101,7 +101,7 @@ this.heels_black_short <- this.inherit("scripts/items/accessory/accessory", {
 	function onEquip()
 	{
 		this.accessory.onEquip();
-		local actor = this.getContainer().getActor();				
+		local actor = this.getContainer().getActor();
 		actor.getFlags().set("heelHeight", this.getFlags().get("heelHeight"));
 		actor.getFlags().set("allureHeels", 5);
 
@@ -119,7 +119,7 @@ this.heels_black_short <- this.inherit("scripts/items/accessory/accessory", {
 	function onUnequip()
 	{
 		this.accessory.onUnequip();
-		local actor = this.getContainer().getActor();				
+		local actor = this.getContainer().getActor();
 		actor.getFlags().set("heelHeight", 0);
 		actor.getFlags().set("allureHeels", 0);
 		::logInfo("Unequipped heels, reset heel height to: " + actor.getFlags().get("heelHeight"));

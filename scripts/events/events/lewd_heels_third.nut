@@ -111,7 +111,7 @@ this.lewd_heels_third <- this.inherit("scripts/events/event", {
 
 	function onUpdateScore()
 	{
-		this.m.Woman = ::Lewd.Transform.target(this);
+		this.m.Woman = ::Lewd.Transform.target();
 
 		if (this.m.Woman == null)
 		{

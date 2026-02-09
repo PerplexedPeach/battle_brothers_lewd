@@ -1,7 +1,7 @@
 ::Lewd.Transform <- {
-	function target ( _this ) {
+	function target ( ) {
 		local t = null;
-		local brothers = _this.World.getPlayerRoster().getAll();
+		local brothers = this.World.getPlayerRoster().getAll();
 		local candidates = [];
 
 		foreach( bro in brothers )
@@ -27,7 +27,6 @@
 
 		return t;
 	}
-
 
 	function sexy_stage_1 ( _woman ) {
 		local w = _woman;

@@ -1,30 +1,17 @@
 this.lewd_heels_skillup <- this.inherit("scripts/events/event", {
 	m = {
-		Woman = null
+		Woman = null,
+		heelSkill = -1,
 	},
 	function create()
 	{
 		this.m.ID = "event.lewd_heels_skillup";
-		this.m.Title = "A new skill";
+		this.m.Title = "Beauty is Pain";
 		this.m.Cooldown = ::Lewd.Const.HeelSkillUpCooldownDays * this.World.getTime().SecondsPerDay;
-
-		// TODO text depending on level
-		local heelSkill = this.m.Woman.getFlags().getAsInt("heelSkill");
-		local wornHeels = this.m.Woman.getItems().getItemAtSlot(this.Const.ItemSlot.Accessory);
-
-		local text = "";
-		if (heelSkill == 0)
-		{
-			text = "%woman% has been practicing walking in heels, even in combat, and is starting to get the hang of it. %they_woman% are starting to feel confident in the " + wornHeels.getName() + " and are getting used to the extra height.";
-		}
-		else
-		{
-			text = "Challenging themselves with ever-higher heels, %woman% can feel %their_woman% skill improving, getting more comfortable in these " + wornHeels.getName() + " and learning to walk with ever more confidence and grace.";
-		}
 
 		this.m.Screens.push({
 			ID = "A",
-			Text = text,
+			Text = "%woman% has been practicing walking in heels, even in combat. %They_woman% is starting to feel confident in the %heel_name% and more used to the extra height.",
 			Image = "",
 			List = [],
 			Characters = [],
@@ -79,12 +66,7 @@ this.lewd_heels_skillup <- this.inherit("scripts/events/event", {
 			this.m.Score = 0;
 		} else {
 			local heelSkill = w.getFlags().getAsInt("heelSkill");
-			if (heelSkill > 0)
-			{
-				// already have the skill, don't show this event
-				this.m.Score = 0;
-				return;
-			}
+			this.m.heelSkill = heelSkill;
 			local heelHeight = w.getFlags().getAsInt("heelHeight");
 			if (heelHeight <= heelSkill)
 			{
@@ -113,9 +95,16 @@ this.lewd_heels_skillup <- this.inherit("scripts/events/event", {
 
 	function onPrepareVariables( _vars )
 	{
+		// local heelSkill = this.m.Woman.getFlags().getAsInt("heelSkill");
+		local wornHeels = this.m.Woman.getItems().getItemAtSlot(this.Const.ItemSlot.Accessory);
+
 		_vars.push([
 			"woman",
 			this.m.Woman.getName()
+		]);
+		_vars.push([
+			"heel_name",
+			wornHeels.getName()
 		]);
 	}
 

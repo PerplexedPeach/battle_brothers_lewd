@@ -46,7 +46,7 @@ this.lewd_heels_first <- this.inherit("scripts/events/event", {
 
 				},
 				{
-					Text = "The cost of accepting the gift would be too much.",
+					Text = "Gifts comes with strings attached, reject the offer.",
 					function getResult( _event )
 					{
 						return 0;
@@ -97,7 +97,7 @@ this.lewd_heels_first <- this.inherit("scripts/events/event", {
 				items.equip(item);
 				this.List.push({
 					id = 10,
-					icon = item.getIcon(),
+					icon = "ui/items/" + item.getIcon(),
 					text = "You are gifted " + item.getName()
 				});
 
@@ -112,7 +112,7 @@ this.lewd_heels_first <- this.inherit("scripts/events/event", {
 
 	function onUpdateScore()
 	{
-		this.m.Woman = ::Lewd.Transform.target(this);
+		this.m.Woman = ::Lewd.Transform.target();
 
 		if (this.m.Woman == null)
 		{
