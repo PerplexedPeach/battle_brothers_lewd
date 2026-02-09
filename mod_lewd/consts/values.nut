@@ -6,7 +6,7 @@
 ::Lewd.Const.AllurePenaltyOffhandFatigue <- 2;
 
 // ability constants
-::Lewd.Const.AllureToDazeBaseChance <- 50; 
+::Lewd.Const.AllureToDazeBaseChance <- 50;
 ::Lewd.Const.AllureToDazeChanceMultiplier <- 2;
 
 ::Lewd.Const.SeduceBaseChance <- 50;
@@ -16,3 +16,10 @@
 // event occurance rates
 ::Lewd.Const.HeelFirstEventBaseScore <- 10;
 ::Lewd.Const.HeelFirstEventScoreRenownScale <- 0.05;
+
+::Lewd.Const.HeelSkillUpCooldownDays <- 5;
+::Lewd.Const.HeelSkillUpBaseScore <- 40;
+::Lewd.Const.HeelSkillUpDifferenceMultiplier <- 30; // for every point of difference in heel height and skill, add this much
+::Lewd.Const.HeelSkillUpLevelScale <- 5;
+::Lewd.Const.HeelSkillUpNimbleBonus <- 40; // bonus score for being nimble, since that synergizes well with heel walking
+::Lewd.Const.HeelSkillUpStudentBonus <- 10;
