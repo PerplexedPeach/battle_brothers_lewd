@@ -4,7 +4,11 @@
 - create random events
 - make enemies horny (similar to the daze/stun effect, larger range)
 	- set AI agent on horny
+- add heels sounds when moving while wearing them
 - body modification corruption series (separate boobs and ass traits)
+- sexy armor
+- piercings and tattoos
+- custom starting scenarios
 
 # Snipets
 Swap world party graphic (or is this actually player in battle)

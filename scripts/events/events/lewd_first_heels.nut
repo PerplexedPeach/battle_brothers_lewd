@@ -58,19 +58,51 @@ this.lewd_first_heels <- this.inherit("scripts/events/event", {
 			function start( _event )
 			{
 				local w = _event.m.Woman;
-				this.Characters.push(w.getImagePath());
-				this.List.push({
-					id = 10,
-					icon = "ui/items/accessory/ballet_heels.png",
-					text = "You gain Ballet Heels"
-				});
+
 				local items = w.getItems();
 				local item = this.new("scripts/items/heels_ballet");
 				item.getFlags().set("cursed", true);
 				items.equip(item);
+				this.List.push({
+					id = 10,
+					icon = "ui/items/accessory/ballet_heels.png",
+					text = "You are cursed to wear " + item.getName()
+				});
+
+				local toAdd = ["scripts/skills/traits/delicate_trait"];
+				local toRemove = ["trait.dainty", "trait.huge", "trait.strong", "trait.tough", "trait.legend_heavy"];
+				local skills = w.getSkills();
+				{
+					local skill = this.new("scripts/skills/traits/delicate_trait");
+					skills.add(skill);
+					this.List.push({
+						id = 11,
+						icon = skill.getIcon(),
+						text = w.getName() + " is now " + skill.getName()
+					});
+				}
+				local idx = 13;
+				foreach (removedSkill in toRemove)
+				{
+					if (skills.hasSkill(removedSkill))
+					{
+						local skill = skills.getSkillByID(removedSkill);
+						skills.removeByID(removedSkill);
+						this.List.push({
+							id = idx,
+							icon = skill.getIcon(),
+							text = w.getName() + " is no longer " + skill.getName()
+						});
+						idx++;
+					}
+				}
 
 				::Lewd.Transform.sexy_stage_2(w);
 
+				// push image of transformed character
+				this.Characters.push(w.getImagePath());
+
+				// TODO lower mood of other mercs due to lack of respect
 				this.List.push(::Legends.EventList.changeMood(w, 2.0, "Got new footwear"));
 			}
 		});
@@ -94,11 +126,12 @@ this.lewd_first_heels <- this.inherit("scripts/events/event", {
 			}
 		}
 
+		// TODO handle when you are not playing as avatar, but for now only support avatar due to narrative perspective
 		// prefer avatar/player character if possible, otherwise randomly select a woman
-		if (this.m.Woman == null && candidates.len() > 0)
-		{
-			this.m.Woman = candidates[this.Math.rand(0, candidates.len() - 1)];
-		}
+		// if (this.m.Woman == null && candidates.len() > 0)
+		// {
+		// 	this.m.Woman = candidates[this.Math.rand(0, candidates.len() - 1)];
+		// }
 
 		if (this.m.Woman == null)
 		{
