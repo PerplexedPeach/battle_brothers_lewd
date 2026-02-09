@@ -1,10 +1,10 @@
 # TODOS
-- create seduce ability (use existing ones from hexen) scripts/skills/actives/charm_skill
 - create transformation events
 	- event images
 - create random events
 - make enemies horny (similar to the daze/stun effect, larger range)
 	- set AI agent on horny
+- body modification corruption series (separate boobs and ass traits)
 
 # Snipets
 Swap world party graphic (or is this actually player in battle)

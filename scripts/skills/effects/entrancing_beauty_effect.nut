@@ -27,9 +27,9 @@ this.entrancing_beauty_effect <- this.inherit("scripts/skills/skill", {
 
 	function getTooltip()
 	{
-		local allure = this.getContainer().getActor().allure();
-
-		return [
+		local actor = this.getContainer().getActor();
+		local allure = actor.allure();
+		local result = [
 			{
 				id = 1,
 				type = "title",
@@ -45,8 +45,37 @@ this.entrancing_beauty_effect <- this.inherit("scripts/skills/skill", {
 				type = "text",
 				icon = "ui/icons/special.png",
 				text = "Chance to inflict \'Dazed\' (or on crit \'Stunned\') to those engaged in melee with chance scaling with [color=" + this.Const.UI.Color.PositiveValue + "]Allure (" + allure + ")[/color] contested by their resolve"
+			},
+			{
+				id = 17,
+				type = "text",
+				icon = "ui/icons/allure.png",
+				text = "Allure increases with melee defense as it represents your agility. It also is influenced by various traits and items. Events can also influence your base allure (" + actor.getFlags().getAsInt("allureBase") + "). Wearing armor will reduce allure."
 			}
 		];
+
+		local headPenalty = ::Lewd.Allure.penaltyFromHead(actor);
+		local bodyPenalty = ::Lewd.Allure.penaltyFromBody(actor);
+		if (headPenalty > 0)
+		{
+			result.push({
+				id = 18,
+				type = "hint",
+				icon = "ui/icons/warning.png",
+				text = "Allure penalty from head: [color=" + this.Const.UI.Color.NegativeValue + "]" + headPenalty + "[/color] (every point of fatigue reduces allure by " + ::Lewd.Const.AllurePenaltyHeadFatigue + ")"
+			});
+		}
+		if (bodyPenalty > 0)
+		{
+			result.push({
+				id = 19,
+				type = "hint",
+				icon = "ui/icons/warning.png",
+				text = "Allure penalty from body: [color=" + this.Const.UI.Color.NegativeValue + "]" + bodyPenalty + "[/color] (every point of fatigue reduces allure by " + ::Lewd.Const.AllurePenaltyBodyFatigue + ")"
+			});
+		}
+
+		return result;
 	}
 
 	function applyToNeighbors()

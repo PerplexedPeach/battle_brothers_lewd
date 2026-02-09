@@ -38,6 +38,9 @@ mod.queue(">mod_legends", ">mod_msu", function()
 			allure += this.getFlags().getAsInt("allureHeels");
 			// melee defense contributes half as it represents agility
 			allure += this.getCurrentProperties().getMeleeDefense() * 0.5;
+			// penalize by armor
+			allure -= ::Lewd.Allure.penaltyFromHead(this);
+			allure -= ::Lewd.Allure.penaltyFromBody(this);
 			// resolve contributes a quarter as it represents presence
 			// based on traits
 			local skills = this.getSkills();
