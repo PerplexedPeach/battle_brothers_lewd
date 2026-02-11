@@ -114,7 +114,8 @@ this.lewd_heels_first <- this.inherit("scripts/events/event", {
 	{
 		this.m.Woman = ::Lewd.Transform.target();
 
-		if (this.m.Woman == null)
+		// don't fire if she already has heels on, or if she already has heel skill
+		if (this.m.Woman == null || this.m.Woman.getFlags().getAsInt("heelHeight") > 0 )
 		{
 			this.m.Score = 0;
 		} else {
