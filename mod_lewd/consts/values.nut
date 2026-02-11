@@ -23,3 +23,5 @@
 ::Lewd.Const.HeelSkillUpLevelScale <- 5;
 ::Lewd.Const.HeelSkillUpNimbleBonus <- 40; // bonus score for being nimble, since that synergizes well with heel walking
 ::Lewd.Const.HeelSkillUpStudentBonus <- 10;
+
+::Lewd.Const.HeelSecondEventBaseScore <- 100;

@@ -1,7 +1,12 @@
 # TODOS
 - create transformation events
-	- event images
+	- 2 to 3
 - create random events
+	- based on allure
+	- based on seduce ability used in battle
+	- create graph with sub/dom sex events with bros
+		- body modification and piercings could actually be tied into being too submissive to one of your bros
+- update UI show heel fatigue cost for traversing terrain
 - make enemies horny (similar to the daze/stun effect, larger range)
 	- set AI agent on horny
 - add heels sounds when moving while wearing them
@@ -9,6 +14,7 @@
 - sexy armor
 - piercings and tattoos
 - custom starting scenarios
+- animation fading in/out backside showing ass when molested/targeted by specific abilities
 
 # Snipets
 Swap world party graphic (or is this actually player in battle)
