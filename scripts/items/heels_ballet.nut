@@ -1,8 +1,8 @@
-this.heels_ballet <- this.inherit("scripts/items/accessory/accessory", {
+this.heels_ballet <- this.inherit("scripts/items/heels", {
 	m = {},
 	function create()
 	{
-		this.accessory.create();
+		this.heels.create();
 		this.m.ID = "accessory.heels_ballet";
 		this.m.Name = "Heels of Subjugation";
 		this.m.Description = "Sinister heels that look more like a torture or bondage device than footwear. Instead of heels, a wicked spike protrudes from the ground towards the wearer's foot, keeping them on their toes and forcing them to walk in a more elegant, but also more vulnerable way. They glow with a faint pink light, and apply a tight pressure on the wearer's feet, binding them and shaping the wearer to the designer's taste. ";
@@ -16,7 +16,8 @@ this.heels_ballet <- this.inherit("scripts/items/accessory/accessory", {
 		this.m.Value = 10000;
 		this.m.IsPrecious = true;
 		this.m.IsUnique = true;
-		this.getFlags().set("heelHeight", 5);
+
+		this.defineHeels(5, 20);
 	}
 
 	function getTooltip()
@@ -113,40 +114,11 @@ this.heels_ballet <- this.inherit("scripts/items/accessory/accessory", {
 
 	function onEquip()
 	{
-		this.accessory.onEquip();
-		local actor = this.getContainer().getActor();
-		actor.getFlags().set("heelHeight", this.getFlags().get("heelHeight"));
-		actor.getFlags().set("allureHeels", 20);
+		this.heels.onEquip();
 
-		local skill = this.new("scripts/skills/effects/entrancing_beauty_effect");
+		local skill = this.new("scripts/skills/actives/seduce_skill");
 		skill.setItem(this);
 		this.addSkill(skill);
-
-		skill = this.new("scripts/skills/effects/heel_walking_effect");
-		skill.setItem(this);
-		this.addSkill(skill);
-
-		skill = this.new("scripts/skills/actives/seduce_skill");
-		skill.setItem(this);
-		this.addSkill(skill);
-
-		::logInfo("Equipped heels with heel height: " + actor.getFlags().get("heelHeight"));
 	}
 
-	function onUnequip()
-	{
-		this.accessory.onUnequip();
-		local actor = this.getContainer().getActor();
-		actor.getFlags().set("heelHeight", 0);
-		actor.getFlags().set("allureHeels", 0);
-		::logInfo("Unequipped heels, reset heel height to: " + actor.getFlags().get("heelHeight"));
-	}
-
-
-
-	function onRemoveWhileCursed()
-	{
-		::logInfo("Try to remove cursed item this: " + this.getName());
-		// TODO fire event that explains this more immersively
-	}
 });

@@ -1,6 +1,4 @@
 # TODOS
-- create transformation events
-	- 2 to 3
 - create random events
 	- based on allure
 	- based on seduce ability used in battle
@@ -115,4 +113,13 @@ Hexen transformation fadein
 			sprite = this.getSprite("charm_body");
 			sprite.Visible = true;
 			sprite.fadeIn(t);
+```
+
+Movement sound (actor.onMovementFinish) but can add this to the accessories themselves
+```js
+			if (this.m.IsEmittingMovementSounds && this.Const.Tactical.TerrainMovementSound[_tile.Subtype].len() != 0)
+			{
+				local sound = this.Const.Tactical.TerrainMovementSound[_tile.Subtype][this.Math.rand(0, this.Const.Tactical.TerrainMovementSound[_tile.Subtype].len() - 1)];
+				this.Sound.play("sounds/" + sound.File, sound.Volume * this.Const.Sound.Volume.TacticalMovement * this.Math.rand(90, 100) * 0.01, this.getPos(), sound.Pitch * this.Math.rand(95, 105) * 0.01);
+			}
 ```

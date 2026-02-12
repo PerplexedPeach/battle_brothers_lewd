@@ -1,8 +1,8 @@
-this.heels_black <- this.inherit("scripts/items/accessory/accessory", {
+this.heels_black <- this.inherit("scripts/items/heels", {
 	m = {},
 	function create()
 	{
-		this.accessory.create();
+		this.heels.create();
 		this.m.ID = "accessory.heels_black";
 		this.m.Name = "Black Heels of Temptation";
 		this.m.Description = "Elegant black heels that are both stylish and dangerous. The heels are quite high, forcing the wearer to walk in a more elegant, but also more vulnerable way. They are made of mysterious black leather and are adorned by gold buckles. They seem to exude a subtle aura of temptation, making the wearer more alluring to others, but also making them more susceptible to being targeted by unwanted attention.";
@@ -16,7 +16,7 @@ this.heels_black <- this.inherit("scripts/items/accessory/accessory", {
 		this.m.Value = 3000;
 		this.m.IsPrecious = true;
 
-		this.getFlags().set("heelHeight", 3);
+		this.defineHeels(3, 10);
 	}
 
 	function getTooltip()
@@ -113,33 +113,9 @@ this.heels_black <- this.inherit("scripts/items/accessory/accessory", {
 
 	function onEquip()
 	{
-		this.accessory.onEquip();
-		local actor = this.getContainer().getActor();
-		actor.getFlags().set("heelHeight", this.getFlags().get("heelHeight"));
-		actor.getFlags().set("allureHeels", 10);
-
-		local skill = this.new("scripts/skills/effects/entrancing_beauty_effect");
+		this.heels.onEquip();
+		local skill = this.new("scripts/skills/actives/seduce_skill");
 		skill.setItem(this);
 		this.addSkill(skill);
-
-		skill = this.new("scripts/skills/effects/heel_walking_effect");
-		skill.setItem(this);
-		this.addSkill(skill);
-
-		skill = this.new("scripts/skills/actives/seduce_skill");
-		skill.setItem(this);
-		this.addSkill(skill);
-
-		::logInfo("Equipped heels with heel height: " + actor.getFlags().get("heelHeight"));
 	}
-
-	function onUnequip()
-	{
-		this.accessory.onUnequip();
-		local actor = this.getContainer().getActor();
-		actor.getFlags().set("heelHeight", 0);
-		actor.getFlags().set("allureHeels", 0);
-		::logInfo("Unequipped heels, reset heel height to: " + actor.getFlags().get("heelHeight"));
-	}
-
 });

@@ -133,6 +133,7 @@ mod.queue(">mod_legends", ">mod_msu", function()
 				return false;
 			}
 		}
+
 	});
 
 	// hook item container to care about items' cursed status

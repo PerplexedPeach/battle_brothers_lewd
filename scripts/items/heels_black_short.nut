@@ -1,8 +1,8 @@
-this.heels_black_short <- this.inherit("scripts/items/accessory/accessory", {
+this.heels_black_short <- this.inherit("scripts/items/heels", {
 	m = {},
 	function create()
 	{
-		this.accessory.create();
+		this.heels.create();
 		this.m.ID = "accessory.heels_black_short";
 		this.m.Name = "Short Black Heels";
 		this.m.Description = "Strappy shoes reminescent of gladiator sandals, but with a heel. The heel is not very high, but it still forces the wearer to walk in a more elegant, but also more vulnerable way. They are made of mysterious black leather and are adorned by gold buckles.";
@@ -16,7 +16,7 @@ this.heels_black_short <- this.inherit("scripts/items/accessory/accessory", {
 		this.m.Value = 1000;
 		this.m.IsPrecious = true;
 
-		this.getFlags().set("heelHeight", 1);
+		this.defineHeels(1, 5);
 	}
 
 	function getTooltip()
@@ -97,31 +97,5 @@ this.heels_black_short <- this.inherit("scripts/items/accessory/accessory", {
 		local morale = actor.getSprite("morale");
 		morale.Visible = false;
 	}
-
-	function onEquip()
-	{
-		this.accessory.onEquip();
-		local actor = this.getContainer().getActor();
-		actor.getFlags().set("heelHeight", this.getFlags().get("heelHeight"));
-		actor.getFlags().set("allureHeels", 5);
-
-		local skill = this.new("scripts/skills/effects/entrancing_beauty_effect");
-		skill.setItem(this);
-		this.addSkill(skill);
-
-		skill = this.new("scripts/skills/effects/heel_walking_effect");
-		skill.setItem(this);
-		this.addSkill(skill);
-
-		::logInfo("Equipped heels with heel height: " + actor.getFlags().get("heelHeight"));
-	}
-
-	function onUnequip()
-	{
-		this.accessory.onUnequip();
-		local actor = this.getContainer().getActor();
-		actor.getFlags().set("heelHeight", 0);
-		actor.getFlags().set("allureHeels", 0);
-		::logInfo("Unequipped heels, reset heel height to: " + actor.getFlags().get("heelHeight"));
-	}
+	
 });
