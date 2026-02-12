@@ -35,6 +35,9 @@
 		w.getSprite("body").setBrush("bust_body_lewd_01");
 		// clear scars and tattoos
 		w.getSprite("tattoo_body").setBrush("");
+		w.getSprite("scar_body").setBrush("");
+		w.getSprite("tattoo_head").setBrush("");
+		w.getSprite("scar_head").setBrush("");
 		// clear bust so accessories are visible
 		w.getSprite("miniboss").setBrush("");
 	}
@@ -47,7 +50,9 @@
 		w.getSprite("body").setBrush("bust_body_lewd_02");
 		// clear scars and tattoos
 		w.getSprite("tattoo_body").setBrush("");
-		// clear bust so accessories are visible
+		w.getSprite("scar_body").setBrush("");
+		w.getSprite("tattoo_head").setBrush("");
+		w.getSprite("scar_head").setBrush("");
 		w.getSprite("miniboss").setBrush("");
 	}
 };
