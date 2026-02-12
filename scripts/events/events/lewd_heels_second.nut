@@ -107,7 +107,7 @@ this.lewd_heels_second <- this.inherit("scripts/events/event", {
 		});
 		this.m.Screens.push({
 			ID = "E",
-			Text = "The unguent drinks greedily. Where each thick rope of cum lands, the white lotion flares hotter, almost burning, then sinks deep like molten wax into parched earth. A bright shimmer races beneath your skin, visible for a heartbeat like lightning under flesh.\n\nYou gasp as the change begins: muscles that once corded like steel soften just a fraction, yielding where they used to resist. Scars on your arms and ribs blur at the edges, roughness giving way to unnatural smoothness. Your body is already betraying you, reshaping itself under their seed and the Empire’s decadent alchemy. Qingde rises slowly, robes whispering. %SPEECH_ON%The first mingling is complete.%SPEECH_OFF% His voice remains calm, but now you hear the faint undercurrent of triumph, the pleasure of a man watching a wild thing be broken to harness. %SPEECH_ON%Apply the remainder nightly. Seek seed wherever it pleases you, your rough company brothers, passing mercenaries, whoever stirs that new heat between your legs. These shall replace the ones you have been wearing.%SPEECH_OFF% He gestures to a new pair of heels beside the gold: taller, sinister black leather interwoven with gold clasps glinting like manacles, the lift steep enough to force an arch that will make every step a reminder of submission. Two servants rush forward before you can protest. They kneel, unbuckle the familiar short heels with practiced speed, and slide the new ones onto your feet.\n\nThe leather grips tighter than before, straps biting into newly softened skin; the height pitches you forward, forcing your ass out and your back into a pronounced curve. You wobble for a heartbeat, then find balance, precarious, humiliating, intoxicating. The servants cinch the gold clasps shut with audible clicks, sealing them like tiny locks."
+			Text = "[img]gfx/ui/events/heels_2_3.png[/img]The unguent drinks greedily. Where each thick rope of cum lands, the white lotion flares hotter, almost burning, then sinks deep like molten wax into parched earth. A bright shimmer races beneath your skin, visible for a heartbeat like lightning under flesh.\n\nYou gasp as the change begins: muscles that once corded like steel soften just a fraction, yielding where they used to resist. Scars on your arms and ribs blur at the edges, roughness giving way to unnatural smoothness. Your body is already betraying you, reshaping itself under their seed and the Empire’s decadent alchemy. Qingde rises slowly, robes whispering. %SPEECH_ON%The first mingling is complete.%SPEECH_OFF% His voice remains calm, but now you hear the faint undercurrent of triumph, the pleasure of a man watching a wild thing be broken to harness. %SPEECH_ON%Apply the remainder nightly. Seek seed wherever it pleases you, your rough company brothers, passing mercenaries, whoever stirs that new heat between your legs. These shall replace the ones you have been wearing.%SPEECH_OFF% He gestures to a new pair of heels beside the gold: taller, sinister black leather interwoven with gold clasps glinting like manacles, the lift steep enough to force an arch that will make every step a reminder of submission. Two servants rush forward before you can protest. They kneel, unbuckle the familiar short heels with practiced speed, and slide the new ones onto your feet.\n\nThe leather grips tighter than before, straps biting into newly softened skin; the height pitches you forward, forcing your ass out and your back into a pronounced curve. You wobble for a heartbeat, then find balance, precarious, humiliating, intoxicating. The servants cinch the gold clasps shut with audible clicks, sealing them like tiny locks."
 			Image = "",
 			List = [],
 			Characters = [],
@@ -194,7 +194,7 @@ this.lewd_heels_second <- this.inherit("scripts/events/event", {
 			Characters = [],
 			Options = [
 				{
-					Text = "Examine yourself.",
+					Text = "Return to camp.",
 					function getResult( _event )
 					{
 						return 0;
@@ -220,9 +220,17 @@ this.lewd_heels_second <- this.inherit("scripts/events/event", {
 					{
 						// women in the company are offended by your debasement
 						local entry = ::Legends.EventList.changeMood(bro, -0.5, "Disliked your new look");
+						if (bro.getMoodState() < this.Const.MoodState.Neutral)
+						{
+							this.List.push(entry);
+						}
 					} else
 					{
 						local entry = ::Legends.EventList.changeMood(bro, 1.5, "Pleased with your new look");
+						if (bro.getMoodState() >= this.Const.MoodState.Neutral)
+						{
+							this.List.push(entry);
+						}
 					}
 				}
 			}
@@ -234,7 +242,7 @@ this.lewd_heels_second <- this.inherit("scripts/events/event", {
 		this.m.Woman = ::Lewd.Transform.target();
 
 		// check if they have the sufficient heel skill and don't have this trait yet
-		if (this.m.Woman == null || this.m.Woman.getFlags().getAsInt("heelSkill") < 1 || this.m.Woman.getSkills().hasSkill("trait.dainty"))
+		if (this.m.Woman == null || this.m.Woman.getFlags().getAsInt("heelSkill") < 1 || this.m.Woman.getSkills().hasSkill("trait.dainty") || this.m.Woman.getSkills().hasSkill("trait.delicate"))
 		{
 			this.m.Score = 0;
 		} else {

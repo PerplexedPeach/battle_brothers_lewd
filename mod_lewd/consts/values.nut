@@ -25,3 +25,6 @@
 ::Lewd.Const.HeelSkillUpStudentBonus <- 10;
 
 ::Lewd.Const.HeelSecondEventBaseScore <- 100;
+
+
+::Lewd.Const.HeelThirdEventBaseScore <- 150;
