@@ -3,8 +3,8 @@ this.lewd_wolf_scenario <- this.inherit("scripts/scenarios/world/starting_scenar
 	function create()
 	{
 		this.m.ID = "scenario.lewd_wolf";
-		this.m.Name = "Lewd Wolf";
-		this.m.Description = "[p=c][img]gfx/ui/events/event_35.png[/img][/p][p]You\'ve been prized as a courtesan by nobles, taking part in festivities and nightly activities. Growing tired of being passed around, you yearn for adventure on your own. A woman of striking beauty and litheness, can you survive in such a dangerous world? \n\n[color=#bcad8c]Lewd Wolf:[/color] Start with a single seductive dancer with low funds and few weapons.\n[color=#bcad8c]Avatar:[/color] If your courtesan dies, the campaign ends.[/p]";
+		this.m.Name = "Courtesan (WIP)";
+		this.m.Description = "[p=c][img]gfx/ui/events/courtesan.png[/img][/p][p]You\'ve been prized as a courtesan by nobles, taking part in festivities and nightly activities. Growing tired of being passed around, you yearn for adventure on your own. A woman of striking beauty and litheness, can you survive in such a dangerous world? \n\n[color=#bcad8c]Lewd Wolf:[/color] Start with a single seductive dancer with low funds and few weapons.\n[color=#bcad8c]Avatar:[/color] If your courtesan dies, the campaign ends.[/p]";
 		this.m.Difficulty = 3;
 		this.m.Order = 110;
 		this.m.IsFixedLook = true;
@@ -32,14 +32,15 @@ this.lewd_wolf_scenario <- this.inherit("scripts/scenarios/world/starting_scenar
 		local bros = roster.getAll(); //starting party
 		// TODO add custom background for this character
 		bros[0].setStartValuesEx([
-			"legend_entrancer_background",
-		]);
+			"assassin_background",
+		], true, 1);
 		bros[0].getBackground().m.RawDescription = "An experienced courtesan, knows how to entice anyone with her beauty and charm. She\'s been passed around by nobles for years, but she\'s grown tired of it. She yearns for adventure and excitement on her own terms. She\'s not afraid to use her allure to get what she wants, but she also knows how to defend herself if things go south.";
 		bros[0].getBackground().buildDescription(true);
-		bros[0].setTitle("the Jewel of the Night");
+		bros[0].setTitle("Jewel of the Night");
 		// TODO consider what perks and traits to add later as well as custom ones
 		// ::Legends.Perks.grant(bros[0], ::Legends.Perk.LegendFavouredEnemySwordmaster);
 		::Legends.Traits.grant(bros[0], ::Legends.Trait.Player);
+		::Legends.Traits.grant(bros[0], ::Legends.Trait.LegendSeductive);
 		::Legends.Traits.grant(bros[0], ::Legends.Trait.LegendLWRelationship);
 		bros[0].setPlaceInFormation(4);
 		bros[0].getFlags().set("IsPlayerCharacter", true);
@@ -64,16 +65,10 @@ this.lewd_wolf_scenario <- this.inherit("scripts/scenarios/world/starting_scenar
 		this.World.Flags.set("HasLegendCampTraining", true);
 		this.World.Assets.getStash().add(this.new("scripts/items/supplies/smoked_ham_item"));
 
-		// TODO add custom item
-		local items = bro.getItems();
-		items.equip(this.new("scripts/items/glowing_amulet_of_valor"));
-
 		this.World.Assets.m.Money = this.World.Assets.m.Money / 3 - (this.World.Assets.getEconomicDifficulty() == 0 ? 0 : 100);
 		this.World.Assets.m.ArmorParts = this.World.Assets.m.ArmorParts / 2;
 		this.World.Assets.m.Medicine = this.World.Assets.m.Medicine / 3;
 		this.World.Assets.m.Ammo = 0;
-
-		::logInfo("Testing out custom scenario for spawning assets")
 	}
 
 	function onSpawnPlayer()
@@ -125,15 +120,15 @@ this.lewd_wolf_scenario <- this.inherit("scripts/scenarios/world/starting_scenar
 		this.World.State.m.Player = this.World.spawnEntity("scripts/entity/world/player_party", randomVillageTile.Coords.X, randomVillageTile.Coords.Y);
 		this.World.Assets.updateLook(6);
 		this.World.getCamera().setPos(this.World.State.m.Player.getPos());
-		this.Time.scheduleEvent(this.TimeUnit.Real, 1000, function ( _tag )
-		{
-			this.Music.setTrackList([
-				"music/noble_02.ogg"
-			], this.Const.Music.CrossFadeTime);
-			// TODO add custom event for this scenario
-			this.World.Events.fire("event.lone_wolf_scenario_intro");
-		}, null);
-		
+		// this.Time.scheduleEvent(this.TimeUnit.Real, 1000, function ( _tag )
+		// {
+		// 	this.Music.setTrackList([
+		// 		"music/noble_02.ogg"
+		// 	], this.Const.Music.CrossFadeTime);
+		// 	// TODO add custom event for this scenario
+		// 	this.World.Events.fire("event.lone_wolf_scenario_intro");
+		// }, null);
+
 	}
 
 	function onInit()
