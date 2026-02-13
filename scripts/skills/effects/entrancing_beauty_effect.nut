@@ -85,6 +85,83 @@ this.entrancing_beauty_effect <- this.inherit("scripts/skills/skill", {
 				text = "Allure penalty from offhand: [color=" + this.Const.UI.Color.NegativeValue + "]" + offhandPenalty + "[/color] (every point of fatigue reduces allure by " + ::Lewd.Const.AllurePenaltyOffhandFatigue + ")"
 			});
 		}
+		// show additional sources of allure
+
+		local skills = actor.getSkills();
+		if (skills.hasSkill("trait.legend_seductive"))
+		{
+			result.push({
+				id = 21,
+				type = "text",
+				icon = "ui/traits/trait_seductive.png",
+				text = "Seductive allure bonus: [color=" + this.Const.UI.Color.PositiveValue + "]10[/color]"
+			});
+		}
+		if (skills.hasSkill("trait.athletic"))
+		{
+			result.push({
+				id = 22,
+				type = "text",
+				icon = "ui/traits/trait_icon_21.png",
+				text = "Athletic allure bonus: [color=" + this.Const.UI.Color.PositiveValue + "]5[/color]"
+			});
+		}
+		if (skills.hasSkill("trait.dainty"))
+		{
+			result.push({
+				id = 23,
+				type = "text",
+				icon = "ui/traits/dainty_trait.png",
+				text = "Dainty allure bonus: [color=" + this.Const.UI.Color.PositiveValue + "]5[/color]"
+			});
+		}
+		if (skills.hasSkill("trait.delicate"))
+		{
+			result.push({
+				id = 24,
+				type = "text",
+				icon = "ui/traits/delicate_trait.png",
+				text = "Delicate allure bonus: [color=" + this.Const.UI.Color.PositiveValue + "]10[/color]"
+			});
+		}
+		if (skills.hasSkill("trait.gluttonous"))
+		{
+			result.push({
+				id = 25,
+				type = "text",
+				icon = "ui/traits/trait_icon_07.png",
+				text = "Gluttonous allure penalty: [color=" + this.Const.UI.Color.NegativeValue + "]-5[/color]"
+			});
+		}
+		if (skills.hasSkill("trait.fat"))
+		{
+			result.push({
+				id = 26,
+				type = "text",
+				icon = "ui/traits/trait_icon_10.png",
+				text = "Fat allure penalty: [color=" + this.Const.UI.Color.NegativeValue + "]-20[/color]"
+			});
+		}
+		if (skills.hasSkill("trait.ailing"))
+		{
+			result.push({
+				id = 27,
+				type = "text",
+				icon = "ui/traits/trait_icon_59.png",
+				text = "Ailing allure penalty: [color=" + this.Const.UI.Color.NegativeValue + "]-10[/color]"
+			});
+		}
+		if (skills.hasSkill("trait.old"))
+		{
+			result.push({
+				id = 28,
+				type = "text",
+				icon = "skills/status_effect_60.png",
+				text = "Old allure penalty: [color=" + this.Const.UI.Color.NegativeValue + "]-20[/color]"
+			});
+		}
+
+
 		return result;
 	}
 
@@ -112,7 +189,7 @@ this.entrancing_beauty_effect <- this.inherit("scripts/skills/skill", {
 			if (entity.getTile().getDistanceTo(tile) <= 1)
 			{
 				local resolve = entity.getBravery();
-				local chance = (::Lewd.Const.AllureToDazeBaseChance + (allure - resolve) * ::Lewd.Const.AllureToDazeChanceMultiplier); 
+				local chance = (::Lewd.Const.AllureToDazeBaseChance + (allure - resolve) * ::Lewd.Const.AllureToDazeChanceMultiplier);
 
 				// ::logInfo("Target " + entity.getName() + " bravery: " + resolve);
 				// ::logInfo("Chance to daze " + entity.getName() + ": " + chance + "%");
