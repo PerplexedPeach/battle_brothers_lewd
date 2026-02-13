@@ -50,13 +50,25 @@ this.delicate_trait <- this.inherit("scripts/skills/traits/character_trait", {
 				icon = "ui/icons/allure.png",
 				text = "[color=" + this.Const.UI.Color.PositiveValue + "]+10[/color] Allure"
 			},
+			{
+				id = 14,
+				type = "text",
+				icon = "ui/icons/special.png",
+				text = "Others will avoid aiming for the head when attacking this character"
+			},
 		];
+	}
+
+	function onBeforeDamageReceived( _attacker, _skill, _hitInfo, _properties )
+	{
+		_hitInfo.BodyPart = this.Const.BodyPart.Body;
 	}
 
 	function onUpdate( _properties )
 	{
 		_properties.Hitpoints += -10;
 		_properties.MeleeDamageMult *= 0.9;
+		_properties.IsImmuneToHeadshots = true;
 	}
 });
 
