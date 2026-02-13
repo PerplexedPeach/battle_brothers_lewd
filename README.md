@@ -7,12 +7,67 @@
 - update UI show heel fatigue cost for traversing terrain
 - make enemies horny (similar to the daze/stun effect, larger range)
 	- set AI agent on horny
-- add heels sounds when moving while wearing them
 - body modification corruption series (separate boobs and ass traits)
 - sexy armor
 - piercings and tattoos
 - custom starting scenarios
 - animation fading in/out backside showing ass when molested/targeted by specific abilities
+
+# Useful to User Code Snippets
+Get `mod_dev_console` [https://www.nexusmods.com/battlebrothers/mods/380](mod), drop it in `Battle Brothers\data` and you can press `Ctrl + G` to bring up the console in game.
+
+Trigger first event
+```js
+local eventName = "event.lewd_heels_first";
+this.World.Events.fire(eventName);
+```
+
+Trigger heel skillup event
+```js
+local eventName = "event.lewd_heels_skillup";
+this.World.Events.fire(eventName);
+```
+
+Trigger second heel event (need heel skill >= 1)
+```js
+local eventName = "event.lewd_heels_second";
+this.World.Events.fire(eventName);
+```
+
+Trigger third heel event (need heel skill >= 3)
+```js
+local eventName = "event.lewd_heels_third";
+this.World.Events.fire(eventName);
+```
+
+Remove cursed heels
+```js
+// remove heels (should work for cursed as well)
+local w = ::Lewd.Transform.target();
+local items = w.getItems();
+local previousHeels = items.getItemAtSlot(this.Const.ItemSlot.Accessory);
+if (previousHeels)
+{
+	previousHeels.getFlags().remove("cursed");
+	previousHeels.removeSelf();
+}
+```
+
+Remove delicate trait (use "trait.dainty" for dainty)
+```js
+local w = ::Lewd.Transform.target();
+local skills = w.getSkills();
+skills.removeByID("trait.delicate");
+```
+
+Check and print event score (0 means it won't ever fire, hire number = more weight to fire compared to other events)
+```js
+local eventName = "event.lewd_heels_skillup";
+local e = ::World.Events.getEvent(eventName);
+e.onUpdateScore()
+::logInfo(e.getID() + " score = " + e.m.Score)
+```
+
 
 # Snipets
 Swap world party graphic (or is this actually player in battle)

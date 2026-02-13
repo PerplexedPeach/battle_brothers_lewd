@@ -38,16 +38,6 @@ this.heels <- this.inherit("scripts/items/accessory/accessory", {
 	}
 
 
-	function onMovementFinish( _tile )
-	{
-		// TODO play heels sound
-		::logInfo("Heel on movement finish, tile subtype: " + _tile.Subtype);
-		// if (this.Const.Tactical.TerrainMovementSound[_tile.Subtype].len() != 0)
-		// {
-		// 	local sound = this.Const.Tactical.TerrainMovementSound[_tile.Subtype][this.Math.rand(0, this.Const.Tactical.TerrainMovementSound[_tile.Subtype].len() - 1)];
-		// 	this.Sound.play("sounds/" + sound.File, sound.Volume * this.Const.Sound.Volume.TacticalMovement * this.Math.rand(90, 100) * 0.01, this.getPos(), sound.Pitch * this.Math.rand(95, 105) * 0.01);
-		// }
-	}
 
 	function onRemoveWhileCursed()
 	{
