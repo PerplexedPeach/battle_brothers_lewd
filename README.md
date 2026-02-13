@@ -4,7 +4,7 @@
 	- based on seduce ability used in battle
 	- create graph with sub/dom sex events with bros
 		- body modification and piercings could actually be tied into being too submissive to one of your bros
-- update UI show heel fatigue cost for traversing terrain
+- monster taming - if you use the seduce ability on them then at the end of the battle you'll get an event popup related to that for taming them
 - increase barter skill based on allure (doesn't seem to work for some reason)
 - make enemies horny (similar to the daze/stun effect, larger range)
 	- set AI agent on horny

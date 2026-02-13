@@ -1,6 +1,6 @@
 ::Lewd <- {
 	ID = "mod_lewd",
-	Version = "1.0.0",
+	Version = "1.0.1",
 	Name = "Lewdness",
 	IsStartingNewCampaign = false
 };
@@ -78,60 +78,6 @@ mod.queue(">mod_legends", ">mod_msu", function()
 				allure -= 20;
 			}
 			return allure;
-		}
-
-		// any extra heelHeight > heelSkill results in a fatigue penalty when moving
-		q.onMovementStep = @() function ( _tile, _levelDifference )
-		{
-			// NOTE when we have to replace rather than wrap the original since the extra fatigue cost from the heels could make it so we can't actually move a tile
-			// there is a lot of code duplication as a result
-			if (this.m.CurrentProperties.IsRooted || this.m.CurrentProperties.IsStunned)
-			{
-				return false;
-			}
-
-			local apCost = this.Math.max(1, (this.m.ActionPointCosts[_tile.Type] + this.m.CurrentProperties.MovementAPCostAdditional) * this.m.CurrentProperties.MovementAPCostMult);
-			local fatigueCost = this.Math.round((this.m.FatigueCosts[_tile.Type] + this.m.CurrentProperties.MovementFatigueCostAdditional) * this.m.CurrentProperties.MovementFatigueCostMult);
-
-			local heelHeight = this.getFlags().getAsInt("heelHeight");
-			local heelSkill = this.getFlags().getAsInt("heelSkill");
-			if (heelHeight > heelSkill)
-			{
-				local extraHeelFatigue = (heelHeight - heelSkill) * ::Lewd.Const.HeelFatigueMultiplier; // TODO balance this
-				fatigueCost = fatigueCost + extraHeelFatigue;
-				::logInfo("Applying extra fatigue cost from heels: " + extraHeelFatigue + " (heel height: " + heelHeight + ", heel skill: " + heelSkill + ")");
-			}
-
-			if (_levelDifference != 0)
-			{
-				apCost = apCost + this.m.LevelActionPointCost;
-				fatigueCost = fatigueCost + this.m.LevelFatigueCost;
-
-				if (_levelDifference > 0)
-				{
-					fatigueCost = fatigueCost + this.Const.Movement.LevelClimbingFatigueCost;
-				}
-			}
-
-			fatigueCost = fatigueCost * this.m.CurrentProperties.FatigueEffectMult;
-
-			if (this.m.ActionPoints >= apCost && this.m.Fatigue + fatigueCost <= this.getFatigueMax())
-			{
-				this.m.ActionPoints = this.Math.round(this.m.ActionPoints - apCost);
-				this.m.Fatigue = this.Math.min(this.getFatigueMax(), this.Math.round(this.m.Fatigue + fatigueCost));
-				this.updateVisibility(_tile, this.m.CurrentProperties.getVision(), this.getFaction());
-
-				if (this.getFaction() == this.Const.Faction.PlayerAnimals)
-				{
-					this.updateVisibility(_tile, this.m.CurrentProperties.getVision(), this.Const.Faction.Player);
-				}
-
-				return true;
-			}
-			else
-			{
-				return false;
-			}
 		}
 
 	});
