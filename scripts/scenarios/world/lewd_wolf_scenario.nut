@@ -32,7 +32,7 @@ this.lewd_wolf_scenario <- this.inherit("scripts/scenarios/world/starting_scenar
 		local bros = roster.getAll(); //starting party
 		// TODO add custom background for this character
 		bros[0].setStartValuesEx([
-			"assassin_background",
+			"legend_assassin_commander_background",
 		], true, 1);
 		bros[0].getBackground().m.RawDescription = "An experienced courtesan, knows how to entice anyone with her beauty and charm. She\'s been passed around by nobles for years, but she\'s grown tired of it. She yearns for adventure and excitement on her own terms. She\'s not afraid to use her allure to get what she wants, but she also knows how to defend herself if things go south.";
 		bros[0].getBackground().buildDescription(true);

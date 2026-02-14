@@ -18,5 +18,7 @@
     <!-- piercings -->
     <sprite id="piercing_nose" offsetY="35" ic="FF6095CB" width="10" height="10" img="details\piercing_nose.png" left="-46" right="56" top="-54" bottom="26"/>
     <sprite id="piercing_nose_mouth" offsetY="35" ic="FF6095CB" width="10" height="10" img="details\piercing_nose_mouth.png" left="-46" right="56" top="-54" bottom="26"/>
+
     <sprite id="piercing_nipple_bar" offsetY="35" ic="FF6095CB" width="10" height="10" img="details\piercing_nipple_bar.png" left="-44" right="58" top="-57" bottom="23"/>
+    <sprite id="plug_nipple" offsetY="35" ic="FF6095CB" width="10" height="10" img="details\plug_nipple.png" left="-44" right="58" top="-57" bottom="23"/>
 </brush>

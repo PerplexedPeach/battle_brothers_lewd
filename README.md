@@ -136,6 +136,21 @@ Skill on equipment
 	}
 ```
 
+Adding skills
+```js
+				local w = ::Lewd.Transform.target();
+				local skills = w.getSkills();
+				{
+					local skill = this.new("scripts/skills/traits/dainty_trait");
+					skills.add(skill);
+					this.List.push({
+						id = 11,
+						icon = skill.getIcon(),
+						text = w.getName() + " is now " + skill.getName()
+					});
+				}
+```
+
 On movement athletic (athletic_trait)
 ```js
 	o.m.HasMoved <- false;

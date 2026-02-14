@@ -53,13 +53,25 @@ mod.queue(">mod_legends", ">mod_msu", function()
 			{
 				allure += 5;
 			}
-			if (skills.hasSkill("trait.dainty"))
-			{
-				allure += 5;
-			}
 			if (skills.hasSkill("trait.delicate"))
 			{
 				allure += 10;
+			}
+			else if (skills.hasSkill("trait.dainty"))
+			{
+				allure += 5;
+			}
+			if (skills.hasSkill("effects.masochism_third"))
+			{
+				allure += 15;
+			}
+			else if (skills.hasSkill("effects.masochism_second"))
+			{
+				allure += 10;
+			}
+			else if (skills.hasSkill("trait.masochism_first"))
+			{
+				allure += 5;
 			}
 			if (skills.hasSkill("trait.gluttonous"))
 			{

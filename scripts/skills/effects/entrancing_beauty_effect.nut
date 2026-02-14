@@ -124,10 +124,37 @@ this.entrancing_beauty_effect <- this.inherit("scripts/skills/skill", {
 				text = "Delicate allure bonus: [color=" + this.Const.UI.Color.PositiveValue + "]10[/color]"
 			});
 		}
-		if (skills.hasSkill("trait.gluttonous"))
+		if (skills.hasSkill("trait.masochism_first"))
 		{
 			result.push({
 				id = 25,
+				type = "text",
+				icon = "ui/traits/masochism_first_trait.png",
+				text = "Likes pain allure bonus: [color=" + this.Const.UI.Color.PositiveValue + "]5[/color]"
+			});
+		}
+		if (skills.hasSkill("effects.masochism_second"))
+		{
+			result.push({
+				id = 26,
+				type = "text",
+				icon = "ui/traits/masochism_second_trait.png",
+				text = "Masochism allure bonus: [color=" + this.Const.UI.Color.PositiveValue + "]10[/color]"
+			});
+		}
+		if (skills.hasSkill("effects.masochism_third"))
+		{
+			result.push({
+				id = 27,
+				type = "text",
+				icon = "ui/traits/masochism_third_trait.png",
+				text = "Pain slut allure bonus: [color=" + this.Const.UI.Color.PositiveValue + "]15[/color]"
+			});
+		}
+		if (skills.hasSkill("trait.gluttonous"))
+		{
+			result.push({
+				id = 28,
 				type = "text",
 				icon = "ui/traits/trait_icon_07.png",
 				text = "Gluttonous allure penalty: [color=" + this.Const.UI.Color.NegativeValue + "]-5[/color]"
@@ -136,7 +163,7 @@ this.entrancing_beauty_effect <- this.inherit("scripts/skills/skill", {
 		if (skills.hasSkill("trait.fat"))
 		{
 			result.push({
-				id = 26,
+				id = 29,
 				type = "text",
 				icon = "ui/traits/trait_icon_10.png",
 				text = "Fat allure penalty: [color=" + this.Const.UI.Color.NegativeValue + "]-20[/color]"
@@ -145,7 +172,7 @@ this.entrancing_beauty_effect <- this.inherit("scripts/skills/skill", {
 		if (skills.hasSkill("trait.ailing"))
 		{
 			result.push({
-				id = 27,
+				id = 30,
 				type = "text",
 				icon = "ui/traits/trait_icon_59.png",
 				text = "Ailing allure penalty: [color=" + this.Const.UI.Color.NegativeValue + "]-10[/color]"
@@ -154,7 +181,7 @@ this.entrancing_beauty_effect <- this.inherit("scripts/skills/skill", {
 		if (skills.hasSkill("trait.old"))
 		{
 			result.push({
-				id = 28,
+				id = 31,
 				type = "text",
 				icon = "skills/status_effect_60.png",
 				text = "Old allure penalty: [color=" + this.Const.UI.Color.NegativeValue + "]-20[/color]"
