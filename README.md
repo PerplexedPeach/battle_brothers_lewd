@@ -61,6 +61,14 @@ if (previousHeels)
 }
 ```
 
+Remove equipped item (not deleted)
+```js
+		if (oldWeapon != null)
+		{
+			_entity.getItems().unequip(oldWeapon);
+		}
+```
+
 Remove delicate trait (use "trait.dainty" for dainty)
 ```js
 local w = ::Lewd.Transform.target();
