@@ -11,6 +11,13 @@
 - body modification corruption series (separate boobs and ass traits)
 - sexy armor
 - piercings and tattoos
+	- develop masochism trait
+		- trait levels (likes pain -> masochist -> pain slut)
+		- immunity to stun (compensate for accessory slot being taken by heels so you can't get anti-root/anti-stun necklace)
+		- lowers melee defense and ranged defense (want to get shot)
+		- decreases damage taken (scale with masochism trait level)
+		- but lengthens debuff durations on self (like poison, bleeding)
+		- no morale loss on taking damage
 - custom starting scenarios
 - animation fading in/out backside showing ass when molested/targeted by specific abilities
 
@@ -178,4 +185,9 @@ Movement sound (actor.onMovementFinish) but can add this to the accessories them
 				local sound = this.Const.Tactical.TerrainMovementSound[_tile.Subtype][this.Math.rand(0, this.Const.Tactical.TerrainMovementSound[_tile.Subtype].len() - 1)];
 				this.Sound.play("sounds/" + sound.File, sound.Volume * this.Const.Sound.Volume.TacticalMovement * this.Math.rand(90, 100) * 0.01, this.getPos(), sound.Pitch * this.Math.rand(95, 105) * 0.01);
 			}
+```
+
+Setting related to tracking who was responsible for setting a status effect that led to death
+```js
+addNCSetting(config, ::MSU.Class.BooleanSetting("BleedKiller", true, "Effects Count As Kills", "If enabled, kills by bleeding out, poisoned to death or consecrated are granted to the actor who caused the relevant effect."));
 ```

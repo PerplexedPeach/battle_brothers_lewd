@@ -14,4 +14,9 @@
     <sprite id="black_heels_short" offsetY="35" ic="FF6095CB" width="10" height="10" img="accessory\black_heels_short.png" left="-53" right="17" top="-78" bottom="-8"/>
     <sprite id="black_heels" offsetY="35" ic="FF6095CB" width="10" height="10" img="accessory\black_heels.png" left="-53" right="17" top="-78" bottom="-8"/>
     <sprite id="ballet_heels" offsetY="35" ic="FF6095CB" width="10" height="10" img="accessory\ballet_heels.png" left="-58" right="12" top="-71" bottom="0"/>
+
+    <!-- piercings -->
+    <sprite id="piercing_nose" offsetY="35" ic="FF6095CB" width="10" height="10" img="details\piercing_nose.png" left="-46" right="56" top="-54" bottom="26"/>
+    <sprite id="piercing_nose_mouth" offsetY="35" ic="FF6095CB" width="10" height="10" img="details\piercing_nose_mouth.png" left="-46" right="56" top="-54" bottom="26"/>
+    <sprite id="piercing_nipple_bar" offsetY="35" ic="FF6095CB" width="10" height="10" img="details\piercing_nipple_bar.png" left="-44" right="58" top="-57" bottom="23"/>
 </brush>
