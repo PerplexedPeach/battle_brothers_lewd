@@ -1,4 +1,5 @@
 # TODOS
+- masochism events
 - create random events
 	- based on allure
 	- based on seduce ability used in battle
@@ -10,14 +11,8 @@
 	- set AI agent on horny
 - body modification corruption series (separate boobs and ass traits)
 - sexy armor
-- piercings and tattoos
-	- develop masochism trait
-		- trait levels (likes pain -> masochist -> pain slut)
-		- immunity to stun (compensate for accessory slot being taken by heels so you can't get anti-root/anti-stun necklace)
-		- lowers melee defense and ranged defense (want to get shot)
-		- decreases damage taken (scale with masochism trait level)
-		- but lengthens debuff durations on self (like poison, bleeding)
-		- no morale loss on taking damage
+- sub/dom relation with bros
+- sadism
 - custom starting scenarios
 - animation fading in/out backside showing ass when molested/targeted by specific abilities
 
@@ -213,4 +208,31 @@ Movement sound (actor.onMovementFinish) but can add this to the accessories them
 Setting related to tracking who was responsible for setting a status effect that led to death
 ```js
 addNCSetting(config, ::MSU.Class.BooleanSetting("BleedKiller", true, "Effects Count As Kills", "If enabled, kills by bleeding out, poisoned to death or consecrated are granted to the actor who caused the relevant effect."));
+```
+
+Modern way of using settings to change constants via callback
+```js
+::ModFindLegendaryMaps <- {
+    ID = "mod_find_legendary_maps",
+    Name = "Find Legendary Location Maps",
+    Version = "0.5.2",
+    OnlySpawned = true,
+    BlackMarket = false,
+    // other mods compat
+    hasLegends = false,
+    hasSSU = false,
+    hasStronghold = false,
+}
+
+...
+// in queue
+    local page = ::ModFindLegendaryMaps.Mod.ModSettings.addPage("General");
+    local settingOnlySpawned = page.addBooleanSetting(
+        "EnableSpawning",
+        false,
+        "[EXPERIMENTAL] Attempt to spawn",
+        "Blah blah blah."
+    );
+
+    settingOnlySpawned.addCallback(function(_value) { ::ModFindLegendaryMaps.OnlySpawned = _value; });
 ```
