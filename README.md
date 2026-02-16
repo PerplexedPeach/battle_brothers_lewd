@@ -1,5 +1,4 @@
 # TODOS
-- masochism events
 - create random events
 	- based on allure
 	- based on seduce ability used in battle

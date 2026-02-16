@@ -3,7 +3,6 @@ this.lewd_masochism_first <- this.inherit("scripts/events/event", {
 		Woman = null,
 		Male = null,
 		Hazeem = null,
-		Slaver = null,
 	},
 	function create()
 	{
@@ -23,8 +22,8 @@ this.lewd_masochism_first <- this.inherit("scripts/events/event", {
 					Text = "Rush to the man's aid.",
 					function getResult( _event )
 					{
-						// TODO after testing followup events remove this and go through the combat
-						return "Victory";
+						// after testing followup events remove this and go through the combat
+						// return "Victory";
 
 						local properties = this.World.State.getLocalCombatProperties(this.World.State.getPlayer().getPos());
 						properties.CombatID = "Event";
@@ -237,6 +236,8 @@ this.lewd_masochism_first <- this.inherit("scripts/events/event", {
 	{
 		this.m.Woman = null;
 		this.m.Male = null;
+		this.m.Hazeem = null;
+		this.World.getGuestRoster().clear();
 	}
 
 });

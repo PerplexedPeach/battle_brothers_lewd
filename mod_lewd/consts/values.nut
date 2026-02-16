@@ -30,4 +30,4 @@
 
 // masochism event
 ::Lewd.Const.MasochismDamageTakenMultScore <- 2;
-::Lewd.Const.MasochismSouthernDistanceRequirement <- 20; // how many tiles within a southern city you need to be within for event to trigger
+::Lewd.Const.MasochismSouthernDistanceRequirement <- 10; // how many tiles within a southern city you need to be within for event to trigger
