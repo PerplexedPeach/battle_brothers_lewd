@@ -49,6 +49,7 @@ this.lewd_masochism_first <- this.inherit("scripts/events/event", {
 			function start( _event )
 			{
 				this.Characters.push(_event.m.Woman.getImagePath());
+				this.Characters.push(_event.m.Hazeem.getImagePath());
 			}
 
 		});
@@ -71,6 +72,7 @@ this.lewd_masochism_first <- this.inherit("scripts/events/event", {
 			function start( _event )
 			{
 				this.Characters.push(_event.m.Woman.getImagePath());
+				this.Characters.push(_event.m.Hazeem.getImagePath());
 			}
 		});
 		this.m.Screens.push({
@@ -98,6 +100,7 @@ this.lewd_masochism_first <- this.inherit("scripts/events/event", {
 			function start( _event )
 			{
 				this.Characters.push(_event.m.Woman.getImagePath());
+				this.Characters.push(_event.m.Hazeem.getImagePath());
 			}
 		});
 		this.m.Screens.push({
@@ -125,6 +128,7 @@ this.lewd_masochism_first <- this.inherit("scripts/events/event", {
 			function start( _event )
 			{
 				this.Characters.push(_event.m.Woman.getImagePath());
+				this.Characters.push(_event.m.Hazeem.getImagePath());
 			}
 		});
 		this.m.Screens.push({
@@ -145,6 +149,7 @@ this.lewd_masochism_first <- this.inherit("scripts/events/event", {
 			function start( _event )
 			{
 				this.Characters.push(_event.m.Woman.getImagePath());
+				this.Characters.push(_event.m.Hazeem.getImagePath());
 			}
 		});
 		this.m.Screens.push({
@@ -180,6 +185,7 @@ this.lewd_masochism_first <- this.inherit("scripts/events/event", {
 				w.getFlags().set("totalDamageTaken", 0);
 
 				this.Characters.push(_event.m.Woman.getImagePath());
+				this.Characters.push(_event.m.Hazeem.getImagePath());
 			}
 		});
 	}
@@ -212,7 +218,7 @@ this.lewd_masochism_first <- this.inherit("scripts/events/event", {
 				break;
 			}
 		}
-
+		this.m.Hazeem = this.World.getGuestRoster().create("scripts/entity/tactical/humans/hazeem");
 	}
 
 	function onPrepareVariables( _vars )
