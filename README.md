@@ -13,6 +13,7 @@
 - sexy armor
 - sub/dom relation with bros
 - sadism
+- create sprites for the corruption event characters
 - custom starting scenarios
 - animation fading in/out backside showing ass when molested/targeted by specific abilities
 
@@ -236,3 +237,68 @@ Modern way of using settings to change constants via callback
 
     settingOnlySpawned.addCallback(function(_value) { ::ModFindLegendaryMaps.OnlySpawned = _value; });
 ```
+
+
+Event battle
+
+What is determined start? (kraken_cult_destroyed_event)
+```js
+	function onDetermineStartScreen()
+	{
+		return "A";
+	}
+```
+
+See legend_swordmaster_fav_enemy_event, wildman_causes_havoc_event for generated enemies
+```js
+						local properties = this.World.State.getLocalCombatProperties(this.World.State.getPlayer().getPos());
+						properties.Music = this.Const.Music.BarbarianTracks;
+						properties.Entities = [];
+						properties.Entities.push({
+							ID = this.Const.EntityType.BarbarianChampion,
+							Variant = 1,
+							Row = 0,
+							Name = name,
+							Script = "scripts/entity/tactical/humans/barbarian_champion",
+							Faction = this.Const.Faction.Enemy,
+							function Callback( _entity, _tag )
+							{
+								_entity.setName(name);
+							}
+
+						});
+
+						if (_event.m.Champion.isInReserves())
+						{
+							_event.m.WasInReserves.push(_event.m.Champion);
+							_event.m.Champion.setInReserves(false);
+
+						}
+
+						properties.Players.push(_event.m.Champion);
+						properties.IsUsingSetPlayers = true;
+						properties.IsFleeingProhibited = true;
+						properties.IsAttackingLocation = true;
+						properties.BeforeDeploymentCallback = function ()
+						{
+							local size = this.Tactical.getMapSize();
+
+							for( local x = 0; x < size.X; x = x )
+							{
+								for( local y = 0; y < size.Y; y = y )
+								{
+									local tile = this.Tactical.getTileSquare(x, y);
+									tile.Level = this.Math.min(1, tile.Level);
+									y = ++y;
+								}
+
+								x = ++x;
+							}
+						};
+						_event.registerToShowAfterCombat("Victory", "Defeat");
+						this.World.State.startScriptedCombat(properties, false, false, false);
+```
+
+See NPC protection quest legend_hunting_coven_leader_contract
+
+Use spawnlist to generate a list

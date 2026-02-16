@@ -64,6 +64,15 @@ this.delicate_trait <- this.inherit("scripts/skills/traits/character_trait", {
 		_hitInfo.BodyPart = this.Const.BodyPart.Body;
 	}
 
+	function onDamageReceived( _attacker, _damageHitpoints, _damageArmor )
+	{
+		local actor = this.getContainer().getActor();
+		local totalDamageTaken = actor.getFlags().getAsInt("totalDamageTaken") + _damageHitpoints;
+		::logInfo("Total damage taken by " + actor.getName() + ": " + totalDamageTaken);
+		actor.getFlags().set("totalDamageTaken", totalDamageTaken);
+	}
+
+
 	function onUpdate( _properties )
 	{
 		_properties.Hitpoints += -10;
