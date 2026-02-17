@@ -173,7 +173,7 @@ this.lewd_heels_second <- this.inherit("scripts/events/event", {
 
 				this.Characters.push(w.getImagePath());
 
-				::Lewd.Transform.sexy_stage_1(w);
+				// ::Lewd.Transform.sexy_stage_1(w);
 
 				// TODO animate transformation after some time
 

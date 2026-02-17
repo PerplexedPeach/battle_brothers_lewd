@@ -53,6 +53,13 @@ this.dainty_trait <- this.inherit("scripts/skills/traits/character_trait", {
 		];
 	}
 
+	function onAdded()
+	{
+		local actor = this.getContainer().getActor();
+		::Lewd.Transform.sexy_stage_1(actor);
+		::Lewd.Transform.adaptROTUAppearance(actor);
+	}
+
 	function onUpdate( _properties )
 	{
 		_properties.Hitpoints += -5;

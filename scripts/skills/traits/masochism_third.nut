@@ -97,22 +97,23 @@ this.masochism_third <- this.inherit("scripts/skills/traits/character_trait", {
 	function onAdded()
 	{
 		local actor = this.getContainer().getActor();
-		local tattoo_head = actor.getSprite("tattoo_head");
-		tattoo_head.Visible = true;
-		tattoo_head.setBrush("piercing_nose_mouth");
-		local tattoo_body = actor.getSprite("tattoo_body");
-		tattoo_body.Visible = true;
-		tattoo_body.setBrush("plug_nipple");
+		local piercing_head = actor.addSprite("piercing_head");
+		piercing_head.setBrush("piercing_nose_mouth");
+		piercing_head.Visible = true;
+
+		local piercing_body = actor.addSprite("piercing_body");
+		piercing_body.setBrush("plug_nipple");
+		piercing_body.Visible = true;
 		actor.setDirty(true);
 	}
 
 	function onRemoved()
 	{
 		local actor = this.getContainer().getActor();
-		local tattoo_head = actor.getSprite("tattoo_head");
-		tattoo_head.setBrush("");
-		local tattoo_body = actor.getSprite("tattoo_body");
-		tattoo_body.setBrush("");
+		local piercing_head = actor.getSprite("piercing_head");
+		piercing_head.setBrush("");
+		local piercing_body = actor.getSprite("piercing_body");
+		piercing_body.setBrush("");
 		actor.setDirty(true);
 	}
 

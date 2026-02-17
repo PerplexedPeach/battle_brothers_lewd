@@ -191,7 +191,7 @@ this.lewd_heels_third <- this.inherit("scripts/events/event", {
 					}
 				}
 
-				::Lewd.Transform.sexy_stage_2(w);
+				// ::Lewd.Transform.sexy_stage_2(w);
 
 				// push image of transformed character
 				this.Characters.push(w.getImagePath());

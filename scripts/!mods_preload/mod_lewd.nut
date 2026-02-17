@@ -1,6 +1,6 @@
 ::Lewd <- {
 	ID = "mod_lewd",
-	Version = "1.1.0",
+	Version = "1.1.1",
 	Name = "Lewdness",
 	IsStartingNewCampaign = false
 };
@@ -13,9 +13,11 @@ local mod = ::Hooks.register(::Lewd.ID, ::Lewd.Version, ::Lewd.Name);
 mod.require("mod_legends", "mod_msu");
 
 // ::mods_queue(modID, "mod_legends,mod_msu", function()
-mod.queue(">mod_legends", ">mod_msu", function()
+mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC" function()
 {
 	::Lewd.Mod <- ::MSU.Class.Mod(::Lewd.ID, ::Lewd.Version, ::Lewd.Name);
+	::HasROTU <- ::Hooks.hasMod("mod_ROTUC");
+
 	// TODO registery for updates
 
 	// includes in order

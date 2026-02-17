@@ -6,8 +6,18 @@
 		- body modification and piercings could actually be tied into being too submissive to one of your bros
 - monster taming - if you use the seduce ability on them then at the end of the battle you'll get an event popup related to that for taming them
 - increase barter skill based on allure (doesn't seem to work for some reason)
-- make enemies horny (similar to the daze/stun effect, larger range)
-	- set AI agent on horny
+- pleasure / orgasm sex framework
+	- pleasure property like fatigue (max pleasure scaling with some traits)
+	- masochism trait converts damage taken to pleasure
+	- in-combat sex abilities
+		- active abilities granted to player based on traits
+		- active abilities granted to enemies based on status effects (after you make them horny)
+		- deals pleasure and fatigue on both sides
+	- make enemies horny (similar to the daze/stun effect, larger range)
+		- set AI agent on horny
+		- different abilities depending on species (spider vs goblin for example, who can get pleasure bonuses from ganging up on you)
+	- orgasm status effect like stun
+		- counter for how many times you came in the battle, steadily debuffing / getting collared at 10? (not sure what that would mean yet)
 - body modification corruption series (separate boobs and ass traits)
 - sexy armor
 - sub/dom relation with bros

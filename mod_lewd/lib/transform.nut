@@ -28,16 +28,46 @@
 		return t;
 	}
 
+	function clearScarsAndTattoos ( _actor ) {
+		_actor.getSprite("tattoo_body").setBrush("");
+		_actor.getSprite("scar_body").setBrush("");
+		_actor.getSprite("tattoo_head").setBrush("");
+		_actor.getSprite("scar_head").setBrush("");
+	}
+
+	function adaptROTUAppearance ( _actor ) {
+		if (::HasROTU)
+		{
+			_actor.getSprite("tattoo_body").setBrush("");
+			_actor.getSprite("tattoo_body").Visible = true;
+			// _actor.getSprite("tattoo_body").Color = this.createColor("#8cff00");
+			_actor.getSprite("tattoo_body").Saturation = 1.0;
+
+			// _actor.addSprite("permanent_injury_xx1");
+			_actor.getSprite("permanent_injury_xx1").setBrush("zombie_rage_eyes");
+			_actor.getSprite("permanent_injury_xx1").Visible = true;
+			_actor.getSprite("permanent_injury_xx1").Color = this.createColor("#DB5079");
+			_actor.getSprite("permanent_injury_xx1").Saturation = 0.5;
+
+			_actor.getSprite("tattoo_head").setBrush("");
+			_actor.getSprite("tattoo_head").Visible = true;
+
+			local xhead = _actor.getSprite("head");
+			local xbody = _actor.getSprite("body");
+			xhead.Color = this.createColor("#FAE9F0");
+			xhead.Saturation = 0.8;
+			xbody.Color = this.createColor("#FAE9F0");
+			xbody.Saturation = 0.8;
+		}
+	}
+
 	function sexy_stage_1 ( _woman ) {
 		local w = _woman;
 		// change sprite
 		w.getSprite("head").setBrush("bust_head_lewd_01");
 		w.getSprite("body").setBrush("bust_body_lewd_01");
 		// clear scars and tattoos
-		w.getSprite("tattoo_body").setBrush("");
-		w.getSprite("scar_body").setBrush("");
-		w.getSprite("tattoo_head").setBrush("");
-		w.getSprite("scar_head").setBrush("");
+		this.clearScarsAndTattoos(w);
 		// clear bust so accessories are visible
 		w.getSprite("miniboss").setBrush("");
 	}
@@ -49,10 +79,7 @@
 		w.getSprite("head").setBrush("bust_head_lewd_02");
 		w.getSprite("body").setBrush("bust_body_lewd_02");
 		// clear scars and tattoos
-		w.getSprite("tattoo_body").setBrush("");
-		w.getSprite("scar_body").setBrush("");
-		w.getSprite("tattoo_head").setBrush("");
-		w.getSprite("scar_head").setBrush("");
+		this.clearScarsAndTattoos(w);
 		w.getSprite("miniboss").setBrush("");
 	}
 };
