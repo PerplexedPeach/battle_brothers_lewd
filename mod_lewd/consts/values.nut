@@ -29,5 +29,5 @@
 ::Lewd.Const.HeelThirdEventBaseScore <- 150;
 
 // masochism event
-::Lewd.Const.MasochismDamageTakenMultScore <- 2;
+::Lewd.Const.MasochismDamageTakenMultScore <- 3;
 ::Lewd.Const.MasochismSouthernDistanceRequirement <- 10; // how many tiles within a southern city you need to be within for event to trigger
