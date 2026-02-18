@@ -1,6 +1,6 @@
 ::Lewd <- {
 	ID = "mod_lewd",
-	Version = "1.1.1",
+	Version = "1.1.2",
 	Name = "Lewdness",
 	IsStartingNewCampaign = false
 };
@@ -16,6 +16,10 @@ mod.require("mod_legends", "mod_msu");
 mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC" function()
 {
 	::Lewd.Mod <- ::MSU.Class.Mod(::Lewd.ID, ::Lewd.Version, ::Lewd.Name);
+
+	::Lewd.Mod.Registry.addModSource(::MSU.System.Registry.ModSourceDomain.GitHub, "https://github.com/PerplexedPeach/battle_brothers_lewd");
+	::Lewd.Mod.Registry.setUpdateSource(::MSU.System.Registry.ModSourceDomain.GitHub);
+
 	::HasROTU <- ::Hooks.hasMod("mod_ROTUC");
 
 	// TODO registery for updates

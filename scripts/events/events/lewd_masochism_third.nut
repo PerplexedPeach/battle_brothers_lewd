@@ -102,6 +102,7 @@ this.lewd_masochism_third <- this.inherit("scripts/events/event", {
 			{
 				local w = _event.m.Woman;
 				local skills = w.getSkills();
+				skills.removeByID("trait.masochism_first");
 				skills.removeByID("trait.masochism_second");
 				{
 					local skill = this.new("scripts/skills/traits/masochism_third");

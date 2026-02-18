@@ -25,7 +25,10 @@
 - create sprites for the corruption event characters
 - custom starting scenarios
 - animation fading in/out backside showing ass when molested/targeted by specific abilities
-
+- player map figure
+	- see magic concept figure_player_9997.png ::World.State.getPlayer().getSprite("body").setBrush("figure_player_9990");
+- glowing / aura around character (pheromone)
+	- see ROTU vampirism
 # Useful to User Code Snippets
 Get `mod_dev_console` [https://www.nexusmods.com/battlebrothers/mods/380](mod), drop it in `Battle Brothers\data` and you can press `Ctrl + G` to bring up the console in game.
 

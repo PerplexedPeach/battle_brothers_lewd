@@ -227,10 +227,19 @@ this.lewd_masochism_first <- this.inherit("scripts/events/event", {
 			"woman",
 			this.m.Woman.getName()
 		]);
-		_vars.push([
-			"male",
-			this.m.Male.getName()
-		]);
+		if (this.m.Male != null)
+		{
+			_vars.push([
+				"male",
+				this.m.Male.getName()
+			]);
+		} else
+		{
+			_vars.push([
+				"male",
+				"A random male"
+			]);
+		}
 	}
 
 	function onClear()
