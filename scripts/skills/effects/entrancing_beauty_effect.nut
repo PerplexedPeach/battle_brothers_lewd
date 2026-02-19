@@ -44,7 +44,7 @@ this.entrancing_beauty_effect <- this.inherit("scripts/skills/skill", {
 				id = 16,
 				type = "text",
 				icon = "ui/icons/special.png",
-				text = "Chance to inflict \'Dazed\' (or on crit \'Stunned\') to those engaged in melee with chance scaling with [color=" + this.Const.UI.Color.PositiveValue + "]Allure (" + allure + ")[/color] contested by their resolve"
+				text = "Chance to inflict \'Dazed\' (or on crit \'Stunned\') around you with chance scaling with [color=" + this.Const.UI.Color.PositiveValue + "]Allure (" + allure + ")[/color] and distance contested by their resolve."
 			},
 			{
 				id = 17,
@@ -151,10 +151,21 @@ this.entrancing_beauty_effect <- this.inherit("scripts/skills/skill", {
 				text = "Pain slut allure bonus: [color=" + this.Const.UI.Color.PositiveValue + "]15[/color]"
 			});
 		}
-		if (skills.hasSkill("trait.gluttonous"))
+		// bonus from strutting
+		local heelSkillBonus = actor.getFlags().getAsInt("heelSkill") * ::Lewd.Const.HeelAllureMultiplier;
+		if (heelSkillBonus > 0)
 		{
 			result.push({
 				id = 28,
+				type = "text",
+				icon = "ui/perks/heels_effect.png",
+				text = "Heel skill strut bonus: [color=" + this.Const.UI.Color.PositiveValue + "]" + heelSkillBonus + "[/color]"
+			});
+		}
+		if (skills.hasSkill("trait.gluttonous"))
+		{
+			result.push({
+				id = 50,
 				type = "text",
 				icon = "ui/traits/trait_icon_07.png",
 				text = "Gluttonous allure penalty: [color=" + this.Const.UI.Color.NegativeValue + "]-5[/color]"
@@ -163,7 +174,7 @@ this.entrancing_beauty_effect <- this.inherit("scripts/skills/skill", {
 		if (skills.hasSkill("trait.fat"))
 		{
 			result.push({
-				id = 29,
+				id = 51,
 				type = "text",
 				icon = "ui/traits/trait_icon_10.png",
 				text = "Fat allure penalty: [color=" + this.Const.UI.Color.NegativeValue + "]-20[/color]"
@@ -172,7 +183,7 @@ this.entrancing_beauty_effect <- this.inherit("scripts/skills/skill", {
 		if (skills.hasSkill("trait.ailing"))
 		{
 			result.push({
-				id = 30,
+				id = 52,
 				type = "text",
 				icon = "ui/traits/trait_icon_59.png",
 				text = "Ailing allure penalty: [color=" + this.Const.UI.Color.NegativeValue + "]-10[/color]"
@@ -181,7 +192,7 @@ this.entrancing_beauty_effect <- this.inherit("scripts/skills/skill", {
 		if (skills.hasSkill("trait.old"))
 		{
 			result.push({
-				id = 31,
+				id = 53,
 				type = "text",
 				icon = "skills/status_effect_60.png",
 				text = "Old allure penalty: [color=" + this.Const.UI.Color.NegativeValue + "]-20[/color]"
@@ -212,19 +223,19 @@ this.entrancing_beauty_effect <- this.inherit("scripts/skills/skill", {
 
 		foreach (entity in enemies)
 		{
+			local resolve = entity.getBravery();
+			local distance = entity.getTile().getDistanceTo(tile);
+			local chance = ::Lewd.Const.AllureToDazeBaseChance + (allure - resolve) * ::Lewd.Const.AllureToDazeChanceMultiplier - distance * ::Lewd.Const.AllureToDazeDistancePenalty;
 			// if (!entity.isAlliedWith(actor) && entity.getTile().getDistanceTo(tile) <= 1)
-			if (entity.getTile().getDistanceTo(tile) <= 1)
+			if (chance > 0)
 			{
-				local resolve = entity.getBravery();
-				local chance = (::Lewd.Const.AllureToDazeBaseChance + (allure - resolve) * ::Lewd.Const.AllureToDazeChanceMultiplier);
-
 				// ::logInfo("Target " + entity.getName() + " bravery: " + resolve);
 				// ::logInfo("Chance to daze " + entity.getName() + ": " + chance + "%");
 				local roll = this.Math.rand(0, 100);
 
-				this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(entity) + " beholds " +this.Const.UI.getColorizedEntityName(actor) + "'s beauty " + " (Chance: " + chance + ", Rolled: " + roll + ") (" + allure + " allure vs " + resolve + " bravery)");
 				if (roll < chance)
 				{
+					this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(entity) + " beholds " +this.Const.UI.getColorizedEntityName(actor) + "'s beauty " + " (Chance: " + chance + ", Rolled: " + roll + ") (" + allure + " allure vs " + resolve + " bravery)");
 					local daze = this.new("scripts/skills/effects/dazed_effect");
 					entity.getSkills().add(daze);
 					if (roll < chance - ::Lewd.Const.CritChanceThreshold)
@@ -244,8 +255,39 @@ this.entrancing_beauty_effect <- this.inherit("scripts/skills/skill", {
 
 		if (dazedEntities.len() > 0)
 		{
-			this.Sound.play(this.m.SoundOnUse[this.Math.rand(0, this.m.SoundOnUse.len() - 1)], this.Const.Sound.Volume.Skill * this.m.SoundVolume, actor.getPos());
+			this.displayDazedEffectsOnSelf();
 		}
+	}
+
+	function displayDazedEffectsOnSelf()
+	{
+		local actor = this.getContainer().getActor();
+
+		this.Sound.play(this.m.SoundOnUse[this.Math.rand(0, this.m.SoundOnUse.len() - 1)], this.Const.Sound.Volume.Skill * this.m.SoundVolume, actor.getPos());
+
+		local tile = actor.getTile();
+		// also play slutty visual text above your head
+		local skills = actor.getSkills();
+
+		// have different pool of lists to play from depending on your traits
+		local masochismChance = 0;
+		if (skills.hasSkill("trait.masochism_third"))
+		{
+			masochismChance = 50;
+		}
+		else if (skills.hasSkill("trait.masochism_second"))
+		{
+			masochismChance = 35;
+		}
+		else if (skills.hasSkill("trait.masochism_first"))
+		{
+			masochismChance = 20;
+		}
+
+		local useMaso = masochismChance > 0 && this.Math.rand(1, 100) <= masochismChance;
+		local effectList = useMaso ? ::Lewd.Quote.Maso : ::Lewd.Quote.Charm;
+		local effect_to_play = effectList[this.Math.rand(0, effectList.len() - 1)];
+		this.Tactical.spawnSpriteEffect(effect_to_play, this.createColor("#ffffff"), tile, this.Const.Tactical.Settings.SkillOverlayOffsetX, this.Const.Tactical.Settings.SkillOverlayOffsetY, this.Const.Tactical.Settings.SkillOverlayScale, this.Const.Tactical.Settings.SkillOverlayScale, this.Const.Tactical.Settings.SkillOverlayStayDuration + this.m.Delay, 0, this.Const.Tactical.Settings.SkillOverlayFadeDuration);
 	}
 
 	function onMovementFinished()

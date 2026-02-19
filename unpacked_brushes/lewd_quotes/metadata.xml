@@ -1,0 +1,22 @@
+<brush name="gfx/lewd_quotes.png" version="17" b1="2" b5="0">
+  <sprite id="quote_charm_1" ic="FF2E326F" img="charm_1.png" />
+  <sprite id="quote_charm_2" ic="FF2E326F" img="charm_2.png" />
+  <sprite id="quote_charm_3" ic="FF2E326F" img="charm_3.png" />
+  <sprite id="quote_charm_4" ic="FF2E326F" img="charm_4.png" />
+  <sprite id="quote_charm_5" ic="FF2E326F" img="charm_5.png" />
+  <sprite id="quote_charm_6" ic="FF2E326F" img="charm_6.png" />
+  <sprite id="quote_charm_7" ic="FF2E326F" img="charm_7.png" />
+  <sprite id="quote_charm_8" ic="FF2E326F" img="charm_8.png" />
+  <sprite id="quote_charm_9" ic="FF2E326F" img="charm_9.png" />
+  <sprite id="quote_charm_10" ic="FF2E326F" img="charm_10.png" />
+  <sprite id="quote_charm_11" ic="FF2E326F" img="charm_11.png" />
+  <sprite id="quote_charm_12" ic="FF2E326F" img="charm_12.png" />
+  <sprite id="quote_charm_13" ic="FF2E326F" img="charm_13.png" />
+  <sprite id="quote_charm_14" ic="FF2E326F" img="charm_14.png" />
+  <sprite id="quote_charm_15" ic="FF2E326F" img="charm_15.png" />
+  <sprite id="quote_charm_16" ic="FF2E326F" img="charm_16.png" />
+  <sprite id="quote_charm_17" ic="FF2E326F" img="charm_17.png" />
+  <sprite id="quote_charm_18" ic="FF2E326F" img="charm_18.png" />
+  <sprite id="quote_charm_maso_1" ic="FF2E326F" img="charm_maso_1.png" />
+  <sprite id="quote_charm_maso_2" ic="FF2E326F" img="charm_maso_2.png" />
+</brush>
