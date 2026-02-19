@@ -44,6 +44,8 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC" function()
 			allure += this.getFlags().getAsInt("allureHeels");
 			// melee defense contributes half as it represents agility
 			allure += this.getCurrentProperties().getMeleeDefense() * 0.5;
+			// allure from strutting in heels based on heel skill
+			allure += this.getFlags().getAsInt("heelSkill") * ::Lewd.Const.HeelAllureMultiplier;
 			// penalize by armor
 			allure -= ::Lewd.Allure.penaltyFromHead(this);
 			allure -= ::Lewd.Allure.penaltyFromBody(this);

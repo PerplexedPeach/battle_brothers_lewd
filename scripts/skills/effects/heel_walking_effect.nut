@@ -68,6 +68,12 @@ this.heel_walking_effect <- this.inherit("scripts/skills/skill", {
 				icon = "ui/icons/special.png",
 				text = "Every point the heel height is above your skill, every tile builds an additional [color=" + this.Const.UI.Color.NegativeValue + "]" + ::Lewd.Const.HeelFatigueMultiplier + "[/color] fatigue per tile (so if heel height is 5 and skill is 3, you get 4 fatigue per tile). You increase your heel skill by wearing heels over time. The higher the difference in heel height and skill, the faster you gain skill."
 			},
+			{
+				id = 17,
+				type = "text",
+				icon = "ui/icons/allure.png",
+				text = "Heel skill allows you to strut more effectively, increasing your allure"
+			},
 		];
 	}
 });

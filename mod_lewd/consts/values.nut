@@ -1,4 +1,5 @@
 ::Lewd.Const.HeelFatigueMultiplier <- 2;
+::Lewd.Const.HeelAllureMultiplier <- 2;
 ::Lewd.Const.CritChanceThreshold <- 50; // for some effects if the roll is this amount below the chance, a stronger effect gets applied
 
 ::Lewd.Const.AllurePenaltyHeadFatigue <- 2; // allure penalty per point of fatigue from head items
@@ -6,8 +7,9 @@
 ::Lewd.Const.AllurePenaltyOffhandFatigue <- 2;
 
 // ability constants
-::Lewd.Const.AllureToDazeBaseChance <- 50;
+::Lewd.Const.AllureToDazeBaseChance <- 60;
 ::Lewd.Const.AllureToDazeChanceMultiplier <- 2;
+::Lewd.Const.AllureToDazeDistancePenalty <- 10; // daze chance is reduced by this much for every tile of distance from the target
 
 ::Lewd.Const.SeduceBaseChance <- 50;
 ::Lewd.Const.SeduceAllureChanceMultiplier <- 3;
