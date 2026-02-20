@@ -1,0 +1,4 @@
+<brush name="gfx/lewd_world.png" version="17">
+  <sprite id="figure_player_delicate" offsetY="20" ic="FF334959" width="68" height="106" img="figure_player_delicate.png" left="-18" right="24" top="-39" bottom="9" />
+  <sprite id="figure_player_dainty" offsetY="20" ic="FF334959" width="68" height="106" img="figure_player_dainty.png" left="-18" right="24" top="-39" bottom="9" />
+</brush>

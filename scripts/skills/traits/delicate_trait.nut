@@ -78,6 +78,19 @@ this.delicate_trait <- this.inherit("scripts/skills/traits/character_trait", {
 		local actor = this.getContainer().getActor();
 		::Lewd.Transform.sexy_stage_2(actor);
 		::Lewd.Transform.adaptROTUAppearance(actor);
+
+		// NOTE: hooking on updateLook isn't working for some reason, so we set the body sprite directly
+		this.Time.scheduleEvent(this.TimeUnit.Real, 1000, function ( _data )
+		{
+			local player = this.World.State.m.Player;
+			if (player != null)
+			{
+				player.getSprite("body").setBrush("figure_player_delicate");
+				player.getSprite("body").setHorizontalFlipping(false);
+
+			}
+		}, null);
+
 	}
 
 	function onUpdate( _properties )

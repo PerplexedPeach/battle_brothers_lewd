@@ -58,6 +58,15 @@ this.dainty_trait <- this.inherit("scripts/skills/traits/character_trait", {
 		local actor = this.getContainer().getActor();
 		::Lewd.Transform.sexy_stage_1(actor);
 		::Lewd.Transform.adaptROTUAppearance(actor);
+		this.Time.scheduleEvent(this.TimeUnit.Real, 1000, function ( _data )
+		{
+			local player = this.World.State.m.Player;
+			if (player != null)
+			{
+				player.getSprite("body").setBrush("figure_player_dainty");
+				player.getSprite("body").setHorizontalFlipping(false);
+			}
+		}, null);
 	}
 
 	function onUpdate( _properties )
