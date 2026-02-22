@@ -108,6 +108,22 @@ this.masochism_first <- this.inherit("scripts/skills/traits/character_trait", {
 		// less concerned about removing negative status effects
 		_properties.NegativeStatusEffectDuration += 1;
 		_properties.IsAffectedByLosingHitpoints = false;
+		_properties.Allure += ::Lewd.Const.AllureFromMasochismFirst;
+		_properties.PleasureMax += ::Lewd.Const.PleasureMaxFromMasochismFirst;
+	}
+
+	function onDamageReceived( _attacker, _damageHitpoints, _damageArmor )
+	{
+		if (_damageHitpoints > 0)
+		{
+			local actor = this.getContainer().getActor();
+			if (actor.getPleasureMax() > 0)
+			{
+				local gain = this.Math.max(1, this.Math.floor(_damageHitpoints * ::Lewd.Const.PleasureFromDamageMasochismFirst));
+				actor.addPleasure(gain);
+				this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(actor) + " feels a rush of pleasure from the pain (+" + gain + " pleasure)");
+			}
+		}
 	}
 });
 

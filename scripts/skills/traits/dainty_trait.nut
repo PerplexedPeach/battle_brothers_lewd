@@ -73,6 +73,8 @@ this.dainty_trait <- this.inherit("scripts/skills/traits/character_trait", {
 	{
 		_properties.Hitpoints += -5;
 		_properties.MeleeDamageMult *= 0.95;
+		_properties.Allure += ::Lewd.Const.AllureFromDainty;
+		_properties.PleasureMax += ::Lewd.Const.PleasureMaxFromDainty;
 	}
 });
 

@@ -115,6 +115,22 @@ this.masochism_second <- this.inherit("scripts/skills/traits/character_trait", {
 		_properties.NegativeStatusEffectDuration += 2;
 		_properties.IsAffectedByLosingHitpoints = false;
 		_properties.IsResistantToPhysicalStatuses = true;
+		_properties.Allure += ::Lewd.Const.AllureFromMasochismSecond;
+		_properties.PleasureMax += ::Lewd.Const.PleasureMaxFromMasochismSecond;
+	}
+
+	function onDamageReceived( _attacker, _damageHitpoints, _damageArmor )
+	{
+		if (_damageHitpoints > 0)
+		{
+			local actor = this.getContainer().getActor();
+			if (actor.getPleasureMax() > 0)
+			{
+				local gain = this.Math.max(1, this.Math.floor(_damageHitpoints * ::Lewd.Const.PleasureFromDamageMasochismSecond));
+				actor.addPleasure(gain);
+				this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(actor) + " revels in the pain (+" + gain + " pleasure)");
+			}
+		}
 	}
 });
 

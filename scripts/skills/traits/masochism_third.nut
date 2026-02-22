@@ -127,6 +127,22 @@ this.masochism_third <- this.inherit("scripts/skills/traits/character_trait", {
 		_properties.IsAffectedByLosingHitpoints = false;
 		_properties.IsResistantToPhysicalStatuses = true;
 		_properties.IsImmuneToStun = true;
+		_properties.Allure += ::Lewd.Const.AllureFromMasochismThird;
+		_properties.PleasureMax += ::Lewd.Const.PleasureMaxFromMasochismThird;
+	}
+
+	function onDamageReceived( _attacker, _damageHitpoints, _damageArmor )
+	{
+		if (_damageHitpoints > 0)
+		{
+			local actor = this.getContainer().getActor();
+			if (actor.getPleasureMax() > 0)
+			{
+				local gain = this.Math.max(1, this.Math.floor(_damageHitpoints * ::Lewd.Const.PleasureFromDamageMasochismThird));
+				actor.addPleasure(gain);
+				this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(actor) + " moans with pleasure from the pain (+" + gain + " pleasure)");
+			}
+		}
 	}
 });
 

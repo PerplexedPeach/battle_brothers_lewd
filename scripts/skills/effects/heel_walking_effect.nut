@@ -32,6 +32,9 @@ this.heel_walking_effect <- this.inherit("scripts/skills/skill", {
 		local actor = this.getContainer().getActor();
 		// any extra heelHeight > heelSkill results in a fatigue penalty when moving
 		_properties.MovementFatigueCostAdditional += ::Lewd.Const.HeelFatigueMultiplier * this.Math.max(0, actor.getFlags().getAsInt("heelHeight") - actor.getFlags().getAsInt("heelSkill"));
+		// heel-related allure contributions
+		_properties.Allure += actor.getFlags().getAsInt("allureHeels");
+		_properties.Allure += actor.getFlags().getAsInt("heelSkill") * ::Lewd.Const.HeelAllureMultiplier;
 	}
 
 	function getTooltip()

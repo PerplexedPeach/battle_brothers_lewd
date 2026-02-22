@@ -1,3 +1,10 @@
+// --- Character Properties ---
+::Const.CharacterProperties.Allure <- 0;
+::Const.CharacterProperties.PleasureMax <- 0;
+::Const.CharacterProperties.getAllure <- function() { return this.Math.floor(this.Allure); };
+::Const.CharacterProperties.getPleasureMax <- function() { return this.Math.floor(this.PleasureMax); };
+
+// --- Allure Constants ---
 ::Lewd.Const.HeelFatigueMultiplier <- 2;
 ::Lewd.Const.HeelAllureMultiplier <- 2;
 ::Lewd.Const.CritChanceThreshold <- 50; // for some effects if the roll is this amount below the chance, a stronger effect gets applied
@@ -5,6 +12,36 @@
 ::Lewd.Const.AllurePenaltyHeadFatigue <- 2; // allure penalty per point of fatigue from head items
 ::Lewd.Const.AllurePenaltyBodyFatigue <- 1;
 ::Lewd.Const.AllurePenaltyOffhandFatigue <- 2;
+
+// allure from traits
+::Lewd.Const.AllureFromSeductive <- 10;
+::Lewd.Const.AllureFromAthletic <- 5;
+::Lewd.Const.AllureFromDainty <- 5;
+::Lewd.Const.AllureFromDelicate <- 10;
+::Lewd.Const.AllureFromMasochismFirst <- 5;
+::Lewd.Const.AllureFromMasochismSecond <- 10;
+::Lewd.Const.AllureFromMasochismThird <- 15;
+::Lewd.Const.AllureFromGluttonous <- -5;
+::Lewd.Const.AllureFromFat <- -20;
+::Lewd.Const.AllureFromAiling <- -10;
+::Lewd.Const.AllureFromOld <- -20;
+::Lewd.Const.AllureMeleeDefenseMultiplier <- 0.5;
+
+// --- Pleasure & Climax Constants ---
+::Lewd.Const.PleasureMaxFromDainty <- 30;
+::Lewd.Const.PleasureMaxFromDelicate <- 50;
+::Lewd.Const.PleasureMaxFromMasochismFirst <- 10;
+::Lewd.Const.PleasureMaxFromMasochismSecond <- 20;
+::Lewd.Const.PleasureMaxFromMasochismThird <- 30;
+::Lewd.Const.PleasureFromDamageMasochismFirst <- 0.1;
+::Lewd.Const.PleasureFromDamageMasochismSecond <- 0.2;
+::Lewd.Const.PleasureFromDamageMasochismThird <- 0.3;
+::Lewd.Const.ClimaxDuration <- 2;
+::Lewd.Const.ClimaxAPPenalty <- -2;
+::Lewd.Const.ClimaxMeleeDefensePenalty <- -10;
+::Lewd.Const.ClimaxInitiativePenalty <- -15;
+::Lewd.Const.ClimaxResolveBonus <- 10;
+::Lewd.Const.ClimaxAllureBonus <- 5;
 
 // ability constants
 ::Lewd.Const.AllureToDazeBaseChance <- 60;

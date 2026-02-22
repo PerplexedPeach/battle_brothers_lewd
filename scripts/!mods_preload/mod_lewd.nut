@@ -35,7 +35,10 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC" function()
 	// TODO when these get large, refactor out into separate files and include them
 	mod.hook("scripts/entity/tactical/actor", function (q)
 	{
-		// Add lewd_glow sprite layer for pheromone visual effects
+		// Add Pleasure as a member variable on actor (same pattern as m.Fatigue)
+		q.m.Pleasure <- 0;
+
+		// Add lewd_glow sprite layer for pheromone visual effects, and add lewd_info_effect to all actors
 		q.onInit = @(__original) function()
 		{
 			local self = this;
@@ -52,6 +55,7 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC" function()
 				return ret;
 			};
 			__original();
+			this.getSkills().add(this.new("scripts/skills/effects/lewd_info_effect"));
 		}
 
 		// Render callback for animated effects
@@ -66,68 +70,49 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC" function()
 			}
 		}
 
+		// Allure now reads from CharacterProperties (accumulated by trait/item/effect onUpdate methods)
 		q.allure <- function() {
-			local allure = 0;
-			// calculate allure based on equipped items, traits, perks, etc
-			allure += this.getFlags().getAsInt("allureBase");
-			// for now just return a placeholder value
-			allure += this.getFlags().getAsInt("allureHeels");
-			// melee defense contributes half as it represents agility
-			allure += this.getCurrentProperties().getMeleeDefense() * 0.5;
-			// allure from strutting in heels based on heel skill
-			allure += this.getFlags().getAsInt("heelSkill") * ::Lewd.Const.HeelAllureMultiplier;
-			// penalize by armor
-			allure -= ::Lewd.Allure.penaltyFromHead(this);
-			allure -= ::Lewd.Allure.penaltyFromBody(this);
-			allure -= ::Lewd.Allure.penaltyFromOffhand(this);
-			// resolve contributes a quarter as it represents presence
-			// based on traits
-			local skills = this.getSkills();
-			if (skills.hasSkill("trait.legend_seductive"))
+			return this.getCurrentProperties().getAllure();
+		}
+
+		// --- Pleasure system (m.Pleasure on actor, same pattern as m.Fatigue) ---
+		q.getPleasure <- function() {
+			return this.m.Pleasure;
+		}
+
+		q.setPleasure <- function( _v ) {
+			this.m.Pleasure = this.Math.max(0, this.Math.round(_v));
+		}
+
+		q.getPleasureMax <- function() {
+			return this.getCurrentProperties().getPleasureMax();
+		}
+
+		q.getPleasurePct <- function() {
+			return this.Math.minf(1.0, this.m.Pleasure / this.Math.maxf(1.0, this.getPleasureMax()));
+		}
+
+		q.addPleasure <- function( _amount ) {
+			local max = this.getPleasureMax();
+			if (max <= 0) return;
+			local cur = this.m.Pleasure + _amount;
+			if (cur >= max)
 			{
-				allure += 10;
+				this.m.Pleasure = 0;
+				this.onClimax();
 			}
-			if (skills.hasSkill("trait.athletic"))
+			else
 			{
-				allure += 5;
+				this.m.Pleasure = this.Math.max(0, this.Math.round(cur));
 			}
-			if (skills.hasSkill("trait.delicate"))
+		}
+
+		q.onClimax <- function() {
+			if (!this.getSkills().hasSkill("effects.climax"))
 			{
-				allure += 10;
+				local effect = this.new("scripts/skills/effects/climax_effect");
+				this.getSkills().add(effect);
 			}
-			else if (skills.hasSkill("trait.dainty"))
-			{
-				allure += 5;
-			}
-			if (skills.hasSkill("effects.masochism_third"))
-			{
-				allure += 15;
-			}
-			else if (skills.hasSkill("effects.masochism_second"))
-			{
-				allure += 10;
-			}
-			else if (skills.hasSkill("trait.masochism_first"))
-			{
-				allure += 5;
-			}
-			if (skills.hasSkill("trait.gluttonous"))
-			{
-				allure -= 5;
-			}
-			if (skills.hasSkill("trait.fat"))
-			{
-				allure -= 20;
-			}
-			if (skills.hasSkill("trait.ailing"))
-			{
-				allure -= 10;
-			}
-			if (skills.hasSkill("trait.old"))
-			{
-				allure -= 20;
-			}
-			return allure;
 		}
 
 	});

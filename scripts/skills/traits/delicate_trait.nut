@@ -103,6 +103,8 @@ this.delicate_trait <- this.inherit("scripts/skills/traits/character_trait", {
 		_properties.Hitpoints += -10;
 		_properties.MeleeDamageMult *= 0.9;
 		_properties.IsImmuneToHeadshots = true;
+		_properties.Allure += ::Lewd.Const.AllureFromDelicate;
+		_properties.PleasureMax += ::Lewd.Const.PleasureMaxFromDelicate;
 	}
 });
 
