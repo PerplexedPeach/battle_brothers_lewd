@@ -9,14 +9,13 @@ this.pheromones_skill <- this.inherit("scripts/skills/skill", {
 		this.m.IconDisabled = "skills/seduce_bw.png";
 		this.m.Overlay = "active_120";
 		this.m.SoundOnUse = [
-			"sounds/enemies/dlc2/hexe_charm_chimes_01.wav",
-			"sounds/enemies/dlc2/hexe_charm_chimes_02.wav",
-			"sounds/enemies/dlc2/hexe_charm_chimes_03.wav",
-			"sounds/enemies/dlc2/hexe_charm_chimes_04.wav"
+			"sounds/enemies/dlc2/hexe_charm_kiss_01.wav",
+			"sounds/enemies/dlc2/hexe_charm_kiss_02.wav",
+			"sounds/enemies/dlc2/hexe_charm_kiss_03.wav",
+			"sounds/enemies/dlc2/hexe_charm_kiss_04.wav"
 		];
-		this.m.SoundVolume = 0.5;
 		this.m.Type = this.Const.SkillType.Active;
-		this.m.Order = this.Const.SkillOrder.Any;
+		this.m.Order = this.Const.SkillOrder.NonTargeted;
 		this.m.IsSerialized = false;
 		this.m.IsActive = true;
 		this.m.IsTargeted = false;

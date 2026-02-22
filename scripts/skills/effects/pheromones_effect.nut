@@ -92,7 +92,7 @@ this.pheromones_effect <- this.inherit("scripts/skills/skill", {
 		spr.Alpha = alphaMin + triWave(0.45, this.m.triPhaseE) * (alphaMax - alphaMin);
 
 		// Saturation wobble
-		spr.Saturation = 0.2 + triWave(0.30, this.m.triPhaseE) * 0.4;
+		spr.Saturation = 0.8 + triWave(0.30, this.m.triPhaseE) * 0.4;
 	}
 
 	function onAdded()
@@ -111,8 +111,8 @@ this.pheromones_effect <- this.inherit("scripts/skills/skill", {
 		{
 			local glow = actor.getSprite("lewd_glow");
 			glow.setBrush("lewd_pheromone_glow");
-			glow.Color = this.createColor("#ff69b4");
-			glow.Saturation = 0.8;
+			glow.Color = this.createColor("#ffaadd");
+			glow.Saturation = 1.2;
 			glow.Scale = 0.85;
 			glow.varyColor(0.05, 0.05, 0.05);
 			glow.Visible = true;
