@@ -199,6 +199,15 @@ this.entrancing_beauty_effect <- this.inherit("scripts/skills/skill", {
 			});
 		}
 
+		if (skills.hasSkill("effects.pheromones"))
+		{
+			result.push({
+				id = 60,
+				type = "text",
+				icon = "ui/icons/special.png",
+				text = "Pheromones active: [color=" + this.Const.UI.Color.PositiveValue + "]+" + ::Lewd.Const.PheromonesAllureBonus + "[/color] daze chance bonus"
+			});
+		}
 
 		return result;
 	}
@@ -219,6 +228,8 @@ this.entrancing_beauty_effect <- this.inherit("scripts/skills/skill", {
 		local targets = this.Tactical.Entities.getAllInstances();
 		local allure = actor.allure();
 
+		local hasPheromones = actor.getSkills().hasSkill("effects.pheromones");
+
 		local dazedEntities = [];
 
 		foreach (entity in enemies)
@@ -226,6 +237,10 @@ this.entrancing_beauty_effect <- this.inherit("scripts/skills/skill", {
 			local resolve = entity.getBravery();
 			local distance = entity.getTile().getDistanceTo(tile);
 			local chance = ::Lewd.Const.AllureToDazeBaseChance + (allure - resolve) * ::Lewd.Const.AllureToDazeChanceMultiplier - distance * ::Lewd.Const.AllureToDazeDistancePenalty;
+			if (hasPheromones)
+			{
+				chance += ::Lewd.Const.PheromonesAllureBonus;
+			}
 			// if (!entity.isAlliedWith(actor) && entity.getTile().getDistanceTo(tile) <= 1)
 			if (chance > 0)
 			{

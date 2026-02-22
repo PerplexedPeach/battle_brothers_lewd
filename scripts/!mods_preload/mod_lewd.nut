@@ -35,6 +35,36 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC" function()
 	// TODO when these get large, refactor out into separate files and include them
 	mod.hook("scripts/entity/tactical/actor", function (q)
 	{
+		// Add lewd_glow sprite layer for pheromone visual effects
+		q.onInit = @(__original) function()
+		{
+			local self = this;
+			local old_addSprite = self.addSprite;
+			self.addSprite = function (_layerID)
+			{
+				local ret = old_addSprite(_layerID);
+
+				if (_layerID == "socket")
+				{
+					old_addSprite("lewd_glow");
+				}
+
+				return ret;
+			};
+			__original();
+		}
+
+		// Render callback for animated effects
+		q.onRender = @(__original) function()
+		{
+			__original();
+
+			local pheromonesEffect = this.getSkills().getSkillByID("effects.pheromones");
+			if (pheromonesEffect != null)
+			{
+				pheromonesEffect.triggerRender();
+			}
+		}
 
 		q.allure <- function() {
 			local allure = 0;

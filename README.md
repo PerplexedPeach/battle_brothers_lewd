@@ -27,6 +27,8 @@
 - animation fading in/out backside showing ass when molested/targeted by specific abilities
 - glowing / aura around character (pheromone)
 	- see ROTU vampirism
+	- unbearable_stench for animated glow!
+- ancient wig as hairstyle
 
 # Useful to User Code Snippets
 Get `mod_dev_console` [https://www.nexusmods.com/battlebrothers/mods/380](mod), drop it in `Battle Brothers\data` and you can press `Ctrl + G` to bring up the console in game.
@@ -313,3 +315,67 @@ See legend_swordmaster_fav_enemy_event, wildman_causes_havoc_event for generated
 See NPC protection quest legend_hunting_coven_leader_contract
 
 Use spawnlist to generate a list
+
+Glowing in rotu
+```js
+		if (this.hasSprite("before_socket")) {
+			local champ_sprite = this.getSprite("before_socket");
+			champ_sprite.setBrush("champion_glow");
+			champ_sprite.Color = this.createColor("#ff0000");
+			champ_sprite.Saturation = 0.7;
+		}
+```
+Glowing in PoV
+```js
+		// Adds sprite for the mutation effect (glow)
+		if (_actor.hasSprite("pov_back_socket"))
+		{
+			local mutant_glow_sprite = _actor.getSprite("pov_back_socket");
+			mutant_glow_sprite.setBrush("pov_mutant_glow"); //credit to ROTU mod for base art
+			mutant_glow_sprite.Color = this.createColor("#0" + this.Math.rand(0,9) + this.Math.rand(59,99) + this.Math.rand(0,5) + "a"); // make the 96 part random! (70 - 99?)
+			mutant_glow_sprite.Saturation = 0.8;
+			mutant_glow_sprite.Scale = 0.9;
+			//mutant_glow_sprite.varySaturation(0.1);
+			//mutant_glow_sprite.varyColor(0.05, 0.05, 0.05);
+			mutant_glow_sprite.Visible = true;
+
+			// Adds Effect to animate above sprite
+			if (!_actor.getSkills().hasSkill("effects.pov_enemy_mutation_effect"))
+			{
+				_actor.getSkills().add(this.new("scripts/skills/effects/pov_enemy_mutation_effect"));
+			}
+		}
+```
+```js
+		if (actor.hasSprite("pov_back_socket2"))
+		{
+			local stench_glow_sprite = actor.getSprite("pov_back_socket2");
+			stench_glow_sprite.setBrush("pov_foul_stench");
+			stench_glow_sprite.Color = this.createColor("#"+this.Math.rand(3,7)+"a3e02"); 
+			stench_glow_sprite.Saturation = 0.8;
+			stench_glow_sprite.Scale = 0.95;
+			//stench_glow_sprite.varySaturation(0.1);
+			stench_glow_sprite.varyColor(0.05, 0.05, 0.05);
+			stench_glow_sprite.Visible = true;
+
+			actor.setRenderCallbackEnabled(true);
+			actor.setAlwaysApplySpriteOffset(true);
+			this.m.isActive = true;
+		}
+```
+
+Adding sprite to control sprite layer in Rotu
+```js
+		local old_addSprite = this.addSprite;
+		this.addSprite = function ( _layerID )
+		{
+			if (_layerID == "socket")
+			{
+				old_addSprite("before_socket");
+			}
+
+			return old_addSprite(_layerID);
+		};
+```
+In PoV
+```js

@@ -13,6 +13,7 @@
 
 ::Lewd.Const.SeduceBaseChance <- 50;
 ::Lewd.Const.SeduceAllureChanceMultiplier <- 3;
+::Lewd.Const.SeduceAllureBaseline <- 20; // compare against resolve - baseline
 ::Lewd.Const.SeduceDistancePenalty <- 3;
 
 // event occurance rates
@@ -33,3 +34,9 @@
 // masochism event
 ::Lewd.Const.MasochismDamageTakenMultScore <- 3;
 ::Lewd.Const.MasochismSouthernDistanceRequirement <- 10; // how many tiles within a southern city you need to be within for event to trigger
+
+// pheromones ability
+::Lewd.Const.PheromonesAllureBonus <- 25; // flat bonus to entrancing beauty chance while pheromones active
+::Lewd.Const.PheromonesDuration <- 2; // turns
+::Lewd.Const.PheromonesAPCost <- 3;
+::Lewd.Const.PheromonesFatigueCost <- 10;

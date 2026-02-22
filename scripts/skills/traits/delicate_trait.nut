@@ -91,6 +91,11 @@ this.delicate_trait <- this.inherit("scripts/skills/traits/character_trait", {
 			}
 		}, null);
 
+		// Grant pheromones ability
+		if (!actor.getSkills().hasSkill("actives.pheromones"))
+		{
+			actor.getSkills().add(this.new("scripts/skills/actives/pheromones_skill"));
+		}
 	}
 
 	function onUpdate( _properties )

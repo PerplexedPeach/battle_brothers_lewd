@@ -82,7 +82,7 @@ this.lewd_heels_first <- this.inherit("scripts/events/event", {
 
 				{
 					local money = 1000;
-					this.World.Assets.addMoney(money);
+					Ehis.World.Assets.addMoney(money);
 					this.List.push({
 						id = 10,
 						icon = "ui/icons/asset_money.png",

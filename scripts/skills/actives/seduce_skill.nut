@@ -135,7 +135,7 @@ this.seduce_skill <- this.inherit("scripts/skills/skill", {
 
 			local resolve = target.getBravery();
 			local allure = _user.allure();
-			local chance = (::Lewd.Const.SeduceBaseChance + (allure - resolve) * ::Lewd.Const.SeduceAllureChanceMultiplier); 
+			local chance = (::Lewd.Const.SeduceBaseChance + (allure - resolve + ::Lewd.Const.SeduceAllureBaseline) * ::Lewd.Const.SeduceAllureChanceMultiplier);
 			// increasing difficulty with distance
 			chance -= _targetTile.getDistanceTo(_user.getTile()) * ::Lewd.Const.SeduceDistancePenalty;
 
