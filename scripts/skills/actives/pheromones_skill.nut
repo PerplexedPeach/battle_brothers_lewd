@@ -5,9 +5,9 @@ this.pheromones_skill <- this.inherit("scripts/skills/skill", {
 		this.m.ID = "actives.pheromones";
 		this.m.Name = "Pheromones";
 		this.m.Description = "Release intoxicating pheromones that enhance your alluring presence, boosting Entrancing Beauty\'s daze chance.";
-		this.m.Icon = "skills/seduce.png";
-		this.m.IconDisabled = "skills/seduce_bw.png";
-		this.m.Overlay = "active_120";
+		this.m.Icon = "skills/pheromones.png";
+		this.m.IconDisabled = "skills/pheromones_bw.png";
+		this.m.Overlay = "pheromones";
 		this.m.SoundOnUse = [
 			"sounds/enemies/dlc2/hexe_charm_kiss_01.wav",
 			"sounds/enemies/dlc2/hexe_charm_kiss_02.wav",

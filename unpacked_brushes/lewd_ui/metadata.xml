@@ -1,4 +1,7 @@
 <brush name="gfx/lewd_ui.png" version="17" b1="2" b5="0">
   <sprite id="allure" ic="FF4C4B4D" img="skills/allure_effect.png" />
   <sprite id="heels" ic="FF4C4B4D" img="skills/heels_effect.png" />
+  <sprite id="pheromones" ic="FF4C4B4D" img="skills/pheromones.png" />
+  <sprite id="pheromones_bw" ic="FF4C4B4D" img="skills/pheromones_bw.png" />
+  <sprite id="pheromones_status" ic="FF4C4B4D" img="skills/pheromones_status.png" />
 </brush>

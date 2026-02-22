@@ -13,7 +13,7 @@ this.pheromones_effect <- this.inherit("scripts/skills/skill", {
 		this.m.ID = "effects.pheromones";
 		this.m.Name = "Pheromones";
 		this.m.Description = "Releasing intoxicating pheromones that enhance your alluring presence, making it harder for enemies to resist your beauty.";
-		this.m.Icon = "skills/seduce.png";
+		this.m.Icon = "skills/pheromones_status.png";
 		this.m.IconMini = "";
 		this.m.Type = this.Const.SkillType.StatusEffect;
 		this.m.IsActive = false;
