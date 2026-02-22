@@ -5,7 +5,7 @@ this.lewd_info_effect <- this.inherit("scripts/skills/skill", {
 		this.m.ID = "effects.lewd_info";
 		this.m.Name = "Lewd Info";
 		this.m.Description = "Shows allure and pleasure information.";
-		this.m.Icon = "ui/icons/allure.png";
+		this.m.Icon = "skills/lewd_info.png";
 		this.m.Type = this.Const.SkillType.StatusEffect;
 		this.m.Order = this.Const.SkillOrder.VeryLast;
 		this.m.IsActive = false;

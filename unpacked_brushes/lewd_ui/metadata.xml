@@ -4,4 +4,6 @@
   <sprite id="pheromones" ic="FF4C4B4D" img="skills/pheromones.png" />
   <sprite id="pheromones_bw" ic="FF4C4B4D" img="skills/pheromones_bw.png" />
   <sprite id="pheromones_status" ic="FF4C4B4D" img="skills/pheromones_status.png" />
+  <sprite id="lewd_info" ic="FF4C4B4D" img="skills/lewd_info.png" />
+  <sprite id="climax" ic="FF4C4B4D" img="skills/climax.png" />
 </brush>

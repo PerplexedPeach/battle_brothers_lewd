@@ -7,7 +7,7 @@ this.climax_effect <- this.inherit("scripts/skills/skill", {
 		this.m.ID = "effects.climax";
 		this.m.Name = "Climax";
 		this.m.Description = "Overwhelmed by pleasure, leaving them dazed and vulnerable.";
-		this.m.Icon = "ui/icons/allure.png";
+		this.m.Icon = "skills/climax.png";
 		this.m.Type = this.Const.SkillType.StatusEffect;
 		this.m.Order = this.Const.SkillOrder.VeryLast;
 		this.m.IsActive = false;
