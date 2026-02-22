@@ -195,7 +195,7 @@ this.lewd_masochism_first <- this.inherit("scripts/events/event", {
 
 		// only fire for those that have the delicate trait / gotten the heels
 		if (this.m.Woman == null || !this.m.Woman.getSkills().hasSkill("trait.delicate") || !::Lewd.Location.inTheSouth() ||
-			this.m.Woman.getSkills().hasSkill("trait.masochism_first") || this.m.Woman.getSkills().hasSkill("trait.masochism_second") || !this.m.Woman.getSkills().hasSkill("trait.masochism_third"))
+			this.m.Woman.getSkills().hasSkill("trait.masochism_first") || this.m.Woman.getSkills().hasSkill("trait.masochism_second") || this.m.Woman.getSkills().hasSkill("trait.masochism_third"))
 		{
 			this.m.Score = 0;
 		} else {
