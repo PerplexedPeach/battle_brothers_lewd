@@ -86,16 +86,94 @@ this.climax_effect <- this.inherit("scripts/skills/skill", {
 		{
 			this.Sound.play(this.m.SoundOnUse[this.Math.rand(0, this.m.SoundOnUse.len() - 1)], this.Const.Sound.Volume.Skill, actor.getPos());
 			this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(actor) + " reaches climax!");
+
+			// Shameless perk: daze adjacent enemies on own climax
+			if (actor.getSkills().hasSkill("perk.lewd_shameless") && actor.isPlacedOnMap())
+			{
+				local tile = actor.getTile();
+				for (local i = 0; i < 6; i++)
+				{
+					if (tile.hasNextTile(i))
+					{
+						local nextTile = tile.getNextTile(i);
+						if (nextTile.IsOccupiedByActor)
+						{
+							local adj = nextTile.getEntity();
+							if (adj != null && !adj.isAlliedWith(actor) && adj.isAlive())
+							{
+								this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(adj) + " is dazed by the shameless display!");
+								adj.getSkills().add(this.new("scripts/skills/effects/dazed_effect"));
+							}
+						}
+					}
+				}
+			}
+
+			// Pleasure Overflow: when an enemy climaxes, check if any adjacent player ally has the perk
+			// If so, splash pleasure to adjacent enemies of the climaxing entity
+			if (!actor.isPlayerControlled())
+			{
+				local hasOverflow = false;
+				local tile = actor.getTile();
+				for (local i = 0; i < 6; i++)
+				{
+					if (!hasOverflow && tile.hasNextTile(i))
+					{
+						local nextTile = tile.getNextTile(i);
+						if (nextTile.IsOccupiedByActor)
+						{
+							local adj = nextTile.getEntity();
+							if (adj != null && adj.isAlliedWith(actor) == false && adj.isAlive() && adj.getSkills().hasSkill("perk.lewd_pleasure_overflow"))
+								hasOverflow = true;
+						}
+					}
+				}
+
+				if (hasOverflow)
+				{
+					local splashAmount = this.Math.max(1, this.Math.floor(actor.getPleasureMax() * ::Lewd.Const.PleasureOverflowSplashPct));
+					for (local i = 0; i < 6; i++)
+					{
+						if (tile.hasNextTile(i))
+						{
+							local nextTile = tile.getNextTile(i);
+							if (nextTile.IsOccupiedByActor)
+							{
+								local adj = nextTile.getEntity();
+								// splash to other enemies adjacent to the climaxing enemy (not the player)
+								if (adj != null && !adj.isPlayerControlled() && adj.getID() != actor.getID() && adj.isAlive() && adj.getPleasureMax() > 0)
+								{
+									adj.addPleasure(splashAmount);
+									this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(adj) + " receives " + splashAmount + " splash pleasure!");
+								}
+							}
+						}
+					}
+				}
+			}
 		}
 	}
 
 	function onUpdate( _properties )
 	{
-		_properties.ActionPoints += ::Lewd.Const.ClimaxAPPenalty;
-		_properties.MeleeDefense += ::Lewd.Const.ClimaxMeleeDefensePenalty;
-		_properties.Initiative += ::Lewd.Const.ClimaxInitiativePenalty;
-		_properties.Bravery += ::Lewd.Const.ClimaxResolveBonus;
-		_properties.Allure += ::Lewd.Const.ClimaxAllureBonus;
+		local actor = this.getContainer().getActor();
+		local hasTranscendence = actor.getSkills().hasSkill("perk.lewd_transcendence");
+
+		if (hasTranscendence)
+		{
+			// Transcendence: no AP/MelDef penalties, +10 Allure instead
+			_properties.Initiative += ::Lewd.Const.ClimaxInitiativePenalty;
+			_properties.Bravery += ::Lewd.Const.ClimaxResolveBonus;
+			_properties.Allure += ::Lewd.Const.TranscendenceClimaxAllure;
+		}
+		else
+		{
+			_properties.ActionPoints += ::Lewd.Const.ClimaxAPPenalty;
+			_properties.MeleeDefense += ::Lewd.Const.ClimaxMeleeDefensePenalty;
+			_properties.Initiative += ::Lewd.Const.ClimaxInitiativePenalty;
+			_properties.Bravery += ::Lewd.Const.ClimaxResolveBonus;
+			_properties.Allure += ::Lewd.Const.ClimaxAllureBonus;
+		}
 	}
 
 	function onTurnEnd()

@@ -96,6 +96,11 @@ this.delicate_trait <- this.inherit("scripts/skills/traits/character_trait", {
 		{
 			actor.getSkills().add(this.new("scripts/skills/actives/pheromones_skill"));
 		}
+
+		// Seduction Arts perk tree
+		local bg = actor.getBackground();
+		if (bg != null && !bg.hasPerkGroup(::Const.Perks.SeductionArtsTree))
+			bg.addPerkGroup(::Const.Perks.SeductionArtsTree.Tree);
 	}
 
 	function onUpdate( _properties )

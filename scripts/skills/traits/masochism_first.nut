@@ -96,6 +96,11 @@ this.masochism_first <- this.inherit("scripts/skills/traits/character_trait", {
 		piercing_head.setBrush("piercing_nose");
 		piercing_head.Visible = true;
 		actor.setDirty(true);
+
+		// Endurance perk tree (requires Delicate)
+		local bg = actor.getBackground();
+		if (bg != null && actor.getSkills().hasSkill("trait.delicate") && !bg.hasPerkGroup(::Const.Perks.EnduranceTree))
+			bg.addPerkGroup(::Const.Perks.EnduranceTree.Tree);
 	}
 
 	function onRemoved()
@@ -125,7 +130,10 @@ this.masochism_first <- this.inherit("scripts/skills/traits/character_trait", {
 			local actor = this.getContainer().getActor();
 			if (actor.getPleasureMax() > 0)
 			{
-				local gain = this.Math.max(1, this.Math.floor(_damageHitpoints * ::Lewd.Const.PleasureFromDamageMasochismFirst));
+				local rate = ::Lewd.Const.PleasureFromDamageMasochismFirst;
+				if (actor.getSkills().hasSkill("perk.lewd_pain_feeds_pleasure"))
+					rate *= ::Lewd.Const.PainFeedsPleasureMult;
+				local gain = this.Math.max(1, this.Math.floor(_damageHitpoints * rate));
 				actor.addPleasure(gain);
 				this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(actor) + " feels a rush of pleasure from the pain (+" + gain + " pleasure)");
 			}

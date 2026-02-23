@@ -102,6 +102,11 @@ this.masochism_second <- this.inherit("scripts/skills/traits/character_trait", {
 		piercing_head.setBrush("piercing_nose_mouth");
 		piercing_head.Visible = true;
 		actor.setDirty(true);
+
+		// Endurance perk tree (requires Delicate)
+		local bg = actor.getBackground();
+		if (bg != null && actor.getSkills().hasSkill("trait.delicate") && !bg.hasPerkGroup(::Const.Perks.EnduranceTree))
+			bg.addPerkGroup(::Const.Perks.EnduranceTree.Tree);
 	}
 
 	function onRemoved()
@@ -132,7 +137,10 @@ this.masochism_second <- this.inherit("scripts/skills/traits/character_trait", {
 			local actor = this.getContainer().getActor();
 			if (actor.getPleasureMax() > 0)
 			{
-				local gain = this.Math.max(1, this.Math.floor(_damageHitpoints * ::Lewd.Const.PleasureFromDamageMasochismSecond));
+				local rate = ::Lewd.Const.PleasureFromDamageMasochismSecond;
+				if (actor.getSkills().hasSkill("perk.lewd_pain_feeds_pleasure"))
+					rate *= ::Lewd.Const.PainFeedsPleasureMult;
+				local gain = this.Math.max(1, this.Math.floor(_damageHitpoints * rate));
 				actor.addPleasure(gain);
 				this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(actor) + " revels in the pain (+" + gain + " pleasure)");
 			}

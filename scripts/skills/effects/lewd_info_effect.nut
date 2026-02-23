@@ -66,6 +66,13 @@ this.lewd_info_effect <- this.inherit("scripts/skills/skill", {
 		{
 			_properties.Allure += ::Lewd.Const.AllureFromOld;
 		}
+
+		// Enemy PleasureMax: humanoid enemies get base + Resolve-scaled PleasureMax
+		// Entities with MoraleState.Ignore are undead/constructs/beasts — skip them
+		if (!actor.isPlayerControlled() && actor.getMoraleState() != this.Const.MoraleState.Ignore)
+		{
+			_properties.PleasureMax += ::Lewd.Const.EnemyPleasureMaxBase + this.Math.floor(_properties.Bravery * ::Lewd.Const.EnemyPleasureMaxResolveScale);
+		}
 	}
 
 	function getTooltip()

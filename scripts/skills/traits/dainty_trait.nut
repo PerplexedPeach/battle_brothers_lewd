@@ -67,6 +67,11 @@ this.dainty_trait <- this.inherit("scripts/skills/traits/character_trait", {
 				player.getSprite("body").setHorizontalFlipping(false);
 			}
 		}, null);
+
+		// Seduction Arts perk tree
+		local bg = actor.getBackground();
+		if (bg != null && !bg.hasPerkGroup(::Const.Perks.SeductionArtsTree))
+			bg.addPerkGroup(::Const.Perks.SeductionArtsTree.Tree);
 	}
 
 	function onUpdate( _properties )
