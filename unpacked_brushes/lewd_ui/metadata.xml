@@ -12,4 +12,7 @@
   <sprite id="lewd_hands_t1" ic="FF4C4B4D" img="skills/lewd_hands_t1.png" />
   <sprite id="lewd_hands_t2" ic="FF4C4B4D" img="skills/lewd_hands_t2.png" />
   <sprite id="lewd_hands_t3" ic="FF4C4B4D" img="skills/lewd_hands_t3.png" />
+  <sprite id="lewd_feet_t1" ic="FF4C4B4D" img="skills/lewd_feet_t1.png" />
+  <sprite id="lewd_feet_t2" ic="FF4C4B4D" img="skills/lewd_feet_t2.png" />
+  <sprite id="lewd_feet_t3" ic="FF4C4B4D" img="skills/lewd_feet_t3.png" />
 </brush>
