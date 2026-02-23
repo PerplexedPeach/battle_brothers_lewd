@@ -78,6 +78,12 @@ this.masochism_third <- this.inherit("scripts/skills/traits/character_trait", {
 				icon = "ui/icons/special.png",
 				text = "Gains immunity against stuns"
 			},
+			{
+				id = 24,
+				type = "text",
+				icon = "ui/icons/pleasure.png",
+				text = "Converts [color=" + this.Const.UI.Color.PositiveValue + "]30%[/color] of hitpoint damage received into pleasure"
+			},
 		];
 
 

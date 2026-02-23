@@ -34,6 +34,12 @@ this.lewd_heels_skillup <- this.inherit("scripts/events/event", {
 			function start( _event )
 			{
 				local w = _event.m.Woman;
+
+				if (w == null)
+				{
+					logError("Trying to start lewd heels skillup event but no woman is set");
+					return;
+				}
 				// check heel skill is currently 0
 				local currentHeelSkill = w.getFlags().getAsInt("heelSkill");
 				local heelHeight = w.getFlags().getAsInt("heelHeight");

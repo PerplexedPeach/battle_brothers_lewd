@@ -72,6 +72,12 @@ this.masochism_second <- this.inherit("scripts/skills/traits/character_trait", {
 				icon = "ui/icons/special.png",
 				text = "Gains resistance against physical status effects"
 			},
+			{
+				id = 23,
+				type = "text",
+				icon = "ui/icons/pleasure.png",
+				text = "Converts [color=" + this.Const.UI.Color.PositiveValue + "]20%[/color] of hitpoint damage received into pleasure"
+			},
 		];
 
 

@@ -66,6 +66,12 @@ this.masochism_first <- this.inherit("scripts/skills/traits/character_trait", {
 				icon = "ui/icons/special.png",
 				text = "Only receive [color=" + this.Const.UI.Color.PositiveValue + "] 80%[/color] of any damage to hitpoints from attacks (stacks with other sources)"
 			},
+			{
+				id = 22,
+				type = "text",
+				icon = "ui/icons/pleasure.png",
+				text = "Converts [color=" + this.Const.UI.Color.PositiveValue + "]10%[/color] of hitpoint damage received into pleasure"
+			},
 		];
 
 
