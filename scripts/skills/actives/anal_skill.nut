@@ -1,4 +1,4 @@
-// Anal skill — Submit (T1) -> Take It (T2) -> Pain is Pleasure (T3)
+// Anal skill — Bend Over (T1) -> Rough It (T2) -> Breaking Point (T3)
 // T1 applies mount to SELF (enemy becomes mounter), T2/T3 require self-mounted
 // Requires masochism tiers for upgrades
 // TODO: Will eventually scale with explicit submission/domination tracker
@@ -14,8 +14,8 @@ this.anal_skill <- this.inherit("scripts/skills/actives/lewd_sex_skill", {
 		this.m.T3Debuff = null;
 		this.m.Tiers = [
 			{
-				Name = "Submit",
-				Description = "Submit to the target, allowing them to mount you and dealing pleasure to both.",
+				Name = "Bend Over",
+				Description = "Bend over for the target, allowing them to mount you and dealing pleasure to both.",
 				Icon = "skills/lewd_anal_t1.png",
 				IconDisabled = "skills/lewd_anal_t1_bw.png",
 				Overlay = "lewd_anal_t1",
@@ -26,8 +26,8 @@ this.anal_skill <- this.inherit("scripts/skills/actives/lewd_sex_skill", {
 				MountBonus = 0
 			},
 			{
-				Name = "Take It",
-				Description = "Endure what they give you, channeling the experience into pleasure for both.",
+				Name = "Rough It",
+				Description = "Endure the rough treatment, channeling the experience into pleasure for both.",
 				Icon = "skills/lewd_anal_t2.png",
 				IconDisabled = "skills/lewd_anal_t2_bw.png",
 				Overlay = "lewd_anal_t2",
@@ -38,8 +38,8 @@ this.anal_skill <- this.inherit("scripts/skills/actives/lewd_sex_skill", {
 				MountBonus = 0
 			},
 			{
-				Name = "Pain is Pleasure",
-				Description = "Embrace the agony completely, converting your suffering into devastating pleasure for the enemy. If you climax during this, deal massive bonus pleasure.",
+				Name = "Breaking Point",
+				Description = "Push yourself to the breaking point, converting agony into devastating pleasure for the enemy. If you climax during this, deal massive bonus pleasure.",
 				Icon = "skills/lewd_anal_t3.png",
 				IconDisabled = "skills/lewd_anal_t3_bw.png",
 				Overlay = "lewd_anal_t3",
@@ -156,7 +156,7 @@ this.anal_skill <- this.inherit("scripts/skills/actives/lewd_sex_skill", {
 			this.applyReverseMount(_user, target);
 			local pleasure = this.calculatePleasure(target);
 			target.addPleasure(pleasure);
-			this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(_user) + " submits to " + this.Const.UI.getColorizedEntityName(target) + " for " + pleasure + " pleasure");
+			this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(_user) + " bends over for  + this.Const.UI.getColorizedEntityName(target) + " for " + pleasure + " pleasure");
 		}
 		else
 		{
@@ -263,7 +263,7 @@ this.anal_skill <- this.inherit("scripts/skills/actives/lewd_sex_skill", {
 				id = 5,
 				type = "text",
 				icon = "ui/icons/special.png",
-				text = "Deals pleasure to the target through submission"
+				text = "Deals pleasure to the target through anal sex"
 			}
 		];
 
