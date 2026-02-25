@@ -156,7 +156,7 @@ this.anal_skill <- this.inherit("scripts/skills/actives/lewd_sex_skill", {
 			this.applyReverseMount(_user, target);
 			local pleasure = this.calculatePleasure(target);
 			target.addPleasure(pleasure);
-			this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(_user) + " bends over for  + this.Const.UI.getColorizedEntityName(target) + " for " + pleasure + " pleasure");
+			this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(_user) + " bends over for " + this.Const.UI.getColorizedEntityName(target) + " for " + pleasure + " pleasure");
 		}
 		else
 		{
