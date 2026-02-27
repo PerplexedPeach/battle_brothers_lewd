@@ -22,7 +22,9 @@ this.hands_skill <- this.inherit("scripts/skills/actives/lewd_sex_skill", {
 				BasePleasure = ::Lewd.Const.HandsT1BasePleasure,
 				BaseHitChance = ::Lewd.Const.HandsT1BaseHitChance,
 				MeleeSkillScale = ::Lewd.Const.HandsT1MeleeSkillScale,
-				MountBonus = 0
+				MountBonus = 0,
+				HitText = ["clumsily gropes", "awkwardly fondles"],
+				MissText = ["grope", "fondle"]
 			},
 			{
 				Name = "Handjob",
@@ -35,7 +37,9 @@ this.hands_skill <- this.inherit("scripts/skills/actives/lewd_sex_skill", {
 				BasePleasure = ::Lewd.Const.HandsT2BasePleasure,
 				BaseHitChance = ::Lewd.Const.HandsT2BaseHitChance,
 				MeleeSkillScale = ::Lewd.Const.HandsT2MeleeSkillScale,
-				MountBonus = ::Lewd.Const.HandsT2MountBonus
+				MountBonus = ::Lewd.Const.HandsT2MountBonus,
+				HitText = ["strokes", "caresses"],
+				MissText = ["stroke", "caress"]
 			},
 			{
 				Name = "Skilled Handjob",
@@ -48,7 +52,9 @@ this.hands_skill <- this.inherit("scripts/skills/actives/lewd_sex_skill", {
 				BasePleasure = ::Lewd.Const.HandsT3BasePleasure,
 				BaseHitChance = ::Lewd.Const.HandsT3BaseHitChance,
 				MeleeSkillScale = ::Lewd.Const.HandsT3MeleeSkillScale,
-				MountBonus = ::Lewd.Const.HandsT3MountBonus
+				MountBonus = ::Lewd.Const.HandsT3MountBonus,
+				HitText = ["skillfully pleasures", "expertly edges"],
+				MissText = ["pleasure", "edge"]
 			}
 		];
 		this.m.Name = this.m.Tiers[0].Name;
@@ -71,6 +77,8 @@ this.hands_skill <- this.inherit("scripts/skills/actives/lewd_sex_skill", {
 
 	function getHitChanceAgainst( _target )
 	{
+		if (this.isAutoHit(_target)) return 100;
+
 		local user = this.getContainer().getActor();
 		local allure = user.allure();
 		local resolve = _target.getBravery();

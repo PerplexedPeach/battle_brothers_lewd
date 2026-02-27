@@ -71,11 +71,16 @@ this.lewd_sex_skill <- this.inherit("scripts/skills/skill", {
 		return this.getTierConfig().BaseHitChance;
 	}
 
+	function isAutoHit( _target )
+	{
+		if (_target.getSkills().hasSkill("effects.open_invitation")) return true;
+		if (_target.getSkills().hasSkill("effects.lewd_horny")) return true;
+		return false;
+	}
+
 	function getHitChanceAgainst( _target )
 	{
-		// Open Invitation: target with this effect is auto-hit by sex abilities
-		if (_target.getSkills().hasSkill("effects.open_invitation"))
-			return 100;
+		if (this.isAutoHit(_target)) return 100;
 
 		local user = this.getContainer().getActor();
 		local allure = user.allure();
@@ -210,22 +215,23 @@ this.lewd_sex_skill <- this.inherit("scripts/skills/skill", {
 		local hitResult = this.rollHit(_user, target);
 		if (!hitResult.hit)
 		{
-			this.logMiss(_user, target, hitResult.chance, hitResult.roll);
+			this.logMiss(_user, target);
 			return true;
 		}
 
 		local pleasure = this.calculatePleasure(target);
 		target.addPleasure(pleasure, _user);
-		this.logHit(_user, target, pleasure, hitResult.chance, hitResult.roll);
+		this.logHit(_user, target, pleasure);
 		this.onHit(_user, target);
 		return true;
 	}
 
-	// Post-hit hook — base applies T3 debuff + self-pleasure
+	// Post-hit hook — base applies T3 debuff + self-pleasure + horny
 	function onHit( _user, _target )
 	{
 		this.applyT3Debuff(_target);
 		this.applySelfPleasure(_user, _target);
+		this.tryApplyHorny(_target);
 	}
 
 	function applyT3Debuff( _target )
@@ -272,13 +278,34 @@ this.lewd_sex_skill <- this.inherit("scripts/skills/skill", {
 		return { chance = chance, roll = roll, hit = roll <= chance };
 	}
 
-	function logMiss( _user, _target, _chance, _roll )
+	function logMiss( _user, _target )
 	{
-		this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(_user) + "'s " + this.getName() + " misses " + this.Const.UI.getColorizedEntityName(_target) + " (Chance: " + _chance + "%, Rolled: " + _roll + ")");
+		local cfg = this.getTierConfig();
+		local verb = cfg.MissText[this.Math.rand(0, cfg.MissText.len() - 1)];
+		this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(_user) + " tries to " + verb + " " + this.Const.UI.getColorizedEntityName(_target) + " but fails");
 	}
 
-	function logHit( _user, _target, _pleasure, _chance, _roll )
+	function logHit( _user, _target, _pleasure )
 	{
-		this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(_user) + " uses " + this.getName() + " on " + this.Const.UI.getColorizedEntityName(_target) + " for " + _pleasure + " pleasure (Chance: " + _chance + "%, Rolled: " + _roll + ")");
+		local cfg = this.getTierConfig();
+		local verb = cfg.HitText[this.Math.rand(0, cfg.HitText.len() - 1)];
+		this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(_user) + " " + verb + " " + this.Const.UI.getColorizedEntityName(_target) + " for " + _pleasure + " pleasure");
+	}
+
+	function tryApplyHorny( _target )
+	{
+		if (_target.getPleasureMax() <= 0) return;
+		if (this.Math.rand(1, 100) > ::Lewd.Const.HornyApplyChance) return;
+
+		if (_target.getSkills().hasSkill("effects.lewd_horny"))
+		{
+			local effect = _target.getSkills().getSkillByID("effects.lewd_horny");
+			effect.onRefresh();
+		}
+		else
+		{
+			local horny = this.new("scripts/skills/effects/lewd_horny_effect");
+			_target.getSkills().add(horny);
+		}
 	}
 });

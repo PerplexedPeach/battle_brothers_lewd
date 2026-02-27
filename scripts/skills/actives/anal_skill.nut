@@ -23,7 +23,9 @@ this.anal_skill <- this.inherit("scripts/skills/actives/lewd_sex_skill", {
 				Fatigue = ::Lewd.Const.AnalT1Fatigue,
 				BasePleasure = ::Lewd.Const.AnalT1BasePleasure,
 				BaseHitChance = ::Lewd.Const.AnalT1BaseHitChance,
-				MountBonus = 0
+				MountBonus = 0,
+				HitText = ["bends over for", "presents herself to"],
+				MissText = ["present to", "entice"]
 			},
 			{
 				Name = "Rough It",
@@ -35,7 +37,9 @@ this.anal_skill <- this.inherit("scripts/skills/actives/lewd_sex_skill", {
 				Fatigue = ::Lewd.Const.AnalT2Fatigue,
 				BasePleasure = ::Lewd.Const.AnalT2BasePleasure,
 				BaseHitChance = ::Lewd.Const.AnalT2BaseHitChance,
-				MountBonus = 0
+				MountBonus = 0,
+				HitText = ["endures the pounding from", "takes it from"],
+				MissText = ["take from", "endure"]
 			},
 			{
 				Name = "Breaking Point",
@@ -47,7 +51,9 @@ this.anal_skill <- this.inherit("scripts/skills/actives/lewd_sex_skill", {
 				Fatigue = ::Lewd.Const.AnalT3Fatigue,
 				BasePleasure = ::Lewd.Const.AnalT3BasePleasure,
 				BaseHitChance = ::Lewd.Const.AnalT3BaseHitChance,
-				MountBonus = 0
+				MountBonus = 0,
+				HitText = ["is broken by", "pushes to the limit with"],
+				MissText = ["endure", "take from"]
 			}
 		];
 		this.m.Name = this.m.Tiers[0].Name;
@@ -147,14 +153,15 @@ this.anal_skill <- this.inherit("scripts/skills/actives/lewd_sex_skill", {
 			local hitResult = this.rollHit(_user, target);
 			if (!hitResult.hit)
 			{
-				this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(_user) + "'s " + this.getName() + " fails (Chance: " + hitResult.chance + "%, Rolled: " + hitResult.roll + ")");
+				this.logMiss(_user, target);
 				return true;
 			}
 
 			this.applyReverseMount(_user, target);
 			local pleasure = this.calculatePleasure(target);
 			target.addPleasure(pleasure, _user);
-			this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(_user) + " bends over for " + this.Const.UI.getColorizedEntityName(target) + " for " + pleasure + " pleasure");
+			this.logHit(_user, target, pleasure);
+			this.tryApplyHorny(target);
 		}
 		else
 		{
@@ -162,7 +169,7 @@ this.anal_skill <- this.inherit("scripts/skills/actives/lewd_sex_skill", {
 			local hitResult = this.rollHit(_user, target);
 			if (!hitResult.hit)
 			{
-				this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(_user) + "'s " + this.getName() + " misses (Chance: " + hitResult.chance + "%, Rolled: " + hitResult.roll + ")");
+				this.logMiss(_user, target);
 				return true;
 			}
 
@@ -182,7 +189,10 @@ this.anal_skill <- this.inherit("scripts/skills/actives/lewd_sex_skill", {
 			}
 
 			target.addPleasure(pleasure, _user);
-			this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(_user) + " uses " + this.getName() + " on " + this.Const.UI.getColorizedEntityName(target) + " for " + pleasure + " pleasure" + (willClimax ? " (KAMIKAZE CLIMAX!)" : ""));
+			this.logHit(_user, target, pleasure);
+			if (willClimax)
+				this.Tactical.EventLog.log("KAMIKAZE CLIMAX!");
+			this.tryApplyHorny(target);
 
 			// refresh mount (whichever direction exists)
 			local mountedEffect = _user.getSkills().getSkillByID("effects.lewd_mounted");

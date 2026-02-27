@@ -22,7 +22,9 @@ this.feet_skill <- this.inherit("scripts/skills/actives/lewd_sex_skill", {
 				BasePleasure = ::Lewd.Const.FeetT1BasePleasure,
 				BaseHitChance = ::Lewd.Const.FeetT1BaseHitChance,
 				HeelSkillScale = ::Lewd.Const.FeetT1HeelSkillScale,
-				MountBonus = 0
+				MountBonus = 0,
+				HitText = ["teases with her toes", "playfully nudges"],
+				MissText = ["tease", "nudge"]
 			},
 			{
 				Name = "Footjob",
@@ -35,7 +37,9 @@ this.feet_skill <- this.inherit("scripts/skills/actives/lewd_sex_skill", {
 				BasePleasure = ::Lewd.Const.FeetT2BasePleasure,
 				BaseHitChance = ::Lewd.Const.FeetT2BaseHitChance,
 				HeelSkillScale = ::Lewd.Const.FeetT2HeelSkillScale,
-				MountBonus = ::Lewd.Const.FeetT2MountBonus
+				MountBonus = ::Lewd.Const.FeetT2MountBonus,
+				HitText = ["gives a footjob to", "works her feet on"],
+				MissText = ["rub", "stroke"]
 			},
 			{
 				Name = "Heel Domination",
@@ -48,7 +52,9 @@ this.feet_skill <- this.inherit("scripts/skills/actives/lewd_sex_skill", {
 				BasePleasure = ::Lewd.Const.FeetT3BasePleasure,
 				BaseHitChance = ::Lewd.Const.FeetT3BaseHitChance,
 				HeelSkillScale = ::Lewd.Const.FeetT3HeelSkillScale,
-				MountBonus = ::Lewd.Const.FeetT3MountBonus
+				MountBonus = ::Lewd.Const.FeetT3MountBonus,
+				HitText = ["grinds her heel into", "dominates with her heels"],
+				MissText = ["dominate", "grind into"]
 			}
 		];
 		this.m.Name = this.m.Tiers[0].Name;
@@ -71,6 +77,8 @@ this.feet_skill <- this.inherit("scripts/skills/actives/lewd_sex_skill", {
 
 	function getHitChanceAgainst( _target )
 	{
+		if (this.isAutoHit(_target)) return 100;
+
 		local user = this.getContainer().getActor();
 		local allure = user.allure();
 		local resolve = _target.getBravery();

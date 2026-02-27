@@ -4,7 +4,7 @@ this.entrancing_beauty_effect <- this.inherit("scripts/skills/skill", {
 	{
 		this.m.ID = "effects.entrancing_beauty";
 		this.m.Name = "Entrancing Beauty";
-		this.m.Description = "Your beauty enchants those around you, dazing them into submission.";
+		this.m.Description = "Your beauty enchants those around you, making them horny and vulnerable.";
 		this.m.Icon = "ui/perks/allure_effect.png";
 		// this.m.IconMini = "allure";
 		this.m.Type = this.Const.SkillType.StatusEffect;
@@ -44,7 +44,7 @@ this.entrancing_beauty_effect <- this.inherit("scripts/skills/skill", {
 				id = 16,
 				type = "text",
 				icon = "ui/icons/special.png",
-				text = "Chance to inflict \'Dazed\' (or on crit \'Stunned\') around you with chance scaling with [color=" + this.Const.UI.Color.PositiveValue + "]Allure (" + allure + ")[/color] and distance contested by their resolve."
+				text = "Chance to inflict \'Horny\' (or on crit \'Horny + Stunned\') around you with chance scaling with [color=" + this.Const.UI.Color.PositiveValue + "]Allure (" + allure + ")[/color] and distance contested by their resolve."
 			}
 		];
 
@@ -99,17 +99,27 @@ this.entrancing_beauty_effect <- this.inherit("scripts/skills/skill", {
 
 				if (roll < chance)
 				{
-					this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(entity) + " beholds " +this.Const.UI.getColorizedEntityName(actor) + "'s beauty " + " (Chance: " + chance + ", Rolled: " + roll + ") (" + allure + " allure vs " + resolve + " bravery)");
-					local daze = this.new("scripts/skills/effects/dazed_effect");
-					entity.getSkills().add(daze);
+					this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(entity) + " beholds " + this.Const.UI.getColorizedEntityName(actor) + "'s beauty");
+
+					if (!entity.getSkills().hasSkill("effects.lewd_horny"))
+					{
+						local horny = this.new("scripts/skills/effects/lewd_horny_effect");
+						entity.getSkills().add(horny);
+					}
+					else
+					{
+						entity.getSkills().getSkillByID("effects.lewd_horny").onRefresh();
+					}
+
 					if (roll < chance - ::Lewd.Const.CritChanceThreshold)
 					{
 						local stunned = this.new("scripts/skills/effects/stunned_effect");
 						entity.getSkills().add(stunned);
-						this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(entity) + " is dazed and stunned!");
-					} else
+						this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(entity) + " becomes horny and is stunned!");
+					}
+					else
 					{
-						this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(entity) + " is dazed!");
+						this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(entity) + " becomes horny!");
 					}
 
 					dazedEntities.push(entity);

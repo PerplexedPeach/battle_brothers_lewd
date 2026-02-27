@@ -311,6 +311,13 @@
 ::Lewd.Const.ShamelessClimaxPleasure <- 10; // pleasure dealt to sex partner on own climax
 ::Lewd.Const.TranscendenceClimaxAllure <- 10; // allure bonus during Climax (replaces penalties)
 
+// --- Horny Effect ---
+::Lewd.Const.HornyDuration <- 2;
+::Lewd.Const.HornyApplyChance <- 50;      // % on sex ability hit
+::Lewd.Const.HornyResolvePenalty <- -15;
+::Lewd.Const.HornyInitiativeMult <- 0.85; // -15%
+::Lewd.Const.HornyMeleeDefPenalty <- -5;
+
 // --- Enemy PleasureMax ---
 ::Lewd.Const.EnemyPleasureMaxBase <- 20;
 ::Lewd.Const.EnemyPleasureMaxResolveScale <- 1.0; // PleasureMax = base + Resolve * this

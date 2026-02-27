@@ -23,7 +23,9 @@ this.oral_skill <- this.inherit("scripts/skills/actives/lewd_sex_skill", {
 				BaseHitChance = ::Lewd.Const.OralT1BaseHitChance,
 				ResolveScale = ::Lewd.Const.OralT1ResolveScale,
 				AllureScale = ::Lewd.Const.OralT1AllureScale,
-				MountBonus = 0
+				MountBonus = 0,
+				HitText = ["clumsily licks", "sloppily kisses"],
+				MissText = ["lick", "kiss"]
 			},
 			{
 				Name = "Oral Service",
@@ -37,7 +39,9 @@ this.oral_skill <- this.inherit("scripts/skills/actives/lewd_sex_skill", {
 				BaseHitChance = ::Lewd.Const.OralT2BaseHitChance,
 				ResolveScale = ::Lewd.Const.OralT2ResolveScale,
 				AllureScale = ::Lewd.Const.OralT2AllureScale,
-				MountBonus = ::Lewd.Const.OralT2MountBonus
+				MountBonus = ::Lewd.Const.OralT2MountBonus,
+				HitText = ["services", "sucks off"],
+				MissText = ["service", "suck off"]
 			},
 			{
 				Name = "Deepthroat",
@@ -51,7 +55,9 @@ this.oral_skill <- this.inherit("scripts/skills/actives/lewd_sex_skill", {
 				BaseHitChance = ::Lewd.Const.OralT3BaseHitChance,
 				ResolveScale = ::Lewd.Const.OralT3ResolveScale,
 				AllureScale = ::Lewd.Const.OralT3AllureScale,
-				MountBonus = ::Lewd.Const.OralT3MountBonus
+				MountBonus = ::Lewd.Const.OralT3MountBonus,
+				HitText = ["deepthroats", "devours"],
+				MissText = ["deepthroat", "take"]
 			}
 		];
 		this.m.Name = this.m.Tiers[0].Name;
