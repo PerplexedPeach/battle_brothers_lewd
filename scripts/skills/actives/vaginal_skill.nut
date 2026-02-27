@@ -104,11 +104,6 @@ this.vaginal_skill <- this.inherit("scripts/skills/actives/lewd_sex_skill", {
 		if (pts >= ::Lewd.Const.MasteryVaginalSelfPleasureThreshold)
 			selfP = this.Math.floor(selfP * ::Lewd.Const.MasteryVaginalSelfPleasureMult);
 
-		// Resilient Body perk
-		local user = this.getContainer().getActor();
-		if (user.getSkills().hasSkill("perk.lewd_resilient_body"))
-			selfP = this.Math.floor(selfP * ::Lewd.Const.ResilientBodySelfPleasureMult);
-
 		return selfP;
 	}
 
@@ -145,7 +140,7 @@ this.vaginal_skill <- this.inherit("scripts/skills/actives/lewd_sex_skill", {
 
 			this.applyMount(_user, target);
 			local pleasure = this.calculatePleasure(target);
-			target.addPleasure(pleasure);
+			target.addPleasure(pleasure, _user);
 			this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(_user) + " straddles " + this.Const.UI.getColorizedEntityName(target) + " for " + pleasure + " pleasure");
 		}
 		else
@@ -159,7 +154,7 @@ this.vaginal_skill <- this.inherit("scripts/skills/actives/lewd_sex_skill", {
 			}
 
 			local pleasure = this.calculatePleasure(target);
-			target.addPleasure(pleasure);
+			target.addPleasure(pleasure, _user);
 			this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(_user) + " uses " + this.getName() + " on " + this.Const.UI.getColorizedEntityName(target) + " for " + pleasure + " pleasure");
 
 			// refresh mount duration (whichever direction exists)
@@ -172,7 +167,7 @@ this.vaginal_skill <- this.inherit("scripts/skills/actives/lewd_sex_skill", {
 		}
 
 		// self-pleasure
-		this.applySelfPleasure(_user);
+		this.applySelfPleasure(_user, target);
 
 		// T3 extra: AP debuff
 		this.applyT3Debuff(target);

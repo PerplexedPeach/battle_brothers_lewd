@@ -26,11 +26,7 @@ this.lewd_mastery_effect <- this.inherit("scripts/skills/skill", {
 	function addPoints( _add )
 	{
 		local add = _add;
-		// Experienced Lover perk bonus
-		if (this.getContainer().hasSkill("perk.lewd_experienced_lover"))
-		{
-			add = this.Math.max(1, this.Math.floor(add * ::Lewd.Const.MasteryExperiencedLoverMult));
-		}
+		// (Practiced Control no longer boosts mastery — it reduces reflection instead)
 		this.m.Points = this.Math.min(this.m.Points + add, this.m.Limit);
 	}
 

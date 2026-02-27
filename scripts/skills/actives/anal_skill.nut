@@ -107,9 +107,7 @@ this.anal_skill <- this.inherit("scripts/skills/actives/lewd_sex_skill", {
 		if (pts >= ::Lewd.Const.MasteryAnalSelfPleasureThreshold)
 			selfP = this.Math.floor(selfP * ::Lewd.Const.MasteryAnalSelfPleasureMult);
 
-		// Resilient Body perk
-		if (user.getSkills().hasSkill("perk.lewd_resilient_body"))
-			selfP = this.Math.floor(selfP * ::Lewd.Const.ResilientBodySelfPleasureMult);
+		// (Pliant Body reflection now handled centrally in applySelfPleasure)
 
 		return selfP;
 	}
@@ -155,7 +153,7 @@ this.anal_skill <- this.inherit("scripts/skills/actives/lewd_sex_skill", {
 
 			this.applyReverseMount(_user, target);
 			local pleasure = this.calculatePleasure(target);
-			target.addPleasure(pleasure);
+			target.addPleasure(pleasure, _user);
 			this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(_user) + " bends over for " + this.Const.UI.getColorizedEntityName(target) + " for " + pleasure + " pleasure");
 		}
 		else
@@ -183,7 +181,7 @@ this.anal_skill <- this.inherit("scripts/skills/actives/lewd_sex_skill", {
 				}
 			}
 
-			target.addPleasure(pleasure);
+			target.addPleasure(pleasure, _user);
 			this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(_user) + " uses " + this.getName() + " on " + this.Const.UI.getColorizedEntityName(target) + " for " + pleasure + " pleasure" + (willClimax ? " (KAMIKAZE CLIMAX!)" : ""));
 
 			// refresh mount (whichever direction exists)
@@ -196,7 +194,7 @@ this.anal_skill <- this.inherit("scripts/skills/actives/lewd_sex_skill", {
 		}
 
 		// self-pleasure
-		this.applySelfPleasure(_user);
+		this.applySelfPleasure(_user, target);
 
 		// self HP damage
 		local selfDmg = this.getSelfDamage();

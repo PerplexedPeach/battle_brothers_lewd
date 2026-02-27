@@ -82,7 +82,7 @@
 ::Lewd.Const.MasteryPointGainBaseChance <- 10; // base % chance to gain a point per skill use
 ::Lewd.Const.MasteryPointGainAPMultiplier <- 1.5; // chance += floor(AP^2 * this)
 ::Lewd.Const.MasteryCombatBonus <- 2; // bonus points per battle if associated skill used
-::Lewd.Const.MasteryExperiencedLoverMult <- 1.5; // multiplier from Experienced Lover perk
+// (MasteryPracticedControlMult removed — Practiced Control now reduces reflection instead)
 
 // mastery limits per body part
 ::Lewd.Const.MasteryLimitOral <- 100;
@@ -299,12 +299,16 @@
 ::Lewd.Const.SensualFocusPleasureMult <- 1.1; // +10% pleasure dealt
 ::Lewd.Const.AlluringPresenceAllure <- 5;
 ::Lewd.Const.AlluringPresencePleasureMax <- 10;
-::Lewd.Const.PleasureOverflowSplashPct <- 0.25; // 25% splash to adjacent
+::Lewd.Const.SensualFocusOpenInvitationMult <- 1.15; // +15% additional pleasure when Open Invitation active (stacks with base 10%)
+::Lewd.Const.PracticedControlReflectionMult <- 0.5; // -50% self-pleasure (reflection) from sex abilities
+::Lewd.Const.InsatiableAPGain <- 3; // AP gained when actively bringing someone to climax
 ::Lewd.Const.EmbracePainPleasureMax <- 5;
 ::Lewd.Const.EmbracePainFatigueRestore <- 1; // per self-pleasure point
-::Lewd.Const.WillingVictimAllure <- 5; // while grappled/mounted
-::Lewd.Const.ResilientBodySelfPleasureMult <- 0.8; // -20% self-pleasure
+::Lewd.Const.WillingVictimAllure <- 10; // while grappled/mounted (was 5)
+::Lewd.Const.PliantBodyReflectionMult <- 1.5; // +50% pleasure reflection dealt to partner
 ::Lewd.Const.PainFeedsPleasureMult <- 1.5; // masochism damage-to-pleasure +50%
+::Lewd.Const.PainFeedsPleasureInjuryMult <- 1.33; // +33% injury threshold
+::Lewd.Const.ShamelessClimaxPleasure <- 10; // pleasure dealt to sex partner on own climax
 ::Lewd.Const.TranscendenceClimaxAllure <- 10; // allure bonus during Climax (replaces penalties)
 
 // --- Enemy PleasureMax ---

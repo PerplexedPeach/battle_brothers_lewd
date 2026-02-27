@@ -37,6 +37,7 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC" function()
 	{
 		// Add Pleasure as a member variable on actor (same pattern as m.Fatigue)
 		q.m.Pleasure <- 0;
+		q.m.LastPleasureSourceID <- -1; // ID of actor who last dealt pleasure (for Insatiable perk)
 
 		// Add lewd_glow sprite layer for pheromone visual effects, and add lewd_info_effect to all actors
 		q.onInit = @(__original) function()
@@ -92,7 +93,9 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC" function()
 			return this.Math.minf(1.0, this.m.Pleasure / this.Math.maxf(1.0, this.getPleasureMax()));
 		}
 
-		q.addPleasure <- function( _amount ) {
+		q.addPleasure <- function( _amount, _source = null ) {
+			if (_source != null)
+				this.m.LastPleasureSourceID = _source.getID();
 			local max = this.getPleasureMax();
 			if (max <= 0) return;
 			local amount = _amount;

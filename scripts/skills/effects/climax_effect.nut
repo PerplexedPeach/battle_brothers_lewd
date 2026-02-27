@@ -87,7 +87,7 @@ this.climax_effect <- this.inherit("scripts/skills/skill", {
 			this.Sound.play(this.m.SoundOnUse[this.Math.rand(0, this.m.SoundOnUse.len() - 1)], this.Const.Sound.Volume.Skill, actor.getPos());
 			this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(actor) + " reaches climax!");
 
-			// Shameless perk: daze adjacent enemies on own climax
+			// Shameless perk: daze adjacent enemies and deal pleasure to sex partner on own climax
 			if (actor.getSkills().hasSkill("perk.lewd_shameless") && actor.isPlacedOnMap())
 			{
 				local tile = actor.getTile();
@@ -107,48 +107,31 @@ this.climax_effect <- this.inherit("scripts/skills/skill", {
 						}
 					}
 				}
+
+				// Deal pleasure to mount partner on own climax
+				local partner = null;
+				local mountedEffect = actor.getSkills().getSkillByID("effects.lewd_mounted");
+				local mountingEffect = actor.getSkills().getSkillByID("effects.lewd_mounting");
+				if (mountedEffect != null)
+					partner = this.Tactical.getEntityByID(mountedEffect.getMounterID());
+				else if (mountingEffect != null)
+					partner = this.Tactical.getEntityByID(mountingEffect.getTargetID());
+
+				if (partner != null && partner.isAlive() && partner.getPleasureMax() > 0)
+				{
+					partner.addPleasure(::Lewd.Const.ShamelessClimaxPleasure, actor);
+					this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(partner) + " receives " + ::Lewd.Const.ShamelessClimaxPleasure + " pleasure from the shameless climax!");
+				}
 			}
 
-			// Pleasure Overflow: when an enemy climaxes, check if any adjacent player ally has the perk
-			// If so, splash pleasure to adjacent enemies of the climaxing entity
-			if (!actor.isPlayerControlled())
+			// Insatiable perk: grant AP to whoever actively caused this climax
+			if (actor.m.LastPleasureSourceID >= 0)
 			{
-				local hasOverflow = false;
-				local tile = actor.getTile();
-				for (local i = 0; i < 6; i++)
+				local source = this.Tactical.getEntityByID(actor.m.LastPleasureSourceID);
+				if (source != null && source.isAlive() && source.getSkills().hasSkill("perk.lewd_insatiable"))
 				{
-					if (!hasOverflow && tile.hasNextTile(i))
-					{
-						local nextTile = tile.getNextTile(i);
-						if (nextTile.IsOccupiedByActor)
-						{
-							local adj = nextTile.getEntity();
-							if (adj != null && adj.isAlliedWith(actor) == false && adj.isAlive() && adj.getSkills().hasSkill("perk.lewd_pleasure_overflow"))
-								hasOverflow = true;
-						}
-					}
-				}
-
-				if (hasOverflow)
-				{
-					local splashAmount = this.Math.max(1, this.Math.floor(actor.getPleasureMax() * ::Lewd.Const.PleasureOverflowSplashPct));
-					for (local i = 0; i < 6; i++)
-					{
-						if (tile.hasNextTile(i))
-						{
-							local nextTile = tile.getNextTile(i);
-							if (nextTile.IsOccupiedByActor)
-							{
-								local adj = nextTile.getEntity();
-								// splash to other enemies adjacent to the climaxing enemy (not the player)
-								if (adj != null && !adj.isPlayerControlled() && adj.getID() != actor.getID() && adj.isAlive() && adj.getPleasureMax() > 0)
-								{
-									adj.addPleasure(splashAmount);
-									this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(adj) + " receives " + splashAmount + " splash pleasure!");
-								}
-							}
-						}
-					}
+					source.setActionPoints(this.Math.min(source.getActionPointsMax(), source.getActionPoints() + ::Lewd.Const.InsatiableAPGain));
+					this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(source) + " gains +" + ::Lewd.Const.InsatiableAPGain + " AP from Insatiable!");
 				}
 			}
 		}

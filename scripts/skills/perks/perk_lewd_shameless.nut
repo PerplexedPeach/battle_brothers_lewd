@@ -1,5 +1,5 @@
-// Shameless: Own Climax also dazes adjacent enemies (shared ecstasy)
-// Hooks into climax_effect onAdded to apply daze to adjacent
+// Shameless: Own Climax dazes adjacent enemies + deals pleasure to sex partner
+// Hooks into climax_effect onAdded to apply daze and partner pleasure
 this.perk_lewd_shameless <- this.inherit("scripts/skills/skill", {
 	m = {},
 	function create()

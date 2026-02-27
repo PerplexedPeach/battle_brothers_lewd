@@ -73,6 +73,10 @@ this.lewd_sex_skill <- this.inherit("scripts/skills/skill", {
 
 	function getHitChanceAgainst( _target )
 	{
+		// Open Invitation: target with this effect is auto-hit by sex abilities
+		if (_target.getSkills().hasSkill("effects.open_invitation"))
+			return 100;
+
 		local user = this.getContainer().getActor();
 		local allure = user.allure();
 		local resolve = _target.getBravery();
@@ -166,7 +170,12 @@ this.lewd_sex_skill <- this.inherit("scripts/skills/skill", {
 
 		// Sensual Focus perk
 		if (user.getSkills().hasSkill("perk.lewd_sensual_focus"))
+		{
 			pleasure = this.Math.floor(pleasure * ::Lewd.Const.SensualFocusPleasureMult);
+			// Open Invitation: additional +15% pleasure when active
+			if (user.getSkills().hasSkill("effects.open_invitation"))
+				pleasure = this.Math.floor(pleasure * ::Lewd.Const.SensualFocusOpenInvitationMult);
+		}
 
 		return this.Math.max(1, pleasure);
 	}
@@ -206,7 +215,7 @@ this.lewd_sex_skill <- this.inherit("scripts/skills/skill", {
 		}
 
 		local pleasure = this.calculatePleasure(target);
-		target.addPleasure(pleasure);
+		target.addPleasure(pleasure, _user);
 		this.logHit(_user, target, pleasure, hitResult.chance, hitResult.roll);
 		this.onHit(_user, target);
 		return true;
@@ -216,7 +225,7 @@ this.lewd_sex_skill <- this.inherit("scripts/skills/skill", {
 	function onHit( _user, _target )
 	{
 		this.applyT3Debuff(_target);
-		this.applySelfPleasure(_user);
+		this.applySelfPleasure(_user, _target);
 	}
 
 	function applyT3Debuff( _target )
@@ -230,10 +239,21 @@ this.lewd_sex_skill <- this.inherit("scripts/skills/skill", {
 		_target.getSkills().add(debuff);
 	}
 
-	function applySelfPleasure( _user )
+	function applySelfPleasure( _user, _target = null )
 	{
 		local selfP = this.getSelfPleasure();
-		if (selfP > 0 && _user.getPleasureMax() > 0)
+		if (selfP <= 0 || _user.getPleasureMax() <= 0)
+			return;
+
+		// Practiced Control: user receives less reflection
+		if (_user.getSkills().hasSkill("perk.lewd_practiced_control"))
+			selfP = this.Math.floor(selfP * ::Lewd.Const.PracticedControlReflectionMult);
+
+		// Pliant Body: target's body gives more pleasure back to user
+		if (_target != null && _target.getSkills().hasSkill("perk.lewd_pliant_body"))
+			selfP = this.Math.floor(selfP * ::Lewd.Const.PliantBodyReflectionMult);
+
+		if (selfP > 0)
 			_user.addPleasure(selfP);
 	}
 
