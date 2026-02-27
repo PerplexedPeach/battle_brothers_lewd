@@ -1,7 +1,6 @@
 // Anal skill — Bend Over (T1) -> Rough It (T2) -> Breaking Point (T3)
 // T1 applies mount to SELF (enemy becomes mounter), T2/T3 require self-mounted
 // Requires masochism tiers for upgrades
-// TODO: Will eventually scale with explicit submission/domination tracker
 this.anal_skill <- this.inherit("scripts/skills/actives/lewd_sex_skill", {
 	m = {},
 	function create()
@@ -10,7 +9,7 @@ this.anal_skill <- this.inherit("scripts/skills/actives/lewd_sex_skill", {
 		this.m.ID = "actives.lewd_anal";
 		this.m.MasteryID = "effects.lewd_mastery_anal";
 		this.m.PerkID = "perk.lewd_offering";
-		this.m.ScalingText = "submission";
+		this.m.ScalingText = "submission and masochism";
 		this.m.T3Debuff = null;
 		this.m.Tiers = [
 			{
@@ -23,6 +22,7 @@ this.anal_skill <- this.inherit("scripts/skills/actives/lewd_sex_skill", {
 				Fatigue = ::Lewd.Const.AnalT1Fatigue,
 				BasePleasure = ::Lewd.Const.AnalT1BasePleasure,
 				BaseHitChance = ::Lewd.Const.AnalT1BaseHitChance,
+				SubScale = ::Lewd.Const.AnalT1SubScale,
 				MountBonus = 0,
 				HitText = ["bends over for", "presents herself to"],
 				MissText = ["present to", "entice"]
@@ -37,6 +37,7 @@ this.anal_skill <- this.inherit("scripts/skills/actives/lewd_sex_skill", {
 				Fatigue = ::Lewd.Const.AnalT2Fatigue,
 				BasePleasure = ::Lewd.Const.AnalT2BasePleasure,
 				BaseHitChance = ::Lewd.Const.AnalT2BaseHitChance,
+				SubScale = ::Lewd.Const.AnalT2SubScale,
 				MountBonus = 0,
 				HitText = ["endures the pounding from", "takes it from"],
 				MissText = ["take from", "endure"]
@@ -51,6 +52,7 @@ this.anal_skill <- this.inherit("scripts/skills/actives/lewd_sex_skill", {
 				Fatigue = ::Lewd.Const.AnalT3Fatigue,
 				BasePleasure = ::Lewd.Const.AnalT3BasePleasure,
 				BaseHitChance = ::Lewd.Const.AnalT3BaseHitChance,
+				SubScale = ::Lewd.Const.AnalT3SubScale,
 				MountBonus = 0,
 				HitText = ["is broken by", "pushes to the limit with"],
 				MissText = ["endure", "take from"]
@@ -83,12 +85,20 @@ this.anal_skill <- this.inherit("scripts/skills/actives/lewd_sex_skill", {
 
 	function calculateStatPleasure( _target )
 	{
-		// TODO: will scale with submission tracker once implemented
+		local user = this.getContainer().getActor();
 		local tier = this.getTier();
-		local masoTier = ::Lewd.Mastery.getMasoTier(this.getContainer().getActor());
-		if (tier >= 3) return masoTier * ::Lewd.Const.AnalT3MasoTierBonus;
-		if (tier >= 2) return masoTier * ::Lewd.Const.AnalT2MasoTierBonus;
-		return 0;
+		local cfg = this.getTierConfig();
+		local masoTier = ::Lewd.Mastery.getMasoTier(user);
+		local subScore = ::Lewd.Mastery.getSubScore(user);
+		local pleasure = 0;
+
+		if (tier >= 3) pleasure = masoTier * ::Lewd.Const.AnalT3MasoTierBonus;
+		else if (tier >= 2) pleasure = masoTier * ::Lewd.Const.AnalT2MasoTierBonus;
+
+		if (subScore > 0)
+			pleasure += this.Math.floor(subScore * cfg.SubScale);
+
+		return pleasure;
 	}
 
 	function calculateMasteryPleasureBonus()

@@ -8,7 +8,7 @@ this.hands_skill <- this.inherit("scripts/skills/actives/lewd_sex_skill", {
 		this.m.ID = "actives.lewd_hands";
 		this.m.MasteryID = "effects.lewd_mastery_hands";
 		this.m.PerkID = "perk.lewd_nimble_fingers";
-		this.m.ScalingText = "Melee Skill";
+		this.m.ScalingText = "Melee Skill and Dominance";
 		this.m.T3Debuff = { Init = ::Lewd.Const.HandsT3InitDebuff, Duration = ::Lewd.Const.HandsT3DebuffDuration };
 		this.m.Tiers = [
 			{
@@ -22,6 +22,7 @@ this.hands_skill <- this.inherit("scripts/skills/actives/lewd_sex_skill", {
 				BasePleasure = ::Lewd.Const.HandsT1BasePleasure,
 				BaseHitChance = ::Lewd.Const.HandsT1BaseHitChance,
 				MeleeSkillScale = ::Lewd.Const.HandsT1MeleeSkillScale,
+				DomScale = ::Lewd.Const.HandsT1DomScale,
 				MountBonus = 0,
 				HitText = ["clumsily gropes", "awkwardly fondles"],
 				MissText = ["grope", "fondle"]
@@ -37,6 +38,7 @@ this.hands_skill <- this.inherit("scripts/skills/actives/lewd_sex_skill", {
 				BasePleasure = ::Lewd.Const.HandsT2BasePleasure,
 				BaseHitChance = ::Lewd.Const.HandsT2BaseHitChance,
 				MeleeSkillScale = ::Lewd.Const.HandsT2MeleeSkillScale,
+				DomScale = ::Lewd.Const.HandsT2DomScale,
 				MountBonus = ::Lewd.Const.HandsT2MountBonus,
 				HitText = ["strokes", "caresses"],
 				MissText = ["stroke", "caress"]
@@ -52,6 +54,7 @@ this.hands_skill <- this.inherit("scripts/skills/actives/lewd_sex_skill", {
 				BasePleasure = ::Lewd.Const.HandsT3BasePleasure,
 				BaseHitChance = ::Lewd.Const.HandsT3BaseHitChance,
 				MeleeSkillScale = ::Lewd.Const.HandsT3MeleeSkillScale,
+				DomScale = ::Lewd.Const.HandsT3DomScale,
 				MountBonus = ::Lewd.Const.HandsT3MountBonus,
 				HitText = ["skillfully pleasures", "expertly edges"],
 				MissText = ["pleasure", "edge"]
@@ -94,7 +97,12 @@ this.hands_skill <- this.inherit("scripts/skills/actives/lewd_sex_skill", {
 	function calculateStatPleasure( _target )
 	{
 		local user = this.getContainer().getActor();
-		return this.Math.floor(user.getCurrentProperties().getMeleeSkill() * this.getTierConfig().MeleeSkillScale);
+		local cfg = this.getTierConfig();
+		local pleasure = this.Math.floor(user.getCurrentProperties().getMeleeSkill() * cfg.MeleeSkillScale);
+		local domScore = ::Lewd.Mastery.getDomScore(user);
+		if (domScore > 0)
+			pleasure += this.Math.floor(domScore * cfg.DomScale);
+		return pleasure;
 	}
 
 	function calculateMasteryPleasureBonus()

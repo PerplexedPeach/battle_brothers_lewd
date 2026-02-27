@@ -134,6 +134,22 @@ this.climax_effect <- this.inherit("scripts/skills/skill", {
 					this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(source) + " gains +" + ::Lewd.Const.InsatiableAPGain + " AP from Insatiable!");
 				}
 			}
+
+			// Dom/Sub tracking: award points on climax
+			local sourceID = actor.m.LastPleasureSourceID;
+			if (sourceID >= 0 && sourceID != actor.getID())
+			{
+				// Someone else actively caused this climax
+				// Actor shifts Sub (-1)
+				::Lewd.Mastery.addDomSub(actor, -1);
+
+				// Source shifts Dom (+1)
+				local domSource = this.Tactical.getEntityByID(sourceID);
+				if (domSource != null && domSource.isAlive())
+				{
+					::Lewd.Mastery.addDomSub(domSource, 1);
+				}
+			}
 		}
 	}
 

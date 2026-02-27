@@ -249,7 +249,6 @@
 ::Lewd.Const.AnalT1SelfPleasure <- 8;
 ::Lewd.Const.AnalT1SelfDamage <- 4; // HP damage to self
 ::Lewd.Const.AnalT1BaseHitChance <- 60;
-// TODO: AnalTxSubmissionScale will be added once submission/domination tracker is implemented
 
 ::Lewd.Const.AnalT2AP <- 4;
 ::Lewd.Const.AnalT2Fatigue <- 12;
@@ -317,6 +316,22 @@
 ::Lewd.Const.HornyResolvePenalty <- -15;
 ::Lewd.Const.HornyInitiativeMult <- 0.85; // -15%
 ::Lewd.Const.HornyMeleeDefPenalty <- -5;
+
+// --- Dom/Sub System ---
+::Lewd.Const.DomSubCap <- 30;
+::Lewd.Const.DomSubTier2 <- 10;
+::Lewd.Const.DomSubTier3 <- 20;
+::Lewd.Const.DomSubTier4 <- 30;
+
+// Hands dom scaling (bonus pleasure per dom point, per tier)
+::Lewd.Const.HandsT1DomScale <- 0.15;
+::Lewd.Const.HandsT2DomScale <- 0.2;
+::Lewd.Const.HandsT3DomScale <- 0.25;
+
+// Anal sub scaling (bonus pleasure per sub point, per tier)
+::Lewd.Const.AnalT1SubScale <- 0.3;
+::Lewd.Const.AnalT2SubScale <- 0.4;
+::Lewd.Const.AnalT3SubScale <- 0.5;
 
 // --- Enemy PleasureMax ---
 ::Lewd.Const.EnemyPleasureMaxBase <- 20;

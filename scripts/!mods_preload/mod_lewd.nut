@@ -57,6 +57,7 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC" function()
 			};
 			__original();
 			this.getSkills().add(this.new("scripts/skills/effects/lewd_info_effect"));
+			this.getSkills().add(this.new("scripts/skills/effects/lewd_subdom_effect"));
 		}
 
 		// Render callback for animated effects
@@ -96,6 +97,8 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC" function()
 		q.addPleasure <- function( _amount, _source = null ) {
 			if (_source != null)
 				this.m.LastPleasureSourceID = _source.getID();
+			else
+				this.m.LastPleasureSourceID = -1;
 			local max = this.getPleasureMax();
 			if (max <= 0) return;
 			local amount = _amount;

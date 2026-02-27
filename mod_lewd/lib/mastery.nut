@@ -41,6 +41,32 @@
 	return this.Math.floor(fatPct * ::Lewd.Const.SexFatigueVulnerabilityBonus);
 };
 
+// --- Dom/Sub Score ---
+
+::Lewd.Mastery.getDomSub <- function( _actor )
+{
+	return _actor.getFlags().getAsInt("lewdDomSub");
+};
+
+// Returns 0-30, positive only (how dominant)
+::Lewd.Mastery.getDomScore <- function( _actor )
+{
+	return this.Math.max(0, _actor.getFlags().getAsInt("lewdDomSub"));
+};
+
+// Returns 0-30, positive only (how submissive)
+::Lewd.Mastery.getSubScore <- function( _actor )
+{
+	return this.Math.max(0, -_actor.getFlags().getAsInt("lewdDomSub"));
+};
+
+::Lewd.Mastery.addDomSub <- function( _actor, _amount )
+{
+	local cur = _actor.getFlags().getAsInt("lewdDomSub");
+	local next = this.Math.max(-::Lewd.Const.DomSubCap, this.Math.min(::Lewd.Const.DomSubCap, cur + _amount));
+	_actor.getFlags().set("lewdDomSub", next);
+};
+
 // Check if two actors are in a mount relationship (either direction)
 // Returns true if _user is mounting _target OR _target is mounting _user
 ::Lewd.Mastery.isMountedWith <- function( _user, _target )
