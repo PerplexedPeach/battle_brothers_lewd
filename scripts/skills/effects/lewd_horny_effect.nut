@@ -4,7 +4,8 @@
 // Lasts 2 turns, refreshable
 this.lewd_horny_effect <- this.inherit("scripts/skills/skill", {
 	m = {
-		TurnsLeft = 2
+		TurnsLeft = 2,
+		HasAIBehavior = false
 	},
 	function create()
 	{
@@ -79,6 +80,27 @@ this.lewd_horny_effect <- this.inherit("scripts/skills/skill", {
 		}
 
 		this.m.TurnsLeft = ::Lewd.Const.HornyDuration;
+
+		// AI integration: grant sex skills and inject behavior for non-player male humanoids
+		if (!actor.isPlayerControlled() && actor.getGender() != 1 && actor.getMoraleState() != this.Const.MoraleState.Ignore)
+		{
+			// Grant male sex skills if not already present
+			if (!actor.getSkills().hasSkill("actives.male_grope"))
+			{
+				actor.getSkills().add(this.new("scripts/skills/actives/male_grope_skill"));
+				actor.getSkills().add(this.new("scripts/skills/actives/male_force_oral_skill"));
+				actor.getSkills().add(this.new("scripts/skills/actives/male_penetrate_skill"));
+			}
+
+			// Inject AI horny behaviors into existing agent
+			local agent = actor.getAIAgent();
+			if (agent != null && !this.m.HasAIBehavior)
+			{
+				agent.addBehavior(this.new("scripts/ai/tactical/behaviors/ai_horny"));
+				agent.addBehavior(this.new("scripts/ai/tactical/behaviors/ai_horny_engage"));
+				this.m.HasAIBehavior = true;
+			}
+		}
 	}
 
 	function onRefresh()
@@ -104,6 +126,18 @@ this.lewd_horny_effect <- this.inherit("scripts/skills/skill", {
 	function onRemoved()
 	{
 		local actor = this.getContainer().getActor();
+
+		// Remove AI behaviors if we injected them
+		if (this.m.HasAIBehavior)
+		{
+			local agent = actor.getAIAgent();
+			if (agent != null)
+			{
+				agent.removeBehavior(::Lewd.Const.AIBehaviorIDHorny);
+				agent.removeBehavior(::Lewd.Const.AIBehaviorIDHornyEngage);
+			}
+			this.m.HasAIBehavior = false;
+		}
 
 		if (actor.hasSprite("status_stunned") && !this.getContainer().hasSkill("effects.stunned") && !this.getContainer().hasSkill("effects.dazed"))
 		{

@@ -32,6 +32,16 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC" function()
 			::include(file);
 	}
 
+	// Register AI behavior IDs for horny behaviors
+	local count = ::Const.AI.Behavior.ID.COUNT;
+	::Const.AI.Behavior.ID.LewdHorny <- count++;
+	::Const.AI.Behavior.ID.LewdHornyEngage <- count++;
+	::Const.AI.Behavior.ID.COUNT = count;
+	::Const.AI.Behavior.Name.push("LewdHorny");
+	::Const.AI.Behavior.Name.push("LewdHornyEngage");
+	::Lewd.Const.AIBehaviorIDHorny = ::Const.AI.Behavior.ID.LewdHorny;
+	::Lewd.Const.AIBehaviorIDHornyEngage = ::Const.AI.Behavior.ID.LewdHornyEngage;
+
 	// TODO when these get large, refactor out into separate files and include them
 	mod.hook("scripts/entity/tactical/actor", function (q)
 	{

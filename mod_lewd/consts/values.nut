@@ -333,6 +333,38 @@
 ::Lewd.Const.AnalT2SubScale <- 0.4;
 ::Lewd.Const.AnalT3SubScale <- 0.5;
 
+// --- Male Sex Abilities ---
+::Lewd.Const.MaleGropeAP <- 3;
+::Lewd.Const.MaleGropeFatigue <- 8;
+::Lewd.Const.MaleGropeBasePleasure <- 5;
+::Lewd.Const.MaleGropeMeleeSkillScale <- 0.08;
+::Lewd.Const.MaleGropeBaseHitChance <- 70;
+
+::Lewd.Const.MaleForceOralAP <- 5;
+::Lewd.Const.MaleForceOralFatigue <- 15;
+::Lewd.Const.MaleForceOralBasePleasure <- 4;
+::Lewd.Const.MaleForceOralMeleeSkillScale <- 0.025;
+::Lewd.Const.MaleForceOralBaseHitChance <- 80;
+::Lewd.Const.MaleForceOralResolveDebuff <- -5;
+::Lewd.Const.MaleForceOralSelfPleasure <- 10;
+
+::Lewd.Const.MalePenetrateAP <- 6;
+::Lewd.Const.MalePenetrateFatigue <- 20;
+::Lewd.Const.MalePenetrateBasePleasure <- 15;
+::Lewd.Const.MalePenetrateMeleeSkillScale <- 0.12;
+::Lewd.Const.MalePenetrateBaseHitChance <- 60;
+::Lewd.Const.MalePenetrateMountedHitBonus <- 20;
+::Lewd.Const.MalePenetrateMountedPleasureBonus <- 5;
+::Lewd.Const.MalePenetrateSelfPleasure <- 8;
+
+// --- Horny AI ---
+::Lewd.Const.HornyAIScore <- 250;
+::Lewd.Const.HornyAIEngageScore <- 120;
+::Lewd.Const.HornyAIEngageAllurePerTile <- 10; // allure penalty per tile of distance when scoring targets
+::Lewd.Const.HornyAIEngageAllureNorm <- 30.0; // normalizer — 30 adjusted allure = 1.0x score
+::Lewd.Const.AIBehaviorIDHorny <- 0; // set dynamically in mod_lewd.nut via Const.AI.Behavior.ID.COUNT
+::Lewd.Const.AIBehaviorIDHornyEngage <- 0; // set dynamically in mod_lewd.nut via Const.AI.Behavior.ID.COUNT
+
 // --- Enemy PleasureMax ---
 ::Lewd.Const.EnemyPleasureMaxBase <- 20;
 ::Lewd.Const.EnemyPleasureMaxResolveScale <- 1.0; // PleasureMax = base + Resolve * this
