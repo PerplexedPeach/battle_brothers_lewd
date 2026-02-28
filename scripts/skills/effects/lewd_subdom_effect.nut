@@ -8,7 +8,7 @@ this.lewd_subdom_effect <- this.inherit("scripts/skills/skill", {
 		this.m.ID = "effects.lewd_subdom";
 		this.m.Name = "";
 		this.m.Description = "";
-		this.m.Icon = "skills/lewd_dom.png";
+		this.m.Icon = "skills/lewd_dom_t1.png";
 		this.m.Type = this.Const.SkillType.StatusEffect;
 		this.m.Order = this.Const.SkillOrder.VeryLast;
 		this.m.IsActive = false;
@@ -107,10 +107,8 @@ this.lewd_subdom_effect <- this.inherit("scripts/skills/skill", {
 		{
 			this.m.CurrentTier = tier;
 			this.m.IsDom = isDom;
-			if (isDom)
-				this.m.Icon = "skills/lewd_dom.png";
-			else
-				this.m.Icon = "skills/lewd_sub.png";
+			local prefix = isDom ? "skills/lewd_dom_t" : "skills/lewd_sub_t";
+			this.m.Icon = prefix + (tier > 0 ? tier : 1) + ".png";
 		}
 	}
 
