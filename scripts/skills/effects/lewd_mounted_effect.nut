@@ -83,6 +83,12 @@ this.lewd_mounted_effect <- this.inherit("scripts/skills/skill", {
 		this.m.TurnsLeft = ::Lewd.Const.MountDuration;
 		local actor = this.getContainer().getActor();
 
+		// Swap icon for male actors — show female-on-top perspective
+		if (actor.getGender() != 1)
+		{
+			this.m.Icon = "skills/lewd_mounting.png";
+		}
+
 		if (actor.isPlacedOnMap())
 		{
 			this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(actor) + " is mounted!");

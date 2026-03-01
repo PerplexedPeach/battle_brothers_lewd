@@ -58,6 +58,12 @@ this.lewd_mounting_effect <- this.inherit("scripts/skills/skill", {
 	{
 		local actor = this.getContainer().getActor();
 
+		// Swap icon for male actors — show female-underneath perspective
+		if (actor.getGender() != 1)
+		{
+			this.m.Icon = "skills/lewd_mounted.png";
+		}
+
 		if (actor.isPlacedOnMap())
 		{
 			this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(actor) + " mounts their target!");
