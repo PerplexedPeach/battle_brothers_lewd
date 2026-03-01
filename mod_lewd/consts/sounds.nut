@@ -1,3 +1,87 @@
+// --- Sex Ability Sounds ---
+// Each array is a pool of variants; abilities pick one at random.
+
+// Rubbing / skin contact — used by Hands, Feet, Grope
+::Lewd.Const.SoundRubbing <- [
+	"sounds/rubbing/1.wav",
+	"sounds/rubbing/2.wav",
+	"sounds/rubbing/3.wav",
+	"sounds/rubbing/4.wav",
+	"sounds/rubbing/5.wav",
+	"sounds/rubbing/6.wav"
+];
+
+// Spanking / slapping — used by Grope hit, Hands hit
+::Lewd.Const.SoundSpanking <- [
+	"sounds/spanking/1.wav",
+	"sounds/spanking/2.wav",
+	"sounds/spanking/3.wav",
+	"sounds/spanking/4.wav",
+	"sounds/spanking/5.wav"
+];
+
+// Oral / blowjob wet sounds — used by Oral, Force Oral
+::Lewd.Const.SoundBlowjob <- [
+	"sounds/blowjob/1.wav",
+	"sounds/blowjob/2.wav",
+	"sounds/blowjob/3.wav",
+	"sounds/blowjob/4.wav",
+	"sounds/blowjob/5.wav",
+	"sounds/blowjob/6.wav",
+	"sounds/blowjob/7.wav"
+];
+
+// Penetration / fucking — used by Vaginal, Anal, Penetrate Vaginal, Penetrate Anal
+::Lewd.Const.SoundFucking <- [
+	"sounds/fucking/1.wav",
+	"sounds/fucking/2.wav",
+	"sounds/fucking/3.wav",
+	"sounds/fucking/4.wav",
+	"sounds/fucking/5.wav",
+	"sounds/fucking/6.wav",
+	"sounds/fucking/7.wav"
+];
+
+// Light moans — used as hit feedback for lighter abilities (Hands, Feet, Grope)
+::Lewd.Const.SoundMoans <- [
+	"sounds/moans/moan_1.wav",
+	"sounds/moans/moan_2.wav",
+	"sounds/moans/moan_3.wav",
+	"sounds/moans/moan_4.wav",
+	"sounds/moans/moan_5.wav",
+	"sounds/moans/moan_6.wav",
+	"sounds/moans/moan_7.wav",
+	"sounds/moans/moan_8.wav",
+	"sounds/moans/moan_9.wav"
+];
+
+// Long moans — used as hit feedback for sustained abilities (Oral, Vaginal)
+::Lewd.Const.SoundLongMoans <- [
+	"sounds/long_moans/long_moan_1.wav",
+	"sounds/long_moans/long_moan_2.wav",
+	"sounds/long_moans/long_moan_3.wav",
+	"sounds/long_moans/long_moan_4.wav",
+	"sounds/long_moans/long_moan_5.wav"
+];
+
+// Intense moans — used as hit feedback for rougher abilities (Anal, high-tier Vaginal)
+::Lewd.Const.SoundIntenseMoans <- [
+	"sounds/intense_moans/1.wav",
+	"sounds/intense_moans/2.wav",
+	"sounds/intense_moans/3.wav",
+	"sounds/intense_moans/4.wav",
+	"sounds/intense_moans/5.wav"
+];
+
+// Orgasm — used by Climax effect
+::Lewd.Const.SoundOrgasm <- [
+	"sounds/orgasm/1.wav",
+	"sounds/orgasm/2.wav",
+	"sounds/orgasm/3.wav",
+	"sounds/orgasm/4.wav"
+];
+
+// --- Heel Terrain Movement Sounds ---
 ::Lewd.Const.TerrainMovementSound <- [
 	[],
 	[
