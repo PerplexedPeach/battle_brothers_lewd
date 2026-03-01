@@ -1,7 +1,8 @@
 // Applied to the MOUNTER (the one on top / the dominant position)
 this.lewd_mounting_effect <- this.inherit("scripts/skills/skill", {
 	m = {
-		TargetID = 0
+		TargetID = 0,
+		IsRemoving = false
 	},
 	function create()
 	{
@@ -92,6 +93,9 @@ this.lewd_mounting_effect <- this.inherit("scripts/skills/skill", {
 
 	function removeSelf()
 	{
+		if (this.m.IsRemoving) return;
+		this.m.IsRemoving = true;
+
 		local actor = this.getContainer().getActor();
 		actor.getSkills().removeByID(this.m.ID);
 	}

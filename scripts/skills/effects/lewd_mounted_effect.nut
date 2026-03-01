@@ -2,7 +2,8 @@
 this.lewd_mounted_effect <- this.inherit("scripts/skills/skill", {
 	m = {
 		TurnsLeft = 0,
-		MounterID = 0
+		MounterID = 0,
+		IsRemoving = false
 	},
 	function create()
 	{
@@ -127,6 +128,9 @@ this.lewd_mounted_effect <- this.inherit("scripts/skills/skill", {
 
 	function removeSelf()
 	{
+		if (this.m.IsRemoving) return;
+		this.m.IsRemoving = true;
+
 		local actor = this.getContainer().getActor();
 
 		// also remove the mounting effect from the mounter
