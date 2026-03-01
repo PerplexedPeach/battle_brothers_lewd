@@ -1,0 +1,7 @@
+.ui-control-stats-progressbar.pleasure-slim,
+.ui-control-stats-progressbar-preview.pleasure-slim
+{
+    background-image: url("coui://gfx/ui/skin/bar_fill_pleasure_196.png");
+    background-repeat: no-repeat;
+    background-size: 19.6rem 2.0rem;
+}

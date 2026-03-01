@@ -143,6 +143,38 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC" function()
 			}
 		}
 
+		// Add pleasure bar to tactical tooltip (enemies/NPCs)
+		q.getTooltip = @(__original) function( _targetedWithSkill = null )
+		{
+			local tooltip = __original(_targetedWithSkill);
+
+			if (this.getPleasureMax() > 0)
+			{
+				local insertIdx = tooltip.len();
+
+				for (local i = tooltip.len() - 1; i >= 0; i--)
+				{
+					if ("type" in tooltip[i] && tooltip[i].type == "progressbar")
+					{
+						insertIdx = i + 1;
+						break;
+					}
+				}
+
+				tooltip.insert(insertIdx, {
+					id = 50,
+					type = "progressbar",
+					icon = "ui/icons/pleasure.png",
+					value = this.getPleasure(),
+					valueMax = this.getPleasureMax(),
+					text = "" + this.getPleasure() + " / " + this.getPleasureMax(),
+					style = "pleasure-slim"
+				});
+			}
+
+			return tooltip;
+		};
+
 	});
 
 	// hook item container to care about items' cursed status
@@ -164,6 +196,43 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC" function()
 
 	// Perk tree injection is handled by the traits themselves (dainty, delicate, masochism)
 	// via onAdded() using Legends' addPerkGroup/hasPerkGroup API
+
+	// Add pleasure bar to tactical tooltip (player characters)
+	mod.hook("scripts/entity/tactical/player", function(q) {
+		q.getTooltip = @(__original) function( _targetedWithSkill = null )
+		{
+			local tooltip = __original(_targetedWithSkill);
+
+			if (this.getPleasureMax() > 0)
+			{
+				local insertIdx = tooltip.len();
+
+				for (local i = tooltip.len() - 1; i >= 0; i--)
+				{
+					if ("type" in tooltip[i] && tooltip[i].type == "progressbar")
+					{
+						insertIdx = i + 1;
+						break;
+					}
+				}
+
+				tooltip.insert(insertIdx, {
+					id = 50,
+					type = "progressbar",
+					icon = "ui/icons/pleasure.png",
+					value = this.getPleasure(),
+					valueMax = this.getPleasureMax(),
+					text = "" + this.getPleasure() + " / " + this.getPleasureMax(),
+					style = "pleasure-slim"
+				});
+			}
+
+			return tooltip;
+		};
+	});
+
+	// Register pleasure bar CSS
+	::mods_registerCSS("mod_lewd/pleasure_bar.css");
 
 	foreach (dir in [
 		"mod_lewd/lib",
