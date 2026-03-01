@@ -223,6 +223,8 @@ this.ai_horny <- this.inherit("scripts/ai/tactical/behavior", {
 
 	function canUseSkill( _entity, _skill, _targetTile )
 	{
+		if (!_skill.isUsable())
+			return false;
 		if (_entity.getActionPoints() < _skill.getActionPointCost())
 			return false;
 		if (_entity.getFatigue() + _skill.getFatigueCost() > _entity.getFatigueMax())
@@ -244,11 +246,20 @@ this.ai_horny <- this.inherit("scripts/ai/tactical/behavior", {
 		}
 
 		// Second frame: use skill
+		local apBefore = _entity.getActionPoints();
 		if (this.m.SelectedSkill != null && this.m.TargetTile != null)
 		{
 			::logInfo("[ai_horny] " + _entity.getName() + " EXECUTING " + this.m.SelectedSkill.getID() + " on " + this.m.TargetTile.getEntity().getName());
 			this.m.SelectedSkill.use(this.m.TargetTile);
 		}
+
+		// If skill failed to consume AP, give up to prevent infinite re-evaluation
+		if (_entity.getActionPoints() >= apBefore)
+		{
+			::logInfo("[ai_horny] " + _entity.getName() + " skill did not consume AP, giving up");
+			this.m.GaveUp = true;
+		}
+
 		this.m.TargetTile = null;
 		this.m.SelectedSkill = null;
 		return true;

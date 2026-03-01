@@ -155,8 +155,10 @@ this.ai_horny_engage <- this.inherit("scripts/ai/tactical/behavior", {
 
 			if (!navigator.findPath(_entity.getTile(), this.m.TargetTile, settings, 0))
 			{
+				::logInfo("[ai_horny_engage] " + _entity.getName() + " pathfinding failed, giving up");
 				this.m.TargetTile = null;
 				this.m.TargetActor = null;
+				this.m.GaveUp = true;
 				return true;
 			}
 
@@ -166,9 +168,16 @@ this.ai_horny_engage <- this.inherit("scripts/ai/tactical/behavior", {
 		}
 
 		// Continue travelling
+		local apBefore = _entity.getActionPoints();
 		if (!navigator.travel(_entity, _entity.getActionPoints(), _entity.getFatigueMax() - _entity.getFatigue()))
 		{
-			// Movement complete
+			// Movement complete — if no AP was consumed, give up to prevent loop
+			if (_entity.getActionPoints() >= apBefore)
+			{
+				::logInfo("[ai_horny_engage] " + _entity.getName() + " travel consumed no AP, giving up");
+				this.m.GaveUp = true;
+			}
+
 			this.m.TargetTile = null;
 			this.m.TargetActor = null;
 			return true;
