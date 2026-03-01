@@ -124,10 +124,10 @@ this.lewd_horny_effect <- this.inherit("scripts/skills/skill", {
 		_properties.MeleeDefense += ::Lewd.Const.HornyMeleeDefPenalty;
 
 		local actor = this.getContainer().getActor();
-		if (actor.hasSprite("status_stunned") && !this.getContainer().hasSkill("effects.stunned") && !this.getContainer().hasSkill("effects.dazed"))
+		if (actor.hasSprite("status_horny"))
 		{
-			actor.getSprite("status_stunned").setBrush("bust_dazed");
-			actor.getSprite("status_stunned").Visible = true;
+			actor.getSprite("status_horny").setBrush("bust_horny");
+			actor.getSprite("status_horny").Visible = true;
 			actor.setDirty(true);
 		}
 	}
@@ -148,9 +148,9 @@ this.lewd_horny_effect <- this.inherit("scripts/skills/skill", {
 			this.m.HasAIBehavior = false;
 		}
 
-		if (actor.hasSprite("status_stunned") && !this.getContainer().hasSkill("effects.stunned") && !this.getContainer().hasSkill("effects.dazed"))
+		if (actor.hasSprite("status_horny"))
 		{
-			actor.getSprite("status_stunned").Visible = false;
+			actor.getSprite("status_horny").Visible = false;
 		}
 
 		actor.setDirty(true);

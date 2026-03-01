@@ -62,6 +62,11 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC" function()
 				{
 					old_addSprite("lewd_glow");
 				}
+				else if (_layerID == "status_stunned")
+				{
+					local horny = old_addSprite("status_horny");
+					horny.Visible = false;
+				}
 
 				return ret;
 			};

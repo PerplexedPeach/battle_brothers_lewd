@@ -22,6 +22,9 @@
     <sprite id="piercing_nipple_bar" offsetY="35" ic="FF6095CB" width="10" height="10" img="details\piercing_nipple_bar.png" left="-44" right="58" top="-57" bottom="23"/>
     <sprite id="plug_nipple" offsetY="35" ic="FF6095CB" width="10" height="10" img="details\plug_nipple.png" left="-44" right="58" top="-57" bottom="23"/>
 
+    <!-- horny status bust overlay (hearts above head) -->
+    <sprite id="bust_horny" offsetY="35" ic="FFE04080" width="104" height="142" img="entity\bust_horny.png" left="-28" right="34" top="20" bottom="72"/>
+
     <!-- pheromone glow effect -->
     <sprite id="lewd_pheromone_glow" offsetY="30" f="64F1" ic="FF141B29" img="effects\pheromones.png"/>
 </brush>

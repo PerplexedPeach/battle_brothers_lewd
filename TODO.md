@@ -30,6 +30,7 @@ Horny ability ideas:
 Sounds to get:
 - moaning
 - louder moaning
+- orgasm
 - spanking
 - plapping (penetration)
 - squacking (blowjob)
