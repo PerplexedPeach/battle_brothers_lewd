@@ -15,6 +15,8 @@ this.perk_lewd_willing_victim <- this.inherit("scripts/skills/skill", {
 
 	function onUpdate( _properties )
 	{
+		_properties.PleasureMax += ::Lewd.Const.WillingVictimPleasureMax;
+
 		local actor = this.getContainer().getActor();
 		if (actor.getSkills().hasSkill("effects.lewd_mounted") || actor.getSkills().hasSkill("effects.legend_grappled"))
 		{

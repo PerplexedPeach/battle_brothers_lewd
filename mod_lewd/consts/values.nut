@@ -28,8 +28,8 @@
 ::Lewd.Const.AllureMeleeDefenseMultiplier <- 0.5;
 
 // --- Pleasure & Climax Constants ---
-::Lewd.Const.PleasureMaxFromDainty <- 30;
-::Lewd.Const.PleasureMaxFromDelicate <- 50;
+::Lewd.Const.PleasureMaxFromDainty <- 40;
+::Lewd.Const.PleasureMaxFromDelicate <- 65;
 ::Lewd.Const.PleasureMaxFromMasochismFirst <- 10;
 ::Lewd.Const.PleasureMaxFromMasochismSecond <- 20;
 ::Lewd.Const.PleasureMaxFromMasochismThird <- 30;
@@ -145,7 +145,7 @@
 
 // --- Sex Ability Constants ---
 // universal allure scaling for pleasure dealt
-::Lewd.Const.SexAllurePleasureScale <- 0.1; // floor(allure * this) added to pleasure dealt
+::Lewd.Const.SexAllurePleasureScale <- 0.15; // floor(allure * this) added to pleasure dealt
 
 // hit chance formula: baseChance + (userAllure - targetResolve) * multiplier, clamped 5-95
 ::Lewd.Const.SexHitChanceAllureResolveScale <- 2;
@@ -246,14 +246,14 @@
 ::Lewd.Const.AnalT1AP <- 5;
 ::Lewd.Const.AnalT1Fatigue <- 15;
 ::Lewd.Const.AnalT1BasePleasure <- 8;
-::Lewd.Const.AnalT1SelfPleasure <- 8;
+::Lewd.Const.AnalT1SelfPleasure <- 4;
 ::Lewd.Const.AnalT1SelfDamage <- 4; // HP damage to self
 ::Lewd.Const.AnalT1BaseHitChance <- 60;
 
 ::Lewd.Const.AnalT2AP <- 4;
 ::Lewd.Const.AnalT2Fatigue <- 12;
 ::Lewd.Const.AnalT2BasePleasure <- 12;
-::Lewd.Const.AnalT2SelfPleasure <- 10;
+::Lewd.Const.AnalT2SelfPleasure <- 5;
 ::Lewd.Const.AnalT2SelfDamage <- 6;
 ::Lewd.Const.AnalT2BaseHitChance <- 75;
 ::Lewd.Const.AnalT2MasoTierBonus <- 3; // bonus per maso tier
@@ -261,7 +261,7 @@
 ::Lewd.Const.AnalT3AP <- 5;
 ::Lewd.Const.AnalT3Fatigue <- 20;
 ::Lewd.Const.AnalT3BasePleasure <- 18;
-::Lewd.Const.AnalT3SelfPleasure <- 15;
+::Lewd.Const.AnalT3SelfPleasure <- 8;
 ::Lewd.Const.AnalT3SelfDamage <- 10;
 ::Lewd.Const.AnalT3BaseHitChance <- 85;
 ::Lewd.Const.AnalT3MasoTierBonus <- 5;
@@ -304,6 +304,7 @@
 ::Lewd.Const.EmbracePainPleasureMax <- 5;
 ::Lewd.Const.EmbracePainFatigueRestore <- 1; // per self-pleasure point
 ::Lewd.Const.WillingVictimAllure <- 10; // while grappled/mounted (was 5)
+::Lewd.Const.WillingVictimPleasureMax <- 15; // unconditional PleasureMax from mental resilience
 ::Lewd.Const.PliantBodyReflectionMult <- 1.5; // +50% pleasure reflection dealt to partner
 ::Lewd.Const.PainFeedsPleasureMult <- 1.5; // masochism damage-to-pleasure +50%
 ::Lewd.Const.PainFeedsPleasureInjuryMult <- 1.33; // +33% injury threshold
@@ -336,37 +337,37 @@
 // --- Male Sex Abilities ---
 ::Lewd.Const.MaleGropeAP <- 3;
 ::Lewd.Const.MaleGropeFatigue <- 8;
-::Lewd.Const.MaleGropeBasePleasure <- 5;
-::Lewd.Const.MaleGropeMeleeSkillScale <- 0.08;
+::Lewd.Const.MaleGropeBasePleasure <- 3;
+::Lewd.Const.MaleGropeMeleeSkillScale <- 0.07;
 ::Lewd.Const.MaleGropeBaseHitChance <- 70;
 
 ::Lewd.Const.MaleForceOralAP <- 5;
 ::Lewd.Const.MaleForceOralFatigue <- 15;
-::Lewd.Const.MaleForceOralBasePleasure <- 4;
-::Lewd.Const.MaleForceOralMeleeSkillScale <- 0.025;
+::Lewd.Const.MaleForceOralBasePleasure <- 3;
+::Lewd.Const.MaleForceOralMeleeSkillScale <- 0.02;
 ::Lewd.Const.MaleForceOralBaseHitChance <- 80;
 ::Lewd.Const.MaleForceOralResolveDebuff <- -5;
-::Lewd.Const.MaleForceOralSelfPleasure <- 10;
+::Lewd.Const.MaleForceOralSelfPleasure <- 4;
 
 // Male Penetrate (Vaginal) — easier, cheaper
 ::Lewd.Const.MalePenetrateVaginalAP <- 5;
 ::Lewd.Const.MalePenetrateVaginalFatigue <- 18;
-::Lewd.Const.MalePenetrateVaginalBasePleasure <- 14;
-::Lewd.Const.MalePenetrateVaginalMeleeSkillScale <- 0.12;
+::Lewd.Const.MalePenetrateVaginalBasePleasure <- 8;
+::Lewd.Const.MalePenetrateVaginalMeleeSkillScale <- 0.10;
 ::Lewd.Const.MalePenetrateVaginalBaseHitChance <- 65;
 ::Lewd.Const.MalePenetrateVaginalMountedHitBonus <- 20;
-::Lewd.Const.MalePenetrateVaginalMountedPleasureBonus <- 5;
-::Lewd.Const.MalePenetrateVaginalSelfPleasure <- 6;
+::Lewd.Const.MalePenetrateVaginalMountedPleasureBonus <- 3;
+::Lewd.Const.MalePenetrateVaginalSelfPleasure <- 3;
 
 // Male Penetrate (Anal) — rougher, harder
 ::Lewd.Const.MalePenetrateAnalAP <- 6;
 ::Lewd.Const.MalePenetrateAnalFatigue <- 22;
-::Lewd.Const.MalePenetrateAnalBasePleasure <- 12;
-::Lewd.Const.MalePenetrateAnalMeleeSkillScale <- 0.10;
+::Lewd.Const.MalePenetrateAnalBasePleasure <- 7;
+::Lewd.Const.MalePenetrateAnalMeleeSkillScale <- 0.08;
 ::Lewd.Const.MalePenetrateAnalBaseHitChance <- 55;
 ::Lewd.Const.MalePenetrateAnalMountedHitBonus <- 20;
-::Lewd.Const.MalePenetrateAnalMountedPleasureBonus <- 6;
-::Lewd.Const.MalePenetrateAnalSelfPleasure <- 10;
+::Lewd.Const.MalePenetrateAnalMountedPleasureBonus <- 3;
+::Lewd.Const.MalePenetrateAnalSelfPleasure <- 5;
 ::Lewd.Const.MalePenetrateAnalMasoTierBonus <- 3;
 
 // --- Horny AI ---
@@ -388,4 +389,4 @@
 
 // --- Enemy PleasureMax ---
 ::Lewd.Const.EnemyPleasureMaxBase <- 20;
-::Lewd.Const.EnemyPleasureMaxResolveScale <- 1.0; // PleasureMax = base + Resolve * this
+::Lewd.Const.EnemyPleasureMaxResolveScale <- 0.5; // PleasureMax = base + Resolve * this
