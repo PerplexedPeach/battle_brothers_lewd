@@ -111,10 +111,9 @@ this.pheromones_effect <- this.inherit("scripts/skills/skill", {
 		{
 			local glow = actor.getSprite("lewd_glow");
 			glow.setBrush("lewd_pheromone_glow");
-			glow.Color = this.createColor("#ffaadd");
+			glow.Color = this.createColor("#ff69b4");
 			glow.Saturation = 1.2;
 			glow.Scale = 0.85;
-			glow.varyColor(0.05, 0.05, 0.05);
 			glow.Visible = true;
 
 			actor.setRenderCallbackEnabled(true);
@@ -133,7 +132,7 @@ this.pheromones_effect <- this.inherit("scripts/skills/skill", {
 		this.m.isActive = false;
 	}
 
-	function onTurnStart()
+	function onTurnEnd()
 	{
 		if (--this.m.TurnsLeft <= 0)
 		{

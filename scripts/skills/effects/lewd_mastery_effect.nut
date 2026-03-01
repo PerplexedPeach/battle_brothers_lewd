@@ -20,7 +20,8 @@ this.lewd_mastery_effect <- this.inherit("scripts/skills/skill", {
 
 	function isHidden()
 	{
-		return !this.getContainer().getActor().getSkills().hasSkill(this.m.PerkId);
+		if (!this.getContainer().getActor().getSkills().hasSkill(this.m.PerkId)) return true;
+		return this.m.Points <= 0;
 	}
 
 	function addPoints( _add )

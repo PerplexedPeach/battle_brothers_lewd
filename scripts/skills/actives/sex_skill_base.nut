@@ -50,6 +50,7 @@ this.sex_skill_base <- this.inherit("scripts/skills/skill", {
 	function recordSexContinuation( _user, _target )
 	{
 		if (this.m.SexType == "") return;
+		::logInfo("[sex]   recording continuation: " + _user.getName() + " <-> " + _target.getName() + " type:" + this.m.SexType);
 		_user.getFlags().set("lewdCont_" + _target.getID(), this.m.SexType);
 		_target.getFlags().set("lewdCont_" + _user.getID(), this.m.SexType);
 	}
@@ -59,18 +60,22 @@ this.sex_skill_base <- this.inherit("scripts/skills/skill", {
 		local target = _targetTile.getEntity();
 		if (target == null) return false;
 
+		::logInfo("[sex] " + _user.getName() + " uses " + this.m.ID + " on " + target.getName());
+		this.Tactical.EventLog.log("[DBG] " + _user.getName() + " attempts " + this.m.ID + " on " + target.getName());
 		this.playSound(_user);
 
 		local hitResult = this.rollHit(_user, target);
+		::logInfo("[sex]   hit roll:" + hitResult.roll + " chance:" + hitResult.chance + " autoHit:" + this.isAutoHit(target) + " -> " + (hitResult.hit ? "HIT" : "MISS"));
 		if (!hitResult.hit)
 		{
-			this.logMiss(_user, target);
+			this.logMiss(_user, target, hitResult);
 			return true;
 		}
 
 		local pleasure = this.calculatePleasure(target);
+		::logInfo("[sex]   pleasure:" + pleasure + " target pleasure:" + target.getPleasure() + "/" + target.getPleasureMax());
 		target.addPleasure(pleasure, _user);
-		this.logHit(_user, target, pleasure);
+		this.logHit(_user, target, pleasure, hitResult);
 		this.onHit(_user, target);
 		this.recordSexContinuation(_user, target);
 		return true;
@@ -89,30 +94,37 @@ this.sex_skill_base <- this.inherit("scripts/skills/skill", {
 		return { chance = chance, roll = roll, hit = roll <= chance };
 	}
 
-	function logMiss( _user, _target )
+	function logMiss( _user, _target, _hitResult )
 	{
 		local verb = this.m.MissText[this.Math.rand(0, this.m.MissText.len() - 1)];
-		this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(_user) + " tries to " + verb + " " + this.Const.UI.getColorizedEntityName(_target) + " but fails");
+		this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(_user) + " tries to " + verb + " " + this.Const.UI.getColorizedEntityName(_target) + " but fails (roll:" + _hitResult.roll + " chance:" + _hitResult.chance + ")");
 	}
 
-	function logHit( _user, _target, _pleasure )
+	function logHit( _user, _target, _pleasure, _hitResult )
 	{
 		local verb = this.m.HitText[this.Math.rand(0, this.m.HitText.len() - 1)];
-		this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(_user) + " " + verb + " " + this.Const.UI.getColorizedEntityName(_target) + " for " + _pleasure + " pleasure");
+		this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(_user) + " " + verb + " " + this.Const.UI.getColorizedEntityName(_target) + " for " + _pleasure + " pleasure (roll:" + _hitResult.roll + " chance:" + _hitResult.chance + ")");
 	}
 
 	function tryApplyHorny( _target )
 	{
 		if (_target.getPleasureMax() <= 0) return;
-		if (this.Math.rand(1, 100) > ::Lewd.Const.HornyApplyChance) return;
+		local roll = this.Math.rand(1, 100);
+		if (roll > ::Lewd.Const.HornyApplyChance)
+		{
+			::logInfo("[sex]   horny check: roll " + roll + " > " + ::Lewd.Const.HornyApplyChance + " — no horny");
+			return;
+		}
 
 		if (_target.getSkills().hasSkill("effects.lewd_horny"))
 		{
+			::logInfo("[sex]   horny refreshed on " + _target.getName());
 			local effect = _target.getSkills().getSkillByID("effects.lewd_horny");
 			effect.onRefresh();
 		}
 		else
 		{
+			::logInfo("[sex]   horny APPLIED to " + _target.getName());
 			local horny = this.new("scripts/skills/effects/lewd_horny_effect");
 			_target.getSkills().add(horny);
 		}

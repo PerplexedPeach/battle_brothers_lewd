@@ -6,7 +6,8 @@
 this.ai_horny_engage <- this.inherit("scripts/ai/tactical/behavior", {
 	m = {
 		TargetTile = null,
-		TargetActor = null
+		TargetActor = null,
+		GaveUp = false
 	},
 	function create()
 	{
@@ -15,8 +16,16 @@ this.ai_horny_engage <- this.inherit("scripts/ai/tactical/behavior", {
 		this.behavior.create();
 	}
 
+	function onTurnStarted()
+	{
+		this.m.GaveUp = false;
+	}
+
 	function onEvaluate( _entity )
 	{
+		if (this.m.GaveUp)
+			return 0;
+
 		// Must have Horny effect
 		if (!_entity.getSkills().hasSkill("effects.lewd_horny"))
 			return 0;
@@ -82,7 +91,10 @@ this.ai_horny_engage <- this.inherit("scripts/ai/tactical/behavior", {
 		}
 
 		if (bestTarget == null)
+		{
+			this.m.GaveUp = true;
 			return 0;
+		}
 
 		// Find an empty tile adjacent to the target to move toward
 		local destinationTile = null;
@@ -105,7 +117,10 @@ this.ai_horny_engage <- this.inherit("scripts/ai/tactical/behavior", {
 		}
 
 		if (destinationTile == null)
+		{
+			this.m.GaveUp = true;
 			return 0;
+		}
 
 		this.m.TargetTile = destinationTile;
 		this.m.TargetActor = bestTarget;

@@ -4,7 +4,8 @@
 this.ai_horny <- this.inherit("scripts/ai/tactical/behavior", {
 	m = {
 		TargetTile = null,
-		SelectedSkill = null
+		SelectedSkill = null,
+		GaveUp = false
 	},
 	function create()
 	{
@@ -13,15 +14,28 @@ this.ai_horny <- this.inherit("scripts/ai/tactical/behavior", {
 		this.m.Order = this.Const.AI.Behavior.Order.AttackDefault;
 	}
 
+	function onTurnStarted()
+	{
+		this.m.GaveUp = false;
+	}
+
 	function onEvaluate( _entity )
 	{
+		if (this.m.GaveUp)
+			return 0;
+
 		// Must have Horny effect
 		if (!_entity.getSkills().hasSkill("effects.lewd_horny"))
 			return 0;
 
 		// Must have enough AP for cheapest skill (grope = 3 AP)
 		if (_entity.getActionPoints() < ::Lewd.Const.MaleGropeAP)
+		{
+			::logInfo("[ai_horny] " + _entity.getName() + " has insufficient AP (" + _entity.getActionPoints() + "), skipping");
 			return 0;
+		}
+
+		::logInfo("[ai_horny] " + _entity.getName() + " evaluating (AP:" + _entity.getActionPoints() + " Fat:" + _entity.getFatigue() + "/" + _entity.getFatigueMax() + ")");
 
 		// Find adjacent female targets with PleasureMax > 0
 		local myTile = _entity.getTile();
@@ -65,7 +79,13 @@ this.ai_horny <- this.inherit("scripts/ai/tactical/behavior", {
 
 			// Find best available skill for this target
 			local skill = this.findBestSkill(_entity, target, tile);
-			if (skill == null) continue;
+			if (skill == null)
+			{
+				::logInfo("[ai_horny]   target " + target.getName() + " — no usable skill found");
+				continue;
+			}
+
+			::logInfo("[ai_horny]   target " + target.getName() + " — score:" + targetScore + " skill:" + skill.getID());
 
 			if (targetScore > bestScore)
 			{
@@ -76,11 +96,17 @@ this.ai_horny <- this.inherit("scripts/ai/tactical/behavior", {
 		}
 
 		if (bestTile == null || bestSkill == null)
+		{
+			::logInfo("[ai_horny] " + _entity.getName() + " — no valid target found, giving up this turn");
+			this.m.GaveUp = true;
 			return 0;
+		}
 
+		local finalScore = ::Lewd.Const.HornyAIScore * bestScore;
+		::logInfo("[ai_horny] " + _entity.getName() + " — SELECTED " + bestSkill.getID() + " on " + bestTile.getEntity().getName() + " (score:" + finalScore + ")");
 		this.m.TargetTile = bestTile;
 		this.m.SelectedSkill = bestSkill;
-		return ::Lewd.Const.HornyAIScore * bestScore;
+		return finalScore;
 	}
 
 	function getContinuationSkill( _entity, _target )
@@ -88,21 +114,34 @@ this.ai_horny <- this.inherit("scripts/ai/tactical/behavior", {
 		// Check what entity last did to target
 		local flagKey = "lewdCont_" + _target.getID();
 		local sexType = null;
+		local source = "";
 		if (_entity.getFlags().has(flagKey))
+		{
 			sexType = _entity.getFlags().get(flagKey);
+			source = "entity->target";
+		}
 
 		// Also check what target last did to entity (respond in kind)
 		if (sexType == null)
 		{
 			local reverseKey = "lewdCont_" + _entity.getID();
 			if (_target.getFlags().has(reverseKey))
+			{
 				sexType = _target.getFlags().get(reverseKey);
+				source = "target->entity";
+			}
 		}
 
 		if (sexType == null) return null;
-		if (!(sexType in ::Lewd.Const.AIContinuationMap)) return null;
+
+		if (!(sexType in ::Lewd.Const.AIContinuationMap))
+		{
+			::logInfo("[ai_horny]   continuation: sexType '" + sexType + "' has no mapping (" + source + ")");
+			return null;
+		}
 
 		local skillID = ::Lewd.Const.AIContinuationMap[sexType];
+		::logInfo("[ai_horny]   continuation: sexType '" + sexType + "' -> " + skillID + " (" + source + ")");
 		return _entity.getSkills().getSkillByID(skillID);
 	}
 
@@ -129,8 +168,13 @@ this.ai_horny <- this.inherit("scripts/ai/tactical/behavior", {
 		local contSkill = this.getContinuationSkill(_entity, _target);
 		if (contSkill != null && this.canUseSkill(_entity, contSkill, _targetTile))
 		{
-			if (this.Math.rand(1, 100) <= ::Lewd.Const.AIContinuationChance)
+			local roll = this.Math.rand(1, 100);
+			if (roll <= ::Lewd.Const.AIContinuationChance)
+			{
+				::logInfo("[ai_horny]   findBestSkill: continuation hit (roll:" + roll + " <= " + ::Lewd.Const.AIContinuationChance + ") -> " + contSkill.getID());
 				return contSkill;
+			}
+			::logInfo("[ai_horny]   findBestSkill: continuation miss (roll:" + roll + " > " + ::Lewd.Const.AIContinuationChance + "), falling through");
 		}
 
 		local userMounting = _entity.getSkills().hasSkill("effects.lewd_mounting");
@@ -143,22 +187,37 @@ this.ai_horny <- this.inherit("scripts/ai/tactical/behavior", {
 			if (mountingEffect.getTargetID() == _target.getID())
 			{
 				local pen = this.pickRandomPenetrate(_entity, _targetTile);
-				if (pen != null) return pen;
+				if (pen != null)
+				{
+					::logInfo("[ai_horny]   findBestSkill: mounting target, random penetrate -> " + pen.getID());
+					return pen;
+				}
 			}
 		}
 
 		// 3. If target is mounted (by anyone): force oral
 		if (targetMounted && forceOral != null && this.canUseSkill(_entity, forceOral, _targetTile))
+		{
+			::logInfo("[ai_horny]   findBestSkill: target mounted -> force oral");
 			return forceOral;
+		}
 
 		// 4. Penetrate to establish mount
 		local pen = this.pickRandomPenetrate(_entity, _targetTile);
-		if (pen != null) return pen;
+		if (pen != null)
+		{
+			::logInfo("[ai_horny]   findBestSkill: establish mount -> " + pen.getID());
+			return pen;
+		}
 
 		// 5. Fallback: grope
 		if (grope != null && this.canUseSkill(_entity, grope, _targetTile))
+		{
+			::logInfo("[ai_horny]   findBestSkill: fallback -> grope");
 			return grope;
+		}
 
+		::logInfo("[ai_horny]   findBestSkill: no usable skill");
 		return null;
 	}
 
@@ -187,6 +246,7 @@ this.ai_horny <- this.inherit("scripts/ai/tactical/behavior", {
 		// Second frame: use skill
 		if (this.m.SelectedSkill != null && this.m.TargetTile != null)
 		{
+			::logInfo("[ai_horny] " + _entity.getName() + " EXECUTING " + this.m.SelectedSkill.getID() + " on " + this.m.TargetTile.getEntity().getName());
 			this.m.SelectedSkill.use(this.m.TargetTile);
 		}
 		this.m.TargetTile = null;

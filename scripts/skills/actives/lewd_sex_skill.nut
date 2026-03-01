@@ -14,6 +14,13 @@ this.lewd_sex_skill <- this.inherit("scripts/skills/actives/sex_skill_base", {
 		this.sex_skill_base.create();
 	}
 
+	function onVerifyTarget( _originTile, _targetTile )
+	{
+		if (!this.sex_skill_base.onVerifyTarget(_originTile, _targetTile)) return false;
+		if (_targetTile.getEntity().getGender() == 1) return false;
+		return true;
+	}
+
 	function getTierConfig()
 	{
 		return this.m.Tiers[this.getTier() - 1];
@@ -21,7 +28,7 @@ this.lewd_sex_skill <- this.inherit("scripts/skills/actives/sex_skill_base", {
 
 	function getTier()
 	{
-		return ::Lewd.Mastery.getMasteryTier(this.getContainer().getActor(), this.m.MasteryID);
+		return this.Math.max(1, ::Lewd.Mastery.getMasteryTier(this.getContainer().getActor(), this.m.MasteryID));
 	}
 
 	function getMasteryPoints()
@@ -192,17 +199,17 @@ this.lewd_sex_skill <- this.inherit("scripts/skills/actives/sex_skill_base", {
 
 	// --- Log overrides (read from tier config instead of m.HitText/m.MissText) ---
 
-	function logMiss( _user, _target )
+	function logMiss( _user, _target, _hitResult )
 	{
 		local cfg = this.getTierConfig();
 		local verb = cfg.MissText[this.Math.rand(0, cfg.MissText.len() - 1)];
-		this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(_user) + " tries to " + verb + " " + this.Const.UI.getColorizedEntityName(_target) + " but fails");
+		this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(_user) + " tries to " + verb + " " + this.Const.UI.getColorizedEntityName(_target) + " but fails (roll:" + _hitResult.roll + " chance:" + _hitResult.chance + ")");
 	}
 
-	function logHit( _user, _target, _pleasure )
+	function logHit( _user, _target, _pleasure, _hitResult )
 	{
 		local cfg = this.getTierConfig();
 		local verb = cfg.HitText[this.Math.rand(0, cfg.HitText.len() - 1)];
-		this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(_user) + " " + verb + " " + this.Const.UI.getColorizedEntityName(_target) + " for " + _pleasure + " pleasure");
+		this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(_user) + " " + verb + " " + this.Const.UI.getColorizedEntityName(_target) + " for " + _pleasure + " pleasure (roll:" + _hitResult.roll + " chance:" + _hitResult.chance + ")");
 	}
 });

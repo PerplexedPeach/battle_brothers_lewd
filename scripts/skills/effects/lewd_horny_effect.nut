@@ -82,11 +82,14 @@ this.lewd_horny_effect <- this.inherit("scripts/skills/skill", {
 		this.m.TurnsLeft = ::Lewd.Const.HornyDuration;
 
 		// AI integration: grant sex skills and inject behavior for non-player male humanoids
-		if (!actor.isPlayerControlled() && actor.getGender() != 1 && actor.getMoraleState() != this.Const.MoraleState.Ignore)
+		if (!actor.isPlayerControlled() && actor.getGender() != 1 && actor.getMoraleState() != this.Const.MoraleState.Ignore && ::Lewd.Mastery.isHumanoid(actor))
 		{
+			::logInfo("[horny] " + actor.getName() + " became horny (gender:" + actor.getGender() + " playerControlled:" + actor.isPlayerControlled() + ")");
+
 			// Grant male sex skills if not already present
 			if (!actor.getSkills().hasSkill("actives.male_grope"))
 			{
+				::logInfo("[horny]   granting male sex skills to " + actor.getName());
 				actor.getSkills().add(this.new("scripts/skills/actives/male_grope_skill"));
 				actor.getSkills().add(this.new("scripts/skills/actives/male_force_oral_skill"));
 				actor.getSkills().add(this.new("scripts/skills/actives/male_penetrate_vaginal_skill"));
@@ -97,10 +100,15 @@ this.lewd_horny_effect <- this.inherit("scripts/skills/skill", {
 			local agent = actor.getAIAgent();
 			if (agent != null && !this.m.HasAIBehavior)
 			{
+				::logInfo("[horny]   injecting AI behaviors for " + actor.getName());
 				agent.addBehavior(this.new("scripts/ai/tactical/behaviors/ai_horny"));
 				agent.addBehavior(this.new("scripts/ai/tactical/behaviors/ai_horny_engage"));
 				this.m.HasAIBehavior = true;
 			}
+		}
+		else
+		{
+			::logInfo("[horny] " + actor.getName() + " became horny (no AI: player=" + actor.isPlayerControlled() + " gender=" + actor.getGender() + " moraleIgnore=" + (actor.getMoraleState() == this.Const.MoraleState.Ignore) + " humanoid=" + ::Lewd.Mastery.isHumanoid(actor) + ")");
 		}
 	}
 

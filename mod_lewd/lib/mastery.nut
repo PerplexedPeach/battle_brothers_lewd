@@ -85,3 +85,10 @@
 	}
 	return false;
 };
+
+// Whether an actor is a humanoid capable of using male sex skills
+// (has hands, wears armor/helmets — filters out beasts, ghosts, etc.)
+::Lewd.Mastery.isHumanoid <- function( _actor )
+{
+	return _actor.hasSprite("helmet");
+};

@@ -44,14 +44,14 @@ this.male_penetrate_vaginal_skill <- this.inherit("scripts/skills/actives/male_s
 		local hitResult = this.rollHit(_user, target);
 		if (!hitResult.hit)
 		{
-			this.logMiss(_user, target);
+			this.logMiss(_user, target, hitResult);
 			return true;
 		}
 
 		this.applyMount(_user, target);
 		local pleasure = this.calculatePleasure(target);
 		target.addPleasure(pleasure, _user);
-		this.logHit(_user, target, pleasure);
+		this.logHit(_user, target, pleasure, hitResult);
 		this.onHit(_user, target);
 		this.recordSexContinuation(_user, target);
 		return true;

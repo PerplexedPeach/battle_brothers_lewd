@@ -1,5 +1,8 @@
 this.entrancing_beauty_effect <- this.inherit("scripts/skills/skill", {
-	m = {},
+	m = {
+		TriggersThisTurn = 0,
+		MaxTriggersPerTurn = 2
+	},
 	function create()
 	{
 		this.m.ID = "effects.entrancing_beauty";
@@ -63,19 +66,25 @@ this.entrancing_beauty_effect <- this.inherit("scripts/skills/skill", {
 
 	function applyToNeighbors()
 	{
+		if (this.m.TriggersThisTurn >= this.m.MaxTriggersPerTurn)
+		{
+			::logInfo("[beauty] trigger " + (this.m.TriggersThisTurn + 1) + " blocked (max " + this.m.MaxTriggersPerTurn + ")");
+			return;
+		}
+
 		local actor = this.getContainer().getActor();
 		if (actor == null || !actor.isPlacedOnMap())
 		{
 			return;
 		}
 
+		this.m.TriggersThisTurn++;
 
 		local enemies = this.Tactical.Entities.getAllHostilesAsArray();
 		local tile = actor.getTile();
 
-		// all enemies within 1 tile get a chance to be dazed based on allure vs resolve
-		local targets = this.Tactical.Entities.getAllInstances();
 		local allure = actor.allure();
+		::logInfo("[beauty] " + actor.getName() + " trigger #" + this.m.TriggersThisTurn + " allure:" + allure + " enemies:" + enemies.len());
 
 		local hasPheromones = actor.getSkills().hasSkill("effects.pheromones");
 
@@ -90,16 +99,17 @@ this.entrancing_beauty_effect <- this.inherit("scripts/skills/skill", {
 			{
 				chance += ::Lewd.Const.PheromonesAllureBonus;
 			}
-			// if (!entity.isAlliedWith(actor) && entity.getTile().getDistanceTo(tile) <= 1)
+
+			::logInfo("[beauty]   " + entity.getName() + " dist:" + distance + " resolve:" + resolve + " chance:" + chance + (hasPheromones ? " (pheromones)" : ""));
+
 			if (chance > 0)
 			{
-				// ::logInfo("Target " + entity.getName() + " bravery: " + resolve);
-				// ::logInfo("Chance to daze " + entity.getName() + ": " + chance + "%");
 				local roll = this.Math.rand(0, 100);
+				::logInfo("[beauty]   roll:" + roll + " vs chance:" + chance + " -> " + (roll < chance ? "HIT" : "miss"));
 
 				if (roll < chance)
 				{
-					this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(entity) + " beholds " + this.Const.UI.getColorizedEntityName(actor) + "'s beauty");
+					this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(entity) + " beholds " + this.Const.UI.getColorizedEntityName(actor) + "'s beauty (roll:" + roll + " chance:" + chance + ")");
 
 					if (!entity.getSkills().hasSkill("effects.lewd_horny"))
 					{
@@ -166,13 +176,12 @@ this.entrancing_beauty_effect <- this.inherit("scripts/skills/skill", {
 
 	function onMovementFinished()
 	{
-		::logInfo("Entrancing Beauty effect triggered onMovementFinished, applying to neighbors");
 		this.applyToNeighbors();
 	}
 
 	function onTurnStart()
 	{
-		::logInfo("Entrancing Beauty effect triggered onTurnStart, applying to neighbors");
+		this.m.TriggersThisTurn = 0;
 		this.applyToNeighbors();
 	}
 });

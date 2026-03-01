@@ -141,14 +141,14 @@ this.vaginal_skill <- this.inherit("scripts/skills/actives/lewd_sex_skill", {
 			local hitResult = this.rollHit(_user, target);
 			if (!hitResult.hit)
 			{
-				this.logMiss(_user, target);
+				this.logMiss(_user, target, hitResult);
 				return true;
 			}
 
 			this.applyMount(_user, target);
 			local pleasure = this.calculatePleasure(target);
 			target.addPleasure(pleasure, _user);
-			this.logHit(_user, target, pleasure);
+			this.logHit(_user, target, pleasure, hitResult);
 			this.tryApplyHorny(target);
 		}
 		else
@@ -157,13 +157,13 @@ this.vaginal_skill <- this.inherit("scripts/skills/actives/lewd_sex_skill", {
 			local hitResult = this.rollHit(_user, target);
 			if (!hitResult.hit)
 			{
-				this.logMiss(_user, target);
+				this.logMiss(_user, target, hitResult);
 				return true;
 			}
 
 			local pleasure = this.calculatePleasure(target);
 			target.addPleasure(pleasure, _user);
-			this.logHit(_user, target, pleasure);
+			this.logHit(_user, target, pleasure, hitResult);
 			this.tryApplyHorny(target);
 
 			// refresh mount duration (whichever direction exists)

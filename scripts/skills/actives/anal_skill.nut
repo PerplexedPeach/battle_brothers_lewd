@@ -164,14 +164,14 @@ this.anal_skill <- this.inherit("scripts/skills/actives/lewd_sex_skill", {
 			local hitResult = this.rollHit(_user, target);
 			if (!hitResult.hit)
 			{
-				this.logMiss(_user, target);
+				this.logMiss(_user, target, hitResult);
 				return true;
 			}
 
 			this.applyReverseMount(_user, target);
 			local pleasure = this.calculatePleasure(target);
 			target.addPleasure(pleasure, _user);
-			this.logHit(_user, target, pleasure);
+			this.logHit(_user, target, pleasure, hitResult);
 			this.tryApplyHorny(target);
 		}
 		else
@@ -180,7 +180,7 @@ this.anal_skill <- this.inherit("scripts/skills/actives/lewd_sex_skill", {
 			local hitResult = this.rollHit(_user, target);
 			if (!hitResult.hit)
 			{
-				this.logMiss(_user, target);
+				this.logMiss(_user, target, hitResult);
 				return true;
 			}
 
@@ -200,7 +200,7 @@ this.anal_skill <- this.inherit("scripts/skills/actives/lewd_sex_skill", {
 			}
 
 			target.addPleasure(pleasure, _user);
-			this.logHit(_user, target, pleasure);
+			this.logHit(_user, target, pleasure, hitResult);
 			if (willClimax)
 				this.Tactical.EventLog.log("KAMIKAZE CLIMAX!");
 			this.tryApplyHorny(target);
