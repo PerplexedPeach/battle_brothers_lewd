@@ -83,32 +83,79 @@ this.ai_horny <- this.inherit("scripts/ai/tactical/behavior", {
 		return ::Lewd.Const.HornyAIScore * bestScore;
 	}
 
+	function getContinuationSkill( _entity, _target )
+	{
+		// Check what entity last did to target
+		local flagKey = "lewdCont_" + _target.getID();
+		local sexType = null;
+		if (_entity.getFlags().has(flagKey))
+			sexType = _entity.getFlags().get(flagKey);
+
+		// Also check what target last did to entity (respond in kind)
+		if (sexType == null)
+		{
+			local reverseKey = "lewdCont_" + _entity.getID();
+			if (_target.getFlags().has(reverseKey))
+				sexType = _target.getFlags().get(reverseKey);
+		}
+
+		if (sexType == null) return null;
+		if (!(sexType in ::Lewd.Const.AIContinuationMap)) return null;
+
+		local skillID = ::Lewd.Const.AIContinuationMap[sexType];
+		return _entity.getSkills().getSkillByID(skillID);
+	}
+
+	function pickRandomPenetrate( _entity, _targetTile )
+	{
+		local penVag = _entity.getSkills().getSkillByID("actives.male_penetrate_vaginal");
+		local penAnal = _entity.getSkills().getSkillByID("actives.male_penetrate_anal");
+		local vagUsable = penVag != null && this.canUseSkill(_entity, penVag, _targetTile);
+		local analUsable = penAnal != null && this.canUseSkill(_entity, penAnal, _targetTile);
+
+		if (vagUsable && analUsable)
+			return this.Math.rand(0, 1) == 0 ? penVag : penAnal;
+		if (vagUsable) return penVag;
+		if (analUsable) return penAnal;
+		return null;
+	}
+
 	function findBestSkill( _entity, _target, _targetTile )
 	{
-		local penetrate = _entity.getSkills().getSkillByID("actives.male_penetrate");
 		local forceOral = _entity.getSkills().getSkillByID("actives.male_force_oral");
 		local grope = _entity.getSkills().getSkillByID("actives.male_grope");
 
-		local targetMounted = _target.getSkills().hasSkill("effects.lewd_mounted");
-		local userMounting = _entity.getSkills().hasSkill("effects.lewd_mounting");
+		// 1. Check continuation memory
+		local contSkill = this.getContinuationSkill(_entity, _target);
+		if (contSkill != null && this.canUseSkill(_entity, contSkill, _targetTile))
+		{
+			if (this.Math.rand(1, 100) <= ::Lewd.Const.AIContinuationChance)
+				return contSkill;
+		}
 
-		// If already mounting this target, prefer penetrate (refresh mount + bonus pleasure)
-		if (userMounting && penetrate != null && this.canUseSkill(_entity, penetrate, _targetTile))
+		local userMounting = _entity.getSkills().hasSkill("effects.lewd_mounting");
+		local targetMounted = _target.getSkills().hasSkill("effects.lewd_mounted");
+
+		// 2. If already mounting THIS target: random penetrate
+		if (userMounting)
 		{
 			local mountingEffect = _entity.getSkills().getSkillByID("effects.lewd_mounting");
 			if (mountingEffect.getTargetID() == _target.getID())
-				return penetrate;
+			{
+				local pen = this.pickRandomPenetrate(_entity, _targetTile);
+				if (pen != null) return pen;
+			}
 		}
 
-		// If target is mounted (by anyone), force oral is very effective
+		// 3. If target is mounted (by anyone): force oral
 		if (targetMounted && forceOral != null && this.canUseSkill(_entity, forceOral, _targetTile))
 			return forceOral;
 
-		// Penetrate to establish mount (high value even if not yet mounted)
-		if (penetrate != null && this.canUseSkill(_entity, penetrate, _targetTile))
-			return penetrate;
+		// 4. Penetrate to establish mount
+		local pen = this.pickRandomPenetrate(_entity, _targetTile);
+		if (pen != null) return pen;
 
-		// Fallback: grope (cheapest, always works)
+		// 5. Fallback: grope
 		if (grope != null && this.canUseSkill(_entity, grope, _targetTile))
 			return grope;
 

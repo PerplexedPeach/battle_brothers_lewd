@@ -6,6 +6,7 @@ this.feet_skill <- this.inherit("scripts/skills/actives/lewd_sex_skill", {
 	{
 		this.lewd_sex_skill.create();
 		this.m.ID = "actives.lewd_feet";
+		this.m.SexType = "feet";
 		this.m.MasteryID = "effects.lewd_mastery_feet";
 		this.m.PerkID = "perk.lewd_foot_tease";
 		this.m.ScalingText = "Heel Skill";

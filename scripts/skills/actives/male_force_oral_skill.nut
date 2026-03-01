@@ -7,6 +7,7 @@ this.male_force_oral_skill <- this.inherit("scripts/skills/actives/male_sex_skil
 	{
 		this.male_sex_skill.create();
 		this.m.ID = "actives.male_force_oral";
+		this.m.SexType = "oral";
 		this.m.Name = "Force Oral";
 		this.m.Description = "Force yourself on the restrained target. Provides high pleasure to the user but little to the target, while shaking their resolve.";
 		this.m.Icon = "skills/lewd_hands_t2.png";

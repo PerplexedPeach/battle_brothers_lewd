@@ -348,14 +348,26 @@
 ::Lewd.Const.MaleForceOralResolveDebuff <- -5;
 ::Lewd.Const.MaleForceOralSelfPleasure <- 10;
 
-::Lewd.Const.MalePenetrateAP <- 6;
-::Lewd.Const.MalePenetrateFatigue <- 20;
-::Lewd.Const.MalePenetrateBasePleasure <- 15;
-::Lewd.Const.MalePenetrateMeleeSkillScale <- 0.12;
-::Lewd.Const.MalePenetrateBaseHitChance <- 60;
-::Lewd.Const.MalePenetrateMountedHitBonus <- 20;
-::Lewd.Const.MalePenetrateMountedPleasureBonus <- 5;
-::Lewd.Const.MalePenetrateSelfPleasure <- 8;
+// Male Penetrate (Vaginal) — easier, cheaper
+::Lewd.Const.MalePenetrateVaginalAP <- 5;
+::Lewd.Const.MalePenetrateVaginalFatigue <- 18;
+::Lewd.Const.MalePenetrateVaginalBasePleasure <- 14;
+::Lewd.Const.MalePenetrateVaginalMeleeSkillScale <- 0.12;
+::Lewd.Const.MalePenetrateVaginalBaseHitChance <- 65;
+::Lewd.Const.MalePenetrateVaginalMountedHitBonus <- 20;
+::Lewd.Const.MalePenetrateVaginalMountedPleasureBonus <- 5;
+::Lewd.Const.MalePenetrateVaginalSelfPleasure <- 6;
+
+// Male Penetrate (Anal) — rougher, harder
+::Lewd.Const.MalePenetrateAnalAP <- 6;
+::Lewd.Const.MalePenetrateAnalFatigue <- 22;
+::Lewd.Const.MalePenetrateAnalBasePleasure <- 12;
+::Lewd.Const.MalePenetrateAnalMeleeSkillScale <- 0.10;
+::Lewd.Const.MalePenetrateAnalBaseHitChance <- 55;
+::Lewd.Const.MalePenetrateAnalMountedHitBonus <- 20;
+::Lewd.Const.MalePenetrateAnalMountedPleasureBonus <- 6;
+::Lewd.Const.MalePenetrateAnalSelfPleasure <- 10;
+::Lewd.Const.MalePenetrateAnalMasoTierBonus <- 3;
 
 // --- Horny AI ---
 ::Lewd.Const.HornyAIScore <- 250;
@@ -364,6 +376,15 @@
 ::Lewd.Const.HornyAIEngageAllureNorm <- 30.0; // normalizer — 30 adjusted allure = 1.0x score
 ::Lewd.Const.AIBehaviorIDHorny <- 0; // set dynamically in mod_lewd.nut via Const.AI.Behavior.ID.COUNT
 ::Lewd.Const.AIBehaviorIDHornyEngage <- 0; // set dynamically in mod_lewd.nut via Const.AI.Behavior.ID.COUNT
+
+// --- AI Continuation ---
+::Lewd.Const.AIContinuationMap <- {
+	vaginal = "actives.male_penetrate_vaginal",
+	anal = "actives.male_penetrate_anal",
+	oral = "actives.male_force_oral"
+	// hands, feet — no preferred continuation
+};
+::Lewd.Const.AIContinuationChance <- 80; // % chance AI follows continuation instead of normal selection
 
 // --- Enemy PleasureMax ---
 ::Lewd.Const.EnemyPleasureMaxBase <- 20;

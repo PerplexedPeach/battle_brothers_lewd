@@ -89,7 +89,8 @@ this.lewd_horny_effect <- this.inherit("scripts/skills/skill", {
 			{
 				actor.getSkills().add(this.new("scripts/skills/actives/male_grope_skill"));
 				actor.getSkills().add(this.new("scripts/skills/actives/male_force_oral_skill"));
-				actor.getSkills().add(this.new("scripts/skills/actives/male_penetrate_skill"));
+				actor.getSkills().add(this.new("scripts/skills/actives/male_penetrate_vaginal_skill"));
+				actor.getSkills().add(this.new("scripts/skills/actives/male_penetrate_anal_skill"));
 			}
 
 			// Inject AI horny behaviors into existing agent

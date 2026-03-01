@@ -21,8 +21,21 @@ this.lewd_info_effect <- this.inherit("scripts/skills/skill", {
 
 	function onCombatStarted()
 	{
+		local actor = this.getContainer().getActor();
+
 		// Reset pleasure at battle start (same pattern as fatigue resetting in onCombatFinished)
-		this.getContainer().getActor().m.Pleasure = 0;
+		actor.m.Pleasure = 0;
+
+		// Clear stale continuation flags from previous combats
+		local flags = actor.getFlags();
+		local toRemove = [];
+		foreach (key, v in flags.m)
+		{
+			if (typeof key == "string" && key.len() >= 9 && key.slice(0, 9) == "lewdCont_")
+				toRemove.push(key);
+		}
+		foreach (key in toRemove)
+			flags.remove(key);
 	}
 
 	function onUpdate( _properties )

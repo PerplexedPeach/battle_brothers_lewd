@@ -4,6 +4,7 @@
 // Subclasses: lewd_sex_skill (tiers/mastery), male_sex_skill (flat values)
 this.sex_skill_base <- this.inherit("scripts/skills/skill", {
 	m = {
+		SexType = "",
 		HitText = [],
 		MissText = []
 	},
@@ -46,6 +47,13 @@ this.sex_skill_base <- this.inherit("scripts/skills/skill", {
 		return true;
 	}
 
+	function recordSexContinuation( _user, _target )
+	{
+		if (this.m.SexType == "") return;
+		_user.getFlags().set("lewdCont_" + _target.getID(), this.m.SexType);
+		_target.getFlags().set("lewdCont_" + _user.getID(), this.m.SexType);
+	}
+
 	function onUse( _user, _targetTile )
 	{
 		local target = _targetTile.getEntity();
@@ -64,6 +72,7 @@ this.sex_skill_base <- this.inherit("scripts/skills/skill", {
 		target.addPleasure(pleasure, _user);
 		this.logHit(_user, target, pleasure);
 		this.onHit(_user, target);
+		this.recordSexContinuation(_user, target);
 		return true;
 	}
 

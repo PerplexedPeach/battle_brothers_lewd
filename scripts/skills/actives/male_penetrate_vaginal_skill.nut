@@ -1,23 +1,23 @@
-// Penetrate — highest pleasure male sex ability
-// Establishes mount on hit, bonus if already mounted
-// High self-pleasure, scales with Melee Skill
-this.male_penetrate_skill <- this.inherit("scripts/skills/actives/male_sex_skill", {
+// Penetrate (Vaginal) — easier/cheaper male penetration, establishes mount
+// Scales with Melee Skill, bonus hit chance if already mounted
+this.male_penetrate_vaginal_skill <- this.inherit("scripts/skills/actives/male_sex_skill", {
 	m = {},
 	function create()
 	{
 		this.male_sex_skill.create();
-		this.m.ID = "actives.male_penetrate";
-		this.m.Name = "Penetrate";
-		this.m.Description = "Penetrate the target with brute force, dealing high pleasure and establishing dominance.";
+		this.m.ID = "actives.male_penetrate_vaginal";
+		this.m.Name = "Penetrate (Vaginal)";
+		this.m.Description = "Penetrate the target vaginally, dealing high pleasure and establishing dominance.";
+		this.m.SexType = "vaginal";
 		this.m.Icon = "skills/lewd_hands_t3.png";
 		this.m.IconDisabled = "skills/lewd_hands_t3_bw.png";
 		this.m.Overlay = "lewd_hands_t3";
-		this.m.ActionPointCost = ::Lewd.Const.MalePenetrateAP;
-		this.m.FatigueCost = ::Lewd.Const.MalePenetrateFatigue;
-		this.m.BasePleasure = ::Lewd.Const.MalePenetrateBasePleasure;
-		this.m.MeleeSkillScale = ::Lewd.Const.MalePenetrateMeleeSkillScale;
-		this.m.BaseHitChance = ::Lewd.Const.MalePenetrateBaseHitChance;
-		this.m.SelfPleasure = ::Lewd.Const.MalePenetrateSelfPleasure;
+		this.m.ActionPointCost = ::Lewd.Const.MalePenetrateVaginalAP;
+		this.m.FatigueCost = ::Lewd.Const.MalePenetrateVaginalFatigue;
+		this.m.BasePleasure = ::Lewd.Const.MalePenetrateVaginalBasePleasure;
+		this.m.MeleeSkillScale = ::Lewd.Const.MalePenetrateVaginalMeleeSkillScale;
+		this.m.BaseHitChance = ::Lewd.Const.MalePenetrateVaginalBaseHitChance;
+		this.m.SelfPleasure = ::Lewd.Const.MalePenetrateVaginalSelfPleasure;
 		this.m.HitText = ["penetrates", "thrusts into", "ravishes"];
 		this.m.MissText = ["penetrate", "thrust into", "take"];
 	}
@@ -25,15 +25,14 @@ this.male_penetrate_skill <- this.inherit("scripts/skills/actives/male_sex_skill
 	function getHitChanceAgainst( _target )
 	{
 		local chance = this.male_sex_skill.getHitChanceAgainst(_target);
-		// Bonus hit chance if target already mounted
 		if (_target.getSkills().hasSkill("effects.lewd_mounted"))
-			chance += ::Lewd.Const.MalePenetrateMountedHitBonus;
+			chance += ::Lewd.Const.MalePenetrateVaginalMountedHitBonus;
 		return this.Math.max(20, this.Math.min(95, chance));
 	}
 
 	function calculateMountBonus( _target )
 	{
-		return ::Lewd.Const.MalePenetrateMountedPleasureBonus;
+		return ::Lewd.Const.MalePenetrateVaginalMountedPleasureBonus;
 	}
 
 	function onUse( _user, _targetTile )
@@ -49,13 +48,12 @@ this.male_penetrate_skill <- this.inherit("scripts/skills/actives/male_sex_skill
 			return true;
 		}
 
-		// Establish or refresh mount
 		this.applyMount(_user, target);
-
 		local pleasure = this.calculatePleasure(target);
 		target.addPleasure(pleasure, _user);
 		this.logHit(_user, target, pleasure);
 		this.onHit(_user, target);
+		this.recordSexContinuation(_user, target);
 		return true;
 	}
 
@@ -100,7 +98,7 @@ this.male_penetrate_skill <- this.inherit("scripts/skills/actives/male_sex_skill
 			id = 8,
 			type = "text",
 			icon = "ui/icons/special.png",
-			text = "[color=" + this.Const.UI.Color.PositiveValue + "]+" + ::Lewd.Const.MalePenetrateMountedHitBonus + "%[/color] hit chance if target already mounted"
+			text = "[color=" + this.Const.UI.Color.PositiveValue + "]+" + ::Lewd.Const.MalePenetrateVaginalMountedHitBonus + "%[/color] hit chance if target already mounted"
 		});
 		if (this.m.SelfPleasure > 0)
 		{

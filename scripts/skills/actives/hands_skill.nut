@@ -6,6 +6,7 @@ this.hands_skill <- this.inherit("scripts/skills/actives/lewd_sex_skill", {
 	{
 		this.lewd_sex_skill.create();
 		this.m.ID = "actives.lewd_hands";
+		this.m.SexType = "hands";
 		this.m.MasteryID = "effects.lewd_mastery_hands";
 		this.m.PerkID = "perk.lewd_nimble_fingers";
 		this.m.ScalingText = "Melee Skill and Dominance";

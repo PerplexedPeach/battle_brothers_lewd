@@ -7,6 +7,7 @@ this.vaginal_skill <- this.inherit("scripts/skills/actives/lewd_sex_skill", {
 	{
 		this.lewd_sex_skill.create();
 		this.m.ID = "actives.lewd_vaginal";
+		this.m.SexType = "vaginal";
 		this.m.MasteryID = "effects.lewd_mastery_vaginal";
 		this.m.PerkID = "perk.lewd_mounting";
 		this.m.ScalingText = "Initiative";
@@ -180,6 +181,7 @@ this.vaginal_skill <- this.inherit("scripts/skills/actives/lewd_sex_skill", {
 		// T3 extra: AP debuff
 		this.applyT3Debuff(target);
 
+		this.recordSexContinuation(_user, target);
 		return true;
 	}
 

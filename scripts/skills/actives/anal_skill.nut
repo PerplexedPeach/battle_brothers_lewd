@@ -7,6 +7,7 @@ this.anal_skill <- this.inherit("scripts/skills/actives/lewd_sex_skill", {
 	{
 		this.lewd_sex_skill.create();
 		this.m.ID = "actives.lewd_anal";
+		this.m.SexType = "anal";
 		this.m.MasteryID = "effects.lewd_mastery_anal";
 		this.m.PerkID = "perk.lewd_offering";
 		this.m.ScalingText = "submission and masochism";
@@ -226,6 +227,7 @@ this.anal_skill <- this.inherit("scripts/skills/actives/lewd_sex_skill", {
 			this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(_user) + " takes [color=" + this.Const.UI.Color.NegativeValue + "]" + actualDmg + "[/color] damage from the act");
 		}
 
+		this.recordSexContinuation(_user, target);
 		return true;
 	}
 

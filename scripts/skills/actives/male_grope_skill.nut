@@ -7,6 +7,7 @@ this.male_grope_skill <- this.inherit("scripts/skills/actives/male_sex_skill", {
 	{
 		this.male_sex_skill.create();
 		this.m.ID = "actives.male_grope";
+		this.m.SexType = "hands";
 		this.m.Name = "Grope";
 		this.m.Description = "Roughly grope the target, dealing a small amount of pleasure.";
 		this.m.Icon = "skills/lewd_hands_t1.png";
