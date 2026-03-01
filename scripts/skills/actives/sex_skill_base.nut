@@ -10,12 +10,9 @@ this.sex_skill_base <- this.inherit("scripts/skills/skill", {
 	},
 	function create()
 	{
-		this.m.SoundOnUse = [
-			"sounds/enemies/dlc2/hexe_charm_kiss_01.wav",
-			"sounds/enemies/dlc2/hexe_charm_kiss_02.wav",
-			"sounds/enemies/dlc2/hexe_charm_kiss_03.wav",
-			"sounds/enemies/dlc2/hexe_charm_kiss_04.wav"
-		];
+		this.m.SoundOnUse = [];
+		this.m.SoundOnHit = [];
+		this.m.SoundOnHitMale = [];
 		this.m.Type = this.Const.SkillType.Active;
 		this.m.Order = this.Const.SkillOrder.UtilityTargeted;
 		this.m.IsSerialized = false;
@@ -62,7 +59,6 @@ this.sex_skill_base <- this.inherit("scripts/skills/skill", {
 
 		::logInfo("[sex] " + _user.getName() + " uses " + this.m.ID + " on " + target.getName());
 		this.Tactical.EventLog.log("[DBG] " + _user.getName() + " attempts " + this.m.ID + " on " + target.getName());
-		this.playSound(_user);
 
 		local hitResult = this.rollHit(_user, target);
 		::logInfo("[sex]   hit roll:" + hitResult.roll + " chance:" + hitResult.chance + " autoHit:" + this.isAutoHit(target) + " -> " + (hitResult.hit ? "HIT" : "MISS"));
@@ -75,16 +71,21 @@ this.sex_skill_base <- this.inherit("scripts/skills/skill", {
 		local pleasure = this.calculatePleasure(target);
 		::logInfo("[sex]   pleasure:" + pleasure + " target pleasure:" + target.getPleasure() + "/" + target.getPleasureMax());
 		target.addPleasure(pleasure, _user);
+		this.playSoundOnHit(target);
 		this.logHit(_user, target, pleasure, hitResult);
 		this.onHit(_user, target);
 		this.recordSexContinuation(_user, target);
 		return true;
 	}
 
-	function playSound( _user )
+	function playSoundOnHit( _target )
 	{
-		if (this.m.SoundOnUse.len() != 0)
-			this.Sound.play(this.m.SoundOnUse[this.Math.rand(0, this.m.SoundOnUse.len() - 1)], this.Const.Sound.Volume.Skill, _user.getPos());
+		local pool = _target.getGender() == 0 && this.m.SoundOnHitMale.len() > 0
+			? this.m.SoundOnHitMale
+			: this.m.SoundOnHit;
+
+		if (pool.len() > 0)
+			this.Sound.play(pool[this.Math.rand(0, pool.len() - 1)], this.Const.Sound.Volume.Skill, _target.getPos());
 	}
 
 	function rollHit( _user, _target )

@@ -73,10 +73,22 @@ this.open_invitation_skill <- this.inherit("scripts/skills/skill", {
 		else
 		{
 			this.getContainer().add(this.new("scripts/skills/effects/open_invitation_effect"));
+			if (::Lewd.Const.SoundSpanking.len() > 0)
+				this.Sound.play(::Lewd.Const.SoundSpanking[this.Math.rand(0, ::Lewd.Const.SoundSpanking.len() - 1)], this.Const.Sound.Volume.Skill, _user.getPos());
+			if (::Lewd.Const.SoundMoans.len() > 0)
+				this.Sound.play(::Lewd.Const.SoundMoans[this.Math.rand(0, ::Lewd.Const.SoundMoans.len() - 1)], this.Const.Sound.Volume.Skill, _user.getPos());
 			this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(_user) + " opens an invitation!");
 		}
 		this.m.ToggledThisTurn = true;
 		return true;
+	}
+
+	function addResources()
+	{
+		foreach (s in ::Lewd.Const.SoundSpanking)
+			this.Tactical.addResource(s);
+		foreach (s in ::Lewd.Const.SoundMoans)
+			this.Tactical.addResource(s);
 	}
 
 	function onTurnStart()

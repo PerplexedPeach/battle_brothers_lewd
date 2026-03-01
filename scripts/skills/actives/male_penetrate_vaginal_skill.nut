@@ -5,6 +5,7 @@ this.male_penetrate_vaginal_skill <- this.inherit("scripts/skills/actives/male_s
 	function create()
 	{
 		this.male_sex_skill.create();
+		this.m.SoundOnUse = ::Lewd.Const.SoundFucking;
 		this.m.ID = "actives.male_penetrate_vaginal";
 		this.m.Name = "Penetrate (Vaginal)";
 		this.m.Description = "Penetrate the target vaginally, dealing high pleasure and establishing dominance.";
@@ -40,7 +41,6 @@ this.male_penetrate_vaginal_skill <- this.inherit("scripts/skills/actives/male_s
 		local target = _targetTile.getEntity();
 		if (target == null) return false;
 
-		this.playSound(_user);
 		local hitResult = this.rollHit(_user, target);
 		if (!hitResult.hit)
 		{

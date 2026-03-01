@@ -6,6 +6,7 @@ this.anal_skill <- this.inherit("scripts/skills/actives/lewd_sex_skill", {
 	function create()
 	{
 		this.lewd_sex_skill.create();
+		this.m.SoundOnUse = ::Lewd.Const.SoundFucking;
 		this.m.ID = "actives.lewd_anal";
 		this.m.SexType = "anal";
 		this.m.MasteryID = "effects.lewd_mastery_anal";
@@ -155,7 +156,6 @@ this.anal_skill <- this.inherit("scripts/skills/actives/lewd_sex_skill", {
 		local target = _targetTile.getEntity();
 		if (target == null) return false;
 
-		this.playSound(_user);
 		local tier = this.getTier();
 
 		// T1: establish reverse mount (enemy mounts user)

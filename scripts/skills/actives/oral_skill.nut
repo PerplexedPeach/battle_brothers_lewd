@@ -5,6 +5,7 @@ this.oral_skill <- this.inherit("scripts/skills/actives/lewd_sex_skill", {
 	function create()
 	{
 		this.lewd_sex_skill.create();
+		this.m.SoundOnUse = ::Lewd.Const.SoundBlowjob;
 		this.m.ID = "actives.lewd_oral";
 		this.m.SexType = "oral";
 		this.m.MasteryID = "effects.lewd_mastery_oral";

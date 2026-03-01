@@ -12,12 +12,7 @@ this.climax_effect <- this.inherit("scripts/skills/skill", {
 		this.m.Order = this.Const.SkillOrder.VeryLast;
 		this.m.IsActive = false;
 		this.m.IsStacking = false;
-		this.m.SoundOnUse = [
-			"sounds/enemies/dlc2/hexe_charm_kiss_01.wav",
-			"sounds/enemies/dlc2/hexe_charm_kiss_02.wav",
-			"sounds/enemies/dlc2/hexe_charm_kiss_03.wav",
-			"sounds/enemies/dlc2/hexe_charm_kiss_04.wav"
-		];
+		this.m.SoundOnUse = ::Lewd.Const.SoundOrgasm;
 	}
 
 	function setTurns( _turns )
@@ -84,7 +79,10 @@ this.climax_effect <- this.inherit("scripts/skills/skill", {
 
 		if (actor.isPlacedOnMap())
 		{
-			this.Sound.play(this.m.SoundOnUse[this.Math.rand(0, this.m.SoundOnUse.len() - 1)], this.Const.Sound.Volume.Skill, actor.getPos());
+			local soundPool = this.m.SoundOnUse;
+			if (actor.getGender() == 0 && ::Lewd.Const.SoundMaleOrgasm.len() > 0)
+				soundPool = ::Lewd.Const.SoundMaleOrgasm;
+			this.Sound.play(soundPool[this.Math.rand(0, soundPool.len() - 1)], this.Const.Sound.Volume.Skill, actor.getPos());
 			this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(actor) + " reaches climax!");
 
 			// Shameless perk: daze adjacent enemies and deal pleasure to sex partner on own climax

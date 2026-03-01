@@ -73,12 +73,31 @@
 	"sounds/intense_moans/5.wav"
 ];
 
-// Orgasm — used by Climax effect
+// Orgasm (female) — used by Climax effect
 ::Lewd.Const.SoundOrgasm <- [
 	"sounds/orgasm/1.wav",
 	"sounds/orgasm/2.wav",
 	"sounds/orgasm/3.wav",
 	"sounds/orgasm/4.wav"
+];
+
+// Male moans — gendered variant of SoundMoans for male targets
+::Lewd.Const.SoundMaleMoans <- [
+	"sounds/male_moan/1.wav",
+	"sounds/male_moan/2.wav",
+	"sounds/male_moan/3.wav",
+	"sounds/male_moan/4.wav",
+	"sounds/male_moan/5.wav",
+	"sounds/male_moan/6.wav"
+];
+
+// Male orgasm — gendered variant of SoundOrgasm for male climax
+::Lewd.Const.SoundMaleOrgasm <- [
+	"sounds/male_orgasm/1.wav",
+	"sounds/male_orgasm/2.wav",
+	"sounds/male_orgasm/3.wav",
+	"sounds/male_orgasm/4.wav",
+	"sounds/male_orgasm/5.wav"
 ];
 
 // --- Heel Terrain Movement Sounds ---
