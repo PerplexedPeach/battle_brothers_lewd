@@ -26,6 +26,12 @@ Horny ability ideas:
 - enemy ability to drag (move 1 square) a woman in climax to a free square that is closer to the other enemies (so you are more easily surrounded)
 - branding after you climax to enemy ability some number of times?
 - deal fatigue damage
+- chance to get parasite when beasts cum in you (spider/wolves/...)
+
+
+Horny ability animation:
+- look at existing weapon swinging animation
+- want to add delay between ability usage animation
 
 Sounds to get:
 - moaning

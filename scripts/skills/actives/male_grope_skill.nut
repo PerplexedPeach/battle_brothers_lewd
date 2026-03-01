@@ -6,6 +6,9 @@ this.male_grope_skill <- this.inherit("scripts/skills/actives/male_sex_skill", {
 	function create()
 	{
 		this.male_sex_skill.create();
+		this.m.SoundOnUse = ::Lewd.Const.SoundSpanking;
+		this.m.SoundOnHit = ::Lewd.Const.SoundMoans;
+		this.m.SoundOnHitMale = ::Lewd.Const.SoundMaleMoans;
 		this.m.ID = "actives.male_grope";
 		this.m.SexType = "hands";
 		this.m.Name = "Grope";

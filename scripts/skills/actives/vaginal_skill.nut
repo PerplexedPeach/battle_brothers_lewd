@@ -6,6 +6,7 @@ this.vaginal_skill <- this.inherit("scripts/skills/actives/lewd_sex_skill", {
 	function create()
 	{
 		this.lewd_sex_skill.create();
+		this.m.SoundOnUse = ::Lewd.Const.SoundFucking;
 		this.m.ID = "actives.lewd_vaginal";
 		this.m.SexType = "vaginal";
 		this.m.MasteryID = "effects.lewd_mastery_vaginal";
@@ -132,7 +133,6 @@ this.vaginal_skill <- this.inherit("scripts/skills/actives/lewd_sex_skill", {
 		local target = _targetTile.getEntity();
 		if (target == null) return false;
 
-		this.playSound(_user);
 		local tier = this.getTier();
 
 		// T1: establish mount first

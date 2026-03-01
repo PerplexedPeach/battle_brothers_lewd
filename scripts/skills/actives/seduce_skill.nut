@@ -26,12 +26,7 @@ this.seduce_skill <- this.inherit("scripts/skills/skill", {
 		this.m.Icon = "skills/seduce.png";
 		this.m.IconDisabled = "skills/seduce_bw.png";
 		this.m.Overlay = "active_120";
-		this.m.SoundOnUse = [
-			"sounds/enemies/dlc2/hexe_charm_kiss_01.wav",
-			"sounds/enemies/dlc2/hexe_charm_kiss_02.wav",
-			"sounds/enemies/dlc2/hexe_charm_kiss_03.wav",
-			"sounds/enemies/dlc2/hexe_charm_kiss_04.wav"
-		];
+		this.m.SoundOnUse = ::Lewd.Const.SoundMoans;
 		this.m.SoundOnHit = [
 			"sounds/enemies/dlc2/hexe_charm_chimes_01.wav",
 			"sounds/enemies/dlc2/hexe_charm_chimes_02.wav",
@@ -112,8 +107,17 @@ this.seduce_skill <- this.inherit("scripts/skills/skill", {
 		return true;
 	}
 
+	function addResources()
+	{
+		this.skill.addResources();
+		foreach (s in ::Lewd.Const.SoundSpanking)
+			this.Tactical.addResource(s);
+	}
+
 	function onUse( _user, _targetTile )
 	{
+		if (::Lewd.Const.SoundSpanking.len() > 0)
+			this.Sound.play(::Lewd.Const.SoundSpanking[this.Math.rand(0, ::Lewd.Const.SoundSpanking.len() - 1)], this.Const.Sound.Volume.Skill, _user.getPos());
 		local tag = {
 			User = _user,
 			TargetTile = _targetTile
@@ -167,6 +171,9 @@ this.seduce_skill <- this.inherit("scripts/skills/skill", {
 			charmed.setMasterFaction(_user.getFaction() == this.Const.Faction.Player ? this.Const.Faction.PlayerAnimals : _user.getFaction());
 			charmed.setMaster(self);
 			target.getSkills().add(charmed);
+
+			if (self.m.SoundOnHit.len() > 0)
+				this.Sound.play(self.m.SoundOnHit[this.Math.rand(0, self.m.SoundOnHit.len() - 1)], this.Const.Sound.Volume.Skill, target.getPos());
 
 			if (!_user.isHiddenToPlayer() && !target.isHiddenToPlayer())
 			{
