@@ -131,11 +131,16 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC" function()
 			local cur = this.m.Pleasure + amount;
 			if (cur >= max)
 			{
-				// Insatiable perk: target's pleasure overflows instead of resetting
+				// Determine if pleasure should overflow instead of resetting
+				local overflow = false;
+				// Insatiable perk (offensive): source's perk causes target's pleasure to overflow
 				if (_source != null && _source.getSkills().hasSkill("perk.lewd_insatiable"))
-					this.m.Pleasure = this.Math.max(0, this.Math.round(cur - max));
-				else
-					this.m.Pleasure = 0;
+					overflow = true;
+				// Transcendence perk (defensive): own pleasure persists through climax
+				if (this.getSkills().hasSkill("perk.lewd_transcendence"))
+					overflow = true;
+
+				this.m.Pleasure = overflow ? this.Math.max(0, this.Math.round(cur - max)) : 0;
 				this.onClimax();
 			}
 			else
@@ -237,6 +242,61 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC" function()
 			}
 
 			return tooltip;
+		};
+	});
+
+	// Embrace Pain: auto-pass morale loss checks
+	mod.hook("scripts/entity/tactical/actor", function(q)
+	{
+		q.checkMorale = @(__original) function( _change, _difficulty, _type = this.Const.MoraleCheckType.Default, _showIconBeforeMoraleIcon = "", _noNewLine = false )
+		{
+			if (_change < 0 && this.getSkills().hasSkill("perk.lewd_embrace_pain"))
+				return false;
+			return __original(_change, _difficulty, _type, _showIconBeforeMoraleIcon, _noNewLine);
+		};
+	});
+
+	// Alluring Presence aura: apply pleasure to enemies on their turn start and when they move adjacent
+	mod.hook("scripts/skills/effects/lewd_info_effect", function(q)
+	{
+		q.onTurnStart = @(__original) function()
+		{
+			__original();
+			local actor = this.getContainer().getActor();
+			if (!actor.isPlacedOnMap()) return;
+			if (actor.getPleasureMax() <= 0) return;
+
+			local tile = actor.getTile();
+			for (local i = 0; i < 6; i++)
+			{
+				if (!tile.hasNextTile(i)) continue;
+				local nextTile = tile.getNextTile(i);
+				if (!nextTile.IsOccupiedByActor) continue;
+				local adj = nextTile.getEntity();
+				if (adj == null || adj.isAlliedWith(actor)) continue;
+				if (!adj.getSkills().hasSkill("perk.lewd_alluring_presence")) continue;
+				actor.addPleasure(::Lewd.Const.AlluringPresenceAuraPleasure, adj);
+			}
+		};
+
+		q.onMovementFinished = @(__original) function()
+		{
+			__original();
+			local actor = this.getContainer().getActor();
+			if (!actor.isPlacedOnMap()) return;
+			if (actor.getPleasureMax() <= 0) return;
+
+			local tile = actor.getTile();
+			for (local i = 0; i < 6; i++)
+			{
+				if (!tile.hasNextTile(i)) continue;
+				local nextTile = tile.getNextTile(i);
+				if (!nextTile.IsOccupiedByActor) continue;
+				local adj = nextTile.getEntity();
+				if (adj == null || adj.isAlliedWith(actor)) continue;
+				if (!adj.getSkills().hasSkill("perk.lewd_alluring_presence")) continue;
+				actor.addPleasure(::Lewd.Const.AlluringPresenceAuraPleasure, adj);
+			}
 		};
 	});
 

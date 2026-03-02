@@ -18,4 +18,10 @@ this.perk_lewd_alluring_presence <- this.inherit("scripts/skills/skill", {
 		_properties.Allure += ::Lewd.Const.AlluringPresenceAllure;
 		_properties.PleasureMax += ::Lewd.Const.AlluringPresencePleasureMax;
 	}
+
+	function onTurnStart()
+	{
+		// Reset first-use hit bonus flag each turn
+		this.getContainer().getActor().getFlags().set("lewdAlluringUsed", 0);
+	}
 });

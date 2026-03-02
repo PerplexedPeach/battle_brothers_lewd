@@ -1,5 +1,5 @@
-// Pliant Body: -20% self-pleasure from all sex acts
-// Checked directly in skill scripts via actor.getSkills().hasSkill("perk.lewd_pliant_body")
+// Pliant Body: +50% enemy self-pleasure when they sex you, mounter fatigue drain, shorter sex debuffs
+// Checked in male_sex_skill.onHit, lewd_mounted_effect.onTurnEnd, lewd_sex_debuff_effect.onAdded
 this.perk_lewd_pliant_body <- this.inherit("scripts/skills/skill", {
 	m = {},
 	function create()

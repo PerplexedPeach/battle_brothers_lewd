@@ -1,5 +1,5 @@
-// Practiced Control: +50% mastery point gain rate
-// Checked in lewd_mastery_effect.addPoints() via actor.getSkills().hasSkill("perk.lewd_practiced_control")
+// Practiced Control: -50% self-pleasure reflection + -25% fatigue cost on sex abilities
+// Reflection checked in lewd_sex_skill.applySelfPleasure, fatigue in lewd_sex_skill.getFatigueCost
 this.perk_lewd_practiced_control <- this.inherit("scripts/skills/skill", {
 	m = {},
 	function create()

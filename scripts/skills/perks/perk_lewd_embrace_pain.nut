@@ -17,4 +17,13 @@ this.perk_lewd_embrace_pain <- this.inherit("scripts/skills/skill", {
 	{
 		_properties.PleasureMax += ::Lewd.Const.EmbracePainPleasureMax;
 	}
+
+	function onDamageReceived( _attacker, _damageHitpoints, _damageArmor )
+	{
+		if (_damageHitpoints > 0)
+		{
+			local actor = this.getContainer().getActor();
+			actor.m.Fatigue = this.Math.max(0, actor.m.Fatigue - ::Lewd.Const.EmbracePainFatiguePerHit);
+		}
+	}
 });

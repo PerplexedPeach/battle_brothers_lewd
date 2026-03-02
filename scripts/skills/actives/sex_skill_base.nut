@@ -57,6 +57,9 @@ this.sex_skill_base <- this.inherit("scripts/skills/skill", {
 		local target = _targetTile.getEntity();
 		if (target == null) return false;
 
+		// Mark Alluring Presence first-use bonus as consumed
+		_user.getFlags().set("lewdAlluringUsed", 1);
+
 		::logInfo("[sex] " + _user.getName() + " uses " + this.m.ID + " on " + target.getName());
 		this.Tactical.EventLog.log("[DBG] " + _user.getName() + " attempts " + this.m.ID + " on " + target.getName());
 

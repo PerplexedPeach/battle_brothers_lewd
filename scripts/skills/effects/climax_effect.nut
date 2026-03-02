@@ -85,7 +85,7 @@ this.climax_effect <- this.inherit("scripts/skills/skill", {
 			this.Sound.play(soundPool[this.Math.rand(0, soundPool.len() - 1)], this.Const.Sound.Volume.Skill, actor.getPos());
 			this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(actor) + " reaches climax!");
 
-			// Shameless perk: daze adjacent enemies and deal pleasure to sex partner on own climax
+			// Shameless perk: make adjacent enemies horny and deal pleasure to sex partner on own climax
 			if (actor.getSkills().hasSkill("perk.lewd_shameless") && actor.isPlacedOnMap())
 			{
 				local tile = actor.getTile();
@@ -99,8 +99,15 @@ this.climax_effect <- this.inherit("scripts/skills/skill", {
 							local adj = nextTile.getEntity();
 							if (adj != null && !adj.isAlliedWith(actor) && adj.isAlive())
 							{
-								this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(adj) + " is dazed by the shameless display!");
-								adj.getSkills().add(this.new("scripts/skills/effects/dazed_effect"));
+								this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(adj) + " is aroused by the shameless display!");
+								if (adj.getSkills().hasSkill("effects.lewd_horny"))
+								{
+									adj.getSkills().getSkillByID("effects.lewd_horny").onRefresh();
+								}
+								else
+								{
+									adj.getSkills().add(this.new("scripts/skills/effects/lewd_horny_effect"));
+								}
 							}
 						}
 					}

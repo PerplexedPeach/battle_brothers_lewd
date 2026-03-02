@@ -107,11 +107,21 @@ this.male_sex_skill <- this.inherit("scripts/skills/actives/sex_skill_base", {
 		return 0;
 	}
 
-	// Post-hit hook — base applies self-pleasure + horny
+	// Post-hit hook — base applies self-pleasure + horny + Pliant Body + Willing Victim
 	function onHit( _user, _target )
 	{
-		if (this.m.SelfPleasure > 0 && _user.getPleasureMax() > 0)
-			_user.addPleasure(this.m.SelfPleasure);
+		local selfP = this.m.SelfPleasure;
+
+		// Pliant Body: target's accommodating body gives attacker more self-pleasure
+		if (_target.getSkills().hasSkill("perk.lewd_pliant_body"))
+			selfP = this.Math.floor(selfP * ::Lewd.Const.PliantBodyReflectionMult);
+
+		if (selfP > 0 && _user.getPleasureMax() > 0)
+			_user.addPleasure(selfP);
+
+		// Willing Victim: target deals counter-pleasure back to attacker
+		if (_target.getSkills().hasSkill("perk.lewd_willing_victim") && _user.getPleasureMax() > 0)
+			_user.addPleasure(::Lewd.Const.WillingVictimCounterPleasure, _target);
 
 		this.tryApplyHorny(_target);
 	}

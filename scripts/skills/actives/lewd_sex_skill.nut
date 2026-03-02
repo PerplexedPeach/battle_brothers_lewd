@@ -53,7 +53,10 @@ this.lewd_sex_skill <- this.inherit("scripts/skills/actives/sex_skill_base", {
 
 	function getFatigueCost()
 	{
-		return this.getTierConfig().Fatigue;
+		local cost = this.getTierConfig().Fatigue;
+		if (this.getContainer().getActor().getSkills().hasSkill("perk.lewd_practiced_control"))
+			cost = this.Math.ceil(cost * ::Lewd.Const.PracticedControlFatigueMult);
+		return cost;
 	}
 
 	function getBaseHitChance()
@@ -98,6 +101,12 @@ this.lewd_sex_skill <- this.inherit("scripts/skills/actives/sex_skill_base", {
 				text = "[color=" + this.Const.UI.Color.NegativeValue + "]" + (diff * ::Lewd.Const.SexHitChanceAllureResolveScale) + "%[/color] from Resolve advantage"
 			});
 
+		if (user.getSkills().hasSkill("perk.lewd_alluring_presence") && user.getFlags().getAsInt("lewdAlluringUsed") == 0)
+			ret.push({
+				icon = "ui/icons/positive.png",
+				text = "[color=" + this.Const.UI.Color.PositiveValue + "]+" + ::Lewd.Const.AlluringPresenceHitBonus + "%[/color] from Alluring Presence (first use)"
+			});
+
 		if (this.isAutoHit(target))
 			ret.push({
 				icon = "ui/icons/special.png",
@@ -115,6 +124,11 @@ this.lewd_sex_skill <- this.inherit("scripts/skills/actives/sex_skill_base", {
 		local allure = user.allure();
 		local resolve = _target.getBravery();
 		local chance = this.getBaseHitChance() + (allure - resolve) * ::Lewd.Const.SexHitChanceAllureResolveScale;
+
+		// Alluring Presence: +15% hit on first sex ability use per turn
+		if (user.getSkills().hasSkill("perk.lewd_alluring_presence") && user.getFlags().getAsInt("lewdAlluringUsed") == 0)
+			chance += ::Lewd.Const.AlluringPresenceHitBonus;
+
 		return this.Math.max(::Lewd.Const.SexHitChanceMin, this.Math.min(::Lewd.Const.SexHitChanceMax, chance));
 	}
 
@@ -234,10 +248,6 @@ this.lewd_sex_skill <- this.inherit("scripts/skills/actives/sex_skill_base", {
 		// Practiced Control: user receives less reflection
 		if (_user.getSkills().hasSkill("perk.lewd_practiced_control"))
 			selfP = this.Math.floor(selfP * ::Lewd.Const.PracticedControlReflectionMult);
-
-		// Pliant Body: target's body gives more pleasure back to user
-		if (_target != null && _target.getSkills().hasSkill("perk.lewd_pliant_body"))
-			selfP = this.Math.floor(selfP * ::Lewd.Const.PliantBodyReflectionMult);
 
 		if (selfP > 0)
 			_user.addPleasure(selfP);

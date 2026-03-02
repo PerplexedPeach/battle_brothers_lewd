@@ -118,6 +118,15 @@ this.lewd_mounted_effect <- this.inherit("scripts/skills/skill", {
 			{
 				this.removeSelf();
 			}
+			else
+			{
+				// Pliant Body: drain fatigue from the mounter each turn
+				local actor = this.getContainer().getActor();
+				if (actor.getSkills().hasSkill("perk.lewd_pliant_body"))
+				{
+					mounter.m.Fatigue = this.Math.min(mounter.getFatigueMax(), mounter.m.Fatigue + ::Lewd.Const.PliantBodyFatigueDrain);
+				}
+			}
 		}
 	}
 
