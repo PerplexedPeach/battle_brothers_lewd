@@ -331,6 +331,7 @@
 ::Lewd.Const.HornyResolvePenalty <- -15;
 ::Lewd.Const.HornyInitiativeMult <- 0.85; // -15%
 ::Lewd.Const.HornyMeleeDefPenalty <- -5;
+::Lewd.Const.HornyDamageRemoveThreshold <- 10;
 
 // --- Dom/Sub System ---
 ::Lewd.Const.DomSubCap <- 30;

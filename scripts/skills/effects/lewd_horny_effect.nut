@@ -149,6 +149,12 @@ this.lewd_horny_effect <- this.inherit("scripts/skills/skill", {
 		actor.setDirty(true);
 	}
 
+	function onDamageReceived( _attacker, _damageHitpoints, _damageArmor )
+	{
+		if (_damageHitpoints > ::Lewd.Const.HornyDamageRemoveThreshold)
+			this.removeSelf();
+	}
+
 	function onTurnEnd()
 	{
 		if (--this.m.TurnsLeft <= 0)
