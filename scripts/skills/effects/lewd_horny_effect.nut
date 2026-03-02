@@ -157,8 +157,4 @@ this.lewd_horny_effect <- this.inherit("scripts/skills/skill", {
 		}
 	}
 
-	function onCombatFinished()
-	{
-		this.removeSelf();
-	}
 });

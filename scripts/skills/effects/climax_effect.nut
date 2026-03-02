@@ -12,6 +12,7 @@ this.climax_effect <- this.inherit("scripts/skills/skill", {
 		this.m.Order = this.Const.SkillOrder.VeryLast;
 		this.m.IsActive = false;
 		this.m.IsStacking = false;
+		this.m.IsRemovedAfterBattle = true;
 		this.m.SoundOnUse = ::Lewd.Const.SoundOrgasm;
 	}
 
@@ -189,14 +190,4 @@ this.climax_effect <- this.inherit("scripts/skills/skill", {
 		}
 	}
 
-	function onCombatFinished()
-	{
-		this.removeSelf();
-	}
-
-	function removeSelf()
-	{
-		local actor = this.getContainer().getActor();
-		actor.getSkills().removeByID(this.m.ID);
-	}
 });

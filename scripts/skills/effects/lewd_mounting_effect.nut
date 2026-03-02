@@ -15,6 +15,7 @@ this.lewd_mounting_effect <- this.inherit("scripts/skills/skill", {
 		this.m.IsActive = false;
 		this.m.IsStacking = false;
 		this.m.IsSerialized = false;
+		this.m.IsRemovedAfterBattle = true;
 	}
 
 	function setTarget( _entityID )
@@ -86,17 +87,4 @@ this.lewd_mounting_effect <- this.inherit("scripts/skills/skill", {
 		}
 	}
 
-	function onCombatFinished()
-	{
-		this.removeSelf();
-	}
-
-	function removeSelf()
-	{
-		if (this.m.IsRemoving) return;
-		this.m.IsRemoving = true;
-
-		local actor = this.getContainer().getActor();
-		actor.getSkills().removeByID(this.m.ID);
-	}
 });

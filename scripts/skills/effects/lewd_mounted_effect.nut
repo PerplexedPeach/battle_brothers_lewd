@@ -16,6 +16,7 @@ this.lewd_mounted_effect <- this.inherit("scripts/skills/skill", {
 		this.m.IsActive = false;
 		this.m.IsStacking = false;
 		this.m.IsSerialized = false;
+		this.m.IsRemovedAfterBattle = true;
 	}
 
 	function setMounter( _entityID )
@@ -130,11 +131,6 @@ this.lewd_mounted_effect <- this.inherit("scripts/skills/skill", {
 		}
 	}
 
-	function onCombatFinished()
-	{
-		this.removeSelf();
-	}
-
 	function removeSelf()
 	{
 		if (this.m.IsRemoving) return;
@@ -154,6 +150,6 @@ this.lewd_mounted_effect <- this.inherit("scripts/skills/skill", {
 			this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(actor) + " is no longer mounted.");
 		}
 
-		actor.getSkills().removeByID(this.m.ID);
+		this.skill.removeSelf();
 	}
 });
