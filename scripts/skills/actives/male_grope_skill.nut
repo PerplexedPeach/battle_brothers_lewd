@@ -9,6 +9,8 @@ this.male_grope_skill <- this.inherit("scripts/skills/actives/male_sex_skill", {
 		this.m.SexDelay = 300;
 		this.m.ShakeCount = 1;
 		this.m.ShakeIntensity = 3;
+		this.m.ShakeTargetDelay = 150;
+		this.m.ShakeTargetIntensity = 2;
 		this.m.Delay = 300;
 		this.m.SoundOnUse = ::Lewd.Const.SoundSpanking;
 		this.m.SoundOnHit = ::Lewd.Const.SoundMoans;

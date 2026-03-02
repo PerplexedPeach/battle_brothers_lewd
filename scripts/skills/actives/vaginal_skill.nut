@@ -6,10 +6,12 @@ this.vaginal_skill <- this.inherit("scripts/skills/actives/lewd_sex_skill", {
 	function create()
 	{
 		this.lewd_sex_skill.create();
-		this.m.SexDelay = 600;
-		this.m.ShakeCount = 3;
-		this.m.ShakeIntensity = 5;
-		this.m.Delay = 600;
+		this.m.SexDelay = 2000;
+		this.m.ShakeCount = 4;
+		this.m.ShakeIntensity = 4;
+		this.m.ShakeTargetAway = true;
+		this.m.ShakeTargetIntensity = 6;
+		this.m.Delay = 2000;
 		this.m.SoundOnHit = ::Lewd.Const.SoundFucking;
 		this.m.ID = "actives.lewd_vaginal";
 		this.m.SexType = "vaginal";
@@ -156,8 +158,6 @@ this.vaginal_skill <- this.inherit("scripts/skills/actives/lewd_sex_skill", {
 			this.applyMount(user, target);
 			local pleasure = this.calculatePleasure(target);
 			target.addPleasure(pleasure, user);
-			this.shakeTarget(user, target);
-			this.playSoundOnHit(target);
 			this.logHit(user, target, pleasure, hitResult);
 			this.tryApplyHorny(target);
 		}
@@ -173,8 +173,6 @@ this.vaginal_skill <- this.inherit("scripts/skills/actives/lewd_sex_skill", {
 
 			local pleasure = this.calculatePleasure(target);
 			target.addPleasure(pleasure, user);
-			this.shakeTarget(user, target);
-			this.playSoundOnHit(target);
 			this.logHit(user, target, pleasure, hitResult);
 			this.tryApplyHorny(target);
 
