@@ -38,12 +38,6 @@ this.lewd_horny_effect <- this.inherit("scripts/skills/skill", {
 				text = this.getDescription()
 			},
 			{
-				id = 10,
-				type = "text",
-				icon = "ui/icons/bravery.png",
-				text = "[color=" + this.Const.UI.Color.NegativeValue + "]" + ::Lewd.Const.HornyResolvePenalty + "[/color] Resolve"
-			},
-			{
 				id = 11,
 				type = "text",
 				icon = "ui/icons/initiative.png",
@@ -119,7 +113,6 @@ this.lewd_horny_effect <- this.inherit("scripts/skills/skill", {
 
 	function onUpdate( _properties )
 	{
-		_properties.Bravery += ::Lewd.Const.HornyResolvePenalty;
 		_properties.InitiativeMult *= ::Lewd.Const.HornyInitiativeMult;
 		_properties.MeleeDefense += ::Lewd.Const.HornyMeleeDefPenalty;
 
