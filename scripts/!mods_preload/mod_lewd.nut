@@ -131,7 +131,11 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC" function()
 			local cur = this.m.Pleasure + amount;
 			if (cur >= max)
 			{
-				this.m.Pleasure = 0;
+				// Insatiable perk: target's pleasure overflows instead of resetting
+				if (_source != null && _source.getSkills().hasSkill("perk.lewd_insatiable"))
+					this.m.Pleasure = this.Math.max(0, this.Math.round(cur - max));
+				else
+					this.m.Pleasure = 0;
 				this.onClimax();
 			}
 			else

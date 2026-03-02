@@ -27,7 +27,7 @@ local neg = ::Const.UI.Color.NegativeValue;
 ::Const.Strings.PerkDescription.LewdSensualFocus <- "[color=" + pos + "]+10%[/color] pleasure dealt by all sex abilities. Adds [color=" + pos + "]Open Invitation[/color] toggle: [color=" + pos + "]+15%[/color] additional pleasure dealt, but enemy sex abilities [color=" + neg + "]auto-hit[/color] you. Can toggle once per turn.";
 ::Const.Strings.PerkDescription.LewdAlluringPresence <- "[color=" + pos + "]+5[/color] Allure and [color=" + pos + "]+10[/color] Pleasure Max.";
 ::Const.Strings.PerkDescription.LewdPracticedControl <- "[color=" + pos + "]-50%[/color] pleasure received from reflection when using sex abilities. Stay composed while actively pleasuring others.";
-::Const.Strings.PerkDescription.LewdInsatiable <- "Gain [color=" + pos + "]+3 AP[/color] whenever you actively bring someone to climax.";
+::Const.Strings.PerkDescription.LewdInsatiable <- "Gain [color=" + pos + "]+3 AP[/color] whenever you actively bring someone to climax. Target\'s pleasure [color=" + pos + "]overflows[/color] instead of resetting, keeping them on the edge.";
 ::Const.Strings.PerkDescription.LewdEmbracePain <- "[color=" + pos + "]+5[/color] Pleasure Max. Self-pleasure restores [color=" + pos + "]1[/color] Fatigue per point.";
 ::Const.Strings.PerkDescription.LewdWillingVictim <- "[color=" + pos + "]+10[/color] Allure while grappled or mounted.";
 ::Const.Strings.PerkDescription.LewdPliantBody <- "[color=" + pos + "]+50%[/color] pleasure reflection dealt to your partner during sex. Your body accommodates them, pleasuring them more.";
