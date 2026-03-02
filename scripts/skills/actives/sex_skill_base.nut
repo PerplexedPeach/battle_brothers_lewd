@@ -21,7 +21,7 @@ this.sex_skill_base <- this.inherit("scripts/skills/skill", {
 		this.m.IsStacking = false;
 		this.m.IsAttack = false;
 		this.m.IsIgnoredAsAOO = true;
-		this.m.IsUsingHitchance = false;
+		this.m.IsUsingHitchance = true;
 		this.m.IsDoingForwardMove = false;
 		this.m.MinRange = 1;
 		this.m.MaxRange = 1;

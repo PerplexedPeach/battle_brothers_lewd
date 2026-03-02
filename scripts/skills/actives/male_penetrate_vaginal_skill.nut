@@ -31,6 +31,21 @@ this.male_penetrate_vaginal_skill <- this.inherit("scripts/skills/actives/male_s
 		return this.Math.max(20, this.Math.min(95, chance));
 	}
 
+	function getHitFactors( _targetTile )
+	{
+		local ret = this.male_sex_skill.getHitFactors(_targetTile);
+		local target = _targetTile.IsOccupiedByActor ? _targetTile.getEntity() : null;
+		if (target == null) return ret;
+
+		if (target.getSkills().hasSkill("effects.lewd_mounted"))
+			ret.push({
+				icon = "ui/icons/positive.png",
+				text = "[color=" + this.Const.UI.Color.PositiveValue + "]+" + ::Lewd.Const.MalePenetrateVaginalMountedHitBonus + "%[/color] from target mounted"
+			});
+
+		return ret;
+	}
+
 	function calculateMountBonus( _target )
 	{
 		return ::Lewd.Const.MalePenetrateVaginalMountedPleasureBonus;

@@ -61,6 +61,52 @@ this.lewd_sex_skill <- this.inherit("scripts/skills/actives/sex_skill_base", {
 		return this.getTierConfig().BaseHitChance;
 	}
 
+	function getHitchance( _targetEntity )
+	{
+		if (!_targetEntity.isAttackable()) return 0;
+		return this.getHitChanceAgainst(_targetEntity);
+	}
+
+	function getHitFactors( _targetTile )
+	{
+		local ret = [];
+		local target = _targetTile.IsOccupiedByActor ? _targetTile.getEntity() : null;
+		if (target == null) return ret;
+
+		local user = this.getContainer().getActor();
+		local allure = user.allure();
+		local resolve = target.getBravery();
+		local diff = allure - resolve;
+
+		ret.push({
+			icon = "ui/icons/special.png",
+			text = "Your Allure: [color=" + this.Const.UI.Color.PositiveValue + "]" + allure + "[/color]"
+		});
+		ret.push({
+			icon = "ui/icons/bravery.png",
+			text = "Target Resolve: [color=" + this.Const.UI.Color.NegativeValue + "]" + resolve + "[/color]"
+		});
+
+		if (diff >= 0)
+			ret.push({
+				icon = "ui/icons/positive.png",
+				text = "[color=" + this.Const.UI.Color.PositiveValue + "]+" + (diff * ::Lewd.Const.SexHitChanceAllureResolveScale) + "%[/color] from Allure advantage"
+			});
+		else
+			ret.push({
+				icon = "ui/icons/negative.png",
+				text = "[color=" + this.Const.UI.Color.NegativeValue + "]" + (diff * ::Lewd.Const.SexHitChanceAllureResolveScale) + "%[/color] from Resolve advantage"
+			});
+
+		if (this.isAutoHit(target))
+			ret.push({
+				icon = "ui/icons/special.png",
+				text = "[color=" + this.Const.UI.Color.PositiveValue + "]Auto-hit[/color] (target is horny/open)"
+			});
+
+		return ret;
+	}
+
 	function getHitChanceAgainst( _target )
 	{
 		if (this.isAutoHit(_target)) return 100;

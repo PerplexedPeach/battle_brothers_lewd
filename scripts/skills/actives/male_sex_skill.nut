@@ -31,6 +31,52 @@ this.male_sex_skill <- this.inherit("scripts/skills/actives/sex_skill_base", {
 		return true;
 	}
 
+	function getHitchance( _targetEntity )
+	{
+		if (!_targetEntity.isAttackable()) return 0;
+		return this.getHitChanceAgainst(_targetEntity);
+	}
+
+	function getHitFactors( _targetTile )
+	{
+		local ret = [];
+		local target = _targetTile.IsOccupiedByActor ? _targetTile.getEntity() : null;
+		if (target == null) return ret;
+
+		local user = this.getContainer().getActor();
+		local melSkill = user.getCurrentProperties().getMeleeSkill();
+		local melDef = target.getCurrentProperties().getMeleeDefense();
+		local diff = melSkill - melDef;
+
+		ret.push({
+			icon = "ui/icons/melee_skill.png",
+			text = "Melee Skill: [color=" + this.Const.UI.Color.PositiveValue + "]" + melSkill + "[/color]"
+		});
+		ret.push({
+			icon = "ui/icons/melee_defense.png",
+			text = "Target Melee Defense: [color=" + this.Const.UI.Color.NegativeValue + "]" + melDef + "[/color]"
+		});
+
+		if (diff >= 0)
+			ret.push({
+				icon = "ui/icons/positive.png",
+				text = "[color=" + this.Const.UI.Color.PositiveValue + "]+" + diff + "%[/color] from Melee Skill advantage"
+			});
+		else
+			ret.push({
+				icon = "ui/icons/negative.png",
+				text = "[color=" + this.Const.UI.Color.NegativeValue + "]" + diff + "%[/color] from Melee Defense advantage"
+			});
+
+		if (this.isAutoHit(target))
+			ret.push({
+				icon = "ui/icons/special.png",
+				text = "[color=" + this.Const.UI.Color.PositiveValue + "]Auto-hit[/color] (target is horny/open)"
+			});
+
+		return ret;
+	}
+
 	function getHitChanceAgainst( _target )
 	{
 		if (this.isAutoHit(_target)) return 95;
