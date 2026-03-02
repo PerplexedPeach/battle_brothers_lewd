@@ -6,7 +6,11 @@ this.vaginal_skill <- this.inherit("scripts/skills/actives/lewd_sex_skill", {
 	function create()
 	{
 		this.lewd_sex_skill.create();
-		this.m.SoundOnUse = ::Lewd.Const.SoundFucking;
+		this.m.SexDelay = 600;
+		this.m.ShakeCount = 3;
+		this.m.ShakeIntensity = 5;
+		this.m.Delay = 600;
+		this.m.SoundOnHit = ::Lewd.Const.SoundFucking;
 		this.m.ID = "actives.lewd_vaginal";
 		this.m.SexType = "vaginal";
 		this.m.MasteryID = "effects.lewd_mastery_vaginal";
@@ -128,61 +132,64 @@ this.vaginal_skill <- this.inherit("scripts/skills/actives/lewd_sex_skill", {
 		return ::Lewd.Mastery.isMountedWith(user, target);
 	}
 
-	function onUse( _user, _targetTile )
+	function onScheduledSexHit( _info )
 	{
-		local target = _targetTile.getEntity();
-		if (target == null) return false;
+		_info.Container.setBusy(false);
+
+		local user = _info.User;
+		local target = _info.Target;
+
+		if (!user.isAlive() || !target.isAlive()) return;
 
 		local tier = this.getTier();
 
 		// T1: establish mount first
 		if (tier == 1)
 		{
-			local hitResult = this.rollHit(_user, target);
+			local hitResult = this.rollHit(user, target);
 			if (!hitResult.hit)
 			{
-				this.logMiss(_user, target, hitResult);
-				return true;
+				this.logMiss(user, target, hitResult);
+				return;
 			}
 
-			this.applyMount(_user, target);
+			this.applyMount(user, target);
 			local pleasure = this.calculatePleasure(target);
-			target.addPleasure(pleasure, _user);
-			this.logHit(_user, target, pleasure, hitResult);
+			target.addPleasure(pleasure, user);
+			this.shakeTarget(user, target);
+			this.playSoundOnHit(target);
+			this.logHit(user, target, pleasure, hitResult);
 			this.tryApplyHorny(target);
 		}
 		else
 		{
 			// T2/T3: mounted continuation
-			local hitResult = this.rollHit(_user, target);
+			local hitResult = this.rollHit(user, target);
 			if (!hitResult.hit)
 			{
-				this.logMiss(_user, target, hitResult);
-				return true;
+				this.logMiss(user, target, hitResult);
+				return;
 			}
 
 			local pleasure = this.calculatePleasure(target);
-			target.addPleasure(pleasure, _user);
-			this.logHit(_user, target, pleasure, hitResult);
+			target.addPleasure(pleasure, user);
+			this.shakeTarget(user, target);
+			this.playSoundOnHit(target);
+			this.logHit(user, target, pleasure, hitResult);
 			this.tryApplyHorny(target);
 
 			// refresh mount duration (whichever direction exists)
 			local mountedEffect = target.getSkills().getSkillByID("effects.lewd_mounted");
 			if (mountedEffect != null)
 				mountedEffect.setTurns(::Lewd.Const.MountDuration);
-			local userMountedEffect = _user.getSkills().getSkillByID("effects.lewd_mounted");
+			local userMountedEffect = user.getSkills().getSkillByID("effects.lewd_mounted");
 			if (userMountedEffect != null)
 				userMountedEffect.setTurns(::Lewd.Const.MountDuration);
 		}
 
-		// self-pleasure
-		this.applySelfPleasure(_user, target);
-
-		// T3 extra: AP debuff
+		this.applySelfPleasure(user, target);
 		this.applyT3Debuff(target);
-
-		this.recordSexContinuation(_user, target);
-		return true;
+		this.recordSexContinuation(user, target);
 	}
 
 	function applyMount( _user, _target )

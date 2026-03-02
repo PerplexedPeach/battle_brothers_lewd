@@ -255,6 +255,7 @@ this.ai_horny <- this.inherit("scripts/ai/tactical/behavior", {
 		{
 			::logInfo("[ai_horny] " + _entity.getName() + " EXECUTING " + this.m.SelectedSkill.getID() + " on " + this.m.TargetTile.getEntity().getName());
 			this.m.SelectedSkill.use(this.m.TargetTile);
+			this.getAgent().declareAction();
 		}
 
 		// If skill failed to consume AP, give up to prevent infinite re-evaluation

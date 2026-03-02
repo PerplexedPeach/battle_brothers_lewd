@@ -5,6 +5,10 @@ this.hands_skill <- this.inherit("scripts/skills/actives/lewd_sex_skill", {
 	function create()
 	{
 		this.lewd_sex_skill.create();
+		this.m.SexDelay = 300;
+		this.m.ShakeCount = 1;
+		this.m.ShakeIntensity = 3;
+		this.m.Delay = 300;
 		this.m.SoundOnUse = ::Lewd.Const.SoundRubbing;
 		this.m.SoundOnHit = ::Lewd.Const.SoundMoans;
 		this.m.SoundOnHitMale = ::Lewd.Const.SoundMaleMoans;

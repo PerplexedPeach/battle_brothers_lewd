@@ -144,6 +144,8 @@
 ::Lewd.Const.MasteryFeetResolveIgnorePct <- 0.2;
 
 // --- Sex Ability Constants ---
+::Lewd.Const.SexAbilityDelayDefault <- 400;
+
 // universal allure scaling for pleasure dealt
 ::Lewd.Const.SexAllurePleasureScale <- 0.15; // floor(allure * this) added to pleasure dealt
 

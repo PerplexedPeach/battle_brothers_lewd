@@ -5,7 +5,11 @@ this.male_penetrate_anal_skill <- this.inherit("scripts/skills/actives/male_sex_
 	function create()
 	{
 		this.male_sex_skill.create();
-		this.m.SoundOnUse = ::Lewd.Const.SoundFucking;
+		this.m.SexDelay = 600;
+		this.m.ShakeCount = 3;
+		this.m.ShakeIntensity = 5;
+		this.m.Delay = 600;
+		this.m.SoundOnHit = ::Lewd.Const.SoundFucking;
 		this.m.ID = "actives.male_penetrate_anal";
 		this.m.Name = "Penetrate (Anal)";
 		this.m.Description = "Take the target from behind with brute force. Deals bonus pleasure to masochistic targets.";
@@ -63,25 +67,30 @@ this.male_penetrate_anal_skill <- this.inherit("scripts/skills/actives/male_sex_
 		return this.Math.max(1, pleasure);
 	}
 
-	function onUse( _user, _targetTile )
+	function onScheduledSexHit( _info )
 	{
-		local target = _targetTile.getEntity();
-		if (target == null) return false;
+		_info.Container.setBusy(false);
 
-		local hitResult = this.rollHit(_user, target);
+		local user = _info.User;
+		local target = _info.Target;
+
+		if (!user.isAlive() || !target.isAlive()) return;
+
+		local hitResult = this.rollHit(user, target);
 		if (!hitResult.hit)
 		{
-			this.logMiss(_user, target, hitResult);
-			return true;
+			this.logMiss(user, target, hitResult);
+			return;
 		}
 
-		this.applyMount(_user, target);
+		this.applyMount(user, target);
 		local pleasure = this.calculatePleasure(target);
-		target.addPleasure(pleasure, _user);
-		this.logHit(_user, target, pleasure, hitResult);
-		this.onHit(_user, target);
-		this.recordSexContinuation(_user, target);
-		return true;
+		target.addPleasure(pleasure, user);
+		this.shakeTarget(user, target);
+		this.playSoundOnHit(target);
+		this.logHit(user, target, pleasure, hitResult);
+		this.onHit(user, target);
+		this.recordSexContinuation(user, target);
 	}
 
 	function applyMount( _user, _target )

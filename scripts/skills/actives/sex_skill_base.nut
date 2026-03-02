@@ -7,7 +7,10 @@ this.sex_skill_base <- this.inherit("scripts/skills/skill", {
 		SexType = "",
 		HitText = [],
 		MissText = [],
-		SoundOnHitMale = []
+		SoundOnHitMale = [],
+		SexDelay = 400,
+		ShakeCount = 1,
+		ShakeIntensity = 4
 	},
 	function create()
 	{
@@ -25,6 +28,7 @@ this.sex_skill_base <- this.inherit("scripts/skills/skill", {
 		this.m.IsDoingForwardMove = false;
 		this.m.MinRange = 1;
 		this.m.MaxRange = 1;
+		this.m.Delay = 400;
 	}
 
 	function isAutoHit( _target )
@@ -57,28 +61,86 @@ this.sex_skill_base <- this.inherit("scripts/skills/skill", {
 		local target = _targetTile.getEntity();
 		if (target == null) return false;
 
-		// Mark Alluring Presence first-use bonus as consumed
 		_user.getFlags().set("lewdAlluringUsed", 1);
-
 		::logInfo("[sex] " + _user.getName() + " uses " + this.m.ID + " on " + target.getName());
-		this.Tactical.EventLog.log("[DBG] " + _user.getName() + " attempts " + this.m.ID + " on " + target.getName());
 
-		local hitResult = this.rollHit(_user, target);
-		::logInfo("[sex]   hit roll:" + hitResult.roll + " chance:" + hitResult.chance + " autoHit:" + this.isAutoHit(target) + " -> " + (hitResult.hit ? "HIT" : "MISS"));
+		this.playLungeAnimation(_user, _targetTile);
+		this.getContainer().setBusy(true);
+
+		this.Time.scheduleEvent(this.TimeUnit.Virtual, this.m.SexDelay,
+			this.onScheduledSexHit.bindenv(this), {
+				Container = this.getContainer(),
+				User = _user,
+				Target = target
+			});
+
+		return true;
+	}
+
+	function playLungeAnimation( _user, _targetTile )
+	{
+		if (_user.isHiddenToPlayer() && _targetTile.getEntity().isHiddenToPlayer())
+			return;
+
+		this.Tactical.getShaker().cancel(_user);
+		this.Tactical.getShaker().shake(_user, _targetTile, this.m.ShakeIntensity);
+
+		if (this.m.ShakeCount > 1)
+		{
+			for (local i = 1; i < this.m.ShakeCount; i++)
+			{
+				local shakeDelay = i * 200;
+				local intensity = i == this.m.ShakeCount - 1
+					? this.m.ShakeIntensity
+					: this.m.ShakeIntensity - 1;
+				this.Time.scheduleEvent(this.TimeUnit.Virtual, shakeDelay,
+					function(_d) {
+						if (_d.User.isAlive())
+						{
+							this.Tactical.getShaker().cancel(_d.User);
+							this.Tactical.getShaker().shake(_d.User, _d.Tile, _d.Intensity);
+						}
+					}.bindenv(this),
+					{ User = _user, Tile = _targetTile, Intensity = intensity });
+			}
+		}
+	}
+
+	function onScheduledSexHit( _info )
+	{
+		_info.Container.setBusy(false);
+
+		local user = _info.User;
+		local target = _info.Target;
+
+		if (!user.isAlive() || !target.isAlive()) return;
+
+		local hitResult = this.rollHit(user, target);
+		::logInfo("[sex]   hit roll:" + hitResult.roll + " chance:" + hitResult.chance
+			+ " autoHit:" + this.isAutoHit(target) + " -> " + (hitResult.hit ? "HIT" : "MISS"));
 		if (!hitResult.hit)
 		{
-			this.logMiss(_user, target, hitResult);
-			return true;
+			this.logMiss(user, target, hitResult);
+			return;
 		}
 
 		local pleasure = this.calculatePleasure(target);
-		::logInfo("[sex]   pleasure:" + pleasure + " target pleasure:" + target.getPleasure() + "/" + target.getPleasureMax());
-		target.addPleasure(pleasure, _user);
+		::logInfo("[sex]   pleasure:" + pleasure + " target pleasure:"
+			+ target.getPleasure() + "/" + target.getPleasureMax());
+		target.addPleasure(pleasure, user);
+		this.shakeTarget(user, target);
 		this.playSoundOnHit(target);
-		this.logHit(_user, target, pleasure, hitResult);
-		this.onHit(_user, target);
-		this.recordSexContinuation(_user, target);
-		return true;
+		this.logHit(user, target, pleasure, hitResult);
+		this.onHit(user, target);
+		this.recordSexContinuation(user, target);
+	}
+
+	function shakeTarget( _user, _target )
+	{
+		if (_user.isHiddenToPlayer() && _target.isHiddenToPlayer())
+			return;
+
+		this.Tactical.getShaker().shake(_target, _user.getTile(), 3);
 	}
 
 	function playSoundOnHit( _target )

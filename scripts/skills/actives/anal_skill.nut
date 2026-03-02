@@ -6,7 +6,11 @@ this.anal_skill <- this.inherit("scripts/skills/actives/lewd_sex_skill", {
 	function create()
 	{
 		this.lewd_sex_skill.create();
-		this.m.SoundOnUse = ::Lewd.Const.SoundFucking;
+		this.m.SexDelay = 600;
+		this.m.ShakeCount = 3;
+		this.m.ShakeIntensity = 5;
+		this.m.Delay = 600;
+		this.m.SoundOnHit = ::Lewd.Const.SoundFucking;
 		this.m.ID = "actives.lewd_anal";
 		this.m.SexType = "anal";
 		this.m.MasteryID = "effects.lewd_mastery_anal";
@@ -151,37 +155,43 @@ this.anal_skill <- this.inherit("scripts/skills/actives/lewd_sex_skill", {
 		return ::Lewd.Mastery.isMountedWith(user, target);
 	}
 
-	function onUse( _user, _targetTile )
+	function onScheduledSexHit( _info )
 	{
-		local target = _targetTile.getEntity();
-		if (target == null) return false;
+		_info.Container.setBusy(false);
+
+		local user = _info.User;
+		local target = _info.Target;
+
+		if (!user.isAlive() || !target.isAlive()) return;
 
 		local tier = this.getTier();
 
 		// T1: establish reverse mount (enemy mounts user)
 		if (tier == 1)
 		{
-			local hitResult = this.rollHit(_user, target);
+			local hitResult = this.rollHit(user, target);
 			if (!hitResult.hit)
 			{
-				this.logMiss(_user, target, hitResult);
-				return true;
+				this.logMiss(user, target, hitResult);
+				return;
 			}
 
-			this.applyReverseMount(_user, target);
+			this.applyReverseMount(user, target);
 			local pleasure = this.calculatePleasure(target);
-			target.addPleasure(pleasure, _user);
-			this.logHit(_user, target, pleasure, hitResult);
+			target.addPleasure(pleasure, user);
+			this.shakeTarget(user, target);
+			this.playSoundOnHit(target);
+			this.logHit(user, target, pleasure, hitResult);
 			this.tryApplyHorny(target);
 		}
 		else
 		{
 			// T2/T3: mounted continuation
-			local hitResult = this.rollHit(_user, target);
+			local hitResult = this.rollHit(user, target);
 			if (!hitResult.hit)
 			{
-				this.logMiss(_user, target, hitResult);
-				return true;
+				this.logMiss(user, target, hitResult);
+				return;
 			}
 
 			local pleasure = this.calculatePleasure(target);
@@ -189,24 +199,26 @@ this.anal_skill <- this.inherit("scripts/skills/actives/lewd_sex_skill", {
 			// T3 kamikaze: check if user will climax from self-pleasure
 			local selfP = this.getSelfPleasure();
 			local willClimax = false;
-			if (tier >= 3 && _user.getPleasureMax() > 0 && selfP > 0)
+			if (tier >= 3 && user.getPleasureMax() > 0 && selfP > 0)
 			{
-				local afterSelf = _user.getPleasure() + selfP;
-				if (afterSelf >= _user.getPleasureMax())
+				local afterSelf = user.getPleasure() + selfP;
+				if (afterSelf >= user.getPleasureMax())
 				{
 					willClimax = true;
 					pleasure += ::Lewd.Const.AnalT3KamikazePleasure;
 				}
 			}
 
-			target.addPleasure(pleasure, _user);
-			this.logHit(_user, target, pleasure, hitResult);
+			target.addPleasure(pleasure, user);
+			this.shakeTarget(user, target);
+			this.playSoundOnHit(target);
+			this.logHit(user, target, pleasure, hitResult);
 			if (willClimax)
 				this.Tactical.EventLog.log("KAMIKAZE CLIMAX!");
 			this.tryApplyHorny(target);
 
 			// refresh mount (whichever direction exists)
-			local mountedEffect = _user.getSkills().getSkillByID("effects.lewd_mounted");
+			local mountedEffect = user.getSkills().getSkillByID("effects.lewd_mounted");
 			if (mountedEffect != null)
 				mountedEffect.setTurns(::Lewd.Const.MountDuration);
 			local targetMountedEffect = target.getSkills().getSkillByID("effects.lewd_mounted");
@@ -214,21 +226,19 @@ this.anal_skill <- this.inherit("scripts/skills/actives/lewd_sex_skill", {
 				targetMountedEffect.setTurns(::Lewd.Const.MountDuration);
 		}
 
-		// self-pleasure
-		this.applySelfPleasure(_user, target);
+		this.applySelfPleasure(user, target);
 
 		// self HP damage
 		local selfDmg = this.getSelfDamage();
-		if (selfDmg > 0 && _user.getHitpoints() > 1)
+		if (selfDmg > 0 && user.getHitpoints() > 1)
 		{
-			local newHP = this.Math.max(1, _user.getHitpoints() - selfDmg);
-			local actualDmg = _user.getHitpoints() - newHP;
-			_user.setHitpoints(newHP);
-			this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(_user) + " takes [color=" + this.Const.UI.Color.NegativeValue + "]" + actualDmg + "[/color] damage from the act");
+			local newHP = this.Math.max(1, user.getHitpoints() - selfDmg);
+			local actualDmg = user.getHitpoints() - newHP;
+			user.setHitpoints(newHP);
+			this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(user) + " takes [color=" + this.Const.UI.Color.NegativeValue + "]" + actualDmg + "[/color] damage from the act");
 		}
 
-		this.recordSexContinuation(_user, target);
-		return true;
+		this.recordSexContinuation(user, target);
 	}
 
 	function applyReverseMount( _user, _target )
