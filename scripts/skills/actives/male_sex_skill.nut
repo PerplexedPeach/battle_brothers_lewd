@@ -16,6 +16,11 @@ this.male_sex_skill <- this.inherit("scripts/skills/actives/sex_skill_base", {
 		this.sex_skill_base.create();
 	}
 
+	function getSelfPleasure()
+	{
+		return this.m.SelfPleasure;
+	}
+
 	function isHidden()
 	{
 		local actor = this.getContainer().getActor();

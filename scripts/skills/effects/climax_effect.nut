@@ -84,6 +84,10 @@ this.climax_effect <- this.inherit("scripts/skills/skill", {
 			if (actor.getGender() == 0 && ::Lewd.Const.SoundMaleOrgasm.len() > 0)
 				soundPool = ::Lewd.Const.SoundMaleOrgasm;
 			this.Sound.play(soundPool[this.Math.rand(0, soundPool.len() - 1)], this.Const.Sound.Volume.Skill, actor.getPos());
+			this.Tactical.spawnSpriteEffect("climax", this.createColor("#ffffff"), actor.getTile(),
+				this.Const.Tactical.Settings.SkillOverlayOffsetX, this.Const.Tactical.Settings.SkillOverlayOffsetY,
+				this.Const.Tactical.Settings.SkillOverlayScale, this.Const.Tactical.Settings.SkillOverlayScale,
+				this.Const.Tactical.Settings.SkillOverlayStayDuration * 2, 0, this.Const.Tactical.Settings.SkillOverlayFadeDuration);
 			this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(actor) + " reaches climax!");
 
 			// Shameless perk: make adjacent enemies horny and deal pleasure to sex partner on own climax

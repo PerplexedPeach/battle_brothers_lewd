@@ -90,6 +90,18 @@ this.sex_skill_base <- this.inherit("scripts/skills/skill", {
 		return _toTile;
 	}
 
+	function shakeWithFlash( _entity, _tile, _intensity, _flash, _layers )
+	{
+		this.Tactical.getShaker().cancel(_entity);
+		if (_flash && !_entity.isHiddenToPlayer())
+			this.Tactical.getShaker().shake(_entity, _tile, _intensity,
+				::Lewd.Const.SexFlashColor, ::Lewd.Const.SexFlashHighlight,
+				::Lewd.Const.SexFlashFactor, ::Lewd.Const.SexFlashSaturation,
+				_layers, 1.0);
+		else
+			this.Tactical.getShaker().shake(_entity, _tile, _intensity);
+	}
+
 	function playLungeAnimation( _user, _targetTile )
 	{
 		local target = _targetTile.getEntity();
@@ -99,6 +111,7 @@ this.sex_skill_base <- this.inherit("scripts/skills/skill", {
 		local userTile = _user.getTile();
 		local targetInt = this.m.ShakeTargetIntensity > 0 ? this.m.ShakeTargetIntensity : this.m.ShakeIntensity;
 		local isOnlyShake = this.m.ShakeCount <= 1;
+		local flashUser = this.getSelfPleasure() > 0;
 		local layers = this.Const.ShakeCharacterLayers[2];
 
 		// Determine shake tiles based on mode
@@ -110,13 +123,11 @@ this.sex_skill_base <- this.inherit("scripts/skills/skill", {
 			// Thrust/fucking mode: male toward female, female away from male
 			if (_user.getGender() == 0)
 			{
-				// User is male: lunge toward target, push target away
 				userShakeTile = _targetTile;
 				targetShakeTile = this.getBeyondTile(userTile, _targetTile);
 			}
 			else
 			{
-				// User is female: pushed away from target, target toward user
 				userShakeTile = this.getBeyondTile(_targetTile, userTile);
 				targetShakeTile = userTile;
 			}
@@ -128,39 +139,22 @@ this.sex_skill_base <- this.inherit("scripts/skills/skill", {
 			targetShakeTile = userTile;
 		}
 
-		// First shake: user
-		this.Tactical.getShaker().cancel(_user);
-		this.Tactical.getShaker().shake(_user, userShakeTile, this.m.ShakeIntensity);
+		// First shake: user (with pink flash if only shake and has self-pleasure)
+		this.shakeWithFlash(_user, userShakeTile, this.m.ShakeIntensity, isOnlyShake && flashUser, layers);
 
 		// First shake: target (with pink flash if this is the only shake)
 		if (this.m.ShakeTargetDelay <= 0)
 		{
-			this.Tactical.getShaker().cancel(target);
-			if (isOnlyShake && !target.isHiddenToPlayer())
-				this.Tactical.getShaker().shake(target, targetShakeTile, targetInt,
-					::Lewd.Const.SexFlashColor, ::Lewd.Const.SexFlashHighlight,
-					::Lewd.Const.SexFlashFactor, ::Lewd.Const.SexFlashSaturation,
-					layers, 1.0);
-			else
-				this.Tactical.getShaker().shake(target, targetShakeTile, targetInt);
+			this.shakeWithFlash(target, targetShakeTile, targetInt, isOnlyShake, layers);
 		}
 		else
 		{
 			this.Time.scheduleEvent(this.TimeUnit.Virtual, this.m.ShakeTargetDelay,
 				function(_d) {
 					if (_d.Target.isAlive())
-					{
-						this.Tactical.getShaker().cancel(_d.Target);
-						if (_d.IsOnly && !_d.Target.isHiddenToPlayer())
-							this.Tactical.getShaker().shake(_d.Target, _d.ShakeTile, _d.Intensity,
-								::Lewd.Const.SexFlashColor, ::Lewd.Const.SexFlashHighlight,
-								::Lewd.Const.SexFlashFactor, ::Lewd.Const.SexFlashSaturation,
-								_d.Layers, 1.0);
-						else
-							this.Tactical.getShaker().shake(_d.Target, _d.ShakeTile, _d.Intensity);
-					}
+						this.shakeWithFlash(_d.Target, _d.ShakeTile, _d.Intensity, _d.Flash, _d.Layers);
 				}.bindenv(this),
-				{ Target = target, ShakeTile = targetShakeTile, Intensity = targetInt, IsOnly = isOnlyShake, Layers = layers });
+				{ Target = target, ShakeTile = targetShakeTile, Intensity = targetInt, Flash = isOnlyShake, Layers = layers });
 		}
 
 		// Camera quake on first shake
@@ -182,24 +176,12 @@ this.sex_skill_base <- this.inherit("scripts/skills/skill", {
 				this.Time.scheduleEvent(this.TimeUnit.Virtual, shakeDelay,
 					function(_d) {
 						if (_d.User.isAlive())
-						{
-							this.Tactical.getShaker().cancel(_d.User);
-							this.Tactical.getShaker().shake(_d.User, _d.UserShakeTile, _d.UserInt);
-						}
+							this.shakeWithFlash(_d.User, _d.UserShakeTile, _d.UserInt, _d.IsLast && _d.FlashUser, _d.Layers);
 						if (_d.Target.isAlive())
-						{
-							this.Tactical.getShaker().cancel(_d.Target);
-							if (_d.IsLast && !_d.Target.isHiddenToPlayer())
-								this.Tactical.getShaker().shake(_d.Target, _d.TargetShakeTile, _d.TargetInt,
-									::Lewd.Const.SexFlashColor, ::Lewd.Const.SexFlashHighlight,
-									::Lewd.Const.SexFlashFactor, ::Lewd.Const.SexFlashSaturation,
-									_d.Layers, 1.0);
-							else
-								this.Tactical.getShaker().shake(_d.Target, _d.TargetShakeTile, _d.TargetInt);
-						}
+							this.shakeWithFlash(_d.Target, _d.TargetShakeTile, _d.TargetInt, _d.IsLast, _d.Layers);
 						this.Tactical.getCamera().quake(_d.User, _d.Target, 2.0, 0.1, 0.2);
 					}.bindenv(this),
-					{ User = _user, Target = target, UserShakeTile = userShakeTile, TargetShakeTile = targetShakeTile, UserInt = userInt, TargetInt = tInt, IsLast = isLast, Layers = layers });
+					{ User = _user, Target = target, UserShakeTile = userShakeTile, TargetShakeTile = targetShakeTile, UserInt = userInt, TargetInt = tInt, IsLast = isLast, FlashUser = flashUser, Layers = layers });
 			}
 		}
 	}
@@ -313,6 +295,11 @@ this.sex_skill_base <- this.inherit("scripts/skills/skill", {
 	}
 
 	function getHitChanceAgainst( _target )
+	{
+		return 0;
+	}
+
+	function getSelfPleasure()
 	{
 		return 0;
 	}
