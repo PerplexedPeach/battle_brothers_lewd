@@ -56,6 +56,13 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC" function()
 			local old_addSprite = self.addSprite;
 			self.addSprite = function (_layerID)
 			{
+				// Add back silhouette BEFORE body layer (renders behind body)
+				if (_layerID == "body")
+				{
+					local sil = old_addSprite("lewd_silhouette_back");
+					sil.Visible = false;
+				}
+
 				local ret = old_addSprite(_layerID);
 
 				if (_layerID == "socket")
@@ -66,6 +73,9 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC" function()
 				{
 					local horny = old_addSprite("status_horny");
 					horny.Visible = false;
+					// Front silhouette AFTER all other layers (renders in front of everything)
+					local sil = old_addSprite("lewd_silhouette_front");
+					sil.Visible = false;
 				}
 
 				return ret;

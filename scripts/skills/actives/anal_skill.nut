@@ -245,13 +245,14 @@ this.anal_skill <- this.inherit("scripts/skills/actives/lewd_sex_skill", {
 		if (!_user.getSkills().hasSkill("effects.lewd_mounted"))
 		{
 			local mounted = this.new("scripts/skills/effects/lewd_mounted_effect");
-			mounted.setMounter(_target.getID());
 			_user.getSkills().add(mounted);
+			mounted.addMounter(_target.getID());
+			mounted.setTurns(::Lewd.Const.MountDuration);
 		}
 		else
 		{
 			local mounted = _user.getSkills().getSkillByID("effects.lewd_mounted");
-			mounted.setMounter(_target.getID());
+			mounted.addMounter(_target.getID());
 			mounted.setTurns(::Lewd.Const.MountDuration);
 		}
 

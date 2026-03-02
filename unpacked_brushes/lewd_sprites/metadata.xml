@@ -22,6 +22,10 @@
     <sprite id="piercing_nipple_bar" offsetY="35" ic="FF6095CB" width="10" height="10" img="details\piercing_nipple_bar.png" left="-44" right="58" top="-57" bottom="23"/>
     <sprite id="plug_nipple" offsetY="35" ic="FF6095CB" width="10" height="10" img="details\plug_nipple.png" left="-44" right="58" top="-57" bottom="23"/>
 
+    <!-- mount silhouette overlays (behind/in front of mounted character) -->
+    <sprite id="lewd_silhouette_back" offsetY="35" ic="FF1A1A1A" width="150" height="150" img="entity\silhouette_back.png" left="-67" right="83" top="-91" bottom="59"/>
+    <sprite id="lewd_silhouette_front" offsetY="35" ic="FF1A1A1A" width="150" height="150" img="entity\silhouette_front.png" left="-67" right="83" top="-91" bottom="59"/>
+
     <!-- horny status bust overlay (hearts above head) -->
     <sprite id="bust_horny" offsetY="35" ic="FFE04080" width="104" height="142" img="entity\bust_horny.png" left="-28" right="34" top="20" bottom="72"/>
 

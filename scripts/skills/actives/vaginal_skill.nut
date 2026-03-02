@@ -195,13 +195,14 @@ this.vaginal_skill <- this.inherit("scripts/skills/actives/lewd_sex_skill", {
 		if (!_target.getSkills().hasSkill("effects.lewd_mounted"))
 		{
 			local mounted = this.new("scripts/skills/effects/lewd_mounted_effect");
-			mounted.setMounter(_user.getID());
 			_target.getSkills().add(mounted);
+			mounted.addMounter(_user.getID());
+			mounted.setTurns(::Lewd.Const.MountDuration);
 		}
 		else
 		{
 			local mounted = _target.getSkills().getSkillByID("effects.lewd_mounted");
-			mounted.setMounter(_user.getID());
+			mounted.addMounter(_user.getID());
 			mounted.setTurns(::Lewd.Const.MountDuration);
 		}
 

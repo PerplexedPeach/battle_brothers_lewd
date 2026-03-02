@@ -46,7 +46,7 @@
 // ability constants
 ::Lewd.Const.AllureToDazeBaseChance <- 60;
 ::Lewd.Const.AllureToDazeChanceMultiplier <- 2;
-::Lewd.Const.AllureToDazeDistancePenalty <- 10; // daze chance is reduced by this much for every tile of distance from the target
+::Lewd.Const.AllureToDazeDistancePenalty <- 15; // effect chance is reduced by this much for every tile of distance from the target
 
 ::Lewd.Const.SeduceBaseChance <- 50;
 ::Lewd.Const.SeduceAllureChanceMultiplier <- 3;
@@ -145,6 +145,10 @@
 
 // --- Sex Ability Constants ---
 ::Lewd.Const.SexAbilityDelayDefault <- 400;
+::Lewd.Const.SexFlashColor <- this.createColor("#ffffff");
+::Lewd.Const.SexFlashHighlight <- this.createColor("#ff1493");
+::Lewd.Const.SexFlashFactor <- 0.5;
+::Lewd.Const.SexFlashSaturation <- 1.0;
 
 // universal allure scaling for pleasure dealt
 ::Lewd.Const.SexAllurePleasureScale <- 0.15; // floor(allure * this) added to pleasure dealt

@@ -77,6 +77,30 @@ this.lewd_mounting_effect <- this.inherit("scripts/skills/skill", {
 		_properties.IsRooted = true;
 	}
 
+	function onDeath( _fatalityType )
+	{
+		// Mounter died — notify the target immediately
+		local target = this.Tactical.getEntityByID(this.m.TargetID);
+		if (target != null && target.isAlive() && target.getSkills().hasSkill("effects.lewd_mounted"))
+		{
+			local mounted = target.getSkills().getSkillByID("effects.lewd_mounted");
+			local actor = this.getContainer().getActor();
+			mounted.removeMounter(actor.getID());
+		}
+	}
+
+	function onRemoved()
+	{
+		// Notify the target that this mounter is gone
+		local target = this.Tactical.getEntityByID(this.m.TargetID);
+		if (target != null && target.isAlive() && target.getSkills().hasSkill("effects.lewd_mounted"))
+		{
+			local mounted = target.getSkills().getSkillByID("effects.lewd_mounted");
+			local actor = this.getContainer().getActor();
+			mounted.removeMounter(actor.getID());
+		}
+	}
+
 	function onTurnEnd()
 	{
 		// check if target still has mounted effect

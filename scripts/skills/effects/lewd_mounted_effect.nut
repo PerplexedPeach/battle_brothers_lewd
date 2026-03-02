@@ -2,7 +2,7 @@
 this.lewd_mounted_effect <- this.inherit("scripts/skills/skill", {
 	m = {
 		TurnsLeft = 0,
-		MounterID = 0,
+		MounterIDs = [],
 		IsRemoving = false
 	},
 	function create()
@@ -19,14 +19,66 @@ this.lewd_mounted_effect <- this.inherit("scripts/skills/skill", {
 		this.m.IsRemovedAfterBattle = true;
 	}
 
-	function setMounter( _entityID )
-	{
-		this.m.MounterID = _entityID;
-	}
-
 	function getMounterID()
 	{
-		return this.m.MounterID;
+		if (this.m.MounterIDs.len() > 0)
+			return this.m.MounterIDs[0];
+		return 0;
+	}
+
+	function getMounterCount()
+	{
+		return this.m.MounterIDs.len();
+	}
+
+	function hasMounter( _entityID )
+	{
+		foreach (id in this.m.MounterIDs)
+			if (id == _entityID) return true;
+		return false;
+	}
+
+	function addMounter( _entityID )
+	{
+		foreach (id in this.m.MounterIDs)
+			if (id == _entityID) return;
+		this.m.MounterIDs.push(_entityID);
+		this.updateSilhouettes();
+	}
+
+	function removeMounter( _entityID )
+	{
+		if (this.m.IsRemoving) return;
+		for (local i = this.m.MounterIDs.len() - 1; i >= 0; i--)
+		{
+			if (this.m.MounterIDs[i] == _entityID)
+			{
+				this.m.MounterIDs.remove(i);
+				break;
+			}
+		}
+		this.updateSilhouettes();
+		if (this.m.MounterIDs.len() == 0)
+			this.removeSelf();
+	}
+
+	function updateSilhouettes()
+	{
+		local actor = this.getContainer().getActor();
+		if (!actor.isPlacedOnMap()) return;
+
+		local count = this.m.MounterIDs.len();
+		if (actor.hasSprite("lewd_silhouette_back"))
+		{
+			actor.getSprite("lewd_silhouette_back").setBrush("lewd_silhouette_back");
+			actor.getSprite("lewd_silhouette_back").Visible = count >= 1;
+		}
+		if (actor.hasSprite("lewd_silhouette_front"))
+		{
+			actor.getSprite("lewd_silhouette_front").setBrush("lewd_silhouette_front");
+			actor.getSprite("lewd_silhouette_front").Visible = count >= 2;
+		}
+		actor.setDirty(true);
 	}
 
 	function setTurns( _turns )
@@ -36,7 +88,11 @@ this.lewd_mounted_effect <- this.inherit("scripts/skills/skill", {
 
 	function getTooltip()
 	{
-		return [
+		local count = this.m.MounterIDs.len();
+		local desc = count > 1
+			? "Multiple enemies are on top of you, restricting your movement and making you extremely vulnerable."
+			: this.getDescription();
+		local result = [
 			{
 				id = 1,
 				type = "title",
@@ -45,7 +101,7 @@ this.lewd_mounted_effect <- this.inherit("scripts/skills/skill", {
 			{
 				id = 2,
 				type = "description",
-				text = this.getDescription()
+				text = desc
 			},
 			{
 				id = 10,
@@ -78,6 +134,18 @@ this.lewd_mounted_effect <- this.inherit("scripts/skills/skill", {
 				text = "Turns remaining: [color=" + this.Const.UI.Color.NegativeValue + "]" + this.m.TurnsLeft + "[/color]"
 			}
 		];
+
+		if (count > 1)
+		{
+			result.push({
+				id = 15,
+				type = "text",
+				icon = "ui/icons/special.png",
+				text = "Mounted by [color=" + this.Const.UI.Color.NegativeValue + "]" + count + "[/color] enemies"
+			});
+		}
+
+		return result;
 	}
 
 	function onAdded()
@@ -95,6 +163,8 @@ this.lewd_mounted_effect <- this.inherit("scripts/skills/skill", {
 		{
 			this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(actor) + " is mounted!");
 		}
+
+		// Note: silhouettes are updated by addMounter() which is called after add()
 	}
 
 	function onUpdate( _properties )
@@ -107,28 +177,39 @@ this.lewd_mounted_effect <- this.inherit("scripts/skills/skill", {
 	function onTurnEnd()
 	{
 		this.m.TurnsLeft -= 1;
-		if (this.m.TurnsLeft <= 0)
+
+		if (this.m.MounterIDs.len() == 0 || this.m.TurnsLeft <= 0)
 		{
 			this.removeSelf();
 		}
 		else
 		{
-			// check if mounter still alive and adjacent
-			local mounter = this.Tactical.getEntityByID(this.m.MounterID);
-			if (mounter == null || !mounter.isAlive() || mounter.getHitpoints() <= 0)
+			// Pliant Body: drain fatigue from all mounters each turn
+			local actor = this.getContainer().getActor();
+			if (actor.getSkills().hasSkill("perk.lewd_pliant_body"))
 			{
-				this.removeSelf();
-			}
-			else
-			{
-				// Pliant Body: drain fatigue from the mounter each turn
-				local actor = this.getContainer().getActor();
-				if (actor.getSkills().hasSkill("perk.lewd_pliant_body"))
+				foreach (mounterID in this.m.MounterIDs)
 				{
-					mounter.m.Fatigue = this.Math.min(mounter.getFatigueMax(), mounter.m.Fatigue + ::Lewd.Const.PliantBodyFatigueDrain);
+					local mounter = this.Tactical.getEntityByID(mounterID);
+					if (mounter != null && mounter.isAlive())
+						mounter.m.Fatigue = this.Math.min(mounter.getFatigueMax(), mounter.m.Fatigue + ::Lewd.Const.PliantBodyFatigueDrain);
 				}
 			}
 		}
+	}
+
+	function onRemoved()
+	{
+		local actor = this.getContainer().getActor();
+		if (actor.hasSprite("lewd_silhouette_back"))
+		{
+			actor.getSprite("lewd_silhouette_back").Visible = false;
+		}
+		if (actor.hasSprite("lewd_silhouette_front"))
+		{
+			actor.getSprite("lewd_silhouette_front").Visible = false;
+		}
+		actor.setDirty(true);
 	}
 
 	function removeSelf()
@@ -138,11 +219,14 @@ this.lewd_mounted_effect <- this.inherit("scripts/skills/skill", {
 
 		local actor = this.getContainer().getActor();
 
-		// also remove the mounting effect from the mounter
-		local mounter = this.Tactical.getEntityByID(this.m.MounterID);
-		if (mounter != null && mounter.isAlive())
+		// Remove the mounting effect from all mounters
+		foreach (mounterID in this.m.MounterIDs)
 		{
-			mounter.getSkills().removeByID("effects.lewd_mounting");
+			local mounter = this.Tactical.getEntityByID(mounterID);
+			if (mounter != null && mounter.isAlive())
+			{
+				mounter.getSkills().removeByID("effects.lewd_mounting");
+			}
 		}
 
 		if (actor.isPlacedOnMap())

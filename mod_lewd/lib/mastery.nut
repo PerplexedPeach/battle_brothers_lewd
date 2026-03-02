@@ -81,7 +81,7 @@
 	if (_user.getSkills().hasSkill("effects.lewd_mounted"))
 	{
 		local effect = _user.getSkills().getSkillByID("effects.lewd_mounted");
-		if (effect.getMounterID() == _target.getID()) return true;
+		if (effect.hasMounter(_target.getID())) return true;
 	}
 	return false;
 };
