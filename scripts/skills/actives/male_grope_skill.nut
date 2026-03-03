@@ -19,9 +19,9 @@ this.male_grope_skill <- this.inherit("scripts/skills/actives/male_sex_skill", {
 		this.m.SexType = "hands";
 		this.m.Name = "Grope";
 		this.m.Description = "Roughly grope the target, dealing a small amount of pleasure.";
-		this.m.Icon = "skills/lewd_hands_t1.png";
-		this.m.IconDisabled = "skills/lewd_hands_t1_bw.png";
-		this.m.Overlay = "lewd_hands_t1";
+		this.m.Icon = "skills/lewd_grope.png";
+		this.m.IconDisabled = "skills/lewd_grope_bw.png";
+		this.m.Overlay = "lewd_grope";
 		this.m.ActionPointCost = ::Lewd.Const.MaleGropeAP;
 		this.m.FatigueCost = ::Lewd.Const.MaleGropeFatigue;
 		this.m.BasePleasure = ::Lewd.Const.MaleGropeBasePleasure;

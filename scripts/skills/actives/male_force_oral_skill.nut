@@ -11,9 +11,9 @@ this.male_force_oral_skill <- this.inherit("scripts/skills/actives/male_sex_skil
 		this.m.SexType = "oral";
 		this.m.Name = "Force Oral";
 		this.m.Description = "Force yourself on the restrained target. Provides high pleasure to the user but little to the target, while shaking their resolve.";
-		this.m.Icon = "skills/lewd_hands_t2.png";
-		this.m.IconDisabled = "skills/lewd_hands_t2_bw.png";
-		this.m.Overlay = "lewd_hands_t2";
+		this.m.Icon = "skills/lewd_oral_t1.png";
+		this.m.IconDisabled = "skills/lewd_oral_t1_bw.png";
+		this.m.Overlay = "lewd_oral_t1";
 		this.m.ActionPointCost = ::Lewd.Const.MaleForceOralAP;
 		this.m.FatigueCost = ::Lewd.Const.MaleForceOralFatigue;
 		this.m.BasePleasure = ::Lewd.Const.MaleForceOralBasePleasure;
@@ -22,6 +22,19 @@ this.male_force_oral_skill <- this.inherit("scripts/skills/actives/male_sex_skil
 		this.m.SelfPleasure = ::Lewd.Const.MaleForceOralSelfPleasure;
 		this.m.HitText = ["forces himself on", "uses the mouth of"];
 		this.m.MissText = ["force himself on", "use"];
+	}
+
+	function onUse( _user, _targetTile )
+	{
+		local target = _targetTile.getEntity();
+		if (target != null)
+		{
+			local tier = this.Math.max(1, ::Lewd.Mastery.getMasteryTier(target, "effects.lewd_mastery_oral"));
+			this.m.Icon = "skills/lewd_oral_t" + tier + ".png";
+			this.m.IconDisabled = "skills/lewd_oral_t" + tier + "_bw.png";
+			this.m.Overlay = "lewd_oral_t" + tier;
+		}
+		return this.male_sex_skill.onUse(_user, _targetTile);
 	}
 
 	function calculatePleasure( _target )

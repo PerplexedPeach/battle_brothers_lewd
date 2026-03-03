@@ -16,9 +16,9 @@ this.male_penetrate_anal_skill <- this.inherit("scripts/skills/actives/male_sex_
 		this.m.Name = "Penetrate (Anal)";
 		this.m.Description = "Take the target from behind with brute force. Deals bonus pleasure to masochistic targets.";
 		this.m.SexType = "anal";
-		this.m.Icon = "skills/lewd_hands_t3.png";
-		this.m.IconDisabled = "skills/lewd_hands_t3_bw.png";
-		this.m.Overlay = "lewd_hands_t3";
+		this.m.Icon = "skills/lewd_anal_t1.png";
+		this.m.IconDisabled = "skills/lewd_anal_t1_bw.png";
+		this.m.Overlay = "lewd_anal_t1";
 		this.m.ActionPointCost = ::Lewd.Const.MalePenetrateAnalAP;
 		this.m.FatigueCost = ::Lewd.Const.MalePenetrateAnalFatigue;
 		this.m.BasePleasure = ::Lewd.Const.MalePenetrateAnalBasePleasure;
@@ -27,6 +27,19 @@ this.male_penetrate_anal_skill <- this.inherit("scripts/skills/actives/male_sex_
 		this.m.SelfPleasure = ::Lewd.Const.MalePenetrateAnalSelfPleasure;
 		this.m.HitText = ["sodomizes", "takes from behind", "ravishes anally"];
 		this.m.MissText = ["sodomize", "take from behind", "ravish"];
+	}
+
+	function onUse( _user, _targetTile )
+	{
+		local target = _targetTile.getEntity();
+		if (target != null)
+		{
+			local tier = this.Math.max(1, ::Lewd.Mastery.getMasteryTier(target, "effects.lewd_mastery_anal"));
+			this.m.Icon = "skills/lewd_anal_t" + tier + ".png";
+			this.m.IconDisabled = "skills/lewd_anal_t" + tier + "_bw.png";
+			this.m.Overlay = "lewd_anal_t" + tier;
+		}
+		return this.male_sex_skill.onUse(_user, _targetTile);
 	}
 
 	function getHitChanceAgainst( _target )

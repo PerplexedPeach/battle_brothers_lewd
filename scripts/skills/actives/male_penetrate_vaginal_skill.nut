@@ -16,9 +16,9 @@ this.male_penetrate_vaginal_skill <- this.inherit("scripts/skills/actives/male_s
 		this.m.Name = "Penetrate (Vaginal)";
 		this.m.Description = "Penetrate the target vaginally, dealing high pleasure and establishing dominance.";
 		this.m.SexType = "vaginal";
-		this.m.Icon = "skills/lewd_hands_t3.png";
-		this.m.IconDisabled = "skills/lewd_hands_t3_bw.png";
-		this.m.Overlay = "lewd_hands_t3";
+		this.m.Icon = "skills/lewd_vaginal_t1.png";
+		this.m.IconDisabled = "skills/lewd_vaginal_t1_bw.png";
+		this.m.Overlay = "lewd_vaginal_t1";
 		this.m.ActionPointCost = ::Lewd.Const.MalePenetrateVaginalAP;
 		this.m.FatigueCost = ::Lewd.Const.MalePenetrateVaginalFatigue;
 		this.m.BasePleasure = ::Lewd.Const.MalePenetrateVaginalBasePleasure;
@@ -27,6 +27,19 @@ this.male_penetrate_vaginal_skill <- this.inherit("scripts/skills/actives/male_s
 		this.m.SelfPleasure = ::Lewd.Const.MalePenetrateVaginalSelfPleasure;
 		this.m.HitText = ["penetrates", "thrusts into", "ravishes"];
 		this.m.MissText = ["penetrate", "thrust into", "take"];
+	}
+
+	function onUse( _user, _targetTile )
+	{
+		local target = _targetTile.getEntity();
+		if (target != null)
+		{
+			local tier = this.Math.max(1, ::Lewd.Mastery.getMasteryTier(target, "effects.lewd_mastery_vaginal"));
+			this.m.Icon = "skills/lewd_vaginal_t" + tier + ".png";
+			this.m.IconDisabled = "skills/lewd_vaginal_t" + tier + "_bw.png";
+			this.m.Overlay = "lewd_vaginal_t" + tier;
+		}
+		return this.male_sex_skill.onUse(_user, _targetTile);
 	}
 
 	function getHitChanceAgainst( _target )
