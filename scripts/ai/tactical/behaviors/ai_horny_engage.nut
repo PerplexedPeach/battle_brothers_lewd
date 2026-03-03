@@ -127,7 +127,7 @@ this.ai_horny_engage <- this.inherit("scripts/ai/tactical/behavior", {
 
 		// Score: base engage score * normalized allure factor
 		local normalizedAllure = bestAdjustedAllure / ::Lewd.Const.HornyAIEngageAllureNorm;
-		return ::Lewd.Const.HornyAIEngageScore * this.Math.maxf(0.1, normalizedAllure);
+		return ::Lewd.Const.HornyAIEngageScore * this.Math.maxf(0.1, normalizedAllure) * this.getProperties().BehaviorMult[this.m.ID];
 	}
 
 	function onExecute( _entity )
@@ -171,11 +171,16 @@ this.ai_horny_engage <- this.inherit("scripts/ai/tactical/behavior", {
 		local apBefore = _entity.getActionPoints();
 		if (!navigator.travel(_entity, _entity.getActionPoints(), _entity.getFatigueMax() - _entity.getFatigue()))
 		{
-			// Movement complete — if no AP was consumed, give up to prevent loop
-			if (_entity.getActionPoints() >= apBefore)
+			if (_entity.isAlive())
 			{
-				::logInfo("[ai_horny_engage] " + _entity.getName() + " travel consumed no AP, giving up");
-				this.m.GaveUp = true;
+				// Movement complete — if no AP was consumed, give up to prevent loop
+				if (_entity.getActionPoints() >= apBefore)
+				{
+					::logInfo("[ai_horny_engage] " + _entity.getName() + " travel consumed no AP, giving up");
+					this.m.GaveUp = true;
+				}
+
+				this.getAgent().declareAction();
 			}
 
 			this.m.TargetTile = null;

@@ -9,9 +9,9 @@ this.ai_horny <- this.inherit("scripts/ai/tactical/behavior", {
 	},
 	function create()
 	{
-		this.behavior.create();
 		this.m.ID = ::Lewd.Const.AIBehaviorIDHorny;
 		this.m.Order = this.Const.AI.Behavior.Order.AttackDefault;
+		this.behavior.create();
 	}
 
 	function onTurnStarted()
@@ -26,6 +26,10 @@ this.ai_horny <- this.inherit("scripts/ai/tactical/behavior", {
 
 		// Must have Horny effect
 		if (!_entity.getSkills().hasSkill("effects.lewd_horny"))
+			return 0;
+
+		// Don't use sex skills while fleeing
+		if (_entity.getMoraleState() == this.Const.MoraleState.Fleeing)
 			return 0;
 
 		// Must have enough AP for cheapest skill (grope = 3 AP)
@@ -106,7 +110,7 @@ this.ai_horny <- this.inherit("scripts/ai/tactical/behavior", {
 			return 0;
 		}
 
-		local finalScore = ::Lewd.Const.HornyAIScore * bestScore;
+		local finalScore = ::Lewd.Const.HornyAIScore * bestScore * this.getProperties().BehaviorMult[this.m.ID];
 		::logInfo("[ai_horny] " + _entity.getName() + " — SELECTED " + bestSkill.getID() + " on " + bestTile.getEntity().getName() + " (score:" + finalScore + ")");
 		this.m.TargetTile = bestTile;
 		this.m.SelectedSkill = bestSkill;
@@ -251,15 +255,22 @@ this.ai_horny <- this.inherit("scripts/ai/tactical/behavior", {
 
 		// Second frame: use skill
 		local apBefore = _entity.getActionPoints();
-		if (this.m.SelectedSkill != null && this.m.TargetTile != null)
+		if (this.m.SelectedSkill != null && this.m.TargetTile != null && this.m.TargetTile.IsOccupiedByActor)
 		{
 			::logInfo("[ai_horny] " + _entity.getName() + " EXECUTING " + this.m.SelectedSkill.getID() + " on " + this.m.TargetTile.getEntity().getName());
 			this.m.SelectedSkill.use(this.m.TargetTile);
-			this.getAgent().declareAction();
+
+			if (_entity.isAlive())
+			{
+				this.getAgent().declareAction();
+
+				if (this.m.SelectedSkill.getDelay() != 0)
+					this.getAgent().declareEvaluationDelay(this.m.SelectedSkill.getDelay());
+			}
 		}
 
 		// If skill failed to consume AP, give up to prevent infinite re-evaluation
-		if (_entity.getActionPoints() >= apBefore)
+		if (_entity.isAlive() && _entity.getActionPoints() >= apBefore)
 		{
 			::logInfo("[ai_horny] " + _entity.getName() + " skill did not consume AP, giving up");
 			this.m.GaveUp = true;
