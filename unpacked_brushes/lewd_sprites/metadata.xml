@@ -5,6 +5,9 @@
     <!-- TODO make injured sprites -->
     <sprite id="bust_body_lewd_01_injured" offsetY="35" ic="FF6095CB" width="140" height="248" img="body\bust_hexen_charmed_body_01.png" left="-43" right="59" top="-56" bottom="24"/>
     <sprite id="bust_body_lewd_02_injured" offsetY="35" ic="FF6095CB" width="140" height="248" img="body\bust_body_lewd_03.png" left="-43" right="59" top="-56" bottom="24"/>
+    <!-- dead body sprites (placeholder: Legends northern body dead) -->
+    <sprite id="bust_body_lewd_01_dead" offsetX="6" offsetY="10" ic="FF6095CB" width="131" height="114" img="body\bust_body_lewd_dead.png" left="-65" top="-57" bottom="53"/>
+    <sprite id="bust_body_lewd_02_dead" offsetX="6" offsetY="10" ic="FF6095CB" width="131" height="114" img="body\bust_body_lewd_dead.png" left="-65" top="-57" bottom="53"/>
 
     <!-- <sprite id="bust_head_lewd_01" offsetY="35" ic="FF5B7CAD" width="104" height="142" img="body\bust_head_female_lewd_1.png" left="-23" right="31" top="-21" bottom="49"/> -->
     <sprite id="bust_head_lewd_01" offsetY="35" ic="FF5B7CAD" width="104" height="142" img="body\bust_head_female_lewd_1.png" left="-24" right="30" top="-20" bottom="50"/>
@@ -12,6 +15,10 @@
     <!-- <sprite id="bust_head_lewd_03" offsetY="35" ic="FF5B7CAD" width="104" height="142" img="body\bust_head_female_lewd_4.png" left="-24" right="30" top="-20" bottom="50"/> -->
     <!-- new coordinates for hair and head export (wider) -->
     <sprite id="bust_head_lewd_03" offsetY="35" ic="FF5B7CAD" width="104" height="142" img="body\bust_head_female_lewd_4.png" left="-30" right="40" top="-30" bottom="50"/>
+    <!-- dead head sprites (120° CCW rotated) -->
+    <sprite id="bust_head_lewd_01_dead" offsetX="6" offsetY="10" ic="FF5B7CAD" width="131" height="125" img="body\bust_head_lewd_01_dead.png" left="-44" right="16" top="-58" bottom="0"/>
+    <sprite id="bust_head_lewd_02_dead" offsetX="6" offsetY="10" ic="FF5B7CAD" width="131" height="125" img="body\bust_head_lewd_02_dead.png" left="-44" right="16" top="-58" bottom="0"/>
+    <sprite id="bust_head_lewd_03_dead" offsetX="6" offsetY="10" ic="FF5B7CAD" width="131" height="125" img="body\bust_head_lewd_03_dead.png" left="-50" right="22" top="-64" bottom="6"/>
 
     <!-- <sprite id="hair_lewd_4" offsetY="35" ic="FF5B7CAD" width="104" height="142" img="body\hair_lewd_4.png" left="-31" right="39" top="-30" bottom="50"/> -->
     <sprite id="hair_lewd_4" offsetY="35" ic="FF5B7CAD" width="104" height="142" img="body\hair_lewd_4.png" left="-31" right="39" top="-30" bottom="50"/>
@@ -20,6 +27,10 @@
     <sprite id="black_heels_short" offsetY="35" ic="FF6095CB" width="10" height="10" img="accessory\black_heels_short.png" left="-53" right="17" top="-78" bottom="-8"/>
     <sprite id="black_heels" offsetY="35" ic="FF6095CB" width="10" height="10" img="accessory\black_heels.png" left="-53" right="17" top="-78" bottom="-8"/>
     <sprite id="ballet_heels" offsetY="35" ic="FF6095CB" width="10" height="10" img="accessory\ballet_heels.png" left="-58" right="12" top="-71" bottom="0"/>
+    <!-- dead accessory sprites (reuse living PNGs) -->
+    <sprite id="black_heels_short_dead" offsetX="6" offsetY="10" ic="FF6095CB" width="10" height="10" img="accessory\black_heels_short.png" left="-53" right="17" top="-78" bottom="-8"/>
+    <sprite id="black_heels_dead" offsetX="6" offsetY="10" ic="FF6095CB" width="10" height="10" img="accessory\black_heels.png" left="-53" right="17" top="-78" bottom="-8"/>
+    <sprite id="ballet_heels_dead" offsetX="6" offsetY="10" ic="FF6095CB" width="10" height="10" img="accessory\ballet_heels.png" left="-58" right="12" top="-71" bottom="0"/>
 
     <!-- piercings -->
     <sprite id="piercing_nose" offsetY="35" ic="FF6095CB" width="10" height="10" img="details\piercing_nose.png" left="-46" right="56" top="-54" bottom="26"/>
