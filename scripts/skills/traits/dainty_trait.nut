@@ -50,6 +50,12 @@ this.dainty_trait <- this.inherit("scripts/skills/traits/character_trait", {
 				icon = "ui/icons/allure.png",
 				text = "[color=" + this.Const.UI.Color.PositiveValue + "]+5[/color] Allure"
 			},
+			{
+				id = 14,
+				type = "text",
+				icon = "ui/icons/special.png",
+				text = "Grants [color=" + this.Const.UI.Color.PositiveValue + "]" + ::Lewd.Const.PerkPointsFromDainty + "[/color] additional perk point"
+			},
 		];
 	}
 
@@ -72,6 +78,14 @@ this.dainty_trait <- this.inherit("scripts/skills/traits/character_trait", {
 		local bg = actor.getBackground();
 		if (bg != null && !bg.hasPerkGroup(::Const.Perks.SeductionArtsTree))
 			bg.addPerkGroup(::Const.Perks.SeductionArtsTree.Tree);
+
+		// Grant perk points (flag prevents double-granting on load)
+		if (!actor.getFlags().has("lewdDaintyPerkPointGranted"))
+		{
+			actor.m.PerkPoints += ::Lewd.Const.PerkPointsFromDainty;
+			actor.getFlags().set("lewdDaintyPerkPointGranted", true);
+			::logInfo("[dainty_trait] Granted " + ::Lewd.Const.PerkPointsFromDainty + " perk point(s) to " + actor.getName());
+		}
 	}
 
 	function onUpdate( _properties )

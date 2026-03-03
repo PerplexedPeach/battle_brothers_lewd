@@ -56,6 +56,12 @@ this.delicate_trait <- this.inherit("scripts/skills/traits/character_trait", {
 				icon = "ui/icons/special.png",
 				text = "Others will avoid aiming for the head when attacking this character"
 			},
+			{
+				id = 15,
+				type = "text",
+				icon = "ui/icons/special.png",
+				text = "Grants [color=" + this.Const.UI.Color.PositiveValue + "]" + ::Lewd.Const.PerkPointsFromDelicate + "[/color] additional perk points"
+			},
 		];
 	}
 
@@ -101,6 +107,14 @@ this.delicate_trait <- this.inherit("scripts/skills/traits/character_trait", {
 		local bg = actor.getBackground();
 		if (bg != null && !bg.hasPerkGroup(::Const.Perks.SeductionArtsTree))
 			bg.addPerkGroup(::Const.Perks.SeductionArtsTree.Tree);
+
+		// Grant perk points (flag prevents double-granting on load)
+		if (!actor.getFlags().has("lewdDelicatePerkPointGranted"))
+		{
+			actor.m.PerkPoints += ::Lewd.Const.PerkPointsFromDelicate;
+			actor.getFlags().set("lewdDelicatePerkPointGranted", true);
+			::logInfo("[delicate_trait] Granted " + ::Lewd.Const.PerkPointsFromDelicate + " perk point(s) to " + actor.getName());
+		}
 	}
 
 	function onUpdate( _properties )
