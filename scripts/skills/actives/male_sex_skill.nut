@@ -64,12 +64,12 @@ this.male_sex_skill <- this.inherit("scripts/skills/actives/sex_skill_base", {
 
 		if (diff >= 0)
 			ret.push({
-				icon = "ui/icons/positive.png",
+				icon = "ui/tooltips/positive.png",
 				text = "[color=" + this.Const.UI.Color.PositiveValue + "]+" + diff + "%[/color] from Melee Skill advantage"
 			});
 		else
 			ret.push({
-				icon = "ui/icons/negative.png",
+				icon = "ui/tooltips/negative.png",
 				text = "[color=" + this.Const.UI.Color.NegativeValue + "]" + diff + "%[/color] from Melee Defense advantage"
 			});
 

@@ -92,18 +92,18 @@ this.lewd_sex_skill <- this.inherit("scripts/skills/actives/sex_skill_base", {
 
 		if (diff >= 0)
 			ret.push({
-				icon = "ui/icons/positive.png",
+				icon = "ui/tooltips/positive.png",
 				text = "[color=" + this.Const.UI.Color.PositiveValue + "]+" + (diff * ::Lewd.Const.SexHitChanceAllureResolveScale) + "%[/color] from Allure advantage"
 			});
 		else
 			ret.push({
-				icon = "ui/icons/negative.png",
+				icon = "ui/tooltips/negative.png",
 				text = "[color=" + this.Const.UI.Color.NegativeValue + "]" + (diff * ::Lewd.Const.SexHitChanceAllureResolveScale) + "%[/color] from Resolve advantage"
 			});
 
 		if (user.getSkills().hasSkill("perk.lewd_alluring_presence") && user.getFlags().getAsInt("lewdAlluringUsed") == 0)
 			ret.push({
-				icon = "ui/icons/positive.png",
+				icon = "ui/tooltips/positive.png",
 				text = "[color=" + this.Const.UI.Color.PositiveValue + "]+" + ::Lewd.Const.AlluringPresenceHitBonus + "%[/color] from Alluring Presence (first use)"
 			});
 

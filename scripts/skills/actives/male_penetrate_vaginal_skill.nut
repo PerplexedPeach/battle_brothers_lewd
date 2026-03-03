@@ -58,7 +58,7 @@ this.male_penetrate_vaginal_skill <- this.inherit("scripts/skills/actives/male_s
 
 		if (target.getSkills().hasSkill("effects.lewd_mounted"))
 			ret.push({
-				icon = "ui/icons/positive.png",
+				icon = "ui/tooltips/positive.png",
 				text = "[color=" + this.Const.UI.Color.PositiveValue + "]+" + ::Lewd.Const.MalePenetrateVaginalMountedHitBonus + "%[/color] from target mounted"
 			});
 
