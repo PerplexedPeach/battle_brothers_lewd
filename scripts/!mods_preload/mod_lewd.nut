@@ -73,6 +73,8 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC" function()
 				{
 					local horny = old_addSprite("status_horny");
 					horny.Visible = false;
+					local cum = old_addSprite("cum_facial");
+					cum.Visible = false;
 					// Front silhouette AFTER all other layers (renders in front of everything)
 					local sil = old_addSprite("lewd_silhouette_front");
 					sil.Visible = false;

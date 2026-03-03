@@ -42,6 +42,9 @@
     <!-- cum facial (renders above hair on head) -->
     <sprite id="cum_head" offsetY="35" ic="FF6095CB" width="10" height="10" img="details\cum_head.png" left="-30" right="50" top="-41" bottom="39"/>
 
+    <!-- cum projectile effect (white splash, for spawnProjectileEffect) -->
+    <sprite id="effect_cum_01" ic="FFFFFFFF" img="effects\effect_cum_01.png"/>
+
     <!-- mount silhouette overlays (behind/in front of mounted character) -->
     <sprite id="lewd_silhouette_back" offsetY="35" ic="FF1A1A1A" width="150" height="150" img="entity\silhouette_back.png" left="-67" right="83" top="-91" bottom="59"/>
     <sprite id="lewd_silhouette_front" offsetY="35" ic="FF1A1A1A" width="150" height="150" img="entity\silhouette_front.png" left="-67" right="83" top="-91" bottom="59"/>

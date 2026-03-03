@@ -145,6 +145,66 @@ this.climax_effect <- this.inherit("scripts/skills/skill", {
 				}
 			}
 
+			// Cum facial: when male climaxes, chance to apply cum to sex partner's face
+			if (actor.getGender() == 0)
+			{
+				local cumTarget = null;
+
+				// Find sex partner: mounting effect first, then LastPleasureSourceID
+				if (actor.getSkills().hasSkill("effects.lewd_mounting"))
+				{
+					local mounting = actor.getSkills().getSkillByID("effects.lewd_mounting");
+					cumTarget = this.Tactical.getEntityByID(mounting.getTargetID());
+				}
+				else if (actor.m.LastPleasureSourceID >= 0)
+				{
+					cumTarget = this.Tactical.getEntityByID(actor.m.LastPleasureSourceID);
+				}
+
+				if (cumTarget != null && cumTarget.isAlive() && cumTarget.hasSprite("cum_facial"))
+				{
+					// Determine sex type from continuation flags
+					local sexType = "";
+					if (actor.getFlags().has("lewdCont_" + cumTarget.getID()))
+						sexType = actor.getFlags().get("lewdCont_" + cumTarget.getID());
+
+					local chance = ::Lewd.Const.CumFacialChanceDefault;
+					if (sexType == "oral")        chance = ::Lewd.Const.CumFacialChanceOral;
+					else if (sexType == "hands")   chance = ::Lewd.Const.CumFacialChanceHands;
+					else if (sexType == "vaginal") chance = ::Lewd.Const.CumFacialChanceVaginal;
+					else if (sexType == "anal")    chance = ::Lewd.Const.CumFacialChanceAnal;
+					else if (sexType == "feet")    chance = ::Lewd.Const.CumFacialChanceFeet;
+
+					if (this.Math.rand(1, 100) <= chance)
+					{
+						// Spawn ejaculation projectile from male to female
+						local time = this.Tactical.spawnProjectileEffect(
+							"effect_cum_01", actor.getTile(), cumTarget.getTile(),
+							0.5, 1.5, false, false);
+
+						// On arrival: apply cum facial sprite + visual effects
+						local self = this;
+						this.Time.scheduleEvent(this.TimeUnit.Virtual, time, function(_d) {
+							if (!_d.Target.isAlive()) return;
+							_d.Target.getSprite("cum_facial").setBrush("cum_head");
+							_d.Target.getSprite("cum_facial").Visible = true;
+							_d.Target.setDirty(true);
+							// Overlay effect on target
+							this.Tactical.spawnSpriteEffect("climax", this.createColor("#ffffff"), _d.Target.getTile(),
+								this.Const.Tactical.Settings.SkillOverlayOffsetX, this.Const.Tactical.Settings.SkillOverlayOffsetY,
+								this.Const.Tactical.Settings.SkillOverlayScale, this.Const.Tactical.Settings.SkillOverlayScale,
+								this.Const.Tactical.Settings.SkillOverlayStayDuration, 0, this.Const.Tactical.Settings.SkillOverlayFadeDuration);
+							// Camera quake on impact
+							this.Tactical.getCamera().quake(_d.Source, _d.Target, 3.0, 0.12, 0.25);
+						}.bindenv(self), { Target = cumTarget, Source = actor });
+
+						this.Tactical.EventLog.log(
+							this.Const.UI.getColorizedEntityName(actor) + " finishes on " +
+							this.Const.UI.getColorizedEntityName(cumTarget) + "'s face!");
+					}
+				}
+			}
+
 			// Dom/Sub tracking: award points on climax
 			local sourceID = actor.m.LastPleasureSourceID;
 			if (sourceID >= 0 && sourceID != actor.getID())

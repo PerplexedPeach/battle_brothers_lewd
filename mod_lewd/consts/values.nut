@@ -418,6 +418,14 @@
 ::Lewd.Const.AIContinuationChance <- 80; // % chance AI follows continuation instead of normal selection
 ::Lewd.Const.OpenInvitationAIPriority <- 2.0; // massive AI targeting bonus for Open Invitation targets
 
+// --- Cum Facial Chances (% per sex type when male climaxes) ---
+::Lewd.Const.CumFacialChanceOral <- 75;
+::Lewd.Const.CumFacialChanceHands <- 50;
+::Lewd.Const.CumFacialChanceVaginal <- 25;
+::Lewd.Const.CumFacialChanceAnal <- 25;
+::Lewd.Const.CumFacialChanceFeet <- 50;
+::Lewd.Const.CumFacialChanceDefault <- 20;
+
 // --- Enemy PleasureMax ---
 ::Lewd.Const.EnemyPleasureMaxBase <- 20;
 ::Lewd.Const.EnemyPleasureMaxResolveScale <- 0.5; // PleasureMax = base + Resolve * this

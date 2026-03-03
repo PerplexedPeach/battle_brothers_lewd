@@ -26,6 +26,13 @@ this.lewd_info_effect <- this.inherit("scripts/skills/skill", {
 		// Reset pleasure at battle start (same pattern as fatigue resetting in onCombatFinished)
 		actor.m.Pleasure = 0;
 
+		// Reset cum facial sprite from previous combat
+		if (actor.hasSprite("cum_facial"))
+		{
+			actor.getSprite("cum_facial").Visible = false;
+			actor.setDirty(true);
+		}
+
 		// Clear stale continuation flags from previous combats
 		local flags = actor.getFlags();
 		local toRemove = [];
