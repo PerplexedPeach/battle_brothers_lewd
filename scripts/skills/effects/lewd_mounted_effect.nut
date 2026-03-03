@@ -145,6 +145,33 @@ this.lewd_mounted_effect <- this.inherit("scripts/skills/skill", {
 			});
 		}
 
+		// Sub-gated defensive bonuses
+		local actor = this.getContainer().getActor();
+		local subScore = ::Lewd.Mastery.getSubScore(actor);
+		if (subScore > 0)
+		{
+			local resolveBonus = this.Math.floor(subScore * ::Lewd.Const.MountedSubResolveScale);
+			local rangedDefBonus = this.Math.floor(subScore * ::Lewd.Const.MountedSubRangedDefScale);
+			if (resolveBonus > 0)
+			{
+				result.push({
+					id = 16,
+					type = "text",
+					icon = "ui/icons/bravery.png",
+					text = "[color=" + this.Const.UI.Color.PositiveValue + "]+" + resolveBonus + "[/color] Resolve (from submission)"
+				});
+			}
+			if (rangedDefBonus > 0)
+			{
+				result.push({
+					id = 17,
+					type = "text",
+					icon = "ui/icons/ranged_defense.png",
+					text = "[color=" + this.Const.UI.Color.PositiveValue + "]+" + rangedDefBonus + "[/color] Ranged Defense (from submission)"
+				});
+			}
+		}
+
 		return result;
 	}
 
@@ -172,6 +199,15 @@ this.lewd_mounted_effect <- this.inherit("scripts/skills/skill", {
 		_properties.MeleeDefense += ::Lewd.Const.MountMeleeDefPenalty;
 		_properties.InitiativeMult *= ::Lewd.Const.MountInitiativeMult;
 		_properties.IsRooted = true;
+
+		// Sub-gated defensive bonuses while mounted
+		local actor = this.getContainer().getActor();
+		local subScore = ::Lewd.Mastery.getSubScore(actor);
+		if (subScore > 0)
+		{
+			_properties.RangedDefense += this.Math.floor(subScore * ::Lewd.Const.MountedSubRangedDefScale);
+			_properties.Bravery += this.Math.floor(subScore * ::Lewd.Const.MountedSubResolveScale);
+		}
 	}
 
 	function onTurnEnd()

@@ -97,6 +97,14 @@ this.lewd_subdom_effect <- this.inherit("scripts/skills/skill", {
 		return "";
 	}
 
+	function onUpdate( _properties )
+	{
+		local actor = this.getContainer().getActor();
+		local subScore = ::Lewd.Mastery.getSubScore(actor);
+		if (subScore > 0)
+			_properties.PleasureMax += this.Math.floor(subScore * ::Lewd.Const.SubScorePleasureMaxScale);
+	}
+
 	function onAfterUpdate( _properties )
 	{
 		local score = this.getScore();
@@ -152,12 +160,23 @@ this.lewd_subdom_effect <- this.inherit("scripts/skills/skill", {
 		}
 		else if (score < 0)
 		{
+			local subScore = ::Lewd.Mastery.getSubScore(this.getContainer().getActor());
+			local pleasureBonus = this.Math.floor(subScore * ::Lewd.Const.SubScorePleasureMaxScale);
 			result.push({
 				id = 11,
 				type = "text",
 				icon = "ui/icons/special.png",
 				text = "Anal abilities deal [color=" + this.Const.UI.Color.PositiveValue + "]bonus pleasure[/color] from submission"
 			});
+			if (pleasureBonus > 0)
+			{
+				result.push({
+					id = 12,
+					type = "text",
+					icon = "ui/icons/special.png",
+					text = "[color=" + this.Const.UI.Color.PositiveValue + "]+" + pleasureBonus + "[/color] Pleasure Max from submission"
+				});
+			}
 		}
 
 		result.push({

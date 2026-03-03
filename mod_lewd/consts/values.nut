@@ -343,6 +343,17 @@
 ::Lewd.Const.DomSubTier3 <- 20;
 ::Lewd.Const.DomSubTier4 <- 30;
 
+// Sub score -> PleasureMax bonus (more used to it = higher threshold)
+::Lewd.Const.SubScorePleasureMaxScale <- 0.5; // PleasureMax += floor(subScore * this)
+
+// Embrace Pain: chance to make attacker horny on hit
+::Lewd.Const.EmbracePainHornyBaseChance <- 25; // base % chance per hit
+::Lewd.Const.EmbracePainHornySubScale <- 2; // +this% per sub score point
+
+// Mounted defensive bonuses (sub-gated)
+::Lewd.Const.MountedSubResolveScale <- 0.5; // Resolve += floor(subScore * this)
+::Lewd.Const.MountedSubRangedDefScale <- 0.3; // RangedDef += floor(subScore * this)
+
 // Hands dom scaling (bonus pleasure per dom point, per tier)
 ::Lewd.Const.HandsT1DomScale <- 0.15;
 ::Lewd.Const.HandsT2DomScale <- 0.2;
