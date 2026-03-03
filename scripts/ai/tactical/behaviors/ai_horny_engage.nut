@@ -79,6 +79,11 @@ this.ai_horny_engage <- this.inherit("scripts/ai/tactical/behavior", {
 			if (distance <= 1) continue;
 
 			local allure = t.Actor.allure();
+
+			// Open Invitation: massively boost perceived allure so enemies prioritize moving toward them
+			if (t.Actor.getSkills().hasSkill("effects.open_invitation"))
+				allure += ::Lewd.Const.OpenInvitationAIPriority * ::Lewd.Const.HornyAIEngageAllureNorm;
+
 			local adjustedAllure = allure - distance * ::Lewd.Const.HornyAIEngageAllurePerTile;
 			if (adjustedAllure <= 0) continue;
 

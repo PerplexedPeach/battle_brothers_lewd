@@ -85,6 +85,10 @@ this.ai_horny <- this.inherit("scripts/ai/tactical/behavior", {
 			if (target.getSkills().hasSkill("perk.lewd_willing_victim"))
 				targetScore += ::Lewd.Const.WillingVictimAIPriority;
 
+			// Open Invitation: target is begging for it, massive priority
+			if (target.getSkills().hasSkill("effects.open_invitation"))
+				targetScore += ::Lewd.Const.OpenInvitationAIPriority;
+
 			// Find best available skill for this target
 			local skill = this.findBestSkill(_entity, target, tile);
 			if (skill == null)

@@ -300,6 +300,10 @@
 ::Lewd.Const.FeetT3MelDefDebuff <- -3;
 ::Lewd.Const.FeetT3DebuffDuration <- 1;
 
+// --- Trait Perk Point Grants ---
+::Lewd.Const.PerkPointsFromDainty <- 1;
+::Lewd.Const.PerkPointsFromDelicate <- 2;
+
 // --- Perk Constants ---
 ::Lewd.Const.SensualFocusPleasureMult <- 1.1; // +10% pleasure dealt
 ::Lewd.Const.AlluringPresenceAllure <- 5;
@@ -401,6 +405,7 @@
 	// hands, feet — no preferred continuation
 };
 ::Lewd.Const.AIContinuationChance <- 80; // % chance AI follows continuation instead of normal selection
+::Lewd.Const.OpenInvitationAIPriority <- 2.0; // massive AI targeting bonus for Open Invitation targets
 
 // --- Enemy PleasureMax ---
 ::Lewd.Const.EnemyPleasureMaxBase <- 20;
