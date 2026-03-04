@@ -13,7 +13,7 @@ this.surrender_to_pleasure_effect <- this.inherit("scripts/skills/skill", {
 		this.m.ID = "effects.surrender_to_pleasure";
 		this.m.Name = "Surrendered to Pleasure";
 		this.m.Description = "You've given in completely, making it much more pleasurable for those mounting you.";
-		this.m.Icon = "skills/lewd_sub_t2.png"; // placeholder — TODO: unique icon
+		this.m.Icon = "skills/surrender_to_pleasure_status.png";
 		this.m.Type = this.Const.SkillType.StatusEffect;
 		this.m.Order = this.Const.SkillOrder.Last;
 		this.m.IsActive = false;

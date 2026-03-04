@@ -9,8 +9,8 @@ this.surrender_to_pleasure_skill <- this.inherit("scripts/skills/skill", {
 		this.m.ID = "actives.surrender_to_pleasure";
 		this.m.Name = "Surrender to Pleasure";
 		this.m.Description = "Stop resisting and give in to the sensations, making it far more pleasurable for those on top of you.";
-		this.m.Icon = "skills/lewd_sub_t2.png"; // placeholder — TODO: unique icon
-		this.m.IconDisabled = "skills/lewd_sub_t2.png"; // placeholder
+		this.m.Icon = "skills/surrender_to_pleasure.png";
+		this.m.IconDisabled = "skills/surrender_to_pleasure_bw.png";
 		this.m.SoundOnUse = [
 			"sounds/long_moans/long_moan_1.wav",
 			"sounds/long_moans/long_moan_2.wav",
