@@ -8,6 +8,9 @@
     <!-- dead body sprites (placeholder: Legends northern body dead) -->
     <sprite id="bust_body_lewd_01_dead" offsetX="6" offsetY="10" ic="FF6095CB" width="131" height="114" img="body\bust_body_lewd_dead.png" left="-65" top="-57" bottom="53"/>
     <sprite id="bust_body_lewd_02_dead" offsetX="6" offsetY="10" ic="FF6095CB" width="131" height="114" img="body\bust_body_lewd_dead.png" left="-65" top="-57" bottom="53"/>
+    <sprite id="bust_body_lewd_05" offsetY="35" ic="FF6095CB" width="140" height="248" img="body\bust_body_lewd_05.png" left="-43" right="59" top="-56" bottom="24"/>
+    <sprite id="bust_body_lewd_05_injured" offsetY="35" ic="FF6095CB" width="140" height="248" img="body\bust_body_lewd_05.png" left="-43" right="59" top="-56" bottom="24"/>
+    <sprite id="bust_body_lewd_05_dead" offsetX="6" offsetY="10" ic="FF6095CB" width="131" height="114" img="body\bust_body_lewd_dead.png" left="-65" top="-57" bottom="53"/>
 
     <!-- <sprite id="bust_head_lewd_01" offsetY="35" ic="FF5B7CAD" width="104" height="142" img="body\bust_head_female_lewd_1.png" left="-23" right="31" top="-21" bottom="49"/> -->
     <sprite id="bust_head_lewd_01" offsetY="35" ic="FF5B7CAD" width="104" height="142" img="body\bust_head_female_lewd_1.png" left="-24" right="30" top="-20" bottom="50"/>
