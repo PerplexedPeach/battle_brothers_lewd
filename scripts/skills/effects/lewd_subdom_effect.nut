@@ -117,6 +117,21 @@ this.lewd_subdom_effect <- this.inherit("scripts/skills/skill", {
 			this.m.IsDom = isDom;
 			local prefix = isDom ? "skills/lewd_dom_t" : "skills/lewd_sub_t";
 			this.m.Icon = prefix + (tier > 0 ? tier : 1) + ".png";
+
+			// Grant/remove Surrender to Pleasure based on sub threshold
+			local actor = this.getContainer().getActor();
+			local subScore = ::Lewd.Mastery.getSubScore(actor);
+			local hasSkill = actor.getSkills().hasSkill("actives.surrender_to_pleasure");
+			if (subScore >= ::Lewd.Const.SurrenderToPleasureSubThreshold && !hasSkill)
+			{
+				actor.getSkills().add(this.new("scripts/skills/actives/surrender_to_pleasure_skill"));
+				::logInfo("[subdom] " + actor.getName() + " unlocked Surrender to Pleasure (sub:" + subScore + ")");
+			}
+			else if (subScore < ::Lewd.Const.SurrenderToPleasureSubThreshold && hasSkill)
+			{
+				actor.getSkills().removeByID("actives.surrender_to_pleasure");
+				::logInfo("[subdom] " + actor.getName() + " lost Surrender to Pleasure (sub:" + subScore + ")");
+			}
 		}
 	}
 

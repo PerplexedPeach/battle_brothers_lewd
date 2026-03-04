@@ -350,6 +350,16 @@
 ::Lewd.Const.EmbracePainHornyBaseChance <- 25; // base % chance per hit
 ::Lewd.Const.EmbracePainHornySubScale <- 2; // +this% per sub score point
 
+// Surrender to Pleasure
+::Lewd.Const.SurrenderToPleasureMinAP <- 1; // minimum AP to use
+::Lewd.Const.SurrenderToPleasureFatigueCost <- 10;
+::Lewd.Const.SurrenderToPleasureSubThreshold <- 10; // sub score needed (abs value) — matches DomSubTier2
+// Scaling: bonus = (apSpent * subScore) / divisor
+// 4 AP * 30 sub / 120 = 1.0 (100% bonus) → 2.0x mounter self-pleasure
+// 9 AP * 30 sub / 120 = 2.25 (225% bonus) → 3.25x mounter self-pleasure
+::Lewd.Const.SurrenderToPleasureMounterDivisor <- 120.0; // full scaling divisor
+::Lewd.Const.SurrenderToPleasureSelfDivisor <- 240.0; // half scaling — self-vulnerability
+
 // Mounted defensive bonuses (sub-gated)
 ::Lewd.Const.MountedSubResolveScale <- 0.5; // Resolve += floor(subScore * this)
 ::Lewd.Const.MountedSubRangedDefScale <- 0.3; // RangedDef += floor(subScore * this)

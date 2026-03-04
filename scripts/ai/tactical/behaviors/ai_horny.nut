@@ -207,14 +207,26 @@ this.ai_horny <- this.inherit("scripts/ai/tactical/behavior", {
 			}
 		}
 
-		// 3. If target is mounted (by anyone): force oral
+		// 3. Surrender to Pleasure: target has given in — prioritize penetration for max self-pleasure
+		local targetSurrendered = _target.getSkills().hasSkill("effects.surrender_to_pleasure");
+		if (targetSurrendered)
+		{
+			local pen = this.pickRandomPenetrate(_entity, _targetTile);
+			if (pen != null)
+			{
+				::logInfo("[ai_horny]   findBestSkill: target surrendered, prioritize penetrate -> " + pen.getID());
+				return pen;
+			}
+		}
+
+		// 4. If target is mounted (by anyone): force oral
 		if (targetMounted && forceOral != null && this.canUseSkill(_entity, forceOral, _targetTile))
 		{
 			::logInfo("[ai_horny]   findBestSkill: target mounted -> force oral");
 			return forceOral;
 		}
 
-		// 4. Penetrate to establish mount
+		// 5. Penetrate to establish mount
 		local pen = this.pickRandomPenetrate(_entity, _targetTile);
 		if (pen != null)
 		{
@@ -222,7 +234,7 @@ this.ai_horny <- this.inherit("scripts/ai/tactical/behavior", {
 			return pen;
 		}
 
-		// 5. Fallback: grope
+		// 6. Fallback: grope
 		if (grope != null && this.canUseSkill(_entity, grope, _targetTile))
 		{
 			::logInfo("[ai_horny]   findBestSkill: fallback -> grope");

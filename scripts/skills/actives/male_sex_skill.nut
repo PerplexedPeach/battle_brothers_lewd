@@ -103,6 +103,11 @@ this.male_sex_skill <- this.inherit("scripts/skills/actives/sex_skill_base", {
 		if (_target.getSkills().hasSkill("effects.lewd_mounted"))
 			pleasure += this.calculateMountBonus(_target);
 
+		// Surrender to Pleasure: target is more vulnerable to pleasure (half scaling)
+		local surrenderEffect = _target.getSkills().getSkillByID("effects.surrender_to_pleasure");
+		if (surrenderEffect != null)
+			pleasure = this.Math.floor(pleasure * surrenderEffect.getSelfVulnMult());
+
 		return this.Math.max(1, pleasure);
 	}
 
@@ -112,7 +117,7 @@ this.male_sex_skill <- this.inherit("scripts/skills/actives/sex_skill_base", {
 		return 0;
 	}
 
-	// Post-hit hook — base applies self-pleasure + horny + Pliant Body + Willing Victim
+	// Post-hit hook — base applies self-pleasure + horny + Pliant Body + Willing Victim + Surrender
 	function onHit( _user, _target )
 	{
 		local selfP = this.m.SelfPleasure;
@@ -120,6 +125,11 @@ this.male_sex_skill <- this.inherit("scripts/skills/actives/sex_skill_base", {
 		// Pliant Body: target's accommodating body gives attacker more self-pleasure
 		if (_target.getSkills().hasSkill("perk.lewd_pliant_body"))
 			selfP = this.Math.floor(selfP * ::Lewd.Const.PliantBodyReflectionMult);
+
+		// Surrender to Pleasure: target has given in, mounters feel it more
+		local surrenderEffect = _target.getSkills().getSkillByID("effects.surrender_to_pleasure");
+		if (surrenderEffect != null)
+			selfP = this.Math.floor(selfP * surrenderEffect.getMounterMult());
 
 		if (selfP > 0 && _user.getPleasureMax() > 0)
 			_user.addPleasure(selfP);
