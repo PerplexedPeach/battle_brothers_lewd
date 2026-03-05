@@ -1,6 +1,6 @@
 // Force Oral — requires target to be mounted/restrained
-// Low pleasure to target, high self-pleasure to user, applies Resolve debuff
-// Scales with Melee Skill
+// Minimal pleasure to target, self-pleasure to user scales with target's oral mastery
+// Better oral skill = more pleasure for the one being sucked
 this.male_force_oral_skill <- this.inherit("scripts/skills/actives/male_sex_skill", {
 	m = {},
 	function create()
@@ -10,7 +10,7 @@ this.male_force_oral_skill <- this.inherit("scripts/skills/actives/male_sex_skil
 		this.m.ID = "actives.male_force_oral";
 		this.m.SexType = "oral";
 		this.m.Name = "Force Oral";
-		this.m.Description = "Force yourself on the restrained target. Provides high pleasure to the user but little to the target, while shaking their resolve.";
+		this.m.Description = "Force yourself on the restrained target. The target\'s oral skill determines how much pleasure you receive.";
 		this.m.Icon = "skills/lewd_oral_t1.png";
 		this.m.IconDisabled = "skills/lewd_oral_t1_bw.png";
 		this.m.Overlay = "lewd_oral_t1";
@@ -39,28 +39,42 @@ this.male_force_oral_skill <- this.inherit("scripts/skills/actives/male_sex_skil
 
 	function calculatePleasure( _target )
 	{
-		// Low pleasure to target — having a penis in your mouth isn't pleasurable
-		local user = this.getContainer().getActor();
-		local pleasure = this.m.BasePleasure;
-		pleasure += this.Math.floor(user.getCurrentProperties().getMeleeSkill() * this.m.MeleeSkillScale);
-		return this.Math.max(1, pleasure);
+		// Minimal pleasure to target — being forced isn't pleasurable
+		return this.Math.max(1, this.m.BasePleasure);
+	}
+
+	function calculateSelfPleasure( _target )
+	{
+		// Self-pleasure scales with target's oral mastery — better oral skill = feels better
+		local selfP = ::Lewd.Const.MaleForceOralSelfPleasure;
+		local oralPts = ::Lewd.Mastery.getMasteryPoints(_target, "effects.lewd_mastery_oral");
+		if (oralPts > 0)
+			selfP += this.Math.floor(oralPts * ::Lewd.Const.MaleForceOralOralMasteryScale);
+		return selfP;
 	}
 
 	function onHit( _user, _target )
 	{
-		// High flat self-pleasure to user
-		if (::Lewd.Const.MaleForceOralSelfPleasure > 0 && _user.getPleasureMax() > 0)
-			_user.addPleasure(::Lewd.Const.MaleForceOralSelfPleasure);
+		// Self-pleasure to user, scaled by target's oral mastery
+		local selfP = this.calculateSelfPleasure(_target);
+
+		// Pliant Body: target's accommodating body gives attacker more self-pleasure
+		if (_target.getSkills().hasSkill("perk.lewd_pliant_body"))
+			selfP = this.Math.floor(selfP * ::Lewd.Const.PliantBodyReflectionMult);
+
+		// Surrender to Pleasure: target has given in, mounters feel it more
+		local surrenderEffect = _target.getSkills().getSkillByID("effects.surrender_to_pleasure");
+		if (surrenderEffect != null)
+			selfP = this.Math.floor(selfP * surrenderEffect.getMounterMult());
+
+		if (selfP > 0 && _user.getPleasureMax() > 0)
+			_user.addPleasure(selfP);
+
+		// Willing Victim: target deals counter-pleasure back to attacker
+		if (_target.getSkills().hasSkill("perk.lewd_willing_victim") && _user.getPleasureMax() > 0)
+			_user.addPleasure(::Lewd.Const.WillingVictimCounterPleasure, _target);
 
 		this.tryApplyHorny(_target);
-
-		// Apply Resolve debuff
-		if (!_target.getSkills().hasSkill("effects.lewd_sex_debuff"))
-		{
-			local debuff = this.new("scripts/skills/effects/lewd_sex_debuff_effect");
-			debuff.setDebuffs({ Resolve = ::Lewd.Const.MaleForceOralResolveDebuff, Duration = 1 });
-			_target.getSkills().add(debuff);
-		}
 	}
 
 	function onVerifyTarget( _originTile, _targetTile )
@@ -85,13 +99,7 @@ this.male_force_oral_skill <- this.inherit("scripts/skills/actives/male_sex_skil
 			id = 8,
 			type = "text",
 			icon = "ui/icons/special.png",
-			text = "[color=" + this.Const.UI.Color.NegativeValue + "]" + ::Lewd.Const.MaleForceOralSelfPleasure + "[/color] self-pleasure to user"
-		});
-		result.push({
-			id = 9,
-			type = "text",
-			icon = "ui/icons/bravery.png",
-			text = "Applies [color=" + this.Const.UI.Color.NegativeValue + "]" + ::Lewd.Const.MaleForceOralResolveDebuff + "[/color] Resolve debuff"
+			text = "[color=" + this.Const.UI.Color.PositiveValue + "]" + ::Lewd.Const.MaleForceOralSelfPleasure + "[/color] base self-pleasure (scales with target\'s oral mastery)"
 		});
 		return result;
 	}

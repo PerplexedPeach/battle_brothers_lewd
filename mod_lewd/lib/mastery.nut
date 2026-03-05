@@ -92,3 +92,57 @@
 {
 	return _actor.hasSprite("helmet");
 };
+
+// Orgasm threshold: how many climaxes before defeat
+// Returns 0 if immune (no pleasure capacity), 999 if PleasureMax <= 0 on enemies
+::Lewd.Mastery.getOrgasmThreshold <- function( _actor )
+{
+	if (_actor.isPlayerControlled())
+	{
+		// Players: sum trait base + masochism + perk bonuses
+		// No lewd traits = immune (can't be orgasm-defeated without pleasure capacity)
+		local skills = _actor.getSkills();
+		local threshold = 0;
+
+		if (skills.hasSkill("trait.delicate"))
+			threshold = ::Lewd.Const.OrgasmThresholdDelicate;
+		else if (skills.hasSkill("trait.dainty"))
+			threshold = ::Lewd.Const.OrgasmThresholdDainty;
+
+		if (threshold == 0) return 0; // no lewd trait = immune
+
+		// Masochism tier bonus (highest only)
+		if (skills.hasSkill("trait.masochism_third"))
+			threshold += ::Lewd.Const.OrgasmThresholdMasochismThird;
+		else if (skills.hasSkill("trait.masochism_second"))
+			threshold += ::Lewd.Const.OrgasmThresholdMasochismSecond;
+		else if (skills.hasSkill("trait.masochism_first"))
+			threshold += ::Lewd.Const.OrgasmThresholdMasochismFirst;
+
+		// Perk bonuses
+		if (skills.hasSkill("perk.lewd_practiced_control"))
+			threshold += ::Lewd.Const.OrgasmThresholdPracticedControl;
+		if (skills.hasSkill("perk.lewd_transcendence"))
+			threshold += ::Lewd.Const.OrgasmThresholdTranscendence;
+		if (skills.hasSkill("perk.lewd_willing_victim"))
+			threshold += ::Lewd.Const.OrgasmThresholdWillingVictim;
+		if (skills.hasSkill("perk.lewd_insatiable"))
+			threshold += ::Lewd.Const.OrgasmThresholdInsatiable;
+
+		return threshold;
+	}
+	else
+	{
+		// Enemies: base + Resolve scaling + miniboss bonus
+		if (_actor.getPleasureMax() <= 0) return 999; // immune (no pleasure capacity)
+
+		local resolve = _actor.getCurrentProperties().getBravery();
+		local threshold = ::Lewd.Const.OrgasmThresholdEnemyBase;
+		threshold += this.Math.floor(resolve / ::Lewd.Const.OrgasmThresholdResolveDivisor);
+
+		if ("IsMiniboss" in _actor.m && _actor.m.IsMiniboss)
+			threshold += ::Lewd.Const.OrgasmThresholdMinibossBonus;
+
+		return threshold;
+	}
+};

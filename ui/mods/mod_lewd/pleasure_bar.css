@@ -5,3 +5,11 @@
     background-repeat: no-repeat;
     background-size: 19.6rem 2.0rem;
 }
+
+.ui-control-stats-progressbar.orgasm-slim,
+.ui-control-stats-progressbar-preview.orgasm-slim
+{
+    background-image: url("coui://gfx/ui/skin/bar_fill_orgasm_196.png");
+    background-repeat: no-repeat;
+    background-size: 19.6rem 2.0rem;
+}

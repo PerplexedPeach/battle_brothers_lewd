@@ -164,8 +164,12 @@
 // --- Mount System ---
 ::Lewd.Const.MountDuration <- 3;
 ::Lewd.Const.MountMeleeDefPenalty <- -8;
+::Lewd.Const.MountMeleeSkillPenalty <- -10;
+::Lewd.Const.MountRangedSkillPenalty <- -15;
 ::Lewd.Const.MountInitiativeMult <- 0.8; // 20% Initiative reduction
-::Lewd.Const.MountPleasureVulnerability <- 1.25; // 25% more pleasure taken while mounted
+::Lewd.Const.MountPleasureVulnerability <- 1.10; // 10% more pleasure taken while mounted
+::Lewd.Const.MountingMeleeSkillPenalty <- -5;
+::Lewd.Const.MountingRangedSkillPenalty <- -10;
 
 // --- Oral Skill Tiers ---
 ::Lewd.Const.OralT1AP <- 5;
@@ -377,17 +381,18 @@
 // --- Male Sex Abilities ---
 ::Lewd.Const.MaleGropeAP <- 3;
 ::Lewd.Const.MaleGropeFatigue <- 8;
-::Lewd.Const.MaleGropeBasePleasure <- 3;
-::Lewd.Const.MaleGropeMeleeSkillScale <- 0.07;
+::Lewd.Const.MaleGropeBasePleasure <- 2;
+::Lewd.Const.MaleGropeMeleeSkillScale <- 0.04;
 ::Lewd.Const.MaleGropeBaseHitChance <- 70;
 
 ::Lewd.Const.MaleForceOralAP <- 5;
 ::Lewd.Const.MaleForceOralFatigue <- 15;
-::Lewd.Const.MaleForceOralBasePleasure <- 3;
-::Lewd.Const.MaleForceOralMeleeSkillScale <- 0.02;
+::Lewd.Const.MaleForceOralBasePleasure <- 1; // minimal — being forced isn't pleasurable
+::Lewd.Const.MaleForceOralMeleeSkillScale <- 0.0; // no scaling to target
 ::Lewd.Const.MaleForceOralBaseHitChance <- 80;
 ::Lewd.Const.MaleForceOralResolveDebuff <- -5;
-::Lewd.Const.MaleForceOralSelfPleasure <- 4;
+::Lewd.Const.MaleForceOralSelfPleasure <- 2; // base self-pleasure (being sucked)
+::Lewd.Const.MaleForceOralOralMasteryScale <- 0.06; // bonus per target oral mastery point
 
 // Male Penetrate (Vaginal) — easier, cheaper
 ::Lewd.Const.MalePenetrateVaginalAP <- 5;
@@ -439,3 +444,22 @@
 // --- Enemy PleasureMax ---
 ::Lewd.Const.EnemyPleasureMaxBase <- 20;
 ::Lewd.Const.EnemyPleasureMaxResolveScale <- 0.5; // PleasureMax = base + Resolve * this
+
+// --- Orgasm Defeat ---
+::Lewd.Const.OrgasmDefeatEnabled <- true;
+::Lewd.Const.OrgasmThresholdEnemyBase <- 1;
+::Lewd.Const.OrgasmThresholdResolveDivisor <- 50;  // +1 per 50 Resolve
+::Lewd.Const.OrgasmThresholdMinibossBonus <- 2;
+
+// Player thresholds (from traits)
+::Lewd.Const.OrgasmThresholdDainty <- 2;
+::Lewd.Const.OrgasmThresholdDelicate <- 3;
+::Lewd.Const.OrgasmThresholdMasochismFirst <- 1;
+::Lewd.Const.OrgasmThresholdMasochismSecond <- 2;
+::Lewd.Const.OrgasmThresholdMasochismThird <- 3;
+
+// Perk bonuses
+::Lewd.Const.OrgasmThresholdPracticedControl <- 1;
+::Lewd.Const.OrgasmThresholdTranscendence <- 2;
+::Lewd.Const.OrgasmThresholdWillingVictim <- 1;
+::Lewd.Const.OrgasmThresholdInsatiable <- 3;

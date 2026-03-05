@@ -53,12 +53,6 @@ this.climax_effect <- this.inherit("scripts/skills/skill", {
 				text = "[color=" + this.Const.UI.Color.NegativeValue + "]" + ::Lewd.Const.ClimaxInitiativePenalty + "[/color] Initiative"
 			},
 			{
-				id = 13,
-				type = "text",
-				icon = "ui/icons/bravery.png",
-				text = "[color=" + this.Const.UI.Color.PositiveValue + "]+" + ::Lewd.Const.ClimaxResolveBonus + "[/color] Resolve"
-			},
-			{
 				id = 14,
 				type = "text",
 				icon = "ui/icons/allure.png",
@@ -194,8 +188,9 @@ this.climax_effect <- this.inherit("scripts/skills/skill", {
 								this.Const.Tactical.Settings.SkillOverlayOffsetX, this.Const.Tactical.Settings.SkillOverlayOffsetY,
 								this.Const.Tactical.Settings.SkillOverlayScale, this.Const.Tactical.Settings.SkillOverlayScale,
 								this.Const.Tactical.Settings.SkillOverlayStayDuration, 0, this.Const.Tactical.Settings.SkillOverlayFadeDuration);
-							// Camera quake on impact
-							this.Tactical.getCamera().quake(_d.Source, _d.Target, 3.0, 0.12, 0.25);
+							// Camera quake on impact (source may be dead from orgasm defeat)
+							if (_d.Source.isAlive())
+								this.Tactical.getCamera().quake(_d.Source, _d.Target, 3.0, 0.12, 0.25);
 						}.bindenv(self), { Target = cumTarget, Source = actor });
 
 						this.Tactical.EventLog.log(
@@ -232,7 +227,6 @@ this.climax_effect <- this.inherit("scripts/skills/skill", {
 		{
 			// Transcendence: no AP/MelDef penalties, +10 Allure instead
 			_properties.Initiative += ::Lewd.Const.ClimaxInitiativePenalty;
-			_properties.Bravery += ::Lewd.Const.ClimaxResolveBonus;
 			_properties.Allure += ::Lewd.Const.TranscendenceClimaxAllure;
 		}
 		else
@@ -240,7 +234,6 @@ this.climax_effect <- this.inherit("scripts/skills/skill", {
 			_properties.ActionPoints += ::Lewd.Const.ClimaxAPPenalty;
 			_properties.MeleeDefense += ::Lewd.Const.ClimaxMeleeDefensePenalty;
 			_properties.Initiative += ::Lewd.Const.ClimaxInitiativePenalty;
-			_properties.Bravery += ::Lewd.Const.ClimaxResolveBonus;
 			_properties.Allure += ::Lewd.Const.ClimaxAllureBonus;
 		}
 	}

@@ -230,13 +230,7 @@ this.lewd_sex_skill <- this.inherit("scripts/skills/actives/sex_skill_base", {
 
 	function applyT3Debuff( _target )
 	{
-		if (this.m.T3Debuff == null) return;
-		if (this.getTier() < 3) return;
-		if (_target.getSkills().hasSkill("effects.lewd_sex_debuff")) return;
-
-		local debuff = this.new("scripts/skills/effects/lewd_sex_debuff_effect");
-		debuff.setDebuffs(this.m.T3Debuff);
-		_target.getSkills().add(debuff);
+		// Disabled — Distracted debuff no longer applied by sex abilities
 	}
 
 	function applySelfPleasure( _user, _target = null )
@@ -262,10 +256,11 @@ this.lewd_sex_skill <- this.inherit("scripts/skills/actives/sex_skill_base", {
 		this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(_user) + " tries to " + verb + " " + this.Const.UI.getColorizedEntityName(_target) + " but fails (roll:" + _hitResult.roll + " chance:" + _hitResult.chance + ")");
 	}
 
-	function logHit( _user, _target, _pleasure, _hitResult )
+	function logHit( _user, _target, _pleasure, _hitResult, _selfPleasure = 0 )
 	{
 		local cfg = this.getTierConfig();
 		local verb = cfg.HitText[this.Math.rand(0, cfg.HitText.len() - 1)];
-		this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(_user) + " " + verb + " " + this.Const.UI.getColorizedEntityName(_target) + " for " + _pleasure + " pleasure (roll:" + _hitResult.roll + " chance:" + _hitResult.chance + ")");
+		local selfStr = _selfPleasure > 0 ? " (self: " + _selfPleasure + ")" : "";
+		this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(_user) + " " + verb + " " + this.Const.UI.getColorizedEntityName(_target) + " for " + _pleasure + " pleasure" + selfStr + " (roll:" + _hitResult.roll + " chance:" + _hitResult.chance + ")");
 	}
 });

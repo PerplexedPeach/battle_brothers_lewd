@@ -205,10 +205,11 @@ this.sex_skill_base <- this.inherit("scripts/skills/skill", {
 		}
 
 		local pleasure = this.calculatePleasure(target);
-		::logInfo("[sex]   pleasure:" + pleasure + " target pleasure:"
+		local selfP = this.getSelfPleasure();
+		::logInfo("[sex]   pleasure:" + pleasure + " self:" + selfP + " target pleasure:"
 			+ target.getPleasure() + "/" + target.getPleasureMax());
 		target.addPleasure(pleasure, user);
-		this.logHit(user, target, pleasure, hitResult);
+		this.logHit(user, target, pleasure, hitResult, selfP);
 		this.onHit(user, target);
 		this.recordSexContinuation(user, target);
 	}
@@ -236,10 +237,11 @@ this.sex_skill_base <- this.inherit("scripts/skills/skill", {
 		this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(_user) + " tries to " + verb + " " + this.Const.UI.getColorizedEntityName(_target) + " but fails (roll:" + _hitResult.roll + " chance:" + _hitResult.chance + ")");
 	}
 
-	function logHit( _user, _target, _pleasure, _hitResult )
+	function logHit( _user, _target, _pleasure, _hitResult, _selfPleasure = 0 )
 	{
 		local verb = this.m.HitText[this.Math.rand(0, this.m.HitText.len() - 1)];
-		this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(_user) + " " + verb + " " + this.Const.UI.getColorizedEntityName(_target) + " for " + _pleasure + " pleasure (roll:" + _hitResult.roll + " chance:" + _hitResult.chance + ")");
+		local selfStr = _selfPleasure > 0 ? " (self: " + _selfPleasure + ")" : "";
+		this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(_user) + " " + verb + " " + this.Const.UI.getColorizedEntityName(_target) + " for " + _pleasure + " pleasure" + selfStr + " (roll:" + _hitResult.roll + " chance:" + _hitResult.chance + ")");
 	}
 
 	function tryApplyHorny( _target )

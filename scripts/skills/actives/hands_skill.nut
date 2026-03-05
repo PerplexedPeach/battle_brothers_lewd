@@ -123,16 +123,6 @@ this.hands_skill <- this.inherit("scripts/skills/actives/lewd_sex_skill", {
 
 	function getTooltip()
 	{
-		local result = this.lewd_sex_skill.getTooltip();
-		if (this.getTier() >= 3)
-		{
-			result.push({
-				id = 7,
-				type = "text",
-				icon = "ui/icons/initiative.png",
-				text = "Applies [color=" + this.Const.UI.Color.NegativeValue + "]" + ::Lewd.Const.HandsT3InitDebuff + "[/color] Initiative debuff for " + ::Lewd.Const.HandsT3DebuffDuration + " turn"
-			});
-		}
-		return result;
+		return this.lewd_sex_skill.getTooltip();
 	}
 });

@@ -118,16 +118,6 @@ this.oral_skill <- this.inherit("scripts/skills/actives/lewd_sex_skill", {
 
 	function getTooltip()
 	{
-		local result = this.lewd_sex_skill.getTooltip();
-		if (this.getTier() >= 3)
-		{
-			result.push({
-				id = 7,
-				type = "text",
-				icon = "ui/icons/bravery.png",
-				text = "Applies [color=" + this.Const.UI.Color.NegativeValue + "]" + ::Lewd.Const.OralT3ResolveDebuff + "[/color] Resolve debuff for " + ::Lewd.Const.OralT3DebuffDuration + " turn"
-			});
-		}
-		return result;
+		return this.lewd_sex_skill.getTooltip();
 	}
 });

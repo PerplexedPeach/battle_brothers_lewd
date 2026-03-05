@@ -48,6 +48,7 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC" function()
 		// Add Pleasure as a member variable on actor (same pattern as m.Fatigue)
 		q.m.Pleasure <- 0;
 		q.m.LastPleasureSourceID <- -1; // ID of actor who last dealt pleasure (for Insatiable perk)
+		q.m.OrgasmCount <- 0;
 
 		// Add lewd_glow sprite layer for pheromone visual effects, and add lewd_info_effect to all actors
 		q.onInit = @(__original) function()
@@ -162,14 +163,33 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC" function()
 		}
 
 		q.onClimax <- function() {
-			if (!this.getSkills().hasSkill("effects.climax"))
+			this.m.OrgasmCount++;
+
+			// Remove existing climax effect so onAdded() fires fresh (perk triggers)
+			if (this.getSkills().hasSkill("effects.climax"))
+				this.getSkills().removeByID("effects.climax");
+
+			local effect = this.new("scripts/skills/effects/climax_effect");
+			this.getSkills().add(effect);
+			// onAdded() fires here: sound, overlay, Shameless, Insatiable, DomSub, cum facial
+
+			// Check defeat AFTER perks have fired
+			if (::Lewd.Const.OrgasmDefeatEnabled)
 			{
-				local effect = this.new("scripts/skills/effects/climax_effect");
-				this.getSkills().add(effect);
+				local threshold = ::Lewd.Mastery.getOrgasmThreshold(this);
+				if (threshold > 0 && this.m.OrgasmCount >= threshold)
+					this.onOrgasmDefeat();
 			}
 		}
 
-		// Add pleasure bar to tactical tooltip (enemies/NPCs)
+		q.onOrgasmDefeat <- function() {
+			this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(this) + " is overwhelmed by pleasure!");
+			this.getFlags().set("lewdPleasureDeath", true);
+			// Silent kill — no death sound (orgasm sound already played by climax_effect.onAdded)
+			this.kill(null, null, this.Const.FatalityType.None, true);
+		}
+
+		// Add pleasure bar + orgasm count to tactical tooltip (enemies/NPCs)
 		q.getTooltip = @(__original) function( _targetedWithSkill = null )
 		{
 			local tooltip = __original(_targetedWithSkill);
@@ -196,9 +216,38 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC" function()
 					text = "" + this.getPleasure() + " / " + this.getPleasureMax(),
 					style = "pleasure-slim"
 				});
+
+				// Orgasm threshold bar (right after pleasure bar)
+				if (::Lewd.Const.OrgasmDefeatEnabled)
+				{
+					local threshold = ::Lewd.Mastery.getOrgasmThreshold(this);
+					if (threshold > 0 && threshold < 999)
+					{
+						tooltip.insert(insertIdx + 1, {
+							id = 51,
+							type = "progressbar",
+							icon = "skills/climax.png",
+							value = this.m.OrgasmCount,
+							valueMax = threshold,
+							text = "" + this.m.OrgasmCount + " / " + threshold,
+							style = "orgasm-slim"
+						});
+					}
+				}
 			}
 
 			return tooltip;
+		};
+
+		// Blood suppression for orgasm defeat (no gore on pleasure death)
+		q.spawnBloodSplatters = @(__original) function( _tile, _amount ) {
+			if (this.getFlags().has("lewdPleasureDeath")) return;
+			__original(_tile, _amount);
+		};
+
+		q.spawnBloodPool = @(__original) function( _tile, _amount ) {
+			if (this.getFlags().has("lewdPleasureDeath")) return;
+			__original(_tile, _amount);
 		};
 
 	});
@@ -223,7 +272,16 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC" function()
 	// Perk tree injection is handled by the traits themselves (dainty, delicate, masochism)
 	// via onAdded() using Legends' addPerkGroup/hasPerkGroup API
 
-	// Add pleasure bar to tactical tooltip (player characters)
+	// Player orgasm defeat: go unconscious instead of dying
+	mod.hook("scripts/entity/tactical/player", function(q) {
+		q.isReallyKilled = @(__original) function( _fatalityType ) {
+			if (this.getFlags().has("lewdPleasureDeath"))
+				return false; // -> unconscious, recoverable after battle
+			return __original(_fatalityType);
+		};
+	});
+
+	// Add pleasure bar + orgasm count to tactical tooltip (player characters)
 	mod.hook("scripts/entity/tactical/player", function(q) {
 		q.getTooltip = @(__original) function( _targetedWithSkill = null )
 		{
@@ -251,6 +309,24 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC" function()
 					text = "" + this.getPleasure() + " / " + this.getPleasureMax(),
 					style = "pleasure-slim"
 				});
+
+				// Orgasm threshold bar (right after pleasure bar)
+				if (::Lewd.Const.OrgasmDefeatEnabled)
+				{
+					local threshold = ::Lewd.Mastery.getOrgasmThreshold(this);
+					if (threshold > 0 && threshold < 999)
+					{
+						tooltip.insert(insertIdx + 1, {
+							id = 51,
+							type = "progressbar",
+							icon = "skills/climax.png",
+							value = this.m.OrgasmCount,
+							valueMax = threshold,
+							text = "" + this.m.OrgasmCount + " / " + threshold,
+							style = "orgasm-slim"
+						});
+					}
+				}
 			}
 
 			return tooltip;

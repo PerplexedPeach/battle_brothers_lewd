@@ -23,8 +23,13 @@ this.lewd_info_effect <- this.inherit("scripts/skills/skill", {
 	{
 		local actor = this.getContainer().getActor();
 
-		// Reset pleasure at battle start (same pattern as fatigue resetting in onCombatFinished)
+		// Reset pleasure and orgasm count at battle start
 		actor.m.Pleasure = 0;
+		actor.m.OrgasmCount = 0;
+
+		// Clear stale orgasm defeat flag from previous combat
+		if (actor.getFlags().has("lewdPleasureDeath"))
+			actor.getFlags().remove("lewdPleasureDeath");
 
 		// Reset cum facial sprite from previous combat
 		if (actor.hasSprite("cum_facial"))
@@ -323,6 +328,24 @@ this.lewd_info_effect <- this.inherit("scripts/skills/skill", {
 					icon = "ui/icons/warning.png",
 					text = "[color=" + this.Const.UI.Color.NegativeValue + "]Close to climax![/color]"
 				});
+			}
+
+			// Orgasm threshold bar
+			if (::Lewd.Const.OrgasmDefeatEnabled)
+			{
+				local threshold = ::Lewd.Mastery.getOrgasmThreshold(actor);
+				if (threshold > 0 && threshold < 999)
+				{
+					result.push({
+						id = 75,
+						type = "progressbar",
+						icon = "skills/climax.png",
+						value = actor.m.OrgasmCount,
+						valueMax = threshold,
+						text = "" + actor.m.OrgasmCount + " / " + threshold,
+						style = "orgasm-slim"
+					});
+				}
 			}
 		}
 

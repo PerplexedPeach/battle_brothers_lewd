@@ -44,6 +44,18 @@ this.lewd_mounting_effect <- this.inherit("scripts/skills/skill", {
 			{
 				id = 10,
 				type = "text",
+				icon = "ui/icons/melee_skill.png",
+				text = "[color=" + this.Const.UI.Color.NegativeValue + "]" + ::Lewd.Const.MountingMeleeSkillPenalty + "[/color] Melee Skill"
+			},
+			{
+				id = 12,
+				type = "text",
+				icon = "ui/icons/ranged_skill.png",
+				text = "[color=" + this.Const.UI.Color.NegativeValue + "]" + ::Lewd.Const.MountingRangedSkillPenalty + "[/color] Ranged Skill"
+			},
+			{
+				id = 13,
+				type = "text",
 				icon = "ui/icons/special.png",
 				text = "Cannot move while mounting (rooted)"
 			},
@@ -74,6 +86,8 @@ this.lewd_mounting_effect <- this.inherit("scripts/skills/skill", {
 
 	function onUpdate( _properties )
 	{
+		_properties.MeleeSkill += ::Lewd.Const.MountingMeleeSkillPenalty;
+		_properties.RangedSkill += ::Lewd.Const.MountingRangedSkillPenalty;
 		_properties.IsRooted = true;
 	}
 

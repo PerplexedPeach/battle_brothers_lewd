@@ -110,6 +110,18 @@ this.lewd_mounted_effect <- this.inherit("scripts/skills/skill", {
 				text = "[color=" + this.Const.UI.Color.NegativeValue + "]" + ::Lewd.Const.MountMeleeDefPenalty + "[/color] Melee Defense"
 			},
 			{
+				id = 18,
+				type = "text",
+				icon = "ui/icons/melee_skill.png",
+				text = "[color=" + this.Const.UI.Color.NegativeValue + "]" + ::Lewd.Const.MountMeleeSkillPenalty + "[/color] Melee Skill"
+			},
+			{
+				id = 19,
+				type = "text",
+				icon = "ui/icons/ranged_skill.png",
+				text = "[color=" + this.Const.UI.Color.NegativeValue + "]" + ::Lewd.Const.MountRangedSkillPenalty + "[/color] Ranged Skill"
+			},
+			{
 				id = 11,
 				type = "text",
 				icon = "ui/icons/initiative.png",
@@ -118,8 +130,8 @@ this.lewd_mounted_effect <- this.inherit("scripts/skills/skill", {
 			{
 				id = 12,
 				type = "text",
-				icon = "ui/icons/special.png",
-				text = "[color=" + this.Const.UI.Color.NegativeValue + "]25%[/color] more pleasure received"
+				icon = "ui/icons/pleasure.png",
+				text = "[color=" + this.Const.UI.Color.NegativeValue + "]10%[/color] more pleasure received"
 			},
 			{
 				id = 13,
@@ -197,6 +209,8 @@ this.lewd_mounted_effect <- this.inherit("scripts/skills/skill", {
 	function onUpdate( _properties )
 	{
 		_properties.MeleeDefense += ::Lewd.Const.MountMeleeDefPenalty;
+		_properties.MeleeSkill += ::Lewd.Const.MountMeleeSkillPenalty;
+		_properties.RangedSkill += ::Lewd.Const.MountRangedSkillPenalty;
 		_properties.InitiativeMult *= ::Lewd.Const.MountInitiativeMult;
 		_properties.IsRooted = true;
 

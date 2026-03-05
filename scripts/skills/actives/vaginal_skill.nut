@@ -158,7 +158,7 @@ this.vaginal_skill <- this.inherit("scripts/skills/actives/lewd_sex_skill", {
 			this.applyMount(user, target);
 			local pleasure = this.calculatePleasure(target);
 			target.addPleasure(pleasure, user);
-			this.logHit(user, target, pleasure, hitResult);
+			this.logHit(user, target, pleasure, hitResult, this.getSelfPleasure());
 			this.tryApplyHorny(target);
 		}
 		else
@@ -173,7 +173,7 @@ this.vaginal_skill <- this.inherit("scripts/skills/actives/lewd_sex_skill", {
 
 			local pleasure = this.calculatePleasure(target);
 			target.addPleasure(pleasure, user);
-			this.logHit(user, target, pleasure, hitResult);
+			this.logHit(user, target, pleasure, hitResult, this.getSelfPleasure());
 			this.tryApplyHorny(target);
 
 			// refresh mount duration (whichever direction exists)
@@ -272,12 +272,6 @@ this.vaginal_skill <- this.inherit("scripts/skills/actives/lewd_sex_skill", {
 				type = "text",
 				icon = "ui/icons/special.png",
 				text = "[color=" + this.Const.UI.Color.PositiveValue + "]Auto-success[/color] (always hits)"
-			});
-			result.push({
-				id = 8,
-				type = "text",
-				icon = "ui/icons/action_points.png",
-				text = "Applies [color=" + this.Const.UI.Color.NegativeValue + "]" + ::Lewd.Const.VaginalT3APDebuff + "[/color] AP debuff for " + ::Lewd.Const.VaginalT3DebuffDuration + " turn"
 			});
 		}
 

@@ -101,7 +101,7 @@ this.male_penetrate_anal_skill <- this.inherit("scripts/skills/actives/male_sex_
 		this.applyMount(user, target);
 		local pleasure = this.calculatePleasure(target);
 		target.addPleasure(pleasure, user);
-		this.logHit(user, target, pleasure, hitResult);
+		this.logHit(user, target, pleasure, hitResult, this.getSelfPleasure());
 		this.onHit(user, target);
 		this.recordSexContinuation(user, target);
 	}
