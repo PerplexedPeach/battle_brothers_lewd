@@ -467,3 +467,11 @@
 ::Lewd.Const.OrgasmThresholdTranscendence <- 2;
 ::Lewd.Const.OrgasmThresholdWillingVictim <- 1;
 ::Lewd.Const.OrgasmThresholdInsatiable <- 3;
+
+// Ethereal Progression Event Thresholds
+::Lewd.Const.EtherealFirstEventThreshold <- 10;   // partner climaxes for foreshadowing event
+::Lewd.Const.EtherealSecondEventThreshold <- 25;  // partner climaxes for awakening event
+::Lewd.Const.EtherealThirdEventThreshold <- 50;   // partner climaxes for full transformation
+::Lewd.Const.EtherealFirstEventBaseScore <- 10;
+::Lewd.Const.EtherealSecondEventBaseScore <- 15;
+::Lewd.Const.EtherealThirdEventBaseScore <- 20;

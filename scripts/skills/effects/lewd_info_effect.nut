@@ -341,6 +341,19 @@ this.lewd_info_effect <- this.inherit("scripts/skills/skill", {
 			}
 		}
 
+		// --- Climax counters ---
+		local partnerClimaxes = actor.getFlags().getAsInt("lewdPartnerClimaxes");
+		local selfClimaxes = actor.getFlags().getAsInt("lewdSelfClimaxes");
+		if (partnerClimaxes > 0 || selfClimaxes > 0)
+		{
+			result.push({
+				id = 80,
+				type = "text",
+				icon = "ui/icons/special.png",
+				text = "Partner climaxes caused: [color=" + this.Const.UI.Color.PositiveValue + "]" + partnerClimaxes + "[/color]  |  Own climaxes: [color=" + this.Const.UI.Color.PositiveValue + "]" + selfClimaxes + "[/color]"
+			});
+		}
+
 		return result;
 	}
 });

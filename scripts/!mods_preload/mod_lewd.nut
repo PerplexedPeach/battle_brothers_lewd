@@ -165,6 +165,13 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC" function()
 		q.onClimax <- function() {
 			this.m.OrgasmCount++;
 
+			// Persistent self-climax counter (world-map flag, survives across battles)
+			if (this.isPlayerControlled())
+			{
+				local cur = this.getFlags().getAsInt("lewdSelfClimaxes");
+				this.getFlags().set("lewdSelfClimaxes", cur + 1);
+			}
+
 			// Remove existing climax effect so onAdded() fires fresh (perk triggers)
 			if (this.getSkills().hasSkill("effects.climax"))
 				this.getSkills().removeByID("effects.climax");

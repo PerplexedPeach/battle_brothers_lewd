@@ -213,6 +213,13 @@ this.climax_effect <- this.inherit("scripts/skills/skill", {
 				if (domSource != null && domSource.isAlive())
 				{
 					::Lewd.Mastery.addDomSub(domSource, 1);
+
+					// Persistent partner-climax counter on the source player
+					if (domSource.isPlayerControlled())
+					{
+						local cur = domSource.getFlags().getAsInt("lewdPartnerClimaxes");
+						domSource.getFlags().set("lewdPartnerClimaxes", cur + 1);
+					}
 				}
 			}
 		}
