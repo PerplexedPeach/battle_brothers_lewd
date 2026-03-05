@@ -18,6 +18,7 @@
 ::Lewd.Const.AllureFromAthletic <- 5;
 ::Lewd.Const.AllureFromDainty <- 5;
 ::Lewd.Const.AllureFromDelicate <- 10;
+::Lewd.Const.AllureFromEthereal <- 20;
 ::Lewd.Const.AllureFromMasochismFirst <- 5;
 ::Lewd.Const.AllureFromMasochismSecond <- 10;
 ::Lewd.Const.AllureFromMasochismThird <- 15;
@@ -30,6 +31,7 @@
 // --- Pleasure & Climax Constants ---
 ::Lewd.Const.PleasureMaxFromDainty <- 40;
 ::Lewd.Const.PleasureMaxFromDelicate <- 65;
+::Lewd.Const.PleasureMaxFromEthereal <- 100;
 ::Lewd.Const.PleasureMaxFromMasochismFirst <- 10;
 ::Lewd.Const.PleasureMaxFromMasochismSecond <- 20;
 ::Lewd.Const.PleasureMaxFromMasochismThird <- 30;
@@ -307,6 +309,7 @@
 // --- Trait Perk Point Grants ---
 ::Lewd.Const.PerkPointsFromDainty <- 1;
 ::Lewd.Const.PerkPointsFromDelicate <- 2;
+::Lewd.Const.PerkPointsFromEthereal <- 3;
 
 // --- Perk Constants ---
 ::Lewd.Const.SensualFocusPleasureMult <- 1.1; // +10% pleasure dealt
@@ -357,7 +360,7 @@
 // Surrender to Pleasure
 ::Lewd.Const.SurrenderToPleasureMinAP <- 1; // minimum AP to use
 ::Lewd.Const.SurrenderToPleasureFatigueCost <- 10;
-::Lewd.Const.SurrenderToPleasureSubThreshold <- 10; // sub score needed (abs value) — matches DomSubTier2
+::Lewd.Const.SurrenderToPleasureSubThreshold <- 5; // sub score needed (abs value)
 // Scaling: bonus = (apSpent * subScore) / divisor
 // 4 AP * 30 sub / 120 = 1.0 (100% bonus) → 2.0x mounter self-pleasure
 // 9 AP * 30 sub / 120 = 2.25 (225% bonus) → 3.25x mounter self-pleasure
@@ -454,6 +457,7 @@
 // Player thresholds (from traits)
 ::Lewd.Const.OrgasmThresholdDainty <- 2;
 ::Lewd.Const.OrgasmThresholdDelicate <- 3;
+::Lewd.Const.OrgasmThresholdEthereal <- 5;
 ::Lewd.Const.OrgasmThresholdMasochismFirst <- 1;
 ::Lewd.Const.OrgasmThresholdMasochismSecond <- 2;
 ::Lewd.Const.OrgasmThresholdMasochismThird <- 3;

@@ -24,15 +24,27 @@
 	return 0;
 };
 
+// Returns 0 (none), 1 (Dainty), 2 (Delicate), 3 (Ethereal)
+::Lewd.Mastery.getLewdTier <- function( _actor )
+{
+	local dominated = ["trait.ethereal", "trait.delicate", "trait.dainty"];
+	foreach (id in dominated)
+	{
+		local skill = _actor.getSkills().getSkillByID(id);
+		if (skill != null)
+			return skill.m.LewdTier;
+	}
+	return 0;
+};
+
 ::Lewd.Mastery.hasDaintyOrDelicate <- function( _actor )
 {
-	local skills = _actor.getSkills();
-	return skills.hasSkill("trait.dainty") || skills.hasSkill("trait.delicate");
+	return ::Lewd.Mastery.getLewdTier(_actor) >= 1;
 };
 
 ::Lewd.Mastery.hasDelicate <- function( _actor )
 {
-	return _actor.getSkills().hasSkill("trait.delicate");
+	return ::Lewd.Mastery.getLewdTier(_actor) >= 2;
 };
 
 ::Lewd.Mastery.calcFatigueVulnerability <- function( _target )
@@ -102,12 +114,12 @@
 		// Players: sum trait base + masochism + perk bonuses
 		// No lewd traits = immune (can't be orgasm-defeated without pleasure capacity)
 		local skills = _actor.getSkills();
+		local lewdTier = ::Lewd.Mastery.getLewdTier(_actor);
 		local threshold = 0;
 
-		if (skills.hasSkill("trait.delicate"))
-			threshold = ::Lewd.Const.OrgasmThresholdDelicate;
-		else if (skills.hasSkill("trait.dainty"))
-			threshold = ::Lewd.Const.OrgasmThresholdDainty;
+		if (lewdTier >= 3)      threshold = ::Lewd.Const.OrgasmThresholdEthereal;
+		else if (lewdTier >= 2) threshold = ::Lewd.Const.OrgasmThresholdDelicate;
+		else if (lewdTier >= 1) threshold = ::Lewd.Const.OrgasmThresholdDainty;
 
 		if (threshold == 0) return 0; // no lewd trait = immune
 

@@ -317,7 +317,7 @@ this.lewd_heels_third <- this.inherit("scripts/events/event", {
 	{
 		this.m.Woman = ::Lewd.Transform.target();
 
-		if (this.m.Woman == null || this.m.Woman.getFlags().getAsInt("heelSkill") < 3 || !this.m.Woman.getSkills().hasSkill("trait.dainty") || this.m.Woman.getSkills().hasSkill("trait.delicate"))
+		if (this.m.Woman == null || this.m.Woman.getFlags().getAsInt("heelSkill") < 3 || ::Lewd.Mastery.getLewdTier(this.m.Woman) != 1)
 		{
 			this.m.Score = 0;
 		} else {

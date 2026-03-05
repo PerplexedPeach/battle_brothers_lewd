@@ -187,24 +187,16 @@ this.lewd_info_effect <- this.inherit("scripts/skills/skill", {
 					text = "Athletic allure bonus: [color=" + this.Const.UI.Color.PositiveValue + "]" + ::Lewd.Const.AllureFromAthletic + "[/color]"
 				});
 			}
-			if (skills.hasSkill("trait.dainty"))
-			{
-				result.push({
-					id = 23,
-					type = "text",
-					icon = "ui/traits/dainty_trait.png",
-					text = "Dainty allure bonus: [color=" + this.Const.UI.Color.PositiveValue + "]" + ::Lewd.Const.AllureFromDainty + "[/color]"
-				});
-			}
-			if (skills.hasSkill("trait.delicate"))
-			{
-				result.push({
-					id = 24,
-					type = "text",
-					icon = "ui/traits/delicate_trait.png",
-					text = "Delicate allure bonus: [color=" + this.Const.UI.Color.PositiveValue + "]" + ::Lewd.Const.AllureFromDelicate + "[/color]"
-				});
-			}
+			local lewdTier = ::Lewd.Mastery.getLewdTier(actor);
+			if (lewdTier == 1)
+				result.push({ id = 23, type = "text", icon = "ui/traits/dainty_trait.png",
+					text = "Dainty allure bonus: [color=" + this.Const.UI.Color.PositiveValue + "]" + ::Lewd.Const.AllureFromDainty + "[/color]" });
+			else if (lewdTier == 2)
+				result.push({ id = 23, type = "text", icon = "ui/traits/delicate_trait.png",
+					text = "Delicate allure bonus: [color=" + this.Const.UI.Color.PositiveValue + "]" + ::Lewd.Const.AllureFromDelicate + "[/color]" });
+			else if (lewdTier == 3)
+				result.push({ id = 23, type = "text", icon = "ui/traits/ethereal_trait.png",
+					text = "Ethereal allure bonus: [color=" + this.Const.UI.Color.PositiveValue + "]" + ::Lewd.Const.AllureFromEthereal + "[/color]" });
 			if (skills.hasSkill("trait.masochism_first"))
 			{
 				result.push({

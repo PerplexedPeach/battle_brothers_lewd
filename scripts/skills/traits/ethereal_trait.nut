@@ -1,14 +1,14 @@
-this.delicate_trait <- this.inherit("scripts/skills/traits/character_trait", {
+this.ethereal_trait <- this.inherit("scripts/skills/traits/character_trait", {
 	m = {
-		LewdTier = 2
+		LewdTier = 3
 	},
 	function create()
 	{
 		this.character_trait.create();
-		this.m.ID = "trait.delicate";
-		this.m.Name = "Delicate";
-		this.m.Icon = "ui/traits/delicate_trait.png";
-		this.m.Description = "With slender limbs, a delicate frame, and soft skin free of blemishes and blisters, they are not built for brute strength or the battlefield.";
+		this.m.ID = "trait.ethereal";
+		this.m.Name = "Ethereal";
+		this.m.Icon = "ui/traits/ethereal_trait.png";
+		this.m.Description = "An otherworldly beauty radiates from every pore, as if the essence of countless encounters has crystallized into something beyond mortal. Their mere presence is intoxicating.";
 		this.m.Excluded = [
 			"trait.huge",
 			"trait.tough",
@@ -18,7 +18,7 @@ this.delicate_trait <- this.inherit("scripts/skills/traits/character_trait", {
 			"trait.brute",
 			"trait.iron_jaw",
 			"trait.dainty",
-			"trait.ethereal"
+			"trait.delicate"
 		];
 	}
 
@@ -51,7 +51,7 @@ this.delicate_trait <- this.inherit("scripts/skills/traits/character_trait", {
 				id = 13,
 				type = "text",
 				icon = "ui/icons/allure.png",
-				text = "[color=" + this.Const.UI.Color.PositiveValue + "]+10[/color] Allure"
+				text = "[color=" + this.Const.UI.Color.PositiveValue + "]+" + ::Lewd.Const.AllureFromEthereal + "[/color] Allure"
 			},
 			{
 				id = 14,
@@ -60,10 +60,16 @@ this.delicate_trait <- this.inherit("scripts/skills/traits/character_trait", {
 				text = "Others will avoid aiming for the head when attacking this character"
 			},
 			{
+				id = 16,
+				type = "text",
+				icon = "ui/icons/special.png",
+				text = "Immune to poison"
+			},
+			{
 				id = 15,
 				type = "text",
 				icon = "ui/icons/special.png",
-				text = "Grants [color=" + this.Const.UI.Color.PositiveValue + "]" + ::Lewd.Const.PerkPointsFromDelicate + "[/color] additional perk points"
+				text = "Grants [color=" + this.Const.UI.Color.PositiveValue + "]" + ::Lewd.Const.PerkPointsFromEthereal + "[/color] additional perk points"
 			},
 		];
 	}
@@ -81,22 +87,19 @@ this.delicate_trait <- this.inherit("scripts/skills/traits/character_trait", {
 		actor.getFlags().set("totalDamageTaken", totalDamageTaken);
 	}
 
-
 	function onAdded()
 	{
 		local actor = this.getContainer().getActor();
-		::Lewd.Transform.sexy_stage_2(actor);
+		::Lewd.Transform.sexy_stage_3(actor);
 		::Lewd.Transform.adaptROTUAppearance(actor);
 
-		// NOTE: hooking on updateLook isn't working for some reason, so we set the body sprite directly
 		this.Time.scheduleEvent(this.TimeUnit.Real, 1000, function ( _data )
 		{
 			local player = this.World.State.m.Player;
 			if (player != null)
 			{
-				player.getSprite("body").setBrush("figure_player_delicate");
+				player.getSprite("body").setBrush("figure_player_ethereal");
 				player.getSprite("body").setHorizontalFlipping(false);
-
 			}
 		}, null);
 
@@ -111,12 +114,16 @@ this.delicate_trait <- this.inherit("scripts/skills/traits/character_trait", {
 		if (bg != null && !bg.hasPerkGroup(::Const.Perks.SeductionArtsTree))
 			bg.addPerkGroup(::Const.Perks.SeductionArtsTree.Tree);
 
+		// Endurance perk tree (Ethereal qualifies without needing Masochism for the tree)
+		if (bg != null && !bg.hasPerkGroup(::Const.Perks.EnduranceTree))
+			bg.addPerkGroup(::Const.Perks.EnduranceTree.Tree);
+
 		// Grant perk points (flag prevents double-granting on load)
-		if (!actor.getFlags().has("lewdDelicatePerkPointGranted"))
+		if (!actor.getFlags().has("lewdEtherealPerkPointGranted"))
 		{
-			actor.m.PerkPoints += ::Lewd.Const.PerkPointsFromDelicate;
-			actor.getFlags().set("lewdDelicatePerkPointGranted", true);
-			::logInfo("[delicate_trait] Granted " + ::Lewd.Const.PerkPointsFromDelicate + " perk point(s) to " + actor.getName());
+			actor.m.PerkPoints += ::Lewd.Const.PerkPointsFromEthereal;
+			actor.getFlags().set("lewdEtherealPerkPointGranted", true);
+			::logInfo("[ethereal_trait] Granted " + ::Lewd.Const.PerkPointsFromEthereal + " perk point(s) to " + actor.getName());
 		}
 	}
 
@@ -125,8 +132,8 @@ this.delicate_trait <- this.inherit("scripts/skills/traits/character_trait", {
 		_properties.Hitpoints += -10;
 		_properties.MeleeDamageMult *= 0.9;
 		_properties.IsImmuneToHeadshots = true;
-		_properties.Allure += ::Lewd.Const.AllureFromDelicate;
-		_properties.PleasureMax += ::Lewd.Const.PleasureMaxFromDelicate;
+		_properties.IsImmuneToPoison = true;
+		_properties.Allure += ::Lewd.Const.AllureFromEthereal;
+		_properties.PleasureMax += ::Lewd.Const.PleasureMaxFromEthereal;
 	}
 });
-

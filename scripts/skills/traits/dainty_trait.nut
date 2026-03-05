@@ -1,5 +1,7 @@
 this.dainty_trait <- this.inherit("scripts/skills/traits/character_trait", {
-	m = {},
+	m = {
+		LewdTier = 1
+	},
 	function create()
 	{
 		this.character_trait.create();
@@ -15,7 +17,8 @@ this.dainty_trait <- this.inherit("scripts/skills/traits/character_trait", {
 			"trait.gluttonous",
 			"trait.brute",
 			"trait.iron_jaw",
-			"trait.delicate"
+			"trait.delicate",
+			"trait.ethereal"
 		];
 	}
 

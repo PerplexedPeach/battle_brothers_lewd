@@ -135,7 +135,7 @@ this.masochism_trait <- this.inherit("scripts/skills/traits/character_trait", {
 
 		// Endurance perk tree (requires Delicate)
 		local bg = actor.getBackground();
-		if (bg != null && actor.getSkills().hasSkill("trait.delicate") && !bg.hasPerkGroup(::Const.Perks.EnduranceTree))
+		if (bg != null && ::Lewd.Mastery.hasDelicate(actor) && !bg.hasPerkGroup(::Const.Perks.EnduranceTree))
 			bg.addPerkGroup(::Const.Perks.EnduranceTree.Tree);
 	}
 

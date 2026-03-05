@@ -242,7 +242,7 @@ this.lewd_heels_second <- this.inherit("scripts/events/event", {
 		this.m.Woman = ::Lewd.Transform.target();
 
 		// check if they have the sufficient heel skill and don't have this trait yet
-		if (this.m.Woman == null || this.m.Woman.getFlags().getAsInt("heelSkill") < 1 || this.m.Woman.getSkills().hasSkill("trait.dainty") || this.m.Woman.getSkills().hasSkill("trait.delicate"))
+		if (this.m.Woman == null || this.m.Woman.getFlags().getAsInt("heelSkill") < 1 || ::Lewd.Mastery.getLewdTier(this.m.Woman) >= 1)
 		{
 			this.m.Score = 0;
 		} else {
