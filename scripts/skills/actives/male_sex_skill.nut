@@ -73,6 +73,12 @@ this.male_sex_skill <- this.inherit("scripts/skills/actives/sex_skill_base", {
 				text = "[color=" + this.Const.UI.Color.NegativeValue + "]" + diff + "%[/color] from Melee Defense advantage"
 			});
 
+		if (target.getSkills().hasSkill("effects.lewd_mounted"))
+			ret.push({
+				icon = "ui/tooltips/positive.png",
+				text = "[color=" + this.Const.UI.Color.PositiveValue + "]+" + ::Lewd.Const.MaleSexMountedHitBonus + "%[/color] target is mounted"
+			});
+
 		if (this.isAutoHit(target))
 			ret.push({
 				icon = "ui/icons/special.png",
@@ -90,6 +96,8 @@ this.male_sex_skill <- this.inherit("scripts/skills/actives/sex_skill_base", {
 		local melSkill = user.getCurrentProperties().getMeleeSkill();
 		local melDef = _target.getCurrentProperties().getMeleeDefense();
 		local chance = this.m.BaseHitChance + (melSkill - melDef);
+		if (_target.getSkills().hasSkill("effects.lewd_mounted"))
+			chance += ::Lewd.Const.MaleSexMountedHitBonus;
 		return this.Math.max(20, this.Math.min(95, chance));
 	}
 

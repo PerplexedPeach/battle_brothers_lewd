@@ -140,6 +140,12 @@ this.lewd_mounted_effect <- this.inherit("scripts/skills/skill", {
 				text = "Cannot move (rooted)"
 			},
 			{
+				id = 15,
+				type = "text",
+				icon = "ui/icons/melee_skill.png",
+				text = "Enemy sex abilities have [color=" + this.Const.UI.Color.NegativeValue + "]+" + ::Lewd.Const.MaleSexMountedHitBonus + "%[/color] chance to hit"
+			},
+			{
 				id = 14,
 				type = "text",
 				icon = "ui/icons/special.png",
