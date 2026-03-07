@@ -23,6 +23,21 @@ this.lewd_info_effect <- this.inherit("scripts/skills/skill", {
 	{
 		local actor = this.getContainer().getActor();
 
+		// Scan for Hexen in this battle (for post-battle event detection)
+		// Only scan if not already flagged (avoid iterating hostiles every battle)
+		if (actor.isPlayerControlled() && !this.World.Statistics.getFlags().get("lewdFoughtHexen"))
+		{
+			local hostiles = this.Tactical.Entities.getAllHostilesAsArray();
+			foreach (e in hostiles)
+			{
+				if (e.getType() == this.Const.EntityType.Hexe)
+				{
+					this.World.Statistics.getFlags().set("lewdFoughtHexen", true);
+					break;
+				}
+			}
+		}
+
 		// Reset pleasure and orgasm count at battle start
 		actor.m.Pleasure = 0;
 		actor.m.OrgasmCount = 0;

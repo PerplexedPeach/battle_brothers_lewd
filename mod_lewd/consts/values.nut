@@ -475,3 +475,7 @@
 ::Lewd.Const.EtherealFirstEventBaseScore <- 10;
 ::Lewd.Const.EtherealSecondEventBaseScore <- 15;
 ::Lewd.Const.EtherealThirdEventBaseScore <- 20;
+
+// Hexen Curse / Male-to-Female Transformation
+::Lewd.Const.HexenTransformFirstBaseScore <- 150;
+::Lewd.Const.HexenTransformSecondBaseScore <- 200;
