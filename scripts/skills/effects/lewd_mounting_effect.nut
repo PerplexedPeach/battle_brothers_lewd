@@ -60,6 +60,12 @@ this.lewd_mounting_effect <- this.inherit("scripts/skills/skill", {
 				text = "Cannot move while mounting (rooted)"
 			},
 			{
+				id = 14,
+				type = "text",
+				icon = "ui/icons/special.png",
+				text = "Taking [color=" + this.Const.UI.Color.NegativeValue + "]" + ::Lewd.Const.MountingDamageBreakThreshold + "[/color] or more hitpoint damage will break the mount"
+			},
+			{
 				id = 11,
 				type = "text",
 				icon = "ui/icons/special.png",
@@ -112,6 +118,16 @@ this.lewd_mounting_effect <- this.inherit("scripts/skills/skill", {
 			local mounted = target.getSkills().getSkillByID("effects.lewd_mounted");
 			local actor = this.getContainer().getActor();
 			mounted.removeMounter(actor.getID());
+		}
+	}
+
+	function onDamageReceived( _attacker, _damageHitpoints, _damageArmor )
+	{
+		if (_damageHitpoints >= ::Lewd.Const.MountingDamageBreakThreshold)
+		{
+			local actor = this.getContainer().getActor();
+			this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(actor) + " is knocked off their mount!");
+			this.removeSelf();
 		}
 	}
 

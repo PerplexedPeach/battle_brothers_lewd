@@ -147,6 +147,13 @@ this.lewd_mounted_effect <- this.inherit("scripts/skills/skill", {
 			}
 		];
 
+		result.push({
+			id = 20,
+			type = "text",
+			icon = "ui/icons/special.png",
+			text = "Dealing [color=" + this.Const.UI.Color.PositiveValue + "]" + ::Lewd.Const.MountingDamageBreakThreshold + "[/color] or more hitpoint damage to a mounter will break their mount"
+		});
+
 		if (count > 1)
 		{
 			result.push({

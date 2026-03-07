@@ -172,6 +172,7 @@
 ::Lewd.Const.MountPleasureVulnerability <- 1.10; // 10% more pleasure taken while mounted
 ::Lewd.Const.MountingMeleeSkillPenalty <- -5;
 ::Lewd.Const.MountingRangedSkillPenalty <- -10;
+::Lewd.Const.MountingDamageBreakThreshold <- 15; // HP damage to mounter that breaks the mount
 
 // --- Oral Skill Tiers ---
 ::Lewd.Const.OralT1AP <- 5;
