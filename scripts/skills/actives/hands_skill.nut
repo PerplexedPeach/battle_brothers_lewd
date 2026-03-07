@@ -1,10 +1,10 @@
 // Hands skill — Clumsy Groping (T1) -> Handjob (T2) -> Skilled Handjob (T3)
 // Scales with Melee Skill
-this.hands_skill <- this.inherit("scripts/skills/actives/lewd_sex_skill", {
+this.hands_skill <- this.inherit("scripts/skills/actives/female_sex_skill", {
 	m = {},
 	function create()
 	{
-		this.lewd_sex_skill.create();
+		this.female_sex_skill.create();
 		this.m.SexDelay = 300;
 		this.m.ShakeCount = 1;
 		this.m.ShakeIntensity = 3;
@@ -123,6 +123,6 @@ this.hands_skill <- this.inherit("scripts/skills/actives/lewd_sex_skill", {
 
 	function getTooltip()
 	{
-		return this.lewd_sex_skill.getTooltip();
+		return this.female_sex_skill.getTooltip();
 	}
 });

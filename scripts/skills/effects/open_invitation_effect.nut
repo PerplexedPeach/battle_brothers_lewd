@@ -1,5 +1,5 @@
 // Open Invitation effect — flag status effect indicating Open Invitation is active
-// Checked by lewd_sex_skill for +15% pleasure bonus and auto-hit on target
+// Checked by female_sex_skill for +15% pleasure bonus and auto-hit on target
 this.open_invitation_effect <- this.inherit("scripts/skills/skill", {
 	m = {},
 	function create()

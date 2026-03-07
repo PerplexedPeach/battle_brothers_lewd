@@ -1,10 +1,10 @@
 // Feet skill — Foot Tease (T1) -> Footjob (T2) -> Heel Domination (T3)
 // Scales with heelSkill flag (heel system synergy)
-this.feet_skill <- this.inherit("scripts/skills/actives/lewd_sex_skill", {
+this.feet_skill <- this.inherit("scripts/skills/actives/female_sex_skill", {
 	m = {},
 	function create()
 	{
-		this.lewd_sex_skill.create();
+		this.female_sex_skill.create();
 		this.m.SexDelay = 300;
 		this.m.ShakeCount = 1;
 		this.m.ShakeIntensity = 3;
@@ -126,6 +126,6 @@ this.feet_skill <- this.inherit("scripts/skills/actives/lewd_sex_skill", {
 
 	function getTooltip()
 	{
-		return this.lewd_sex_skill.getTooltip();
+		return this.female_sex_skill.getTooltip();
 	}
 });

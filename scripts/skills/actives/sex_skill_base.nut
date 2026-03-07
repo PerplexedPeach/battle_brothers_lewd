@@ -1,7 +1,7 @@
 // Base class for all sex abilities (both player/female and enemy/male)
 // Provides shared: create() flags, onUse() flow, playSound, rollHit, tryApplyHorny,
 // isAutoHit, onVerifyTarget, logMiss/logHit, getTooltip base entries
-// Subclasses: lewd_sex_skill (tiers/mastery), male_sex_skill (flat values)
+// Subclasses: female_sex_skill (tiers/mastery), male_sex_skill (flat values)
 this.sex_skill_base <- this.inherit("scripts/skills/skill", {
 	m = {
 		SexType = "",

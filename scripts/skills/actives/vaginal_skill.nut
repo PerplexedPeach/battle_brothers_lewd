@@ -1,11 +1,11 @@
 // Vaginal skill — Straddle (T1) -> Riding (T2) -> Cowgirl (T3)
 // T1 establishes mount, T2/T3 require mounted target
 // Scales with Initiative
-this.vaginal_skill <- this.inherit("scripts/skills/actives/lewd_sex_skill", {
+this.vaginal_skill <- this.inherit("scripts/skills/actives/female_sex_skill", {
 	m = {},
 	function create()
 	{
-		this.lewd_sex_skill.create();
+		this.female_sex_skill.create();
 		this.m.SexDelay = 2000;
 		this.m.ShakeCount = 4;
 		this.m.ShakeIntensity = 4;
@@ -88,7 +88,7 @@ this.vaginal_skill <- this.inherit("scripts/skills/actives/lewd_sex_skill", {
 	{
 		// T3 Cowgirl: auto-success
 		if (this.getTier() >= 3) return 100;
-		return this.lewd_sex_skill.getHitChanceAgainst(_target);
+		return this.female_sex_skill.getHitChanceAgainst(_target);
 	}
 
 	function calculateStatPleasure( _target )
@@ -123,7 +123,7 @@ this.vaginal_skill <- this.inherit("scripts/skills/actives/lewd_sex_skill", {
 
 	function onVerifyTarget( _originTile, _targetTile )
 	{
-		if (!this.lewd_sex_skill.onVerifyTarget(_originTile, _targetTile)) return false;
+		if (!this.female_sex_skill.onVerifyTarget(_originTile, _targetTile)) return false;
 
 		local tier = this.getTier();
 		if (tier == 1) return true;

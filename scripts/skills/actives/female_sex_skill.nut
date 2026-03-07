@@ -1,6 +1,6 @@
-// Base class for all lewd sex abilities (hands, oral, feet, vaginal, anal)
+// Base class for all female sex abilities (hands, oral, feet, vaginal, anal)
 // Children set m.MasteryID, m.PerkID, m.ScalingText, m.T3Debuff, m.Tiers in create()
-this.lewd_sex_skill <- this.inherit("scripts/skills/actives/sex_skill_base", {
+this.female_sex_skill <- this.inherit("scripts/skills/actives/sex_skill_base", {
 	m = {
 		MasteryID = "",
 		PerkID = "",

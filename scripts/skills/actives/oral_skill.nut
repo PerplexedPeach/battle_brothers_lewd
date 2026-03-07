@@ -1,10 +1,10 @@
 // Oral skill — Clumsy Oral (T1) -> Oral Service (T2) -> Deepthroat (T3)
 // Scales with Resolve and Allure
-this.oral_skill <- this.inherit("scripts/skills/actives/lewd_sex_skill", {
+this.oral_skill <- this.inherit("scripts/skills/actives/female_sex_skill", {
 	m = {},
 	function create()
 	{
-		this.lewd_sex_skill.create();
+		this.female_sex_skill.create();
 		this.m.SoundOnUse = ::Lewd.Const.SoundBlowjob;
 		this.m.ID = "actives.lewd_oral";
 		this.m.SexType = "oral";
@@ -113,11 +113,11 @@ this.oral_skill <- this.inherit("scripts/skills/actives/lewd_sex_skill", {
 			if (selfP > 0 && _user.getPleasureMax() > 0)
 				_user.addPleasure(selfP);
 		}
-		this.lewd_sex_skill.onHit(_user, _target);
+		this.female_sex_skill.onHit(_user, _target);
 	}
 
 	function getTooltip()
 	{
-		return this.lewd_sex_skill.getTooltip();
+		return this.female_sex_skill.getTooltip();
 	}
 });

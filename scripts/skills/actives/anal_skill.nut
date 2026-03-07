@@ -1,11 +1,11 @@
 // Anal skill — Bend Over (T1) -> Rough It (T2) -> Breaking Point (T3)
 // T1 applies mount to SELF (enemy becomes mounter), T2/T3 require self-mounted
 // Requires masochism tiers for upgrades
-this.anal_skill <- this.inherit("scripts/skills/actives/lewd_sex_skill", {
+this.anal_skill <- this.inherit("scripts/skills/actives/female_sex_skill", {
 	m = {},
 	function create()
 	{
-		this.lewd_sex_skill.create();
+		this.female_sex_skill.create();
 		this.m.SexDelay = 2000;
 		this.m.ShakeCount = 4;
 		this.m.ShakeIntensity = 4;
@@ -146,7 +146,7 @@ this.anal_skill <- this.inherit("scripts/skills/actives/lewd_sex_skill", {
 
 	function onVerifyTarget( _originTile, _targetTile )
 	{
-		if (!this.lewd_sex_skill.onVerifyTarget(_originTile, _targetTile)) return false;
+		if (!this.female_sex_skill.onVerifyTarget(_originTile, _targetTile)) return false;
 
 		local tier = this.getTier();
 		if (tier == 1) return true;
