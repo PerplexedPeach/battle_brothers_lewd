@@ -174,6 +174,18 @@
 ::Lewd.Const.MountingRangedSkillPenalty <- -10;
 ::Lewd.Const.MountingDamageBreakThreshold <- 15; // HP damage to mounter that breaks the mount
 
+// --- Allied Harassment ---
+::Lewd.Const.HarassmentAllureThreshold <- 20; // minimum allure on female to be eligible
+::Lewd.Const.HarassmentChancePerAllure <- 2; // % chance per point of allure above threshold
+::Lewd.Const.HarassmentResolveScale <- 1.0; // brother resolve reduces chance (subtracted)
+::Lewd.Const.HarassmentDomSubScale <- 0.5; // target dom reduces trigger chance, sub increases it
+::Lewd.Const.HarassmentMinChance <- 5;
+::Lewd.Const.HarassmentMaxChance <- 30;
+::Lewd.Const.AlliedGropeAP <- 3;
+::Lewd.Const.AlliedGropeFatigue <- 6;
+::Lewd.Const.AlliedGropeBasePleasure <- 2;
+::Lewd.Const.AlliedGropeMeleeSkillScale <- 0.03;
+
 // --- Oral Skill Tiers ---
 ::Lewd.Const.OralT1AP <- 5;
 ::Lewd.Const.OralT1Fatigue <- 12;

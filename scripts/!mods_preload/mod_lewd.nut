@@ -86,6 +86,7 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC" function()
 			__original();
 			this.getSkills().add(this.new("scripts/skills/effects/lewd_info_effect"));
 			this.getSkills().add(this.new("scripts/skills/effects/lewd_subdom_effect"));
+			this.getSkills().add(this.new("scripts/skills/actives/allied_grope_skill"));
 		}
 
 		// Render callback for animated effects
@@ -352,6 +353,7 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC" function()
 	});
 
 	// Alluring Presence aura: apply pleasure to enemies on their turn start and when they move adjacent
+	// Allied harassment: male brothers may grope adjacent high-allure allied females
 	mod.hook("scripts/skills/effects/lewd_info_effect", function(q)
 	{
 		q.onTurnStart = @(__original) function()
@@ -359,8 +361,33 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC" function()
 			__original();
 			local actor = this.getContainer().getActor();
 			if (!actor.isPlacedOnMap()) return;
-			if (actor.getPleasureMax() <= 0) return;
 
+			// --- Alluring Presence aura (enemy perspective) ---
+			if (actor.getPleasureMax() > 0)
+			{
+				local tile = actor.getTile();
+				for (local i = 0; i < 6; i++)
+				{
+					if (!tile.hasNextTile(i)) continue;
+					local nextTile = tile.getNextTile(i);
+					if (!nextTile.IsOccupiedByActor) continue;
+					local adj = nextTile.getEntity();
+					if (adj == null || adj.isAlliedWith(actor)) continue;
+					if (!adj.getSkills().hasSkill("perk.lewd_alluring_presence")) continue;
+					actor.addPleasure(::Lewd.Const.AlluringPresenceAuraPleasure, adj);
+				}
+			}
+
+			// --- Allied harassment (male brother perspective) ---
+			if (!actor.isPlayerControlled()) return;
+			if (actor.getGender() == 1) return; // only males harass
+			local gropeSkill = actor.getSkills().getSkillByID("actives.allied_grope");
+			if (gropeSkill == null) return;
+			if (actor.getActionPoints() < gropeSkill.getActionPointCost()) return;
+
+			// Find the most alluring adjacent allied female
+			local bestTarget = null;
+			local bestAllure = 0;
 			local tile = actor.getTile();
 			for (local i = 0; i < 6; i++)
 			{
@@ -368,9 +395,30 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC" function()
 				local nextTile = tile.getNextTile(i);
 				if (!nextTile.IsOccupiedByActor) continue;
 				local adj = nextTile.getEntity();
-				if (adj == null || adj.isAlliedWith(actor)) continue;
-				if (!adj.getSkills().hasSkill("perk.lewd_alluring_presence")) continue;
-				actor.addPleasure(::Lewd.Const.AlluringPresenceAuraPleasure, adj);
+				if (adj == null || !adj.isAlliedWith(actor)) continue;
+				if (adj.getGender() != 1) continue;
+				if (adj.getPleasureMax() <= 0) continue;
+				local allure = adj.allure();
+				if (allure < ::Lewd.Const.HarassmentAllureThreshold) continue;
+				if (allure > bestAllure)
+				{
+					bestAllure = allure;
+					bestTarget = adj;
+				}
+			}
+
+			if (bestTarget == null) return;
+
+			local resolve = actor.getCurrentProperties().getBravery();
+			local domSub = ::Lewd.Mastery.getDomSub(bestTarget);
+			local chance = (bestAllure - ::Lewd.Const.HarassmentAllureThreshold) * ::Lewd.Const.HarassmentChancePerAllure
+				- resolve * ::Lewd.Const.HarassmentResolveScale
+				- domSub * ::Lewd.Const.HarassmentDomSubScale;
+			chance = this.Math.max(::Lewd.Const.HarassmentMinChance, this.Math.min(::Lewd.Const.HarassmentMaxChance, this.Math.floor(chance)));
+
+			if (this.Math.rand(1, 100) <= chance)
+			{
+				gropeSkill.use(bestTarget.getTile());
 			}
 		};
 

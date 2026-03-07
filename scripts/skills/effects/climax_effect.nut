@@ -177,21 +177,22 @@ this.climax_effect <- this.inherit("scripts/skills/skill", {
 							0.5, 1.5, false, false);
 
 						// On arrival: apply cum facial sprite + visual effects
-						local self = this;
+						local Tactical = this.Tactical;
+						local Const = this.Const;
 						this.Time.scheduleEvent(this.TimeUnit.Virtual, time, function(_d) {
 							if (!_d.Target.isAlive()) return;
 							_d.Target.getSprite("cum_facial").setBrush("cum_head");
 							_d.Target.getSprite("cum_facial").Visible = true;
 							_d.Target.setDirty(true);
 							// Overlay effect on target
-							this.Tactical.spawnSpriteEffect("climax", this.createColor("#ffffff"), _d.Target.getTile(),
-								this.Const.Tactical.Settings.SkillOverlayOffsetX, this.Const.Tactical.Settings.SkillOverlayOffsetY,
-								this.Const.Tactical.Settings.SkillOverlayScale, this.Const.Tactical.Settings.SkillOverlayScale,
-								this.Const.Tactical.Settings.SkillOverlayStayDuration, 0, this.Const.Tactical.Settings.SkillOverlayFadeDuration);
+							_d.Tactical.spawnSpriteEffect("climax", ::createColor("#ffffff"), _d.Target.getTile(),
+								_d.Const.Tactical.Settings.SkillOverlayOffsetX, _d.Const.Tactical.Settings.SkillOverlayOffsetY,
+								_d.Const.Tactical.Settings.SkillOverlayScale, _d.Const.Tactical.Settings.SkillOverlayScale,
+								_d.Const.Tactical.Settings.SkillOverlayStayDuration, 0, _d.Const.Tactical.Settings.SkillOverlayFadeDuration);
 							// Camera quake on impact (source may be dead from orgasm defeat)
 							if (_d.Source.isAlive())
-								this.Tactical.getCamera().quake(_d.Source, _d.Target, 3.0, 0.12, 0.25);
-						}.bindenv(self), { Target = cumTarget, Source = actor });
+								_d.Tactical.getCamera().quake(_d.Source, _d.Target, 3.0, 0.12, 0.25);
+						}, { Target = cumTarget, Source = actor, Tactical = Tactical, Const = Const });
 
 						this.Tactical.EventLog.log(
 							this.Const.UI.getColorizedEntityName(actor) + " finishes on " +
