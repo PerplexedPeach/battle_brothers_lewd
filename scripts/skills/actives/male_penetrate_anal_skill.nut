@@ -91,7 +91,7 @@ this.male_penetrate_anal_skill <- this.inherit("scripts/skills/actives/male_sex_
 
 		if (!user.isAlive() || !target.isAlive()) return;
 
-		local hitResult = this.rollHit(user, target);
+		local hitResult = _info.HitResult;
 		if (!hitResult.hit)
 		{
 			this.logMiss(user, target, hitResult);

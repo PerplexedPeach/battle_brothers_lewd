@@ -144,11 +144,11 @@ this.vaginal_skill <- this.inherit("scripts/skills/actives/female_sex_skill", {
 		if (!user.isAlive() || !target.isAlive()) return;
 
 		local tier = this.getTier();
+		local hitResult = _info.HitResult;
 
 		// T1: establish mount first
 		if (tier == 1)
 		{
-			local hitResult = this.rollHit(user, target);
 			if (!hitResult.hit)
 			{
 				this.logMiss(user, target, hitResult);
@@ -164,7 +164,6 @@ this.vaginal_skill <- this.inherit("scripts/skills/actives/female_sex_skill", {
 		else
 		{
 			// T2/T3: mounted continuation
-			local hitResult = this.rollHit(user, target);
 			if (!hitResult.hit)
 			{
 				this.logMiss(user, target, hitResult);

@@ -67,15 +67,30 @@ this.sex_skill_base <- this.inherit("scripts/skills/skill", {
 		_user.getFlags().set("lewdAlluringUsed", 1);
 		::logInfo("[sex] " + _user.getName() + " uses " + this.m.ID + " on " + target.getName());
 
-		this.playLungeAnimation(_user, _targetTile);
-		this.playSoundOnHit(target);
+		// Roll hit up front so we can play the right animation
+		local hitResult = this.rollHit(_user, target);
+		::logInfo("[sex]   hit roll:" + hitResult.roll + " chance:" + hitResult.chance
+			+ " autoHit:" + this.isAutoHit(target) + " -> " + (hitResult.hit ? "HIT" : "MISS"));
+
+		if (hitResult.hit)
+		{
+			this.playLungeAnimation(_user, _targetTile);
+			this.playSoundOnHit(target);
+		}
+		else
+		{
+			this.playMissAnimation(_user, _targetTile);
+		}
+
 		this.getContainer().setBusy(true);
 
-		this.Time.scheduleEvent(this.TimeUnit.Virtual, this.m.SexDelay,
+		local delay = hitResult.hit ? this.m.SexDelay : 100;
+		this.Time.scheduleEvent(this.TimeUnit.Virtual, delay,
 			this.onScheduledSexHit.bindenv(this), {
 				Container = this.getContainer(),
 				User = _user,
-				Target = target
+				Target = target,
+				HitResult = hitResult
 			});
 
 		return true;
@@ -186,6 +201,18 @@ this.sex_skill_base <- this.inherit("scripts/skills/skill", {
 		}
 	}
 
+	function playMissAnimation( _user, _targetTile )
+	{
+		local target = _targetTile.getEntity();
+		if (_user.isHiddenToPlayer() && target.isHiddenToPlayer())
+			return;
+
+		// Light shake toward each other, no flash, no camera quake
+		local userTile = _user.getTile();
+		this.Tactical.getShaker().shake(_user, _targetTile, 2);
+		this.Tactical.getShaker().shake(target, userTile, 2);
+	}
+
 	function onScheduledSexHit( _info )
 	{
 		_info.Container.setBusy(false);
@@ -195,9 +222,7 @@ this.sex_skill_base <- this.inherit("scripts/skills/skill", {
 
 		if (!user.isAlive() || !target.isAlive()) return;
 
-		local hitResult = this.rollHit(user, target);
-		::logInfo("[sex]   hit roll:" + hitResult.roll + " chance:" + hitResult.chance
-			+ " autoHit:" + this.isAutoHit(target) + " -> " + (hitResult.hit ? "HIT" : "MISS"));
+		local hitResult = _info.HitResult;
 		if (!hitResult.hit)
 		{
 			this.logMiss(user, target, hitResult);
