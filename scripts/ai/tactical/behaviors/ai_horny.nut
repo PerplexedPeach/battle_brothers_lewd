@@ -219,11 +219,28 @@ this.ai_horny <- this.inherit("scripts/ai/tactical/behavior", {
 			}
 		}
 
-		// 4. If target is mounted (by anyone): force oral
-		if (targetMounted && forceOral != null && this.canUseSkill(_entity, forceOral, _targetTile))
+		// 4. If target is mounted (by anyone): randomly pick oral or penetrate
+		if (targetMounted)
 		{
-			::logInfo("[ai_horny]   findBestSkill: target mounted -> force oral");
-			return forceOral;
+			local oralUsable = forceOral != null && this.canUseSkill(_entity, forceOral, _targetTile);
+			local pen = this.pickRandomPenetrate(_entity, _targetTile);
+
+			if (oralUsable && pen != null)
+			{
+				local pick = this.Math.rand(1, 100) <= 75 ? forceOral : pen;
+				::logInfo("[ai_horny]   findBestSkill: target mounted, random pick -> " + pick.getID());
+				return pick;
+			}
+			if (oralUsable)
+			{
+				::logInfo("[ai_horny]   findBestSkill: target mounted -> force oral");
+				return forceOral;
+			}
+			if (pen != null)
+			{
+				::logInfo("[ai_horny]   findBestSkill: target mounted -> penetrate");
+				return pen;
+			}
 		}
 
 		// 5. Penetrate to establish mount
