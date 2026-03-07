@@ -254,7 +254,12 @@ this.climax_effect <- this.inherit("scripts/skills/skill", {
 		if (actor.getFlags().has("lewdOrgasmDefeat"))
 		{
 			actor.getFlags().set("lewdPleasureDeath", true);
-			actor.kill(null, null, this.Const.FatalityType.None, true);
+			local killer = null;
+			if (actor.m.LastPleasureSourceID >= 0)
+				killer = this.Tactical.getEntityByID(actor.m.LastPleasureSourceID);
+			if (killer != null && !killer.isAlive())
+				killer = null;
+			actor.kill(killer, null, this.Const.FatalityType.None, true);
 			return;
 		}
 
