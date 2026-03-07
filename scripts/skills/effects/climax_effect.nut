@@ -248,6 +248,16 @@ this.climax_effect <- this.inherit("scripts/skills/skill", {
 
 	function onTurnEnd()
 	{
+		local actor = this.getContainer().getActor();
+
+		// Orgasm defeat: kill at end of their last turn
+		if (actor.getFlags().has("lewdOrgasmDefeat"))
+		{
+			actor.getFlags().set("lewdPleasureDeath", true);
+			actor.kill(null, null, this.Const.FatalityType.None, true);
+			return;
+		}
+
 		this.m.TurnsLeft -= 1;
 		if (this.m.TurnsLeft <= 0)
 		{

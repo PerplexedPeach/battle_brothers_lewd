@@ -192,9 +192,13 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC" function()
 
 		q.onOrgasmDefeat <- function() {
 			this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(this) + " is overwhelmed by pleasure!");
-			this.getFlags().set("lewdPleasureDeath", true);
-			// Silent kill — no death sound (orgasm sound already played by climax_effect.onAdded)
-			this.kill(null, null, this.Const.FatalityType.None, true);
+			this.getFlags().set("lewdOrgasmDefeat", true);
+			// Force horny so they spend their last turn doing something sexy
+			if (this.getSkills().hasSkill("effects.lewd_horny"))
+				this.getSkills().getSkillByID("effects.lewd_horny").onRefresh();
+			else
+				this.getSkills().add(this.new("scripts/skills/effects/lewd_horny_effect"));
+			// Actual kill happens in climax_effect.onTurnEnd
 		}
 
 		// Add pleasure bar + orgasm count to tactical tooltip (enemies/NPCs)
