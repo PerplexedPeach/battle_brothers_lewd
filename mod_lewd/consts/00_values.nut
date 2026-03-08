@@ -52,9 +52,8 @@
 ::Lewd.Const.BeautyAllyResolveBonus <- 50; // allied males get +50 effective resolve vs Entrancing Beauty
 
 ::Lewd.Const.SeduceBaseChance <- 50;
-::Lewd.Const.SeduceAllureChanceMultiplier <- 3;
-::Lewd.Const.SeduceAllureBaseline <- 20; // compare against resolve - baseline
-::Lewd.Const.SeduceDistancePenalty <- 3;
+::Lewd.Const.SeduceAllureChanceMultiplier <- 1;
+::Lewd.Const.SeduceDistancePenalty <- 10;
 
 // event occurance rates
 ::Lewd.Const.HeelFirstEventBaseScore <- 10;

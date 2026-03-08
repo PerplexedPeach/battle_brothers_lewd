@@ -44,7 +44,7 @@ this.seduce_skill <- this.inherit("scripts/skills/skill", {
 		this.m.IsRanged = false;
 		this.m.IsIgnoredAsAOO = true;
 		this.m.IsShowingProjectile = false;
-		this.m.IsUsingHitchance = false;
+		this.m.IsUsingHitchance = true;
 		this.m.IsDoingForwardMove = false;
 		this.m.IsVisibleTileNeeded = true;
 		this.m.ActionPointCost = 5;
@@ -56,6 +56,10 @@ this.seduce_skill <- this.inherit("scripts/skills/skill", {
 
 	function getTooltip()
 	{
+		local actor = this.getContainer().getActor();
+		local allure = actor.allure();
+		local pos = this.Const.UI.Color.PositiveValue;
+		local neg = this.Const.UI.Color.NegativeValue;
 		return [
 			{
 				id = 1,
@@ -75,35 +79,101 @@ this.seduce_skill <- this.inherit("scripts/skills/skill", {
 			{
 				id = 4,
 				type = "text",
+				icon = "ui/icons/special.png",
+				text = "Base chance: [color=" + pos + "]" + ::Lewd.Const.SeduceBaseChance + "%[/color]"
+			},
+			{
+				id = 5,
+				type = "text",
 				icon = "ui/icons/allure.png",
-				text = "Every point of Allure increases chance by [color=" + this.Const.UI.Color.PositiveValue + "]" + ::Lewd.Const.SeduceAllureChanceMultiplier + "%[/color], but every tile of distance decreases it by [color=" + this.Const.UI.Color.NegativeValue + "]" + ::Lewd.Const.SeduceDistancePenalty + "%[/color]."
+				text = "Your Allure: [color=" + pos + "]" + allure + "[/color] vs target Resolve (x" + ::Lewd.Const.SeduceAllureChanceMultiplier + ")"
+			},
+			{
+				id = 6,
+				type = "text",
+				icon = "ui/icons/vision.png",
+				text = "Distance penalty: [color=" + neg + "]-" + ::Lewd.Const.SeduceDistancePenalty + "%[/color] per tile"
 			}
 		];
 	}
 
-	function isViableTarget( _user, _target )
+	function getSeduceChance( _target )
 	{
-		if (_target.isAlliedWith(_user))
+		local actor = this.getContainer().getActor();
+		local allure = actor.allure();
+		local resolve = _target.getBravery();
+		local distance = _target.getTile().getDistanceTo(actor.getTile());
+		local chance = ::Lewd.Const.SeduceBaseChance + (allure - resolve) * ::Lewd.Const.SeduceAllureChanceMultiplier - distance * ::Lewd.Const.SeduceDistancePenalty;
+		return this.Math.max(0, this.Math.min(100, chance));
+	}
+
+	function getHitchance( _targetEntity )
+	{
+		if (!_targetEntity.isAttackable()) return 0;
+		return this.getSeduceChance(_targetEntity);
+	}
+
+	function getHitFactors( _targetTile )
+	{
+		local ret = [];
+		local target = _targetTile.IsOccupiedByActor ? _targetTile.getEntity() : null;
+		if (target == null) return ret;
+
+		local actor = this.getContainer().getActor();
+		local allure = actor.allure();
+		local resolve = target.getBravery();
+		local distance = target.getTile().getDistanceTo(actor.getTile());
+		local diff = allure - resolve;
+		local pos = this.Const.UI.Color.PositiveValue;
+		local neg = this.Const.UI.Color.NegativeValue;
+
+		ret.push({
+			icon = "ui/icons/special.png",
+			text = "Base chance: [color=" + pos + "]" + ::Lewd.Const.SeduceBaseChance + "%[/color]"
+		});
+		ret.push({
+			icon = "ui/icons/allure.png",
+			text = "Allure: [color=" + pos + "]" + allure + "[/color]"
+		});
+		ret.push({
+			icon = "ui/icons/bravery.png",
+			text = "Target Resolve: [color=" + neg + "]" + resolve + "[/color]"
+		});
+
+		local scaled = diff * ::Lewd.Const.SeduceAllureChanceMultiplier;
+		if (scaled >= 0)
+			ret.push({
+				icon = "ui/tooltips/positive.png",
+				text = "[color=" + pos + "]+" + scaled + "%[/color] from Allure vs Resolve (x" + ::Lewd.Const.SeduceAllureChanceMultiplier + ")"
+			});
+		else
+			ret.push({
+				icon = "ui/tooltips/negative.png",
+				text = "[color=" + neg + "]" + scaled + "%[/color] from Allure vs Resolve (x" + ::Lewd.Const.SeduceAllureChanceMultiplier + ")"
+			});
+
+		if (distance > 0)
 		{
-			return false;
+			local distPenalty = distance * ::Lewd.Const.SeduceDistancePenalty;
+			ret.push({
+				icon = "ui/tooltips/negative.png",
+				text = "[color=" + neg + "]-" + distPenalty + "%[/color] from distance (" + distance + " tiles)"
+			});
 		}
 
-		if (_target.getMoraleState() == this.Const.MoraleState.Ignore || _target.getMoraleState() == this.Const.MoraleState.Fleeing)
-		{
-			return false;
-		}
+		return ret;
+	}
 
-		if (_target.getCurrentProperties().MoraleCheckBraveryMult[this.Const.MoraleCheckType.MentalAttack] >= 1000.0)
-		{
-			return false;
-		}
-
-		// TODO create unique seduced status effect
-		if (_target.getSkills().hasSkill("effects.charmed") || _target.getSkills().hasSkill("effects.seduced"))
-		{
-			return false;
-		}
-
+	function onVerifyTarget( _originTile, _targetTile )
+	{
+		if (!this.skill.onVerifyTarget(_originTile, _targetTile)) return false;
+		local target = _targetTile.getEntity();
+		if (target == null) return false;
+		if (target.isAlliedWith(this.getContainer().getActor())) return false;
+		if (target.getGender() == 1) return false;
+		if (target.getMoraleState() == this.Const.MoraleState.Ignore || target.getMoraleState() == this.Const.MoraleState.Fleeing) return false;
+		if (target.getCurrentProperties().MoraleCheckBraveryMult[this.Const.MoraleCheckType.MentalAttack] >= 1000.0) return false;
+		if (target.getSkills().hasSkill("effects.charmed") || target.getSkills().hasSkill("effects.seduced")) return false;
 		return true;
 	}
 
@@ -139,9 +209,7 @@ this.seduce_skill <- this.inherit("scripts/skills/skill", {
 
 			local resolve = target.getBravery();
 			local allure = _user.allure();
-			local chance = (::Lewd.Const.SeduceBaseChance + (allure - resolve + ::Lewd.Const.SeduceAllureBaseline) * ::Lewd.Const.SeduceAllureChanceMultiplier);
-			// increasing difficulty with distance
-			chance -= _targetTile.getDistanceTo(_user.getTile()) * ::Lewd.Const.SeduceDistancePenalty;
+			local chance = ::Lewd.Const.SeduceBaseChance + (allure - resolve) * ::Lewd.Const.SeduceAllureChanceMultiplier - _targetTile.getDistanceTo(_user.getTile()) * ::Lewd.Const.SeduceDistancePenalty;
 
 			this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(target) + " is being seduced by " + this.Const.UI.getColorizedEntityName(_user) + " (Chance: " + chance + ", Rolled: " + roll + ") (" + allure + " allure vs " + resolve + " bravery)");
 
