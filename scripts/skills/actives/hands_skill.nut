@@ -77,15 +77,6 @@ this.hands_skill <- this.inherit("scripts/skills/actives/female_sex_skill", {
 		this.m.FatigueCost = this.m.Tiers[0].Fatigue;
 	}
 
-	function getAPCost()
-	{
-		local ap = this.getTierConfig().AP;
-		local pts = this.getMasteryPoints();
-		if (pts >= ::Lewd.Const.MasteryHandsAPThreshold)
-			ap += ::Lewd.Const.MasteryHandsAPBonus;
-		return this.Math.max(1, ap);
-	}
-
 	function getHitChanceAgainst( _target )
 	{
 		if (this.isAutoHit(_target)) return 100;
@@ -98,6 +89,8 @@ this.hands_skill <- this.inherit("scripts/skills/actives/female_sex_skill", {
 		local pts = this.getMasteryPoints();
 		if (pts >= ::Lewd.Const.MasteryHandsHitThreshold)
 			chance += ::Lewd.Const.MasteryHandsHitBonus;
+		if (pts >= ::Lewd.Const.MasteryHandsHitT3Threshold)
+			chance += ::Lewd.Const.MasteryHandsHitT3Bonus;
 
 		return this.Math.max(::Lewd.Const.SexHitChanceMin, this.Math.min(::Lewd.Const.SexHitChanceMax, chance));
 	}

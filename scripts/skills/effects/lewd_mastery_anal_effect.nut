@@ -33,23 +33,22 @@ this.lewd_mastery_anal_effect <- this.inherit("scripts/skills/effects/lewd_maste
 			text = "Current tier: [color=" + this.Const.UI.Color.PositiveValue + "]" + tier + "[/color]"
 		});
 
-		if (pts >= ::Lewd.Const.MasteryAnalSelfPleasureThreshold)
+		if (pts >= ::Lewd.Const.MasteryAnalResolveThreshold)
 		{
-			local pctReduction = this.Math.floor((1.0 - ::Lewd.Const.MasteryAnalSelfPleasureMult) * 100);
 			tooltip.push({
 				id = 11,
 				type = "text",
-				icon = "ui/icons/special.png",
-				text = "[color=" + this.Const.UI.Color.PositiveValue + "]-" + pctReduction + "%[/color] self-pleasure"
+				icon = "ui/icons/bravery.png",
+				text = "[color=" + this.Const.UI.Color.PositiveValue + "]+" + ::Lewd.Const.MasteryAnalResolveBonus + "[/color] Resolve"
 			});
 		}
-		if (pts >= ::Lewd.Const.MasteryAnalPleasureThreshold)
+		if (pts >= ::Lewd.Const.MasteryAnalAPThreshold)
 		{
 			tooltip.push({
 				id = 12,
 				type = "text",
-				icon = "ui/icons/special.png",
-				text = "[color=" + this.Const.UI.Color.PositiveValue + "]+" + ::Lewd.Const.MasteryAnalPleasureBonus + "[/color] pleasure dealt"
+				icon = "ui/icons/action_points.png",
+				text = "[color=" + this.Const.UI.Color.PositiveValue + "]" + ::Lewd.Const.MasteryAnalAPBonus + "[/color] AP cost"
 			});
 		}
 		if (pts >= ::Lewd.Const.MasteryAnalSplashThreshold)
@@ -62,17 +61,26 @@ this.lewd_mastery_anal_effect <- this.inherit("scripts/skills/effects/lewd_maste
 			});
 		}
 
-		if (pts < ::Lewd.Const.MasteryAnalSelfPleasureThreshold)
-			tooltip.push({ id = 20, type = "hint", icon = "ui/icons/special.png", text = "Next at " + ::Lewd.Const.MasteryAnalSelfPleasureThreshold + ": Self-pleasure reduction" });
+		if (pts < ::Lewd.Const.MasteryAnalResolveThreshold)
+			tooltip.push({ id = 20, type = "hint", icon = "ui/icons/special.png", text = "Next at " + ::Lewd.Const.MasteryAnalResolveThreshold + ": Resolve bonus" });
 		else if (pts < ::Lewd.Const.MasteryAnalT2)
 			tooltip.push({ id = 20, type = "hint", icon = "ui/icons/special.png", text = "Next at " + ::Lewd.Const.MasteryAnalT2 + ": Skill upgrades to Take It" });
-		else if (pts < ::Lewd.Const.MasteryAnalPleasureThreshold)
-			tooltip.push({ id = 20, type = "hint", icon = "ui/icons/special.png", text = "Next at " + ::Lewd.Const.MasteryAnalPleasureThreshold + ": Bonus pleasure dealt" });
+		else if (pts < ::Lewd.Const.MasteryAnalAPThreshold)
+			tooltip.push({ id = 20, type = "hint", icon = "ui/icons/special.png", text = "Next at " + ::Lewd.Const.MasteryAnalAPThreshold + ": AP cost reduction" });
 		else if (pts < ::Lewd.Const.MasteryAnalT3)
 			tooltip.push({ id = 20, type = "hint", icon = "ui/icons/special.png", text = "Next at " + ::Lewd.Const.MasteryAnalT3 + ": Skill upgrades to Pain is Pleasure" });
 		else if (pts < ::Lewd.Const.MasteryAnalSplashThreshold)
 			tooltip.push({ id = 20, type = "hint", icon = "ui/icons/special.png", text = "Next at " + ::Lewd.Const.MasteryAnalSplashThreshold + ": Climax splash" });
 
 		return tooltip;
+	}
+
+	function onUpdate( _properties )
+	{
+		if (this.getPoints() < 0) return;
+		if (this.m.Points >= ::Lewd.Const.MasteryAnalResolveThreshold)
+		{
+			_properties.Bravery += ::Lewd.Const.MasteryAnalResolveBonus;
+		}
 	}
 });

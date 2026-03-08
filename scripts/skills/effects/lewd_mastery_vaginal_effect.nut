@@ -52,13 +52,13 @@ this.lewd_mastery_vaginal_effect <- this.inherit("scripts/skills/effects/lewd_ma
 				text = "[color=" + this.Const.UI.Color.PositiveValue + "]+" + ::Lewd.Const.MasteryVaginalPleasureBonus + "[/color] pleasure dealt"
 			});
 		}
-		if (pts >= ::Lewd.Const.MasteryVaginalFatigueThreshold)
+		if (pts >= ::Lewd.Const.MasteryVaginalAPThreshold)
 		{
 			tooltip.push({
 				id = 13,
 				type = "text",
-				icon = "ui/icons/fatigue.png",
-				text = "[color=" + this.Const.UI.Color.PositiveValue + "]" + ::Lewd.Const.MasteryVaginalFatigueBonus + "[/color] Fatigue cost"
+				icon = "ui/icons/action_points.png",
+				text = "[color=" + this.Const.UI.Color.PositiveValue + "]" + ::Lewd.Const.MasteryVaginalAPBonus + "[/color] AP cost"
 			});
 		}
 
@@ -70,8 +70,8 @@ this.lewd_mastery_vaginal_effect <- this.inherit("scripts/skills/effects/lewd_ma
 			tooltip.push({ id = 20, type = "hint", icon = "ui/icons/special.png", text = "Next at " + ::Lewd.Const.MasteryVaginalPleasureThreshold + ": Bonus pleasure dealt" });
 		else if (pts < ::Lewd.Const.MasteryVaginalT3)
 			tooltip.push({ id = 20, type = "hint", icon = "ui/icons/special.png", text = "Next at " + ::Lewd.Const.MasteryVaginalT3 + ": Skill upgrades to Cowgirl" });
-		else if (pts < ::Lewd.Const.MasteryVaginalFatigueThreshold)
-			tooltip.push({ id = 20, type = "hint", icon = "ui/icons/special.png", text = "Next at " + ::Lewd.Const.MasteryVaginalFatigueThreshold + ": Fatigue cost reduction" });
+		else if (pts < ::Lewd.Const.MasteryVaginalAPThreshold)
+			tooltip.push({ id = 20, type = "hint", icon = "ui/icons/special.png", text = "Next at " + ::Lewd.Const.MasteryVaginalAPThreshold + ": AP cost reduction" });
 
 		return tooltip;
 	}

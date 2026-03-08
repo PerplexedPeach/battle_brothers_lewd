@@ -90,7 +90,7 @@
 ::Lewd.Const.MasteryLimitOral <- 100;
 ::Lewd.Const.MasteryLimitHands <- 80;
 ::Lewd.Const.MasteryLimitVaginal <- 120;
-::Lewd.Const.MasteryLimitAnal <- 80;
+::Lewd.Const.MasteryLimitAnal <- 100;
 ::Lewd.Const.MasteryLimitFeet <- 100;
 
 // mastery tier thresholds
@@ -100,8 +100,8 @@
 ::Lewd.Const.MasteryHandsT3 <- 50;
 ::Lewd.Const.MasteryVaginalT2 <- 30;
 ::Lewd.Const.MasteryVaginalT3 <- 80;
-::Lewd.Const.MasteryAnalT2 <- 20;
-::Lewd.Const.MasteryAnalT3 <- 55;
+::Lewd.Const.MasteryAnalT2 <- 25;
+::Lewd.Const.MasteryAnalT3 <- 65;
 ::Lewd.Const.MasteryFeetT2 <- 25;
 ::Lewd.Const.MasteryFeetT3 <- 60;
 
@@ -112,30 +112,30 @@
 ::Lewd.Const.MasteryOralPleasureThreshold <- 50;
 ::Lewd.Const.MasteryOralPleasureBonus <- 3;
 ::Lewd.Const.MasteryOralResolveThreshold <- 90;
-::Lewd.Const.MasteryOralResolveBonus <- 5;
+::Lewd.Const.MasteryOralResolveBonus <- 10;
 
-// Hands: 10: +5% hit, 35: +2 pleasure dealt, 70: -1 AP
+// Hands: 10: +5% hit, 35: +2 pleasure dealt, 70: +10% hit
 ::Lewd.Const.MasteryHandsHitThreshold <- 10;
 ::Lewd.Const.MasteryHandsHitBonus <- 5;
 ::Lewd.Const.MasteryHandsPleasureThreshold <- 35;
 ::Lewd.Const.MasteryHandsPleasureBonus <- 2;
-::Lewd.Const.MasteryHandsAPThreshold <- 70;
-::Lewd.Const.MasteryHandsAPBonus <- -1;
+::Lewd.Const.MasteryHandsHitT3Threshold <- 70;
+::Lewd.Const.MasteryHandsHitT3Bonus <- 10;
 
-// Vaginal: 20: -25% self-pleasure, 50: +4 pleasure dealt, 110: -2 fatigue
+// Vaginal: 20: -25% self-pleasure, 50: +4 pleasure dealt, 110: -1 AP
 ::Lewd.Const.MasteryVaginalSelfPleasureThreshold <- 20;
 ::Lewd.Const.MasteryVaginalSelfPleasureMult <- 0.75;
 ::Lewd.Const.MasteryVaginalPleasureThreshold <- 50;
 ::Lewd.Const.MasteryVaginalPleasureBonus <- 4;
-::Lewd.Const.MasteryVaginalFatigueThreshold <- 110;
-::Lewd.Const.MasteryVaginalFatigueBonus <- -2;
+::Lewd.Const.MasteryVaginalAPThreshold <- 110;
+::Lewd.Const.MasteryVaginalAPBonus <- -1;
 
-// Anal: 10: -20% self-pleasure, 35: +3 pleasure dealt, 70: climax splash
-::Lewd.Const.MasteryAnalSelfPleasureThreshold <- 10;
-::Lewd.Const.MasteryAnalSelfPleasureMult <- 0.8;
-::Lewd.Const.MasteryAnalPleasureThreshold <- 35;
-::Lewd.Const.MasteryAnalPleasureBonus <- 3;
-::Lewd.Const.MasteryAnalSplashThreshold <- 70;
+// Anal: 10: +5 resolve, 40: -1 AP, 85: climax splash
+::Lewd.Const.MasteryAnalResolveThreshold <- 10;
+::Lewd.Const.MasteryAnalResolveBonus <- 5;
+::Lewd.Const.MasteryAnalAPThreshold <- 40;
+::Lewd.Const.MasteryAnalAPBonus <- -1;
+::Lewd.Const.MasteryAnalSplashThreshold <- 85;
 
 // Feet: 15: -2 fatigue, 40: +2 pleasure dealt, 85: ignore 20% Resolve
 ::Lewd.Const.MasteryFeetFatigueThreshold <- 15;

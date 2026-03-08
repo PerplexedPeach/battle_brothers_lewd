@@ -111,10 +111,16 @@ this.anal_skill <- this.inherit("scripts/skills/actives/female_sex_skill", {
 
 	function calculateMasteryPleasureBonus()
 	{
-		local pts = this.getMasteryPoints();
-		if (pts >= ::Lewd.Const.MasteryAnalPleasureThreshold)
-			return ::Lewd.Const.MasteryAnalPleasureBonus;
 		return 0;
+	}
+
+	function getAPCost()
+	{
+		local ap = this.getTierConfig().AP;
+		local pts = this.getMasteryPoints();
+		if (pts >= ::Lewd.Const.MasteryAnalAPThreshold)
+			ap += ::Lewd.Const.MasteryAnalAPBonus;
+		return this.Math.max(1, ap);
 	}
 
 	function getSelfPleasure()
@@ -125,11 +131,6 @@ this.anal_skill <- this.inherit("scripts/skills/actives/female_sex_skill", {
 		if (tier >= 3) selfP = ::Lewd.Const.AnalT3SelfPleasure;
 		else if (tier >= 2) selfP = ::Lewd.Const.AnalT2SelfPleasure;
 		else selfP = ::Lewd.Const.AnalT1SelfPleasure;
-
-		// Anal mastery self-pleasure reduction
-		local pts = this.getMasteryPoints();
-		if (pts >= ::Lewd.Const.MasteryAnalSelfPleasureThreshold)
-			selfP = this.Math.floor(selfP * ::Lewd.Const.MasteryAnalSelfPleasureMult);
 
 		// (Pliant Body reflection now handled centrally in applySelfPleasure)
 

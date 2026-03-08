@@ -75,13 +75,13 @@ this.vaginal_skill <- this.inherit("scripts/skills/actives/female_sex_skill", {
 		this.m.FatigueCost = this.m.Tiers[0].Fatigue;
 	}
 
-	function getFatigueCost()
+	function getAPCost()
 	{
-		local fat = this.getTierConfig().Fatigue;
+		local ap = this.getTierConfig().AP;
 		local pts = this.getMasteryPoints();
-		if (pts >= ::Lewd.Const.MasteryVaginalFatigueThreshold)
-			fat += ::Lewd.Const.MasteryVaginalFatigueBonus;
-		return this.Math.max(1, fat);
+		if (pts >= ::Lewd.Const.MasteryVaginalAPThreshold)
+			ap += ::Lewd.Const.MasteryVaginalAPBonus;
+		return this.Math.max(1, ap);
 	}
 
 	function getHitChanceAgainst( _target )

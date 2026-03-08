@@ -51,13 +51,13 @@ this.lewd_mastery_hands_effect <- this.inherit("scripts/skills/effects/lewd_mast
 				text = "[color=" + this.Const.UI.Color.PositiveValue + "]+" + ::Lewd.Const.MasteryHandsPleasureBonus + "[/color] pleasure dealt"
 			});
 		}
-		if (pts >= ::Lewd.Const.MasteryHandsAPThreshold)
+		if (pts >= ::Lewd.Const.MasteryHandsHitT3Threshold)
 		{
 			tooltip.push({
 				id = 13,
 				type = "text",
-				icon = "ui/icons/action_points.png",
-				text = "[color=" + this.Const.UI.Color.PositiveValue + "]" + ::Lewd.Const.MasteryHandsAPBonus + "[/color] AP cost"
+				icon = "ui/icons/melee_skill.png",
+				text = "[color=" + this.Const.UI.Color.PositiveValue + "]+" + ::Lewd.Const.MasteryHandsHitT3Bonus + "%[/color] hit chance"
 			});
 		}
 
@@ -69,8 +69,8 @@ this.lewd_mastery_hands_effect <- this.inherit("scripts/skills/effects/lewd_mast
 			tooltip.push({ id = 20, type = "hint", icon = "ui/icons/special.png", text = "Next at " + ::Lewd.Const.MasteryHandsPleasureThreshold + ": Bonus pleasure dealt" });
 		else if (pts < ::Lewd.Const.MasteryHandsT3)
 			tooltip.push({ id = 20, type = "hint", icon = "ui/icons/special.png", text = "Next at " + ::Lewd.Const.MasteryHandsT3 + ": Skill upgrades to Skilled Handjob" });
-		else if (pts < ::Lewd.Const.MasteryHandsAPThreshold)
-			tooltip.push({ id = 20, type = "hint", icon = "ui/icons/special.png", text = "Next at " + ::Lewd.Const.MasteryHandsAPThreshold + ": AP cost reduction" });
+		else if (pts < ::Lewd.Const.MasteryHandsHitT3Threshold)
+			tooltip.push({ id = 20, type = "hint", icon = "ui/icons/special.png", text = "Next at " + ::Lewd.Const.MasteryHandsHitT3Threshold + ": Hit chance bonus" });
 
 		return tooltip;
 	}

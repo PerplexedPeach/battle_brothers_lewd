@@ -79,15 +79,20 @@ this.lewd_mastery_effect <- this.inherit("scripts/skills/skill", {
 		return tooltip;
 	}
 
+	function hasPerk()
+	{
+		return this.getContainer().getActor().getSkills().hasSkill(this.m.PerkId);
+	}
+
 	function onCombatStarted()
 	{
-		if (!this.isHidden())
+		if (this.hasPerk())
 			this.m.CombatBonus = true;
 	}
 
 	function onCombatFinished()
 	{
-		if (!this.isHidden() && this.m.CombatBonus)
+		if (this.hasPerk() && this.m.CombatBonus)
 		{
 			this.m.CombatBonus = false;
 			this.addPoints(::Lewd.Const.MasteryCombatBonus);
@@ -96,7 +101,7 @@ this.lewd_mastery_effect <- this.inherit("scripts/skills/skill", {
 
 	function onAnySkillExecuted( _skill, _targetTile, _targetEntity, _forFree )
 	{
-		if (this.getPoints() >= 0 && _skill.getID() == this.m.AssociatedSkillID)
+		if (this.hasPerk() && _skill.getID() == this.m.AssociatedSkillID)
 		{
 			local chance = ::Lewd.Const.MasteryPointGainBaseChance;
 			local ap = _skill.m.ActionPointCost;
