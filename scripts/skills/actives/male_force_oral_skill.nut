@@ -58,9 +58,12 @@ this.male_force_oral_skill <- this.inherit("scripts/skills/actives/male_sex_skil
 		// Self-pleasure to user, scaled by target's oral mastery
 		local selfP = this.calculateSelfPleasure(_target);
 
-		// Pliant Body: target's accommodating body gives attacker more self-pleasure
+		// Pliant Body: target's accommodating body gives attacker more self-pleasure + target recovers fatigue
 		if (_target.getSkills().hasSkill("perk.lewd_pliant_body"))
+		{
 			selfP = this.Math.floor(selfP * ::Lewd.Const.PliantBodyReflectionMult);
+			_target.m.Fatigue = this.Math.max(0, _target.m.Fatigue - ::Lewd.Const.PliantBodyFatigueRecovery);
+		}
 
 		// Surrender to Pleasure: target has given in, mounters feel it more
 		local surrenderEffect = _target.getSkills().getSkillByID("effects.surrender_to_pleasure");

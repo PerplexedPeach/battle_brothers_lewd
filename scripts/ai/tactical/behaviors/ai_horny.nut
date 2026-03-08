@@ -227,7 +227,7 @@ this.ai_horny <- this.inherit("scripts/ai/tactical/behavior", {
 
 			if (oralUsable && pen != null)
 			{
-				local pick = this.Math.rand(1, 100) <= 75 ? forceOral : pen;
+				local pick = this.Math.rand(1, 100) <= 80 ? forceOral : pen;
 				::logInfo("[ai_horny]   findBestSkill: target mounted, random pick -> " + pick.getID());
 				return pick;
 			}

@@ -54,8 +54,11 @@ this.female_sex_skill <- this.inherit("scripts/skills/actives/sex_skill_base", {
 	function getFatigueCost()
 	{
 		local cost = this.getTierConfig().Fatigue;
-		if (this.getContainer().getActor().getSkills().hasSkill("perk.lewd_practiced_control"))
+		local actor = this.getContainer().getActor();
+		if (actor.getSkills().hasSkill("perk.lewd_practiced_control"))
 			cost = this.Math.ceil(cost * ::Lewd.Const.PracticedControlFatigueMult);
+		if (actor.getSkills().hasSkill("perk.lewd_pliant_body"))
+			cost = this.Math.ceil(cost * ::Lewd.Const.PliantBodyFatigueMult);
 		return cost;
 	}
 

@@ -344,7 +344,8 @@
 ::Lewd.Const.WillingVictimAIPriority <- 0.8; // AI targeting bonus for willing victim targets
 ::Lewd.Const.PliantBodyReflectionMult <- 1.5; // +50% pleasure reflection dealt to attacker when they sex you
 ::Lewd.Const.PliantBodyFatigueDrain <- 5; // fatigue added to mounter per turn while mounting you
-::Lewd.Const.PliantBodyDebuffReduction <- 1; // turns reduced from sex debuffs
+::Lewd.Const.PliantBodyFatigueRecovery <- 5; // fatigue recovered when an enemy uses a sex ability on you
+::Lewd.Const.PliantBodyFatigueMult <- 0.75; // 25% reduced fatigue cost on your own sex abilities
 ::Lewd.Const.PainFeedsPleasureMult <- 1.5; // masochism damage-to-pleasure +50%
 ::Lewd.Const.PainFeedsPleasureInjuryMult <- 1.33; // +33% injury threshold
 ::Lewd.Const.ShamelessClimaxPleasure <- 10; // pleasure dealt to sex partner on own climax

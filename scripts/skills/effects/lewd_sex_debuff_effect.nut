@@ -32,17 +32,6 @@ this.lewd_sex_debuff_effect <- this.inherit("scripts/skills/skill", {
 
 	function onAdded()
 	{
-		// Pliant Body: sex debuffs last fewer turns
-		local actor = this.getContainer().getActor();
-		if (actor.getSkills().hasSkill("perk.lewd_pliant_body"))
-		{
-			this.m.TurnsLeft = this.Math.max(0, this.m.TurnsLeft - ::Lewd.Const.PliantBodyDebuffReduction);
-			if (this.m.TurnsLeft <= 0)
-			{
-				this.removeSelf();
-				return;
-			}
-		}
 	}
 
 	function getTooltip()

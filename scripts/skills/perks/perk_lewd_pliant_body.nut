@@ -1,5 +1,5 @@
-// Pliant Body: +50% enemy self-pleasure when they sex you, mounter fatigue drain, shorter sex debuffs
-// Checked in male_sex_skill.onHit, lewd_mounted_effect.onTurnEnd, lewd_sex_debuff_effect.onAdded
+// Pliant Body: +50% enemy self-pleasure when they sex you, mounter fatigue drain, fatigue recovery on being sexed, -25% own sex ability fatigue cost
+// Checked in male_sex_skill.onHit, male_force_oral_skill.onHit, lewd_mounted_effect.onTurnEnd, female_sex_skill.getFatigueCost
 this.perk_lewd_pliant_body <- this.inherit("scripts/skills/skill", {
 	m = {},
 	function create()
