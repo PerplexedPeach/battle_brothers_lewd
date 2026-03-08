@@ -7,7 +7,7 @@ this.open_invitation_effect <- this.inherit("scripts/skills/skill", {
 		this.m.ID = "effects.open_invitation";
 		this.m.Name = "Open Invitation";
 		this.m.Description = "You've invited the enemy in. Sex abilities deal more pleasure, but enemy sex abilities auto-hit you.";
-		this.m.Icon = "skills/open_invitation.png";
+		this.m.Icon = "skills/open_invitation_effect.png";
 		this.m.Type = this.Const.SkillType.StatusEffect;
 		this.m.Order = this.Const.SkillOrder.Last;
 		this.m.IsActive = false;

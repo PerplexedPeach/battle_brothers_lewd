@@ -29,31 +29,30 @@ this.open_invitation_skill <- this.inherit("scripts/skills/skill", {
 		this.m.IsSerialized = false;
 	}
 
-	function isHidden()
-	{
-		return !this.getContainer().getActor().getSkills().hasSkill("perk.lewd_sensual_focus") || this.skill.isHidden();
-	}
-
 	function isUsable()
 	{
-		return this.skill.isUsable() && !this.m.ToggledThisTurn;
+		if (this.m.ToggledThisTurn)
+			return false;
+
+		local actor = this.getContainer().getActor();
+		return this.m.IsUsable && actor.getCurrentProperties().IsAbleToUseSkills;
 	}
 
-	function isActive()
+	function isToggled()
 	{
 		return this.getContainer().hasSkill("effects.open_invitation");
 	}
 
 	function getName()
 	{
-		if (this.isActive())
+		if (this.isToggled())
 			return "Close Invitation";
 		return "Open Invitation";
 	}
 
 	function getDescription()
 	{
-		if (this.isActive())
+		if (this.isToggled())
 			return "Withdraw your invitation, returning to normal.";
 		return "Invite the enemy in. Your sex abilities deal [color=" + this.Const.UI.Color.PositiveValue + "]+15%[/color] more pleasure, but enemy sex abilities [color=" + this.Const.UI.Color.NegativeValue + "]auto-hit[/color] you.";
 	}
@@ -65,7 +64,7 @@ this.open_invitation_skill <- this.inherit("scripts/skills/skill", {
 
 	function onUse( _user, _targetTile )
 	{
-		if (this.isActive())
+		if (this.isToggled())
 		{
 			this.getContainer().removeByID("effects.open_invitation");
 			this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(_user) + " withdraws their invitation.");
@@ -99,7 +98,7 @@ this.open_invitation_skill <- this.inherit("scripts/skills/skill", {
 	function onCombatFinished()
 	{
 		this.m.ToggledThisTurn = false;
-		if (this.isActive())
+		if (this.isToggled())
 			this.getContainer().removeByID("effects.open_invitation");
 	}
 
@@ -118,13 +117,13 @@ this.open_invitation_skill <- this.inherit("scripts/skills/skill", {
 			}
 		];
 
-		if (this.isActive())
+		if (this.isToggled())
 		{
 			result.push({
 				id = 5,
 				type = "text",
 				icon = "ui/icons/special.png",
-				text = "[color=" + this.Const.UI.Color.PositiveValue + "]Currently active[/color] — click to deactivate"
+				text = "[color=" + this.Const.UI.Color.PositiveValue + "]Currently active[/color]. Click to deactivate."
 			});
 		}
 		else
@@ -133,7 +132,7 @@ this.open_invitation_skill <- this.inherit("scripts/skills/skill", {
 				id = 5,
 				type = "text",
 				icon = "ui/icons/special.png",
-				text = "Currently [color=" + this.Const.UI.Color.NegativeValue + "]inactive[/color] — click to activate"
+				text = "Currently [color=" + this.Const.UI.Color.NegativeValue + "]inactive[/color]. Click to activate."
 			});
 		}
 

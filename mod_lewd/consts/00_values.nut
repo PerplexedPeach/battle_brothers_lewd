@@ -46,9 +46,9 @@
 ::Lewd.Const.ClimaxAllureBonus <- 5;
 
 // ability constants
-::Lewd.Const.AllureToDazeBaseChance <- 60;
-::Lewd.Const.AllureToDazeChanceMultiplier <- 2;
-::Lewd.Const.AllureToDazeDistancePenalty <- 15; // effect chance is reduced by this much for every tile of distance from the target
+::Lewd.Const.AllureToDazeBaseChance <- 50;
+::Lewd.Const.AllureToDazeChanceMultiplier <- 1;
+::Lewd.Const.AllureToDazeDistancePenalty <- 20; // effect chance is reduced by this much for every tile of distance from the target
 
 ::Lewd.Const.SeduceBaseChance <- 50;
 ::Lewd.Const.SeduceAllureChanceMultiplier <- 3;
