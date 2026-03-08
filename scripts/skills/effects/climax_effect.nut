@@ -184,11 +184,6 @@ this.climax_effect <- this.inherit("scripts/skills/skill", {
 							_d.Target.getSprite("cum_facial").setBrush("cum_head");
 							_d.Target.getSprite("cum_facial").Visible = true;
 							_d.Target.setDirty(true);
-							// Overlay effect on target
-							_d.Tactical.spawnSpriteEffect("climax", ::createColor("#ffffff"), _d.Target.getTile(),
-								_d.Const.Tactical.Settings.SkillOverlayOffsetX, _d.Const.Tactical.Settings.SkillOverlayOffsetY,
-								_d.Const.Tactical.Settings.SkillOverlayScale, _d.Const.Tactical.Settings.SkillOverlayScale,
-								_d.Const.Tactical.Settings.SkillOverlayStayDuration, 0, _d.Const.Tactical.Settings.SkillOverlayFadeDuration);
 							// Camera quake on impact (source may be dead from orgasm defeat)
 							if (_d.Source.isAlive())
 								_d.Tactical.getCamera().quake(_d.Source, _d.Target, 3.0, 0.12, 0.25);
