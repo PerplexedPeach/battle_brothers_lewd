@@ -177,6 +177,7 @@ this.lewd_ethereal_third <- this.inherit("scripts/events/event", {
 
 		if (this.m.Woman == null
 			|| ::Lewd.Mastery.getLewdTier(this.m.Woman) != 2
+			|| !this.m.Woman.getFlags().has("lewdEtherealSecondFired")
 			|| climaxes < ::Lewd.Const.EtherealThirdEventThreshold)
 		{
 			this.m.Score = 0;

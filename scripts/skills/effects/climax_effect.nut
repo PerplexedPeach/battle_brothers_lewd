@@ -209,11 +209,12 @@ this.climax_effect <- this.inherit("scripts/skills/skill", {
 				// Actor shifts Sub (-1)
 				::Lewd.Mastery.addDomSub(actor, -1);
 
-				// Source shifts Dom (+1)
+				// Source shifts Dom (+1), unless Open Invitation is active (submissive stance)
 				local domSource = this.Tactical.getEntityByID(sourceID);
 				if (domSource != null && domSource.isAlive())
 				{
-					::Lewd.Mastery.addDomSub(domSource, 1);
+					if (!domSource.getSkills().hasSkill("effects.open_invitation"))
+						::Lewd.Mastery.addDomSub(domSource, 1);
 
 					// Persistent partner-climax counter on the source player
 					if (domSource.isPlayerControlled())

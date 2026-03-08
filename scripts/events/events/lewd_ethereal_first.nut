@@ -24,6 +24,7 @@ this.lewd_ethereal_first <- this.inherit("scripts/events/event", {
 			],
 			function start( _event )
 			{
+				_event.m.Woman.getFlags().set("lewdEtherealFirstFired", true);
 				this.Characters.push(_event.m.Woman.getImagePath());
 			}
 		});
@@ -37,6 +38,7 @@ this.lewd_ethereal_first <- this.inherit("scripts/events/event", {
 			: this.m.Woman.getFlags().getAsInt("lewdPartnerClimaxes") + this.m.Woman.getFlags().getAsInt("lewdSelfClimaxes");
 
 		if (this.m.Woman == null
+			|| this.m.Woman.getFlags().has("lewdEtherealFirstFired")
 			|| ::Lewd.Mastery.getLewdTier(this.m.Woman) < 2
 			|| climaxes < ::Lewd.Const.EtherealFirstEventThreshold)
 		{

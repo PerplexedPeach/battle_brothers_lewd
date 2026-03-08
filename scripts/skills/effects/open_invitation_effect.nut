@@ -39,6 +39,12 @@ this.open_invitation_effect <- this.inherit("scripts/skills/skill", {
 				type = "text",
 				icon = "ui/icons/special.png",
 				text = "[color=" + this.Const.UI.Color.NegativeValue + "]You let yourself accept all enemy sex abilities[/color]"
+			},
+			{
+				id = 7,
+				type = "text",
+				icon = "ui/icons/special.png",
+				text = "[color=" + this.Const.UI.Color.NegativeValue + "]Bringing enemies to climax does not increase Dominance[/color]"
 			}
 		];
 	}

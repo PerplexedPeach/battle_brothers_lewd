@@ -45,6 +45,7 @@ this.lewd_ethereal_second <- this.inherit("scripts/events/event", {
 			],
 			function start( _event )
 			{
+				_event.m.Woman.getFlags().set("lewdEtherealSecondFired", true);
 				this.Characters.push(_event.m.Woman.getImagePath());
 
 				this.List.push({
@@ -64,7 +65,9 @@ this.lewd_ethereal_second <- this.inherit("scripts/events/event", {
 			: this.m.Woman.getFlags().getAsInt("lewdPartnerClimaxes") + this.m.Woman.getFlags().getAsInt("lewdSelfClimaxes");
 
 		if (this.m.Woman == null
+			|| this.m.Woman.getFlags().has("lewdEtherealSecondFired")
 			|| ::Lewd.Mastery.getLewdTier(this.m.Woman) < 2
+			|| !this.m.Woman.getFlags().has("lewdEtherealFirstFired")
 			|| climaxes < ::Lewd.Const.EtherealSecondEventThreshold)
 		{
 			this.m.Score = 0;
