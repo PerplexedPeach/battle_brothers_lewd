@@ -33,13 +33,15 @@ this.lewd_ethereal_first <- this.inherit("scripts/events/event", {
 	{
 		this.m.Woman = ::Lewd.Transform.target();
 
+		local climaxes = this.m.Woman == null ? 0
+			: this.m.Woman.getFlags().getAsInt("lewdPartnerClimaxes") + this.m.Woman.getFlags().getAsInt("lewdSelfClimaxes");
+
 		if (this.m.Woman == null
 			|| ::Lewd.Mastery.getLewdTier(this.m.Woman) < 2
-			|| this.m.Woman.getFlags().getAsInt("lewdPartnerClimaxes") < ::Lewd.Const.EtherealFirstEventThreshold)
+			|| climaxes < ::Lewd.Const.EtherealFirstEventThreshold)
 		{
 			this.m.Score = 0;
 		} else {
-			local climaxes = this.m.Woman.getFlags().getAsInt("lewdPartnerClimaxes");
 			this.m.Score = ::Lewd.Const.EtherealFirstEventBaseScore + climaxes * 10;
 		}
 	}
