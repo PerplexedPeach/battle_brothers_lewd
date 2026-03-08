@@ -1,0 +1,175 @@
+[size=6]Installation[/size]
+
+[list=1]
+[*]Mods are installed by dropping [b]unzipped[/b] .zip files in the Battle Brothers data directory (e.g. C:\GOG Games\Battle Brothers\data). Leave them unzipped! You don't have to worry about mod load order.
+[*]Required mods: [url=https://www.nexusmods.com/battlebrothers/mods/60]Legends mod[/url] (gameplay overhaul; you may need the latest from their GitHub. Install both the asset and gameplay mods), [url=https://www.nexusmods.com/battlebrothers/mods/685]Modern Hooks[/url], and [url=https://www.nexusmods.com/battlebrothers/mods/479]MSU[/url]
+[*]Drop the .zip downloaded from here into the data directory
+[/list]
+
+The [url=https://github.com/PerplexedPeach/battle_brothers_lewd]GitHub repository[/url] has the latest version and updated roadmap.
+
+[size=6]Overview[/size]
+
+This mod brings lewdness into the world of Battle Brothers in an immersive, balanced, and gratifying way. Its contents are NSFW and only for adults 18+!
+
+New mechanics, event images, character sprites, item sprites, custom sounds, and writing are tightly integrated to provide a quality experience. All event writing is documented [url=https://lewdhammer.miraheze.org/wiki/Battle_Brothers]on the wiki[/url] if you just want to read them.
+
+Sexual themes include: female protagonist, high heels, transformation, bondage, domination loss, submission, seduction, domination, harassment, battlefuck
+
+[size=6]Features[/size]
+
+[size=5]Allure and Beauty System[/size]
+[list]
+[*][b]Allure[/b] is a new character stat derived from your traits, equipment, melee defense, and heels. It is the core currency for seduction and beauty mechanics.
+[*][b]Entrancing Beauty[/b]: A passive aura that can inflict Horny (or on crit, Horny + Stunned) on nearby enemies each turn and after movement. Chance scales with Allure vs target Resolve and distance. Allied male brothers can also be affected, though they get a significant Resolve bonus against it.
+[*][b]Pheromones[/b]: Self-cast buff that boosts Entrancing Beauty's chance and adds a pink glow effect.
+[/list]
+
+Dynamic sounds and animated quotes on skill use (Entrancing Beauty shown):
+[img]https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExZ3JmcmJjY2JiZzd3azZyam56cmg4OHJtNDVhcXU4Y2VjOXlkZWQ4eiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/tCeFXE1ZaToZKuZPyR/giphy.gif[/img]
+
+[list]
+[*][b]Seduce[/b]: Ranged active ability (up to 4 tiles) that charms male enemies to fight for you. Chance: 50 + (Allure - Resolve) - 10 per tile distance. Full hit chance breakdown shown per target on hover.
+[/list]
+
+[size=5]Pleasure and Climax System[/size]
+[list]
+[*]All characters with lewd traits gain a [b]Pleasure[/b] resource in combat. When Pleasure reaches PleasureMax, the character has a [b]Climax[/b], applying a temporary debuff.
+[*][b]Orgasm Defeat[/b]: Characters can be defeated by accumulating enough orgasms. Most enemies fall after 1; tougher enemies survive more based on their Resolve and miniboss status. Player characters have much higher thresholds from traits and perks, and go unconscious (recoverable) rather than dying.
+[*]Pleasure sources: masochism (damage taken), and five sex ability types (see below).
+[*]Enemies with humanoid bodies automatically gain PleasureMax based on their Resolve.
+[/list]
+[img]https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExMmJiMjN5MW95ZGJwNjAycG16bWVtMjUxcG12eTlhNXR3bTNzcnA0NiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/P1YLuIkkyha1xojCjn/giphy.gif[/img]
+
+[size=5]Sex Abilities (5 types, 3 tiers each)[/size]
+[list]
+[*][b]Hands[/b]: Clumsy Groping / Handjob / Skilled Handjob. Scales with Domination score.
+[*][b]Oral[/b]: Clumsy Oral / Oral Service / Deepthroat
+[*][b]Feet[/b]: Foot Tease / Footjob / Heel Domination
+[*][b]Vaginal[/b]: Straddle / Riding / Cowgirl. Establishes mount (visual sprite overlay).
+[*][b]Anal[/b]: Submit / Take It / Pain is Pleasure. Scales with Submission score.
+[/list]
+Each ability type has its own [b]Mastery[/b] track that levels up through use, unlocking stronger tiers with unique icons, sounds, and flavor text. Hit chance displays Allure vs Resolve breakdown on hover. Pleasure formula factors in allure, relevant stat scaling, mastery, fatigue vulnerability, and mount bonuses.
+
+[b]Mount System[/b]: Vaginal and anal abilities can establish a mount (one character on another). Mounted targets get visual silhouette sprites showing mounters. Multiple mounters supported with front and back silhouettes.
+
+[size=5]Domination / Submission System[/size]
+[list]
+[*]A dynamic [b]Dom/Sub tracker[/b] shifts during combat based on who causes climaxes.
+[*][b]Dom tiers[/b]: Assertive, Commanding, Dominant, Mistress. Boosts Hands ability scaling.
+[*][b]Sub tiers[/b]: Yielding, Submissive, Obedient, Tamed. Boosts Anal ability scaling and unlocks Surrender to Pleasure.
+[*][b]Surrender to Pleasure[/b] (sub-gated active): Costs all remaining AP. Massively boosts mounter's pleasure output and your own pleasure vulnerability, scaling with AP spent and sub score.
+[*]Each tier has unique icons and tooltip descriptions.
+[/list]
+
+[size=5]Enemy Sex AI[/size]
+[list]
+[*]Horny enemies gain access to sex abilities: [b]Grope[/b], [b]Force Oral[/b] (requires mount), and [b]Penetrate[/b] (establishes mount).
+[*]Custom AI behavior prioritizes sex attacks on vulnerable targets over normal combat actions.
+[*]Hit formula uses Melee Skill vs target Melee Defense; Horny targets are auto-hit.
+[*][b]Allied Harassment[/b]: Male brothers affected by Horny may grope nearby female allies. Chance scales with target Allure, groper Resolve, and Dom/Sub score. Gated behind the Horny status.
+[/list]
+
+[size=5]Horny Status Effect[/size]
+[list]
+[*]2-turn debuff: -15 Resolve, -15% Initiative, -5 Melee Defense, sex abilities auto-hit.
+[*]Applied by Entrancing Beauty aura, Shameless perk climax, and sex ability hits (50% chance).
+[*]Enemies with Horny gain sex abilities and a custom AI behavior.
+[*]Visual head overlay effect on affected characters.
+[/list]
+
+[size=5]Two Perk Trees (15 perks total)[/size]
+
+[b]Seduction Arts[/b] (unlocked by Dainty/Delicate traits):
+[list]
+[*]5 ability unlock perks: Nimble Fingers, Oral Arts, Foot Tease, Mounting, Offering
+[*]Sensual Focus: +10% passive pleasure dealt + Open Invitation toggle (enemies auto-hit you, but you deal +15% pleasure)
+[*]Alluring Presence: First sex ability use per target gets a hit bonus
+[*]Practiced Control: -50% self-pleasure from sex abilities
+[*]Insatiable: +3 AP when you cause a climax
+[*]Transcendence: Climax removes penalties, +10 Allure, overflow pleasure preserved
+[/list]
+
+[b]Endurance[/b] (unlocked by Masochism + Delicate traits):
+[list]
+[*]Willing Victim: +10 Allure while mounted/grappled
+[*]Embrace Pain: Moan + horny-on-hit scaling with sub score
+[*]Pliant Body: +50% pleasure reflection dealt to partner
+[*]Pain Feeds Pleasure: +50% masochism damage to pleasure conversion, +33% injury threshold
+[*]Shameless: Climax makes adjacent enemies Horny + deals pleasure to mount partner
+[/list]
+
+[size=5]Transformation Event Chains[/size]
+
+This mod focuses on a [b]female avatar[/b] character, so you [b]need to play an avatar origin[/b] like Lone Wolf, Berserker, or the Courtesan origin.
+
+[b]Heel Progression (Dainty / Delicate)[/b]:
+[list]
+[*]Stage 0 to 1 event triggers based on company renown; further stages require heel skill thresholds.
+[*]Increase heel skill by wearing heels taller than your current height. The bigger the difference, the faster you progress.
+[*]Custom heel walking sounds on different terrain types!
+[*]Progression: Normal to Dainty to Delicate, each granting new traits, allure bonuses, and perk tree access.
+[/list]
+
+Transformation into the perfect candidate for the harem of the Eastern Emperor:
+[img]https://cdn.imgpile.com/f/YraWLUI_xl.png[/img]
+
+[b]Masochism Progression[/b]:
+[list]
+[*]After achieving the Delicate trait, take damage in combat and stay in the south to trigger masochism events.
+[*]Three tiers of masochism, each increasing pleasure from damage taken and allure.
+[/list]
+
+[b]Ethereal Transformation[/b]:
+[list]
+[*]After reaching Delicate, causing enough partner climaxes in battle triggers a three-stage event chain.
+[*]Foreshadowing at 10 partner climaxes, awakening at 25, full transformation at 50.
+[*]Culminates in the Ethereal trait: the pinnacle transformation with enhanced allure, additional perk points, and unique cosmetic changes.
+[/list]
+
+[b]Hexen Curse (Male-to-Female)[/b]:
+[list]
+[*]Male avatars who fight Hexen can be cursed, triggering a two-stage transformation into a female character.
+[*]After transformation completes, the normal heel/Dainty/Delicate/Ethereal progression takes over.
+[/list]
+
+[size=5]Items[/size]
+[list]
+[*]Multiple heel types as accessory items with varying height and allure bonuses.
+[*]Cursed items that cannot be unequipped.
+[*]Custom item sprites.
+[/list]
+
+[size=5]Visual and Audio[/size]
+[list]
+[*]Custom character sprites (body, head, accessories, piercings, cum facial layer).
+[*]Dynamic heel walking sounds on different terrain.
+[*]Unique sounds per sex ability type.
+[*]Animated quote overlays on skill use (charm quotes, masochism quotes).
+[*]Mount silhouette sprites (front and back) showing characters in mounted positions.
+[*]Custom event images for all transformation chains.
+[*]Per-tier icons for all sex abilities, masteries, perks, and dom/sub states.
+[/list]
+
+[size=6]Compatibility[/size]
+[list]
+[*][b]Required[/b]: Legends mod, Modern Hooks, MSU
+[*][b]Optional[/b]: Rise of the Undead (ROTU) core. Cosmetic adaptations (skin tone, eye glow, tattoo clearing) are applied automatically when detected.
+[/list]
+
+[size=6]Roadmap[/size]
+[list]
+[*]Species-specific sex AI and abilities (goblins, orcs, unholds, wolves, spiders)
+[*]Spider parasite/egg content
+[*]Post-defeat sex events and enemy recruitment via orgasm defeat
+[*]Fetish acquisition from being defeated by specific creature types
+[*]Player male sex abilities (male party members using abilities on enemy females)
+[*]Body modification corruption series
+[*]Sexy armor
+[*]Back hair sprite layer for long hairstyles
+[*]Balance tuning pass
+[/list]
+
+[size=6]For More[/size]
+Check out the (18+) Discord [url=https://discord.gg/W4qkrNwUMk]https://discord.gg/W4qkrNwUMk[/url] for lewd mods for this and other games.
+[url=https://discord.gg/W4qkrNwUMk][img]https://i.imgur.com/GfSncQ3.png[/img][/url]
