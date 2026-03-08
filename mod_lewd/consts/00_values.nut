@@ -49,6 +49,7 @@
 ::Lewd.Const.AllureToDazeBaseChance <- 50;
 ::Lewd.Const.AllureToDazeChanceMultiplier <- 1;
 ::Lewd.Const.AllureToDazeDistancePenalty <- 20; // effect chance is reduced by this much for every tile of distance from the target
+::Lewd.Const.BeautyAllyResolveBonus <- 50; // allied males get +50 effective resolve vs Entrancing Beauty
 
 ::Lewd.Const.SeduceBaseChance <- 50;
 ::Lewd.Const.SeduceAllureChanceMultiplier <- 3;
@@ -178,9 +179,9 @@
 ::Lewd.Const.HarassmentAllureThreshold <- 20; // minimum allure on female to be eligible
 ::Lewd.Const.HarassmentChancePerAllure <- 2; // % chance per point of allure above threshold
 ::Lewd.Const.HarassmentResolveScale <- 1.0; // brother resolve reduces chance (subtracted)
-::Lewd.Const.HarassmentDomSubScale <- 0.5; // target dom reduces trigger chance, sub increases it
+::Lewd.Const.HarassmentDomSubScale <- 1; // target dom reduces harassment trigger chance
 ::Lewd.Const.HarassmentMinChance <- 5;
-::Lewd.Const.HarassmentMaxChance <- 30;
+::Lewd.Const.HarassmentMaxChance <- 50;
 ::Lewd.Const.MaleSexMountedHitBonus <- 15; // +15% hit chance on mounted targets
 ::Lewd.Const.AlliedGropeAP <- 3;
 ::Lewd.Const.AlliedGropeFatigue <- 6;

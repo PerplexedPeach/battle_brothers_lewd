@@ -24,6 +24,13 @@ this.allied_grope_skill <- this.inherit("scripts/skills/actives/male_grope_skill
 		return true;
 	}
 
+	function isUsable()
+	{
+		// Skip base isUsable() which rejects hidden skills
+		local actor = this.getContainer().getActor();
+		return this.m.IsUsable && actor.getCurrentProperties().IsAbleToUseSkills;
+	}
+
 	function onVerifyTarget( _originTile, _targetTile )
 	{
 		// Skip sex_skill_base — we want allied targets, not enemies

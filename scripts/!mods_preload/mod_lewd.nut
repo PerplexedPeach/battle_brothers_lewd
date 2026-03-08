@@ -382,9 +382,10 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC" function()
 				}
 			}
 
-			// --- Allied harassment (male brother perspective) ---
+			// --- Allied harassment (male brother perspective, requires Horny) ---
 			if (!actor.isPlayerControlled()) return;
 			if (actor.getGender() == 1) return; // only males harass
+			if (!actor.getSkills().hasSkill("effects.lewd_horny")) return; // must be horny
 			local gropeSkill = actor.getSkills().getSkillByID("actives.allied_grope");
 			if (gropeSkill == null) return;
 			if (actor.getActionPoints() < gropeSkill.getActionPointCost()) return;
@@ -420,9 +421,17 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC" function()
 				- domSub * ::Lewd.Const.HarassmentDomSubScale;
 			chance = this.Math.max(::Lewd.Const.HarassmentMinChance, this.Math.min(::Lewd.Const.HarassmentMaxChance, this.Math.floor(chance)));
 
-			if (this.Math.rand(1, 100) <= chance)
+			::logInfo("[harassment] " + actor.getName() + " (horny) -> " + bestTarget.getName() + " allure:" + bestAllure + " resolve:" + resolve + " domSub:" + domSub + " chance:" + chance);
+
+			local roll = this.Math.rand(1, 100);
+			if (roll <= chance)
 			{
+				::logInfo("[harassment] TRIGGERED roll:" + roll + " <= " + chance);
 				gropeSkill.use(bestTarget.getTile());
+			}
+			else
+			{
+				::logInfo("[harassment] missed roll:" + roll + " > " + chance);
 			}
 		};
 

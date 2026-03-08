@@ -80,19 +80,37 @@ this.entrancing_beauty_effect <- this.inherit("scripts/skills/skill", {
 
 		this.m.TriggersThisTurn++;
 
-		local enemies = this.Tactical.Entities.getAllHostilesAsArray();
 		local tile = actor.getTile();
-
 		local allure = actor.allure();
-		::logInfo("[beauty] " + actor.getName() + " trigger #" + this.m.TriggersThisTurn + " allure:" + allure + " enemies:" + enemies.len());
-
 		local hasPheromones = actor.getSkills().hasSkill("effects.pheromones");
+
+		// Build target list: all hostiles + allied males (with resolve bonus)
+		local targets = [];
+		local enemies = this.Tactical.Entities.getAllHostilesAsArray();
+		foreach (e in enemies)
+			targets.push({ entity = e, resolveBonus = 0 });
+
+		// Allied males can also be affected
+		local factions = actor.getAlliedFactions();
+		foreach (fid in factions)
+		{
+			local allies = this.Tactical.Entities.getInstancesOfFaction(fid);
+			foreach (a in allies)
+			{
+				if (a.getID() == actor.getID()) continue;
+				if (a.getGender() == 1) continue; // skip females
+				targets.push({ entity = a, resolveBonus = ::Lewd.Const.BeautyAllyResolveBonus });
+			}
+		}
+
+		::logInfo("[beauty] " + actor.getName() + " trigger #" + this.m.TriggersThisTurn + " allure:" + allure + " targets:" + targets.len());
 
 		local dazedEntities = [];
 
-		foreach (entity in enemies)
+		foreach (t in targets)
 		{
-			local resolve = entity.getBravery();
+			local entity = t.entity;
+			local resolve = entity.getBravery() + t.resolveBonus;
 			local distance = entity.getTile().getDistanceTo(tile);
 			local chance = ::Lewd.Const.AllureToDazeBaseChance + (allure - resolve) * ::Lewd.Const.AllureToDazeChanceMultiplier - distance * ::Lewd.Const.AllureToDazeDistancePenalty;
 			if (hasPheromones)
@@ -100,7 +118,7 @@ this.entrancing_beauty_effect <- this.inherit("scripts/skills/skill", {
 				chance += ::Lewd.Const.PheromonesAllureBonus;
 			}
 
-			::logInfo("[beauty]   " + entity.getName() + " dist:" + distance + " resolve:" + resolve + " chance:" + chance + (hasPheromones ? " (pheromones)" : ""));
+			::logInfo("[beauty]   " + entity.getName() + " dist:" + distance + " resolve:" + resolve + (t.resolveBonus > 0 ? " (ally+" + t.resolveBonus + ")" : "") + " chance:" + chance + (hasPheromones ? " (pheromones)" : ""));
 
 			if (chance > 0)
 			{
