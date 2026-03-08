@@ -90,7 +90,8 @@ this.lewd_horny_effect <- this.inherit("scripts/skills/skill", {
 				actor.getSkills().add(this.new("scripts/skills/actives/male_penetrate_anal_skill"));
 			}
 
-			// Inject AI horny behaviors into existing agent
+			// Inject AI horny behaviors into existing agent (skip if already present
+			// from a previous horny application, behaviors persist and self-deactivate)
 			local agent = actor.getAIAgent();
 			if (agent != null && !this.m.HasAIBehavior)
 			{
@@ -129,17 +130,10 @@ this.lewd_horny_effect <- this.inherit("scripts/skills/skill", {
 	{
 		local actor = this.getContainer().getActor();
 
-		// Remove AI behaviors if we injected them
-		if (this.m.HasAIBehavior)
-		{
-			local agent = actor.getAIAgent();
-			if (agent != null)
-			{
-				agent.removeBehavior(::Lewd.Const.AIBehaviorIDHorny);
-				agent.removeBehavior(::Lewd.Const.AIBehaviorIDHornyEngage);
-			}
-			this.m.HasAIBehavior = false;
-		}
+		// Don't remove AI behaviors here — doing so mid-execution (e.g. opportunity
+		// attack during movement) hangs the AI. The behaviors already return 0 from
+		// onEvaluate when the horny effect is gone, so they safely self-deactivate.
+		// They'll be cleaned up on combat end or when horny is re-applied.
 
 		if (actor.hasSprite("status_horny"))
 		{

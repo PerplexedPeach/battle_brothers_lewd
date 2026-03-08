@@ -140,6 +140,14 @@ this.ai_horny_engage <- this.inherit("scripts/ai/tactical/behavior", {
 		if (this.m.TargetTile == null)
 			return true;
 
+		// Bail if horny was removed or morale broke between evaluate and execute
+		if (!_entity.getSkills().hasSkill("effects.lewd_horny") || _entity.getMoraleState() == this.Const.MoraleState.Fleeing)
+		{
+			this.m.TargetTile = null;
+			this.m.TargetActor = null;
+			return true;
+		}
+
 		local navigator = this.Tactical.getNavigator();
 
 		if (this.m.IsFirstExecuted)
@@ -178,6 +186,16 @@ this.ai_horny_engage <- this.inherit("scripts/ai/tactical/behavior", {
 		{
 			if (_entity.isAlive())
 			{
+				// Horny removed or morale broke mid-travel (e.g. opportunity attack) — abort cleanly
+				if (!_entity.getSkills().hasSkill("effects.lewd_horny") || _entity.getMoraleState() == this.Const.MoraleState.Fleeing)
+				{
+					::logInfo("[ai_horny_engage] " + _entity.getName() + " lost horny or morale broke during travel, aborting");
+					this.m.TargetTile = null;
+					this.m.TargetActor = null;
+					this.getAgent().declareAction();
+					return true;
+				}
+
 				// Movement complete — if no AP was consumed, give up to prevent loop
 				if (_entity.getActionPoints() >= apBefore)
 				{
@@ -188,6 +206,15 @@ this.ai_horny_engage <- this.inherit("scripts/ai/tactical/behavior", {
 				this.getAgent().declareAction();
 			}
 
+			this.m.TargetTile = null;
+			this.m.TargetActor = null;
+			return true;
+		}
+
+		// Horny removed or morale broke while still mid-path — stop moving
+		if (!_entity.getSkills().hasSkill("effects.lewd_horny") || _entity.getMoraleState() == this.Const.MoraleState.Fleeing)
+		{
+			::logInfo("[ai_horny_engage] " + _entity.getName() + " lost horny or morale broke mid-path, stopping");
 			this.m.TargetTile = null;
 			this.m.TargetActor = null;
 			return true;
