@@ -196,11 +196,15 @@ this.ai_horny_engage <- this.inherit("scripts/ai/tactical/behavior", {
 					return true;
 				}
 
-				// Movement complete — if no AP was consumed, give up to prevent loop
+				// Movement complete — if no AP was consumed, give up without declareAction
+				// to prevent infinite re-evaluation loop
 				if (_entity.getActionPoints() >= apBefore)
 				{
 					::logInfo("[ai_horny_engage] " + _entity.getName() + " travel consumed no AP, giving up");
 					this.m.GaveUp = true;
+					this.m.TargetTile = null;
+					this.m.TargetActor = null;
+					return true;
 				}
 
 				this.getAgent().declareAction();

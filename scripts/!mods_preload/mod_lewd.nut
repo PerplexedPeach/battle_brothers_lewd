@@ -13,7 +13,7 @@ local mod = ::Hooks.register(::Lewd.ID, ::Lewd.Version, ::Lewd.Name);
 mod.require("mod_legends", "mod_msu");
 
 // ::mods_queue(modID, "mod_legends,mod_msu", function()
-mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC" function()
+mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC", function()
 {
 	::Lewd.Mod <- ::MSU.Class.Mod(::Lewd.ID, ::Lewd.Version, ::Lewd.Name);
 
@@ -348,7 +348,8 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC" function()
 	// Embrace Pain: auto-pass morale loss checks
 	mod.hook("scripts/entity/tactical/actor", function(q)
 	{
-		q.checkMorale = @(__original) function( _change, _difficulty, _type = this.Const.MoraleCheckType.Default, _showIconBeforeMoraleIcon = "", _noNewLine = false )
+		// _type default: 0 = Const.MoraleCheckType.Default (can't use `this.Const` here, LSP chokes on it)
+		q.checkMorale = @(__original) function( _change, _difficulty, _type = 0, _showIconBeforeMoraleIcon = "", _noNewLine = false )
 		{
 			if (_change < 0 && this.getSkills().hasSkill("perk.lewd_embrace_pain"))
 				return false;

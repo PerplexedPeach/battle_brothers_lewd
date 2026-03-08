@@ -377,10 +377,10 @@
 ::Lewd.Const.SurrenderToPleasureFatigueCost <- 10;
 ::Lewd.Const.SurrenderToPleasureSubThreshold <- 5; // sub score needed (abs value)
 // Scaling: bonus = (apSpent * subScore) / divisor
-// 4 AP * 30 sub / 120 = 1.0 (100% bonus) → 2.0x mounter self-pleasure
-// 9 AP * 30 sub / 120 = 2.25 (225% bonus) → 3.25x mounter self-pleasure
-::Lewd.Const.SurrenderToPleasureMounterDivisor <- 120.0; // full scaling divisor
-::Lewd.Const.SurrenderToPleasureSelfDivisor <- 240.0; // half scaling — self-vulnerability
+// 4 AP * 30 sub / 90 = 1.33 (133% bonus) -> 2.33x mounter self-pleasure
+// 9 AP * 30 sub / 90 = 3.0 (300% bonus) -> 4.0x mounter self-pleasure
+::Lewd.Const.SurrenderToPleasureMounterDivisor <- 90.0; // full scaling divisor
+::Lewd.Const.SurrenderToPleasureSelfDivisor <- 180.0; // half scaling, self-vulnerability
 
 // Mounted defensive bonuses (sub-gated)
 ::Lewd.Const.MountedSubResolveScale <- 0.5; // Resolve += floor(subScore * this)
