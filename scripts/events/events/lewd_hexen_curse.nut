@@ -62,54 +62,29 @@ this.lewd_hexen_curse <- this.inherit("scripts/events/event", {
 
 	function onUpdateScore()
 	{
-		// Only fire once, right after a Hexen battle
-		if (!this.World.Statistics.getFlags().get("lewdFoughtHexen"))
-		{
-			this.m.Score = 0;
-			return;
-		}
-
-		// Check time since last battle
-		if (this.Time.getVirtualTimeF() - this.World.Events.getLastBattleTime() > 8.0)
-		{
-			this.m.Score = 0;
-			return;
-		}
-
-		// Must have won
-		if (this.World.Statistics.getFlags().getAsInt("LastCombatResult") != 1)
-		{
-			this.m.Score = 0;
-			return;
-		}
-
-		// Find male avatar
-		this.m.Man = null;
+		// Fired directly from world_state.onCombatFinished hook. Score must be > 0
+		// for Events.fire() to work, but won't compete in the score system since the
+		// lewdFoughtHexen flag is cleared immediately in the hook.
 		local brothers = this.World.getPlayerRoster().getAll();
+		::logInfo("[hexen_curse] onUpdateScore: roster size=" + brothers.len());
 		foreach (bro in brothers)
 		{
-			if (bro.getGender() == 0 && bro.getFlags().get("IsPlayerCharacter"))
+			local g = bro.getGender();
+			local pc = bro.getFlags().get("IsPlayerCharacter");
+			local cursed = bro.getFlags().has("lewdHexenCursed");
+			local tier = ::Lewd.Mastery.getLewdTier(bro);
+			::logInfo("[hexen_curse]   " + bro.getName() + " gender=" + g + " isPC=" + pc + " cursed=" + cursed + " tier=" + tier);
+			if (g == 0 && pc && !cursed && tier == 0)
 			{
-				// Not already cursed or transformed
-				if (!bro.getFlags().has("lewdHexenCursed") && ::Lewd.Mastery.getLewdTier(bro) == 0)
-				{
-					this.m.Man = bro;
-					break;
-				}
+				this.m.Man = bro;
+				this.m.Score = 1;
+				::logInfo("[hexen_curse]   -> MATCH, score=1");
+				return;
 			}
 		}
 
-		if (this.m.Man == null)
-		{
-			this.m.Score = 0;
-			return;
-		}
-
-		// High score to ensure it fires
-		this.m.Score = 500;
-
-		// Clear the flag so it doesn't re-fire on next beast battle
-		this.World.Statistics.getFlags().set("lewdFoughtHexen", false);
+		::logInfo("[hexen_curse]   -> no match, score=0");
+		this.m.Score = 0;
 	}
 
 	function onPrepare()

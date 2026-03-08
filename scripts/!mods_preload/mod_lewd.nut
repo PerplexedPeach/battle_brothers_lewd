@@ -457,6 +457,37 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC", function()
 		};
 	});
 
+	// Fire hexen transformation event directly after hexen combat (bypass score system)
+	mod.hook("scripts/states/world_state", function(q)
+	{
+		q.onCombatFinished = @(__original) function()
+		{
+			__original();
+
+			if (!this.World.Statistics.getFlags().get("lewdFoughtHexen"))
+				return;
+
+			this.World.Statistics.getFlags().set("lewdFoughtHexen", false);
+
+			// Must have won
+			if (this.World.Statistics.getFlags().getAsInt("LastCombatResult") != 1)
+				return;
+
+			// Find eligible male avatar (not already cursed or transformed)
+			local brothers = this.World.getPlayerRoster().getAll();
+			foreach (bro in brothers)
+			{
+				if (bro.getGender() == 0 && bro.getFlags().get("IsPlayerCharacter")
+					&& !bro.getFlags().has("lewdHexenCursed") && ::Lewd.Mastery.getLewdTier(bro) == 0)
+				{
+					::logInfo("[mod_lewd] Firing hexen curse event for " + bro.getName());
+					this.World.Events.fire("event.lewd_hexen_curse");
+					return;
+				}
+			}
+		};
+	});
+
 	// Register pleasure bar CSS
 	::mods_registerCSS("mod_lewd/pleasure_bar.css");
 
