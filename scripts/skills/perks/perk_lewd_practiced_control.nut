@@ -14,4 +14,5 @@ this.perk_lewd_practiced_control <- this.inherit("scripts/skills/skill", {
 		this.m.IsStacking = false;
 		this.m.IsHidden = false;
 	}
+
 });

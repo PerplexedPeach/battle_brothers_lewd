@@ -154,19 +154,67 @@ this.male_sex_skill <- this.inherit("scripts/skills/actives/sex_skill_base", {
 
 	function getTooltip()
 	{
+		local pos = this.Const.UI.Color.PositiveValue;
+		local neg = this.Const.UI.Color.NegativeValue;
 		local result = this.sex_skill_base.getTooltip();
+
+		// Pleasure info
 		result.push({
 			id = 5,
 			type = "text",
 			icon = "ui/icons/special.png",
-			text = "Deals pleasure to the target (scales with Melee Skill)"
+			text = "Deals [color=" + pos + "]pleasure[/color] to the target (scales with Melee Skill)"
 		});
+
+		// Hit chance
 		result.push({
 			id = 6,
 			type = "text",
-			icon = "ui/icons/special.png",
-			text = "Only usable on female targets"
+			icon = "ui/icons/hitchance.png",
+			text = "Hit chance: [color=" + pos + "]" + this.m.BaseHitChance + "%[/color] base, modified by Melee Skill vs target Melee Defense"
 		});
+
+		// Mounted hit bonus
+		result.push({
+			id = 7,
+			type = "text",
+			icon = "ui/icons/hitchance.png",
+			text = "[color=" + pos + "]+" + ::Lewd.Const.MaleSexMountedHitBonus + "%[/color] hit chance against mounted targets"
+		});
+
+		// Self-pleasure
+		if (this.m.SelfPleasure > 0)
+		{
+			result.push({
+				id = 8,
+				type = "text",
+				icon = "ui/icons/special.png",
+				text = "Inflicts [color=" + neg + "]" + this.m.SelfPleasure + "[/color] pleasure on yourself"
+			});
+		}
+
+		// Horny chance
+		result.push({
+			id = 9,
+			type = "text",
+			icon = "ui/icons/special.png",
+			text = "[color=" + pos + "]" + ::Lewd.Const.HornyApplyChance + "%[/color] chance to inflict Horny on hit"
+		});
+
+		// Auto-hit + target restriction
+		result.push({
+			id = 10,
+			type = "text",
+			icon = "ui/icons/special.png",
+			text = "[color=" + pos + "]Auto-hit[/color] against Horny or Open Invitation targets"
+		});
+		result.push({
+			id = 11,
+			type = "text",
+			icon = "ui/icons/special.png",
+			text = "Only usable on female targets with Pleasure capacity"
+		});
+
 		return result;
 	}
 });

@@ -14,4 +14,5 @@ this.perk_lewd_pliant_body <- this.inherit("scripts/skills/skill", {
 		this.m.IsStacking = false;
 		this.m.IsHidden = false;
 	}
+
 });

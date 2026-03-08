@@ -220,6 +220,8 @@ this.vaginal_skill <- this.inherit("scripts/skills/actives/female_sex_skill", {
 
 	function getTooltip()
 	{
+		local pos = this.Const.UI.Color.PositiveValue;
+		local neg = this.Const.UI.Color.NegativeValue;
 		local result = [
 			{
 				id = 1,
@@ -235,23 +237,26 @@ this.vaginal_skill <- this.inherit("scripts/skills/actives/female_sex_skill", {
 				id = 3,
 				type = "text",
 				text = this.getCostString()
-			},
-			{
-				id = 5,
-				type = "text",
-				icon = "ui/icons/special.png",
-				text = "Deals pleasure to the target (scales with " + this.m.ScalingText + ")"
 			}
 		];
 
+		// Pleasure info
+		result.push({
+			id = 5,
+			type = "text",
+			icon = "ui/icons/special.png",
+			text = "Deals [color=" + pos + "]pleasure[/color] to the target (scales with " + this.m.ScalingText + ")"
+		});
+
+		// Hit chance
 		local tier = this.getTier();
-		if (tier == 1)
+		if (tier >= 3)
 		{
 			result.push({
 				id = 6,
 				type = "text",
-				icon = "ui/icons/special.png",
-				text = "[color=" + this.Const.UI.Color.PositiveValue + "]Establishes mount[/color] on the target"
+				icon = "ui/icons/hitchance.png",
+				text = "[color=" + pos + "]Always hits[/color]"
 			});
 		}
 		else
@@ -259,31 +264,50 @@ this.vaginal_skill <- this.inherit("scripts/skills/actives/female_sex_skill", {
 			result.push({
 				id = 6,
 				type = "text",
-				icon = "ui/icons/special.png",
-				text = "[color=" + this.Const.UI.Color.NegativeValue + "]Requires[/color] mount with target (either direction)"
+				icon = "ui/icons/hitchance.png",
+				text = "Hit chance: [color=" + pos + "]" + this.getBaseHitChance() + "%[/color] base, modified by Allure vs target Resolve"
 			});
 		}
 
-		if (tier >= 3)
+		// Mount mechanic
+		if (tier == 1)
 		{
 			result.push({
 				id = 7,
 				type = "text",
 				icon = "ui/icons/special.png",
-				text = "[color=" + this.Const.UI.Color.PositiveValue + "]Auto-success[/color] (always hits)"
+				text = "[color=" + pos + "]Establishes mount[/color] on the target"
+			});
+		}
+		else
+		{
+			result.push({
+				id = 7,
+				type = "text",
+				icon = "ui/icons/special.png",
+				text = "[color=" + neg + "]Requires[/color] active mount with target"
 			});
 		}
 
+		// Self-pleasure
 		local selfP = this.getSelfPleasure();
 		if (selfP > 0)
 		{
 			result.push({
-				id = 9,
+				id = 8,
 				type = "text",
 				icon = "ui/icons/special.png",
-				text = "[color=" + this.Const.UI.Color.NegativeValue + "]" + selfP + "[/color] self-pleasure"
+				text = "Inflicts [color=" + neg + "]" + selfP + "[/color] pleasure on yourself"
 			});
 		}
+
+		// Horny chance
+		result.push({
+			id = 9,
+			type = "text",
+			icon = "ui/icons/special.png",
+			text = "[color=" + pos + "]" + ::Lewd.Const.HornyApplyChance + "%[/color] chance to inflict Horny on hit"
+		});
 
 		return result;
 	}

@@ -159,19 +159,66 @@ this.female_sex_skill <- this.inherit("scripts/skills/actives/sex_skill_base", {
 
 	function getTooltip()
 	{
+		local pos = this.Const.UI.Color.PositiveValue;
+		local neg = this.Const.UI.Color.NegativeValue;
 		local result = this.sex_skill_base.getTooltip();
+
+		// Pleasure info
 		result.push({
 			id = 5,
 			type = "text",
 			icon = "ui/icons/special.png",
-			text = "Deals pleasure to the target (scales with " + this.m.ScalingText + ")"
+			text = "Deals [color=" + pos + "]pleasure[/color] to the target (scales with " + this.m.ScalingText + ")"
 		});
+
+		// Hit chance
 		result.push({
 			id = 6,
 			type = "text",
-			icon = "ui/icons/special.png",
-			text = "Hit chance scales with Allure vs target Resolve"
+			icon = "ui/icons/hitchance.png",
+			text = "Hit chance: [color=" + pos + "]" + this.getBaseHitChance() + "%[/color] base, modified by Allure vs target Resolve"
 		});
+
+		// Self-pleasure
+		local selfP = this.getSelfPleasure();
+		if (selfP > 0)
+		{
+			result.push({
+				id = 7,
+				type = "text",
+				icon = "ui/icons/special.png",
+				text = "Inflicts [color=" + neg + "]" + selfP + "[/color] pleasure on yourself"
+			});
+		}
+
+		// Mount bonus
+		local cfg = this.getTierConfig();
+		if (cfg.MountBonus > 0)
+		{
+			result.push({
+				id = 8,
+				type = "text",
+				icon = "ui/icons/special.png",
+				text = "[color=" + pos + "]+" + cfg.MountBonus + "[/color] bonus pleasure if target is mounted"
+			});
+		}
+
+		// Horny chance
+		result.push({
+			id = 9,
+			type = "text",
+			icon = "ui/icons/special.png",
+			text = "[color=" + pos + "]" + ::Lewd.Const.HornyApplyChance + "%[/color] chance to inflict Horny on hit"
+		});
+
+		// Auto-hit conditions
+		result.push({
+			id = 10,
+			type = "text",
+			icon = "ui/icons/special.png",
+			text = "[color=" + pos + "]Auto-hit[/color] against Horny or Open Invitation targets"
+		});
+
 		return result;
 	}
 

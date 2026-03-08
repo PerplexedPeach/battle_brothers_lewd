@@ -91,19 +91,68 @@ this.male_force_oral_skill <- this.inherit("scripts/skills/actives/male_sex_skil
 
 	function getTooltip()
 	{
-		local result = this.male_sex_skill.getTooltip();
+		local pos = this.Const.UI.Color.PositiveValue;
+		local neg = this.Const.UI.Color.NegativeValue;
+		local result = this.sex_skill_base.getTooltip();
+
+		// Pleasure info
+		result.push({
+			id = 5,
+			type = "text",
+			icon = "ui/icons/special.png",
+			text = "Deals minimal [color=" + pos + "]pleasure[/color] to the target"
+		});
+
+		// Self-pleasure
+		result.push({
+			id = 6,
+			type = "text",
+			icon = "ui/icons/special.png",
+			text = "Inflicts [color=" + neg + "]" + ::Lewd.Const.MaleForceOralSelfPleasure + "[/color] base pleasure on the user (scales with target\'s oral mastery)"
+		});
+
+		// Hit chance
 		result.push({
 			id = 7,
 			type = "text",
-			icon = "ui/icons/special.png",
-			text = "[color=" + this.Const.UI.Color.NegativeValue + "]Requires[/color] target to be mounted (restrained)"
+			icon = "ui/icons/hitchance.png",
+			text = "Hit chance: [color=" + pos + "]" + this.m.BaseHitChance + "%[/color] base, modified by Melee Skill vs target Melee Defense"
 		});
 		result.push({
 			id = 8,
 			type = "text",
-			icon = "ui/icons/special.png",
-			text = "[color=" + this.Const.UI.Color.PositiveValue + "]" + ::Lewd.Const.MaleForceOralSelfPleasure + "[/color] base self-pleasure (scales with target\'s oral mastery)"
+			icon = "ui/icons/hitchance.png",
+			text = "[color=" + pos + "]+" + ::Lewd.Const.MaleSexMountedHitBonus + "%[/color] hit chance against mounted targets"
 		});
+
+		// Requirement
+		result.push({
+			id = 9,
+			type = "text",
+			icon = "ui/icons/special.png",
+			text = "[color=" + neg + "]Requires[/color] target to be mounted (restrained)"
+		});
+
+		// Horny + target restriction
+		result.push({
+			id = 10,
+			type = "text",
+			icon = "ui/icons/special.png",
+			text = "[color=" + pos + "]" + ::Lewd.Const.HornyApplyChance + "%[/color] chance to inflict Horny on hit"
+		});
+		result.push({
+			id = 11,
+			type = "text",
+			icon = "ui/icons/special.png",
+			text = "[color=" + pos + "]Auto-hit[/color] against Horny or Open Invitation targets"
+		});
+		result.push({
+			id = 12,
+			type = "text",
+			icon = "ui/icons/special.png",
+			text = "Only usable on female targets with Pleasure capacity"
+		});
+
 		return result;
 	}
 });

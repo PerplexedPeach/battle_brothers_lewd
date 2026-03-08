@@ -271,6 +271,8 @@ this.anal_skill <- this.inherit("scripts/skills/actives/female_sex_skill", {
 
 	function getTooltip()
 	{
+		local pos = this.Const.UI.Color.PositiveValue;
+		local neg = this.Const.UI.Color.NegativeValue;
 		local result = [
 			{
 				id = 1,
@@ -286,64 +288,86 @@ this.anal_skill <- this.inherit("scripts/skills/actives/female_sex_skill", {
 				id = 3,
 				type = "text",
 				text = this.getCostString()
-			},
-			{
-				id = 5,
-				type = "text",
-				icon = "ui/icons/special.png",
-				text = "Deals pleasure to the target through anal sex"
 			}
 		];
 
+		// Pleasure info
+		result.push({
+			id = 5,
+			type = "text",
+			icon = "ui/icons/special.png",
+			text = "Deals [color=" + pos + "]pleasure[/color] to the target (scales with " + this.m.ScalingText + ")"
+		});
+
+		// Hit chance
+		result.push({
+			id = 6,
+			type = "text",
+			icon = "ui/icons/hitchance.png",
+			text = "Hit chance: [color=" + pos + "]" + this.getBaseHitChance() + "%[/color] base, modified by Allure vs target Resolve"
+		});
+
+		// Mount mechanic
 		local tier = this.getTier();
 		if (tier == 1)
-		{
-			result.push({
-				id = 6,
-				type = "text",
-				icon = "ui/icons/special.png",
-				text = "[color=" + this.Const.UI.Color.NegativeValue + "]Applies mount to yourself[/color] (enemy mounts you)"
-			});
-		}
-		else
-		{
-			result.push({
-				id = 6,
-				type = "text",
-				icon = "ui/icons/special.png",
-				text = "[color=" + this.Const.UI.Color.NegativeValue + "]Requires[/color] mount with target (either direction)"
-			});
-		}
-
-		local selfP = this.getSelfPleasure();
-		if (selfP > 0)
 		{
 			result.push({
 				id = 7,
 				type = "text",
 				icon = "ui/icons/special.png",
-				text = "[color=" + this.Const.UI.Color.NegativeValue + "]" + selfP + "[/color] self-pleasure"
+				text = "[color=" + neg + "]Applies mount to yourself[/color] — the enemy mounts you"
+			});
+		}
+		else
+		{
+			result.push({
+				id = 7,
+				type = "text",
+				icon = "ui/icons/special.png",
+				text = "[color=" + neg + "]Requires[/color] active mount with target"
 			});
 		}
 
-		local selfDmg = this.getSelfDamage();
-		if (selfDmg > 0)
+		// Self-pleasure
+		local selfP = this.getSelfPleasure();
+		if (selfP > 0)
 		{
 			result.push({
 				id = 8,
 				type = "text",
-				icon = "ui/icons/health.png",
-				text = "[color=" + this.Const.UI.Color.NegativeValue + "]" + selfDmg + "[/color] HP damage to self"
+				icon = "ui/icons/special.png",
+				text = "Inflicts [color=" + neg + "]" + selfP + "[/color] pleasure on yourself"
 			});
 		}
 
-		if (tier >= 3)
+		// Self-damage
+		local selfDmg = this.getSelfDamage();
+		if (selfDmg > 0)
 		{
 			result.push({
 				id = 9,
 				type = "text",
+				icon = "ui/icons/health.png",
+				text = "Deals [color=" + neg + "]" + selfDmg + "[/color] hitpoint damage to yourself"
+			});
+		}
+
+		// Horny chance
+		result.push({
+			id = 10,
+			type = "text",
+			icon = "ui/icons/special.png",
+			text = "[color=" + pos + "]" + ::Lewd.Const.HornyApplyChance + "%[/color] chance to inflict Horny on hit"
+		});
+
+		// T3 special
+		if (tier >= 3)
+		{
+			result.push({
+				id = 11,
+				type = "text",
 				icon = "ui/icons/special.png",
-				text = "If you climax during this, deal [color=" + this.Const.UI.Color.PositiveValue + "]+" + ::Lewd.Const.AnalT3KamikazePleasure + "[/color] bonus pleasure to target"
+				text = "If you climax during this, deal [color=" + pos + "]+" + ::Lewd.Const.AnalT3KamikazePleasure + "[/color] bonus pleasure to target"
 			});
 		}
 

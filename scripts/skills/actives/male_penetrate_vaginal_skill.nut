@@ -125,28 +125,83 @@ this.male_penetrate_vaginal_skill <- this.inherit("scripts/skills/actives/male_s
 
 	function getTooltip()
 	{
-		local result = this.male_sex_skill.getTooltip();
+		local pos = this.Const.UI.Color.PositiveValue;
+		local neg = this.Const.UI.Color.NegativeValue;
+		local result = this.sex_skill_base.getTooltip();
+
+		// Pleasure info
+		result.push({
+			id = 5,
+			type = "text",
+			icon = "ui/icons/special.png",
+			text = "Deals [color=" + pos + "]pleasure[/color] to the target (scales with Melee Skill)"
+		});
+
+		// Hit chance
+		result.push({
+			id = 6,
+			type = "text",
+			icon = "ui/icons/hitchance.png",
+			text = "Hit chance: [color=" + pos + "]" + this.m.BaseHitChance + "%[/color] base, modified by Melee Skill vs target Melee Defense"
+		});
 		result.push({
 			id = 7,
 			type = "text",
-			icon = "ui/icons/special.png",
-			text = "[color=" + this.Const.UI.Color.PositiveValue + "]Establishes mount[/color] on the target (or refreshes if already mounted)"
+			icon = "ui/icons/hitchance.png",
+			text = "[color=" + pos + "]+" + ::Lewd.Const.MaleSexMountedHitBonus + "%[/color] hit chance against mounted targets"
 		});
 		result.push({
 			id = 8,
 			type = "text",
-			icon = "ui/icons/special.png",
-			text = "[color=" + this.Const.UI.Color.PositiveValue + "]+" + ::Lewd.Const.MalePenetrateVaginalMountedHitBonus + "%[/color] hit chance if target already mounted"
+			icon = "ui/icons/hitchance.png",
+			text = "[color=" + pos + "]+" + ::Lewd.Const.MalePenetrateVaginalMountedHitBonus + "%[/color] additional hit chance if target already mounted"
 		});
+
+		// Mount
+		result.push({
+			id = 9,
+			type = "text",
+			icon = "ui/icons/special.png",
+			text = "[color=" + pos + "]Establishes mount[/color] on the target, or refreshes duration if already mounted"
+		});
+		result.push({
+			id = 10,
+			type = "text",
+			icon = "ui/icons/special.png",
+			text = "[color=" + pos + "]+" + ::Lewd.Const.MalePenetrateVaginalMountedPleasureBonus + "[/color] bonus pleasure if target is mounted"
+		});
+
+		// Self-pleasure
 		if (this.m.SelfPleasure > 0)
 		{
 			result.push({
-				id = 9,
+				id = 11,
 				type = "text",
 				icon = "ui/icons/special.png",
-				text = "[color=" + this.Const.UI.Color.NegativeValue + "]" + this.m.SelfPleasure + "[/color] self-pleasure"
+				text = "Inflicts [color=" + neg + "]" + this.m.SelfPleasure + "[/color] pleasure on the user"
 			});
 		}
+
+		// Horny + target restriction
+		result.push({
+			id = 12,
+			type = "text",
+			icon = "ui/icons/special.png",
+			text = "[color=" + pos + "]" + ::Lewd.Const.HornyApplyChance + "%[/color] chance to inflict Horny on hit"
+		});
+		result.push({
+			id = 13,
+			type = "text",
+			icon = "ui/icons/special.png",
+			text = "[color=" + pos + "]Auto-hit[/color] against Horny or Open Invitation targets"
+		});
+		result.push({
+			id = 14,
+			type = "text",
+			icon = "ui/icons/special.png",
+			text = "Only usable on female targets with Pleasure capacity"
+		});
+
 		return result;
 	}
 });
