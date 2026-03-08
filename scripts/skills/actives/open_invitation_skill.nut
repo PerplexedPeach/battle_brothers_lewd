@@ -54,7 +54,9 @@ this.open_invitation_skill <- this.inherit("scripts/skills/skill", {
 	{
 		if (this.isToggled())
 			return "Withdraw your invitation, returning to normal.";
-		return "Invite the enemy in. Your sex abilities deal [color=" + this.Const.UI.Color.PositiveValue + "]+25%[/color] more pleasure, but enemy sex abilities [color=" + this.Const.UI.Color.NegativeValue + "]auto-hit[/color] you.";
+		local pctDealt = this.Math.floor((::Lewd.Const.SensualFocusOpenInvitationMult - 1.0) * 100);
+		local pctReceived = this.Math.floor((::Lewd.Const.OpenInvitationReceivedPleasureMult - 1.0) * 100);
+		return "Invite the enemy in. Your sex abilities deal [color=" + this.Const.UI.Color.PositiveValue + "]+" + pctDealt + "%[/color] more pleasure, but enemy sex abilities [color=" + this.Const.UI.Color.NegativeValue + "]auto-hit[/color] you and deal [color=" + this.Const.UI.Color.NegativeValue + "]+" + pctReceived + "%[/color] more pleasure.";
 	}
 
 	function onVerifyTarget( _originTile, _targetTile )
