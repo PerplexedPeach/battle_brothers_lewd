@@ -213,7 +213,18 @@ this.climax_effect <- this.inherit("scripts/skills/skill", {
 				local domSource = this.Tactical.getEntityByID(sourceID);
 				if (domSource != null && domSource.isAlive())
 				{
-					if (!domSource.getSkills().hasSkill("effects.open_invitation"))
+					if (domSource.getSkills().hasSkill("effects.open_invitation"))
+					{
+						// Open Invitation: submissive gesture, accumulate 0.1 sub per climax inflicted
+						local accum = domSource.getFlags().getAsInt("lewdOISubAccum") + 1;
+						if (accum >= 10)
+						{
+							::Lewd.Mastery.addDomSub(domSource, -1);
+							accum = 0;
+						}
+						domSource.getFlags().set("lewdOISubAccum", accum);
+					}
+					else
 						::Lewd.Mastery.addDomSub(domSource, 1);
 
 					// Persistent partner-climax counter on the source player

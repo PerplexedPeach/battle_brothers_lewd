@@ -111,6 +111,10 @@ this.male_sex_skill <- this.inherit("scripts/skills/actives/sex_skill_base", {
 		if (_target.getSkills().hasSkill("effects.lewd_mounted"))
 			pleasure += this.calculateMountBonus(_target);
 
+		// Open Invitation: target receives more pleasure
+		if (_target.getSkills().hasSkill("effects.open_invitation"))
+			pleasure = this.Math.floor(pleasure * ::Lewd.Const.OpenInvitationReceivedPleasureMult);
+
 		// Surrender to Pleasure: target is more vulnerable to pleasure (half scaling)
 		local surrenderEffect = _target.getSkills().getSkillByID("effects.surrender_to_pleasure");
 		if (surrenderEffect != null)

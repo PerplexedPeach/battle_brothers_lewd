@@ -331,7 +331,7 @@
 ::Lewd.Const.AlluringPresencePleasureMax <- 10;
 ::Lewd.Const.AlluringPresenceAuraPleasure <- 3; // pleasure to adjacent enemies per turn / on move adjacent
 ::Lewd.Const.AlluringPresenceHitBonus <- 15; // +15% hit chance on first sex ability use per turn
-::Lewd.Const.SensualFocusOpenInvitationMult <- 1.15; // +15% additional pleasure when Open Invitation active (stacks with base 10%)
+::Lewd.Const.SensualFocusOpenInvitationMult <- 1.25; // +25% additional pleasure when Open Invitation active (stacks with base 10%)
 ::Lewd.Const.PracticedControlReflectionMult <- 0.5; // -50% self-pleasure (reflection) from sex abilities
 ::Lewd.Const.PracticedControlFatigueMult <- 0.75; // -25% fatigue cost on sex abilities
 ::Lewd.Const.InsatiableAPGain <- 3; // AP gained when actively bringing someone to climax
@@ -399,8 +399,8 @@
 // --- Male Sex Abilities ---
 ::Lewd.Const.MaleGropeAP <- 3;
 ::Lewd.Const.MaleGropeFatigue <- 8;
-::Lewd.Const.MaleGropeBasePleasure <- 2;
-::Lewd.Const.MaleGropeMeleeSkillScale <- 0.04;
+::Lewd.Const.MaleGropeBasePleasure <- 3;
+::Lewd.Const.MaleGropeMeleeSkillScale <- 0.06;
 ::Lewd.Const.MaleGropeBaseHitChance <- 25;
 
 ::Lewd.Const.MaleForceOralAP <- 5;
@@ -415,21 +415,21 @@
 // Male Penetrate (Vaginal) — easier, cheaper
 ::Lewd.Const.MalePenetrateVaginalAP <- 5;
 ::Lewd.Const.MalePenetrateVaginalFatigue <- 18;
-::Lewd.Const.MalePenetrateVaginalBasePleasure <- 8;
-::Lewd.Const.MalePenetrateVaginalMeleeSkillScale <- 0.10;
+::Lewd.Const.MalePenetrateVaginalBasePleasure <- 10;
+::Lewd.Const.MalePenetrateVaginalMeleeSkillScale <- 0.12;
 ::Lewd.Const.MalePenetrateVaginalBaseHitChance <- 25;
 ::Lewd.Const.MalePenetrateVaginalMountedHitBonus <- 20;
-::Lewd.Const.MalePenetrateVaginalMountedPleasureBonus <- 3;
+::Lewd.Const.MalePenetrateVaginalMountedPleasureBonus <- 4;
 ::Lewd.Const.MalePenetrateVaginalSelfPleasure <- 3;
 
 // Male Penetrate (Anal) — rougher, harder
 ::Lewd.Const.MalePenetrateAnalAP <- 6;
 ::Lewd.Const.MalePenetrateAnalFatigue <- 22;
-::Lewd.Const.MalePenetrateAnalBasePleasure <- 7;
-::Lewd.Const.MalePenetrateAnalMeleeSkillScale <- 0.08;
+::Lewd.Const.MalePenetrateAnalBasePleasure <- 9;
+::Lewd.Const.MalePenetrateAnalMeleeSkillScale <- 0.10;
 ::Lewd.Const.MalePenetrateAnalBaseHitChance <- 25;
 ::Lewd.Const.MalePenetrateAnalMountedHitBonus <- 20;
-::Lewd.Const.MalePenetrateAnalMountedPleasureBonus <- 3;
+::Lewd.Const.MalePenetrateAnalMountedPleasureBonus <- 4;
 ::Lewd.Const.MalePenetrateAnalSelfPleasure <- 5;
 ::Lewd.Const.MalePenetrateAnalMasoTierBonus <- 3;
 
@@ -449,6 +449,7 @@
 	// hands, feet — no preferred continuation
 };
 ::Lewd.Const.AIContinuationChance <- 80; // % chance AI follows continuation instead of normal selection
+::Lewd.Const.OpenInvitationReceivedPleasureMult <- 1.25; // +25% pleasure received from enemy sex abilities
 ::Lewd.Const.OpenInvitationAIPriority <- 2.0; // massive AI targeting bonus for Open Invitation targets
 
 // --- Cum Facial Chances (% per sex type when male climaxes) ---

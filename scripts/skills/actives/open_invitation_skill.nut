@@ -1,5 +1,5 @@
 // Open Invitation — toggle granted by Sensual Focus perk
-// When active: +15% pleasure dealt by sex abilities, but enemy sex abilities auto-hit you
+// When active: +25% pleasure dealt by sex abilities, but enemy sex abilities auto-hit you
 // Can only toggle once per turn
 this.open_invitation_skill <- this.inherit("scripts/skills/skill", {
 	m = {
@@ -54,7 +54,7 @@ this.open_invitation_skill <- this.inherit("scripts/skills/skill", {
 	{
 		if (this.isToggled())
 			return "Withdraw your invitation, returning to normal.";
-		return "Invite the enemy in. Your sex abilities deal [color=" + this.Const.UI.Color.PositiveValue + "]+15%[/color] more pleasure, but enemy sex abilities [color=" + this.Const.UI.Color.NegativeValue + "]auto-hit[/color] you.";
+		return "Invite the enemy in. Your sex abilities deal [color=" + this.Const.UI.Color.PositiveValue + "]+25%[/color] more pleasure, but enemy sex abilities [color=" + this.Const.UI.Color.NegativeValue + "]auto-hit[/color] you.";
 	}
 
 	function onVerifyTarget( _originTile, _targetTile )

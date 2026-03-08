@@ -17,6 +17,7 @@ this.open_invitation_effect <- this.inherit("scripts/skills/skill", {
 
 	function getTooltip()
 	{
+		local pctReceived = this.Math.floor((::Lewd.Const.OpenInvitationReceivedPleasureMult - 1.0) * 100);
 		return [
 			{
 				id = 1,
@@ -32,19 +33,25 @@ this.open_invitation_effect <- this.inherit("scripts/skills/skill", {
 				id = 5,
 				type = "text",
 				icon = "ui/icons/special.png",
-				text = "[color=" + this.Const.UI.Color.PositiveValue + "]+15%[/color] pleasure dealt by sex abilities"
+				text = "[color=" + this.Const.UI.Color.PositiveValue + "]+25%[/color] pleasure dealt by sex abilities"
 			},
 			{
 				id = 6,
 				type = "text",
 				icon = "ui/icons/special.png",
-				text = "[color=" + this.Const.UI.Color.NegativeValue + "]You let yourself accept all enemy sex abilities[/color]"
+				text = "[color=" + this.Const.UI.Color.NegativeValue + "]+" + pctReceived + "% pleasure received from enemy sex abilities[/color]"
 			},
 			{
 				id = 7,
 				type = "text",
 				icon = "ui/icons/special.png",
-				text = "[color=" + this.Const.UI.Color.NegativeValue + "]Bringing enemies to climax does not increase Dominance[/color]"
+				text = "[color=" + this.Const.UI.Color.NegativeValue + "]You let yourself accept all enemy sex abilities[/color]"
+			},
+			{
+				id = 8,
+				type = "text",
+				icon = "ui/icons/special.png",
+				text = "[color=" + this.Const.UI.Color.NegativeValue + "]Bringing enemies to climax slowly increases Submission instead of Dominance[/color]"
 			}
 		];
 	}

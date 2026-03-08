@@ -244,7 +244,7 @@ this.female_sex_skill <- this.inherit("scripts/skills/actives/sex_skill_base", {
 		if (user.getSkills().hasSkill("perk.lewd_sensual_focus"))
 		{
 			pleasure = this.Math.floor(pleasure * ::Lewd.Const.SensualFocusPleasureMult);
-			// Open Invitation: additional +15% pleasure when active
+			// Open Invitation: additional +25% pleasure when active
 			if (user.getSkills().hasSkill("effects.open_invitation"))
 				pleasure = this.Math.floor(pleasure * ::Lewd.Const.SensualFocusOpenInvitationMult);
 		}
