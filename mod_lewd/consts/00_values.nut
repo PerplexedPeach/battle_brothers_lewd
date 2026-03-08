@@ -49,7 +49,7 @@
 ::Lewd.Const.AllureToDazeBaseChance <- 50;
 ::Lewd.Const.AllureToDazeChanceMultiplier <- 1;
 ::Lewd.Const.AllureToDazeDistancePenalty <- 20; // effect chance is reduced by this much for every tile of distance from the target
-::Lewd.Const.BeautyAllyResolveBonus <- 50; // allied males get +50 effective resolve vs Entrancing Beauty
+::Lewd.Const.BeautyAllyResolveBonus <- 30; // allied males get +30 effective resolve vs Entrancing Beauty
 
 ::Lewd.Const.SeduceBaseChance <- 50;
 ::Lewd.Const.SeduceAllureChanceMultiplier <- 1;
