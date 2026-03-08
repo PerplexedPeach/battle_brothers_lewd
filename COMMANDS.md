@@ -1,21 +1,3 @@
-# TODOS
-- create random events
-	- based on allure
-	- based on seduce ability used in battle
-	- create graph with sub/dom sex events with bros
-		- body modification and piercings could actually be tied into being too submissive to one of your bros
-- monster taming - if you use the seduce ability on them then at the end of the battle you'll get an event popup related to that for taming them
-- pleasure / orgasm sex framework
-	- in-combat sex abilities
-		- deals pleasure and fatigue on both sides
-- body modification corruption series (separate boobs and ass traits)
-- sexy armor
-- sub/dom relation with bros
-- create sprites for the corruption event characters
-- custom starting scenarios
-- animation fading in/out backside showing ass when molested/targeted by specific abilities
-- ancient wig as hairstyle
-
 # Useful to User Code Snippets
 Get `mod_dev_console` [https://www.nexusmods.com/battlebrothers/mods/380](mod), drop it in `Battle Brothers\data` and you can press `Ctrl + G` to bring up the console in game.
 

@@ -1,14 +1,17 @@
-## User specified
-Defeat via climax:
-- enemies have a maximum number of climaxes they can endure in a single battle before they are defeated (submits)
-- number depends on max HP and resolve (most enemies will have 1 climax at most, but minibosses can have 2 or more)
-- player actors can also be defeated through pleasure, but they just exit the battle with no injuries or deaths (if this is possible)
-- can tie player defeat through climax to future mechanics
+# TODOS
+- create random events
+	- based on allure
+	- based on seduce ability used in battle
+	- create graph with sub/dom sex events with bros
+		- body modification and piercings could actually be tied into being too submissive to one of your bros
+- monster taming - if you use the seduce ability on them then at the end of the battle you'll get an event popup related to that for taming them
+- sexy armor
+- create sprites for the corruption event characters
+- custom starting scenarios
+- ancient wig as hairstyle
 
-Own party harassement:
-- having high allure runs the (small) risk of your party members sometimes using some of their AP to harrass you
-- harassment includes spanking, fingering, and so on
-- deals pleasure to you, potentially making you horny
+Defeat via climax:
+- can tie player defeat through climax to future mechanics
 
 Sub/Dom mechanics distinction:
 - dom reduces the chance of getting hit by lewd skills (acts like a defense of sorts)
