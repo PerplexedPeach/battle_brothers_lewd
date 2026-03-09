@@ -228,6 +228,66 @@ this.climax_effect <- this.inherit("scripts/skills/skill", {
 						local cur = domSource.getFlags().getAsInt("lewdPartnerClimaxes");
 						domSource.getFlags().set("lewdPartnerClimaxes", cur + 1);
 					}
+
+					// Ethereal stat absorption: source learns from enemies they make climax
+					if (::Lewd.Const.EtherealStatAbsorptionEnabled
+						&& domSource.isPlayerControlled()
+						&& ::Lewd.Mastery.getLewdTier(domSource) >= ::Lewd.Const.EtherealStatAbsorptionMinTier)
+					{
+						local src = domSource.getBaseProperties();
+						local tgt = actor.getBaseProperties();
+						local stats = [
+							{ prop = "Hitpoints",     label = "Hitpoints" },
+							{ prop = "Bravery",       label = "Resolve" },
+							{ prop = "Stamina",       label = "Stamina" },
+							{ prop = "MeleeSkill",    label = "Melee Skill" },
+							{ prop = "RangedSkill",   label = "Ranged Skill" },
+							{ prop = "MeleeDefense",  label = "Melee Defense" },
+							{ prop = "RangedDefense", label = "Ranged Defense" },
+							{ prop = "Initiative",    label = "Initiative" }
+						];
+						local eligible = [];
+						foreach (s in stats)
+						{
+							if (src[s.prop] < tgt[s.prop])
+								eligible.push(s);
+						}
+						if (eligible.len() > 0)
+						{
+							local s = eligible[this.Math.rand(0, eligible.len() - 1)];
+							src[s.prop] += 1;
+							this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(domSource) + " absorbs +1 " + s.label + " from " + this.Const.UI.getColorizedEntityName(actor));
+
+							// Visual/audio feedback on the absorber
+							if (domSource.isPlacedOnMap())
+							{
+								// Climax overlay on self
+								this.Tactical.spawnSpriteEffect("climax", this.createColor("#ffffff"), domSource.getTile(),
+									this.Const.Tactical.Settings.SkillOverlayOffsetX, this.Const.Tactical.Settings.SkillOverlayOffsetY,
+									this.Const.Tactical.Settings.SkillOverlayScale, this.Const.Tactical.Settings.SkillOverlayScale,
+									this.Const.Tactical.Settings.SkillOverlayStayDuration * 2, 0, this.Const.Tactical.Settings.SkillOverlayFadeDuration);
+
+								// Long moan
+								local moans = ::Lewd.Const.SoundLongMoans;
+								this.Sound.play(moans[this.Math.rand(0, moans.len() - 1)], this.Const.Sound.Volume.Skill, domSource.getPos());
+
+								// Pink flash twice
+								local layers = this.Const.ShakeCharacterLayers[2];
+								local selfTile = domSource.getTile();
+								this.Tactical.getShaker().shake(domSource, selfTile, 2,
+									::Lewd.Const.SexFlashColor, ::Lewd.Const.SexFlashHighlight,
+									::Lewd.Const.SexFlashFactor, ::Lewd.Const.SexFlashSaturation,
+									layers, 1.0);
+								this.Time.scheduleEvent(this.TimeUnit.Virtual, 400, function(_d) {
+									if (!_d.Entity.isAlive() || !_d.Entity.isPlacedOnMap()) return;
+									_d.Tactical.getShaker().shake(_d.Entity, _d.Tile, 2,
+										::Lewd.Const.SexFlashColor, ::Lewd.Const.SexFlashHighlight,
+										::Lewd.Const.SexFlashFactor, ::Lewd.Const.SexFlashSaturation,
+										_d.Layers, 1.0);
+								}, { Entity = domSource, Tile = selfTile, Tactical = this.Tactical, Layers = layers });
+							}
+						}
+					}
 				}
 			}
 		}

@@ -42,6 +42,18 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC", function()
 	::Lewd.Const.AIBehaviorIDHorny = ::Const.AI.Behavior.ID.LewdHorny;
 	::Lewd.Const.AIBehaviorIDHornyEngage = ::Const.AI.Behavior.ID.LewdHornyEngage;
 
+	// --- Mod Settings ---
+	local page = ::Lewd.Mod.ModSettings.addPage("General");
+	local settingStatAbsorption = page.addBooleanSetting(
+		"EtherealStatAbsorption",
+		true,
+		"Succubus Stat Absorption",
+		"When enabled, Ethereal-tier characters absorb +1 to any stat lower than the enemy's when causing climax."
+	);
+	settingStatAbsorption.addAfterChangeCallback(function(_oldValue) {
+		::Lewd.Const.EtherealStatAbsorptionEnabled = this.getValue();
+	});
+
 	// Restored female hairstyles from legends 19.1.0 (renamed to avoid conflict with current legends)
 	local lewdHairs = ["lewd_01", "lewd_02", "lewd_03", "lewd_04"];
 	::Const.Hair.AllFemale.extend(lewdHairs);

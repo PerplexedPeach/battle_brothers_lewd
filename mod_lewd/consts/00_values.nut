@@ -484,6 +484,10 @@
 ::Lewd.Const.OrgasmThresholdWillingVictim <- 1;
 ::Lewd.Const.OrgasmThresholdInsatiable <- 3;
 
+// Ethereal Stat Absorption: gain +1 stat when causing enemy climax (if enemy's base > yours)
+::Lewd.Const.EtherealStatAbsorptionEnabled <- true;
+::Lewd.Const.EtherealStatAbsorptionMinTier <- 3; // minimum lewd tier required (3 = Ethereal)
+
 // Ethereal Progression Event Thresholds
 ::Lewd.Const.EtherealFirstEventThreshold <- 20;   // combined climaxes (self + partner) for foreshadowing
 ::Lewd.Const.EtherealSecondEventThreshold <- 40;  // combined climaxes for awakening
