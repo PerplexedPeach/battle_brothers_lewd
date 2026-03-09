@@ -62,9 +62,16 @@ this.lewd_hexen_curse <- this.inherit("scripts/events/event", {
 
 	function onUpdateScore()
 	{
-		// Fired directly from world_state.onCombatFinished hook. Score must be > 0
-		// for Events.fire() to work, but won't compete in the score system since the
-		// lewdFoughtHexen flag is cleared immediately in the hook.
+		// Only eligible after a hexen fight. The lewdFoughtHexen flag is set in
+		// lewd_info_effect.onCombatStarted and cleared in the onCombatFinished hook
+		// after this event fires. Without this check the event enters the random
+		// pool and can fire after any battle.
+		if (!this.World.Statistics.getFlags().get("lewdFoughtHexen"))
+		{
+			this.m.Score = 0;
+			return;
+		}
+
 		local brothers = this.World.getPlayerRoster().getAll();
 		::logInfo("[hexen_curse] onUpdateScore: roster size=" + brothers.len());
 		foreach (bro in brothers)

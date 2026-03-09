@@ -485,11 +485,12 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC", function()
 			if (!this.World.Statistics.getFlags().get("lewdFoughtHexen"))
 				return;
 
-			this.World.Statistics.getFlags().set("lewdFoughtHexen", false);
-
 			// Must have won
 			if (this.World.Statistics.getFlags().getAsInt("LastCombatResult") != 1)
+			{
+				this.World.Statistics.getFlags().set("lewdFoughtHexen", false);
 				return;
+			}
 
 			// Find eligible male avatar (not already cursed or transformed)
 			local brothers = this.World.getPlayerRoster().getAll();
@@ -500,9 +501,12 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC", function()
 				{
 					::logInfo("[mod_lewd] Firing hexen curse event for " + bro.getName());
 					this.World.Events.fire("event.lewd_hexen_curse");
+					this.World.Statistics.getFlags().set("lewdFoughtHexen", false);
 					return;
 				}
 			}
+
+			this.World.Statistics.getFlags().set("lewdFoughtHexen", false);
 		};
 	});
 
