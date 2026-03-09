@@ -286,16 +286,95 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC", function()
 	mod.hook("scripts/items/item_container", function(q)
 	{
 		q.unequip = @(__original) function(_item) {
-			 // check item flags for cursed, if cursed, don't unequip and maybe show some kind of message about the item being cursed
-			 if (_item != null && _item.getFlags().has("cursed"))
-			 {
-				if ("onRemoveWhileCursed" in _item) {
+			if (_item != null && _item.getFlags().has("cursed"))
+			{
+				if ("onRemoveWhileCursed" in _item)
 					_item.onRemoveWhileCursed();
-				}
-				 // TODO add some kind of message about the item being cursed and not unequipping
-				 return false;
-			 }
-			 return __original(_item);
+				return false;
+			}
+			return __original(_item);
+		};
+	});
+
+	// Block natural weapons from leaving the character (stash, ground, displaced by equip)
+	mod.hook("scripts/ui/screens/character/character_screen", function(q)
+	{
+		// Helper: check if a natural weapon would be displaced by equipping into its slot
+		local function hasNaturalWeaponTarget(_targetItems)
+		{
+			if (_targetItems.firstItem != null && _targetItems.firstItem.getFlags().has("naturalWeapon"))
+				return true;
+			if (_targetItems.secondItem != null && _targetItems.secondItem.getFlags().has("naturalWeapon"))
+				return true;
+			return false;
+		}
+
+		// Block dragging natural weapons to stash
+		q.general_onDropItemIntoStash = @(__original) function(_data) {
+			local data = this.helper_queryEntityItemData(_data, true);
+			if (!("error" in data) && data.sourceItem != null && data.sourceItem.getFlags().has("naturalWeapon"))
+				return this.helper_convertErrorToUIData(this.Const.CharacterScreen.ErrorCode.FailedToRemoveItemFromTargetSlot);
+			return __original(_data);
+		};
+
+		// Block dropping natural weapons on ground (from paperdoll)
+		q.tactical_onDropItemToGround = @(__original) function(_data) {
+			local data = this.helper_queryEntityItemData(_data);
+			if (!("error" in data) && data.sourceItem != null && data.sourceItem.getFlags().has("naturalWeapon"))
+				return this.helper_convertErrorToUIData(this.Const.CharacterScreen.ErrorCode.FailedToRemoveItemFromTargetSlot);
+			return __original(_data);
+		};
+
+		// Block dragging natural weapons from bag to stash
+		q.general_onDropBagItemIntoStash = @(__original) function(_data) {
+			local data = this.helper_queryBagItemDataToInventory(_data);
+			if (!("error" in data) && data.sourceItem != null && data.sourceItem.getFlags().has("naturalWeapon"))
+				return this.helper_convertErrorToUIData(this.Const.CharacterScreen.ErrorCode.FailedToRemoveItemFromTargetSlot);
+			return __original(_data);
+		};
+
+		// Block dropping natural weapons from bag to ground
+		q.tactical_onDropBagItemToGround = @(__original) function(_data) {
+			local data = this.helper_queryBagItemDataToInventory(_data);
+			if (!("error" in data) && data.sourceItem != null && data.sourceItem.getFlags().has("naturalWeapon"))
+				return this.helper_convertErrorToUIData(this.Const.CharacterScreen.ErrorCode.FailedToRemoveItemFromTargetSlot);
+			return __original(_data);
+		};
+
+		// Block dropping a stash item onto a bag slot occupied by a natural weapon
+		q.general_onDropStashItemIntoBag = @(__original) function(_data) {
+			local data = this.helper_queryStashItemData(_data);
+			if (!("error" in data) && data.targetItemIdx != null)
+			{
+				local targetItem = data.inventory.getItemAtBagSlot(data.targetItemIdx);
+				if (targetItem != null && targetItem.getFlags().has("naturalWeapon"))
+					return this.helper_convertErrorToUIData(this.Const.CharacterScreen.ErrorCode.FailedToRemoveItemFromTargetSlot);
+			}
+			return __original(_data);
+		};
+
+		// Block equipping a stash item into a slot occupied by a natural weapon
+		q.general_onEquipStashItem = @(__original) function(_data) {
+			local data = this.helper_queryStashItemData(_data);
+			if (!("error" in data))
+			{
+				local targetItems = this.helper_queryEquipmentTargetItems(data.inventory, data.sourceItem);
+				if (hasNaturalWeaponTarget(targetItems))
+					return this.helper_convertErrorToUIData(this.Const.CharacterScreen.ErrorCode.FailedToRemoveItemFromTargetSlot);
+			}
+			return __original(_data);
+		};
+
+		// Block equipping a bag item into a slot occupied by a natural weapon
+		q.general_onEquipBagItem = @(__original) function(_data) {
+			local data = this.helper_queryEntityItemData(_data);
+			if (!("error" in data))
+			{
+				local targetItems = this.helper_queryEquipmentTargetItems(data.inventory, data.sourceItem);
+				if (hasNaturalWeaponTarget(targetItems))
+					return this.helper_convertErrorToUIData(this.Const.CharacterScreen.ErrorCode.FailedToRemoveItemFromTargetSlot);
+			}
+			return __original(_data);
 		};
 	});
 

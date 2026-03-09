@@ -97,4 +97,19 @@
 		w.getSprite("miniboss").setBrush("");
 		w.setDirty(true);
 	}
+
+	// Grant the succubus tail weapon to an actor.
+	// Adds +1 bag slot and places the tail in it, flagged as a natural weapon (can swap but not remove).
+	function grantTail( _actor )
+	{
+		local items = _actor.getItems();
+
+		local slots = items.getUnlockedBagSlots();
+		items.setUnlockedBagSlots(slots + 1);
+
+		local tail = this.new("scripts/items/weapons/tail_whip");
+		tail.getFlags().set("naturalWeapon", true);
+
+		items.addToBag(tail, slots);
+	}
 };
