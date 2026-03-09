@@ -46,7 +46,12 @@ this.sex_skill_base <- this.inherit("scripts/skills/skill", {
 		if (!this.skill.onVerifyTarget(_originTile, _targetTile)) return false;
 		local target = _targetTile.getEntity();
 		if (target == null) return false;
-		if (this.m.Container.getActor().isAlliedWith(target)) return false;
+		local user = this.m.Container.getActor();
+		if (user.isAlliedWith(target))
+		{
+			// Ethereal+ can target allies (for draining)
+			if (::Lewd.Mastery.getLewdTier(user) < 3) return false;
+		}
 		if (target.getPleasureMax() <= 0) return false;
 		return true;
 	}

@@ -107,9 +107,10 @@ this.lewd_info_effect <- this.inherit("scripts/skills/skill", {
 			_properties.Allure += ::Lewd.Const.AllureFromOld;
 		}
 
-		// Enemy PleasureMax: humanoid enemies get base + Resolve-scaled PleasureMax
+		// PleasureMax for non-lewd humanoids (enemies + allies without lewd traits)
 		// Entities with MoraleState.Ignore are undead/constructs/beasts — skip them
-		if (!actor.isPlayerControlled() && actor.getMoraleState() != this.Const.MoraleState.Ignore)
+		// Allies with lewd traits already get PleasureMax from those traits
+		if (_properties.PleasureMax <= 0 && actor.getMoraleState() != this.Const.MoraleState.Ignore)
 		{
 			_properties.PleasureMax += ::Lewd.Const.EnemyPleasureMaxBase + this.Math.floor(_properties.Bravery * ::Lewd.Const.EnemyPleasureMaxResolveScale);
 		}

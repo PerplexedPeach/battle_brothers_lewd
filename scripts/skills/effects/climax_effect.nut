@@ -149,10 +149,16 @@ this.climax_effect <- this.inherit("scripts/skills/skill", {
 				{
 					local mounting = actor.getSkills().getSkillByID("effects.lewd_mounting");
 					cumTarget = this.Tactical.getEntityByID(mounting.getTargetID());
+					::logInfo("[cum_facial] " + actor.getName() + " is mounting, target ID=" + mounting.getTargetID() + " resolved=" + (cumTarget != null ? cumTarget.getName() : "null"));
 				}
 				else if (actor.m.LastPleasureSourceID >= 0)
 				{
 					cumTarget = this.Tactical.getEntityByID(actor.m.LastPleasureSourceID);
+					::logInfo("[cum_facial] " + actor.getName() + " using LastPleasureSourceID=" + actor.m.LastPleasureSourceID + " resolved=" + (cumTarget != null ? cumTarget.getName() : "null"));
+				}
+				else
+				{
+					::logInfo("[cum_facial] " + actor.getName() + " has no mount target and LastPleasureSourceID=" + actor.m.LastPleasureSourceID + ", skipping");
 				}
 
 				if (cumTarget != null && cumTarget.isAlive() && cumTarget.hasSprite("cum_facial"))
@@ -169,21 +175,30 @@ this.climax_effect <- this.inherit("scripts/skills/skill", {
 					else if (sexType == "anal")    chance = ::Lewd.Const.CumFacialChanceAnal;
 					else if (sexType == "feet")    chance = ::Lewd.Const.CumFacialChanceFeet;
 
-					if (this.Math.rand(1, 100) <= chance)
+					local roll = this.Math.rand(1, 100);
+					::logInfo("[cum_facial] " + actor.getName() + " -> " + cumTarget.getName() + " sexType=" + sexType + " chance=" + chance + " roll=" + roll);
+
+					if (roll <= chance)
 					{
+						::logInfo("[cum_facial] HIT! Spawning projectile from " + actor.getName() + " tile=" + actor.getTile().ID + " to " + cumTarget.getName() + " tile=" + cumTarget.getTile().ID);
+
 						// Spawn ejaculation projectile from male to female
 						local time = this.Tactical.spawnProjectileEffect(
 							"effect_cum_01", actor.getTile(), cumTarget.getTile(),
 							0.5, 1.5, false, false);
 
+						::logInfo("[cum_facial] Projectile spawned, arrival time=" + time + " scheduling sprite apply");
+
 						// On arrival: apply cum facial sprite + visual effects
 						local Tactical = this.Tactical;
 						local Const = this.Const;
 						this.Time.scheduleEvent(this.TimeUnit.Virtual, time, function(_d) {
+							::logInfo("[cum_facial] Scheduled callback fired for " + _d.Target.getName() + " alive=" + _d.Target.isAlive());
 							if (!_d.Target.isAlive()) return;
 							_d.Target.getSprite("cum_facial").setBrush("cum_head");
 							_d.Target.getSprite("cum_facial").Visible = true;
 							_d.Target.setDirty(true);
+							::logInfo("[cum_facial] Applied cum_head brush to " + _d.Target.getName() + ", sprite visible=true");
 							// Camera quake on impact (source may be dead from orgasm defeat)
 							if (_d.Source.isAlive())
 								_d.Tactical.getCamera().quake(_d.Source, _d.Target, 3.0, 0.12, 0.25);
@@ -193,6 +208,10 @@ this.climax_effect <- this.inherit("scripts/skills/skill", {
 							this.Const.UI.getColorizedEntityName(actor) + " finishes on " +
 							this.Const.UI.getColorizedEntityName(cumTarget) + "'s face!");
 					}
+				}
+				else if (cumTarget != null)
+				{
+					::logInfo("[cum_facial] " + actor.getName() + " -> " + cumTarget.getName() + " SKIPPED: alive=" + cumTarget.isAlive() + " hasSprite=" + cumTarget.hasSprite("cum_facial"));
 				}
 			}
 
@@ -234,59 +253,19 @@ this.climax_effect <- this.inherit("scripts/skills/skill", {
 						&& domSource.isPlayerControlled()
 						&& ::Lewd.Mastery.getLewdTier(domSource) >= ::Lewd.Const.EtherealStatAbsorptionMinTier)
 					{
-						local src = domSource.getBaseProperties();
-						local tgt = actor.getBaseProperties();
-						local stats = [
-							{ prop = "Hitpoints",     label = "Hitpoints" },
-							{ prop = "Bravery",       label = "Resolve" },
-							{ prop = "Stamina",       label = "Stamina" },
-							{ prop = "MeleeSkill",    label = "Melee Skill" },
-							{ prop = "RangedSkill",   label = "Ranged Skill" },
-							{ prop = "MeleeDefense",  label = "Melee Defense" },
-							{ prop = "RangedDefense", label = "Ranged Defense" },
-							{ prop = "Initiative",    label = "Initiative" }
-						];
-						local eligible = [];
-						foreach (s in stats)
+						local absorbed = ::Lewd.Mastery.absorbStat(domSource, actor, false);
+						if (absorbed != null)
 						{
-							if (src[s.prop] < tgt[s.prop])
-								eligible.push(s);
+							this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(domSource) + " absorbs +1 " + absorbed.label + " from " + this.Const.UI.getColorizedEntityName(actor));
+							::Lewd.Mastery.playAbsorbEffect(domSource, this.Tactical, this.Const, this.Sound, this.Time);
 						}
-						if (eligible.len() > 0)
-						{
-							local s = eligible[this.Math.rand(0, eligible.len() - 1)];
-							src[s.prop] += 1;
-							this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(domSource) + " absorbs +1 " + s.label + " from " + this.Const.UI.getColorizedEntityName(actor));
+					}
 
-							// Visual/audio feedback on the absorber
-							if (domSource.isPlacedOnMap())
-							{
-								// Climax overlay on self
-								this.Tactical.spawnSpriteEffect("climax", this.createColor("#ffffff"), domSource.getTile(),
-									this.Const.Tactical.Settings.SkillOverlayOffsetX, this.Const.Tactical.Settings.SkillOverlayOffsetY,
-									this.Const.Tactical.Settings.SkillOverlayScale, this.Const.Tactical.Settings.SkillOverlayScale,
-									this.Const.Tactical.Settings.SkillOverlayStayDuration * 2, 0, this.Const.Tactical.Settings.SkillOverlayFadeDuration);
-
-								// Long moan
-								local moans = ::Lewd.Const.SoundLongMoans;
-								this.Sound.play(moans[this.Math.rand(0, moans.len() - 1)], this.Const.Sound.Volume.Skill, domSource.getPos());
-
-								// Pink flash twice
-								local layers = this.Const.ShakeCharacterLayers[2];
-								local selfTile = domSource.getTile();
-								this.Tactical.getShaker().shake(domSource, selfTile, 2,
-									::Lewd.Const.SexFlashColor, ::Lewd.Const.SexFlashHighlight,
-									::Lewd.Const.SexFlashFactor, ::Lewd.Const.SexFlashSaturation,
-									layers, 1.0);
-								this.Time.scheduleEvent(this.TimeUnit.Virtual, 400, function(_d) {
-									if (!_d.Entity.isAlive() || !_d.Entity.isPlacedOnMap()) return;
-									_d.Tactical.getShaker().shake(_d.Entity, _d.Tile, 2,
-										::Lewd.Const.SexFlashColor, ::Lewd.Const.SexFlashHighlight,
-										::Lewd.Const.SexFlashFactor, ::Lewd.Const.SexFlashSaturation,
-										_d.Layers, 1.0);
-								}, { Entity = domSource, Tile = selfTile, Tactical = this.Tactical, Layers = layers });
-							}
-						}
+					// Ethereal draining: when an Ethereal+ succubus makes an ally climax, drain them
+					if (::Lewd.Mastery.getLewdTier(domSource) >= 3
+						&& domSource.isAlliedWith(actor))
+					{
+						::Lewd.Mastery.drainTarget(domSource, actor, { Tactical = this.Tactical, Const = this.Const, Sound = this.Sound, Time = this.Time });
 					}
 				}
 			}

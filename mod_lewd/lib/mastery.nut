@@ -98,6 +98,123 @@
 	return false;
 };
 
+// Absorb a random stat from _target into _source (where target's base > source's base).
+// If _steal is true, the target also loses -1 to that stat.
+// Returns { prop, label } of the absorbed stat, or null if none eligible.
+::Lewd.Mastery.absorbStat <- function( _source, _target, _steal = false )
+{
+	local src = _source.getBaseProperties();
+	local tgt = _target.getBaseProperties();
+	local stats = [
+		{ prop = "Hitpoints",     label = "Hitpoints" },
+		{ prop = "Bravery",       label = "Resolve" },
+		{ prop = "Stamina",       label = "Stamina" },
+		{ prop = "MeleeSkill",    label = "Melee Skill" },
+		{ prop = "RangedSkill",   label = "Ranged Skill" },
+		{ prop = "MeleeDefense",  label = "Melee Defense" },
+		{ prop = "RangedDefense", label = "Ranged Defense" },
+		{ prop = "Initiative",    label = "Initiative" }
+	];
+	local eligible = [];
+	foreach (s in stats)
+	{
+		if (src[s.prop] < tgt[s.prop])
+			eligible.push(s);
+	}
+	if (eligible.len() == 0)
+		return null;
+
+	local s = this.Math.rand(0, eligible.len() - 1);
+	local picked = eligible[s];
+	src[picked.prop] += 1;
+	if (_steal)
+		tgt[picked.prop] -= 1;
+	return picked;
+};
+
+// Visual/audio feedback when stat absorption occurs: climax overlay, long moan, double pink flash
+::Lewd.Mastery.playAbsorbEffect <- function( _actor, _Tactical, _Const, _Sound, _Time )
+{
+	if (!_actor.isPlacedOnMap()) return;
+
+	_Tactical.spawnSpriteEffect("climax", this.createColor("#ffffff"), _actor.getTile(),
+		_Const.Tactical.Settings.SkillOverlayOffsetX, _Const.Tactical.Settings.SkillOverlayOffsetY,
+		_Const.Tactical.Settings.SkillOverlayScale, _Const.Tactical.Settings.SkillOverlayScale,
+		_Const.Tactical.Settings.SkillOverlayStayDuration * 2, 0, _Const.Tactical.Settings.SkillOverlayFadeDuration);
+
+	local moans = ::Lewd.Const.SoundLongMoans;
+	_Sound.play(moans[this.Math.rand(0, moans.len() - 1)], _Const.Sound.Volume.Skill, _actor.getPos());
+
+	local layers = _Const.ShakeCharacterLayers[2];
+	local tile = _actor.getTile();
+	_Tactical.getShaker().shake(_actor, tile, 2,
+		::Lewd.Const.SexFlashColor, ::Lewd.Const.SexFlashHighlight,
+		::Lewd.Const.SexFlashFactor, ::Lewd.Const.SexFlashSaturation,
+		layers, 1.0);
+	_Time.scheduleEvent(this.TimeUnit.Virtual, 400, function(_d) {
+		if (!_d.Entity.isAlive() || !_d.Entity.isPlacedOnMap()) return;
+		_d.Tactical.getShaker().shake(_d.Entity, _d.Tile, 2,
+			::Lewd.Const.SexFlashColor, ::Lewd.Const.SexFlashHighlight,
+			::Lewd.Const.SexFlashFactor, ::Lewd.Const.SexFlashSaturation,
+			_d.Layers, 1.0);
+	}, { Entity = _actor, Tile = tile, Tactical = _Tactical, Layers = layers });
+};
+
+// Drain a target: upgrade their drained tier and steal a stat.
+// _source = the succubus doing the draining, _target = the victim.
+// _ctx = table with { Tactical, Const, Sound, Time } from the calling scope.
+// Returns true if the target was drained (tier upgraded or stat stolen).
+::Lewd.Mastery.drainTarget <- function( _source, _target, _ctx )
+{
+	// Upgrade drained tier
+	local drainedTiers = [
+		{ id = "trait.drained_third", next = null },
+		{ id = "trait.drained_second", next = "scripts/skills/traits/drained_third" },
+		{ id = "trait.drained_first", next = "scripts/skills/traits/drained_second" }
+	];
+	local upgraded = false;
+	local skills = _target.getSkills();
+	foreach (tier in drainedTiers)
+	{
+		if (skills.hasSkill(tier.id))
+		{
+			if (tier.next != null)
+			{
+				skills.removeByID(tier.id);
+				skills.add(this.new(tier.next));
+				upgraded = true;
+			}
+			break;
+		}
+	}
+	if (!upgraded && !skills.hasSkill("trait.drained_third"))
+	{
+		skills.add(this.new("scripts/skills/traits/drained_first"));
+		upgraded = true;
+	}
+	if (upgraded)
+	{
+		local drainedSkill = skills.getSkillByID("trait.drained_first");
+		if (drainedSkill == null) drainedSkill = skills.getSkillByID("trait.drained_second");
+		if (drainedSkill == null) drainedSkill = skills.getSkillByID("trait.drained_third");
+		local tierName = drainedSkill != null ? drainedSkill.getName() : "Drained";
+		_ctx.Tactical.EventLog.log(_ctx.Const.UI.getColorizedEntityName(_target) + " becomes " + tierName + " from " + _ctx.Const.UI.getColorizedEntityName(_source) + "'s draining touch!");
+	}
+
+	// Steal a stat
+	local stolen = ::Lewd.Mastery.absorbStat(_source, _target, true);
+	if (stolen != null)
+		_ctx.Tactical.EventLog.log(_ctx.Const.UI.getColorizedEntityName(_source) + " drains +1 " + stolen.label + " from " + _ctx.Const.UI.getColorizedEntityName(_target));
+	else if (upgraded)
+		_ctx.Tactical.EventLog.log(_ctx.Const.UI.getColorizedEntityName(_source) + " drains " + _ctx.Const.UI.getColorizedEntityName(_target) + "'s essence, but has nothing left to take");
+
+	// Visual/audio on the succubus whenever any draining occurred
+	if (upgraded || stolen != null)
+		::Lewd.Mastery.playAbsorbEffect(_source, _ctx.Tactical, _ctx.Const, _ctx.Sound, _ctx.Time);
+
+	return upgraded || stolen != null;
+};
+
 // Whether an actor is a humanoid capable of using male sex skills
 // (has hands, wears armor/helmets — filters out beasts, ghosts, etc.)
 ::Lewd.Mastery.isHumanoid <- function( _actor )

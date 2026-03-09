@@ -484,6 +484,29 @@
 ::Lewd.Const.OrgasmThresholdWillingVictim <- 1;
 ::Lewd.Const.OrgasmThresholdInsatiable <- 3;
 
+// Drained Trait Tiers (consequence of succubus draining)
+// Tier 1: Sapped
+::Lewd.Const.DrainedFirstXPMult <- 0.85;       // -15% XP gain
+::Lewd.Const.DrainedFirstMeleeSkill <- -3;
+::Lewd.Const.DrainedFirstRangedSkill <- -3;
+::Lewd.Const.DrainedFirstHitpoints <- 5;
+::Lewd.Const.DrainedFirstBravery <- 5;
+::Lewd.Const.DrainedFirstDailyWageMult <- 0.90; // -10% salary
+// Tier 2: Drained
+::Lewd.Const.DrainedSecondXPMult <- 0.65;      // -35% XP gain
+::Lewd.Const.DrainedSecondMeleeSkill <- -7;
+::Lewd.Const.DrainedSecondRangedSkill <- -7;
+::Lewd.Const.DrainedSecondHitpoints <- 10;
+::Lewd.Const.DrainedSecondBravery <- 10;
+::Lewd.Const.DrainedSecondDailyWageMult <- 0.75; // -25% salary
+// Tier 3: Enthralled (works for free, barely learns, but extremely tough and fearless)
+::Lewd.Const.DrainedThirdXPMult <- 0.60;       // -40% XP gain
+::Lewd.Const.DrainedThirdMeleeSkill <- -20;
+::Lewd.Const.DrainedThirdRangedSkill <- -20;
+::Lewd.Const.DrainedThirdHitpoints <- 30;
+::Lewd.Const.DrainedThirdBravery <- 30;
+::Lewd.Const.DrainedThirdDailyWageMult <- 0.0;   // -100% salary
+
 // Ethereal Stat Absorption: gain +1 stat when causing enemy climax (if enemy's base > yours)
 ::Lewd.Const.EtherealStatAbsorptionEnabled <- true;
 ::Lewd.Const.EtherealStatAbsorptionMinTier <- 3; // minimum lewd tier required (3 = Ethereal)
