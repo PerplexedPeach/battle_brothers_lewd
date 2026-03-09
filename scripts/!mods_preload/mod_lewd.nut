@@ -482,6 +482,17 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC", function()
 		{
 			__original();
 
+			// Clear cum facial sprites from combat
+			local roster = this.World.getPlayerRoster().getAll();
+			foreach (bro in roster)
+			{
+				if (bro.hasSprite("cum_facial"))
+				{
+					bro.getSprite("cum_facial").Visible = false;
+					bro.setDirty(true);
+				}
+			}
+
 			if (!this.World.Statistics.getFlags().get("lewdFoughtHexen"))
 				return;
 

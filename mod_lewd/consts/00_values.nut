@@ -511,6 +511,11 @@
 ::Lewd.Const.EtherealStatAbsorptionEnabled <- true;
 ::Lewd.Const.EtherealStatAbsorptionMinTier <- 3; // minimum lewd tier required (3 = Ethereal)
 
+// Drain Hunger Event (world event: succubus drains an ally)
+::Lewd.Const.DrainHungerCooldownDays <- 7;
+::Lewd.Const.DrainHungerBaseScore <- 100;
+::Lewd.Const.DrainHungerAllureScale <- 2.0;     // score += allure * this
+
 // Ethereal Progression Event Thresholds
 ::Lewd.Const.EtherealFirstEventThreshold <- 20;   // combined climaxes (self + partner) for foreshadowing
 ::Lewd.Const.EtherealSecondEventThreshold <- 40;  // combined climaxes for awakening

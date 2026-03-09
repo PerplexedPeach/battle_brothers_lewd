@@ -160,13 +160,10 @@
 	}, { Entity = _actor, Tile = tile, Tactical = _Tactical, Layers = layers });
 };
 
-// Drain a target: upgrade their drained tier and steal a stat.
-// _source = the succubus doing the draining, _target = the victim.
-// _ctx = table with { Tactical, Const, Sound, Time } from the calling scope.
-// Returns true if the target was drained (tier upgraded or stat stolen).
-::Lewd.Mastery.drainTarget <- function( _source, _target, _ctx )
+// Upgrade a target's drained tier: none -> Sapped -> Drained -> Enthralled.
+// Returns the new drained skill object, or null if already at max tier.
+::Lewd.Mastery.upgradeDrainedTier <- function( _target )
 {
-	// Upgrade drained tier
 	local drainedTiers = [
 		{ id = "trait.drained_third", next = null },
 		{ id = "trait.drained_second", next = "scripts/skills/traits/drained_third" },
@@ -192,12 +189,26 @@
 		skills.add(this.new("scripts/skills/traits/drained_first"));
 		upgraded = true;
 	}
+	if (!upgraded) return null;
+
+	local drainedSkill = skills.getSkillByID("trait.drained_first");
+	if (drainedSkill == null) drainedSkill = skills.getSkillByID("trait.drained_second");
+	if (drainedSkill == null) drainedSkill = skills.getSkillByID("trait.drained_third");
+	return drainedSkill;
+};
+
+// Drain a target in tactical combat: upgrade tier, steal stat, log, play effects.
+// _source = the succubus doing the draining, _target = the victim.
+// _ctx = table with { Tactical, Const, Sound, Time } from the calling scope.
+// Returns true if the target was drained (tier upgraded or stat stolen).
+::Lewd.Mastery.drainTarget <- function( _source, _target, _ctx )
+{
+	local drainedSkill = ::Lewd.Mastery.upgradeDrainedTier(_target);
+	local upgraded = drainedSkill != null;
+
 	if (upgraded)
 	{
-		local drainedSkill = skills.getSkillByID("trait.drained_first");
-		if (drainedSkill == null) drainedSkill = skills.getSkillByID("trait.drained_second");
-		if (drainedSkill == null) drainedSkill = skills.getSkillByID("trait.drained_third");
-		local tierName = drainedSkill != null ? drainedSkill.getName() : "Drained";
+		local tierName = drainedSkill.getName();
 		_ctx.Tactical.EventLog.log(_ctx.Const.UI.getColorizedEntityName(_target) + " becomes " + tierName + " from " + _ctx.Const.UI.getColorizedEntityName(_source) + "'s draining touch!");
 	}
 

@@ -6,7 +6,7 @@ this.drained_third <- this.inherit("scripts/skills/traits/drained_trait", {
 		this.drained_trait.create();
 		this.m.ID = "trait.drained_third";
 		this.m.Name = "Enthralled";
-		this.m.Icon = "ui/traits/drained_third_trait.png"; // TODO: generate icon
+		this.m.Icon = "ui/traits/drained_third_trait.png";
 		this.m.Description = "Utterly devoted, body and soul. They exist only to serve and protect her, throwing themselves into danger without a second thought. Whatever person they once were has been consumed by mindless, absolute obsession.";
 		this.m.Excluded = [
 			"trait.drained_first",

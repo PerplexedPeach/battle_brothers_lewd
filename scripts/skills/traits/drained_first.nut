@@ -6,7 +6,7 @@ this.drained_first <- this.inherit("scripts/skills/traits/drained_trait", {
 		this.drained_trait.create();
 		this.m.ID = "trait.drained_first";
 		this.m.Name = "Sapped";
-		this.m.Icon = "ui/traits/drained_first_trait.png"; // TODO: generate icon
+		this.m.Icon = "ui/traits/drained_first_trait.png";
 		this.m.Description = "Something vital has been taken. Thoughts come slower and a strange fixation lingers, but the body endures and pain feels distant.";
 		this.m.Excluded = [
 			"trait.drained_second",
