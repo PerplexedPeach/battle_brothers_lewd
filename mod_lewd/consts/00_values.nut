@@ -534,6 +534,35 @@
 ::Lewd.Const.EtherealSecondEventBaseScore <- 15;
 ::Lewd.Const.EtherealThirdEventBaseScore <- 20;
 
+// --- Tail Whip Weapon ---
+::Lewd.Const.TailBaseDamageMin <- 10;
+::Lewd.Const.TailBaseDamageMax <- 20;
+::Lewd.Const.TailAllureDamageScale <- 0.5;         // bonus damage = floor(allure * this)
+::Lewd.Const.TailArmorDamageMult <- 0.3;            // weak vs armor
+::Lewd.Const.TailDirectDamageMultBase <- 0.3;       // base direct damage mult
+::Lewd.Const.TailDirectDamageMultBonus <- 0.4;      // asymptotic bonus from climaxes
+::Lewd.Const.TailDirectDamageClimaxHalf <- 50;      // climaxes needed for half of bonus (higher = slower scaling)
+::Lewd.Const.TailPleasureScale <- 0.05;             // pleasure dealt = floor(allure * this)
+::Lewd.Const.TailHornyChance <- 20;                 // % chance to inflict horny on hit
+
+// Tail Lash (attack ability)
+::Lewd.Const.TailLashAP <- 4;
+::Lewd.Const.TailLashFatigue <- 10;
+
+// Whip Into Shape (ally morale ability)
+::Lewd.Const.WhipIntoShapeAP <- 3;
+::Lewd.Const.WhipIntoShapeFatigue <- 8;
+::Lewd.Const.WhipIntoShapeHornyChance <- 15;        // % chance to make ally horny
+
+// Playful Slap (low damage, high horny chance on enemies)
+::Lewd.Const.PlayfulSlapAP <- 3;
+::Lewd.Const.PlayfulSlapFatigue <- 5;
+::Lewd.Const.PlayfulSlapBaseDamage <- 3;
+::Lewd.Const.PlayfulSlapBaseDamageMax <- 8;
+::Lewd.Const.PlayfulSlapHornyBaseChance <- 40;      // base % chance
+::Lewd.Const.PlayfulSlapHornyAllureScale <- 0.5;    // + floor(allure * this) %
+::Lewd.Const.PlayfulSlapHornyMaxChance <- 85;       // capped
+
 // Hexen Curse / Male-to-Female Transformation
 ::Lewd.Const.HexenTransformFirstBaseScore <- 150;
 ::Lewd.Const.HexenTransformSecondBaseScore <- 200;

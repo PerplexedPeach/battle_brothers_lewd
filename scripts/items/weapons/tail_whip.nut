@@ -24,15 +24,62 @@ this.tail_whip <- this.inherit("scripts/items/weapons/weapon", {
 		this.m.RangeMin = 1;
 		this.m.RangeMax = 2;
 		this.m.RangeIdeal = 2;
-		this.m.RegularDamage = 15;
-		this.m.RegularDamageMax = 25;
-		this.m.ArmorDamageMult = 0.3;
-		this.m.DirectDamageMult = 0.3;
+		this.m.RegularDamage = ::Lewd.Const.TailBaseDamageMin;
+		this.m.RegularDamageMax = ::Lewd.Const.TailBaseDamageMax;
+		this.m.ArmorDamageMult = ::Lewd.Const.TailArmorDamageMult;
+		this.m.DirectDamageMult = ::Lewd.Const.TailDirectDamageMultBase;
 	}
 
 	function getTooltip()
 	{
 		local result = this.weapon.getTooltip();
+		local actor = this.getContainer() != null ? this.getContainer().getActor() : null;
+
+		if (actor != null)
+		{
+			local allure = actor.getCurrentProperties().getAllure();
+			local bonus = this.Math.floor(allure * ::Lewd.Const.TailAllureDamageScale);
+			if (bonus > 0)
+			{
+				result.push({
+					id = 60,
+					type = "text",
+					icon = "ui/icons/special.png",
+					text = "Allure adds [color=" + this.Const.UI.Color.PositiveValue + "]+" + bonus + "[/color] damage (from [color=" + this.Const.UI.Color.PositiveValue + "]" + allure + "[/color] Allure)"
+				});
+			}
+
+			local climaxes = actor.getFlags().getAsInt("lewdPartnerClimaxes");
+			local directMult = ::Lewd.Const.TailDirectDamageMultBase;
+			if (climaxes > 0)
+				directMult += ::Lewd.Const.TailDirectDamageMultBonus * (climaxes * 1.0 / (climaxes + ::Lewd.Const.TailDirectDamageClimaxHalf));
+			local directPct = this.Math.floor(directMult * 100);
+			result.push({
+				id = 61,
+				type = "text",
+				icon = "ui/icons/special.png",
+				text = "Direct damage: [color=" + this.Const.UI.Color.PositiveValue + "]" + directPct + "%[/color] (scales with climaxes dealt: " + climaxes + ")"
+			});
+
+			local pleasure = this.Math.floor(allure * ::Lewd.Const.TailPleasureScale);
+			if (pleasure > 0)
+			{
+				result.push({
+					id = 62,
+					type = "text",
+					icon = "ui/icons/special.png",
+					text = "Deals [color=" + this.Const.UI.Color.PositiveValue + "]" + pleasure + "[/color] pleasure on hit"
+				});
+			}
+
+			result.push({
+				id = 63,
+				type = "text",
+				icon = "ui/icons/special.png",
+				text = "[color=" + this.Const.UI.Color.PositiveValue + "]" + ::Lewd.Const.TailHornyChance + "%[/color] chance to inflict Horny on hit"
+			});
+		}
+
 		result.push({
 			id = 70,
 			type = "hint",
@@ -42,9 +89,25 @@ this.tail_whip <- this.inherit("scripts/items/weapons/weapon", {
 		return result;
 	}
 
+	function onUpdateProperties( _properties )
+	{
+		this.weapon.onUpdateProperties(_properties);
+
+		local actor = this.getContainer() != null ? this.getContainer().getActor() : null;
+		if (actor != null)
+		{
+			local allure = actor.getCurrentProperties().getAllure();
+			local bonus = this.Math.floor(allure * ::Lewd.Const.TailAllureDamageScale);
+			_properties.DamageRegularMin += bonus;
+			_properties.DamageRegularMax += bonus;
+		}
+	}
+
 	function onEquip()
 	{
 		this.weapon.onEquip();
 		this.addSkill(this.new("scripts/skills/actives/tail_lash_skill"));
+		this.addSkill(this.new("scripts/skills/actives/whip_into_shape_skill"));
+		this.addSkill(this.new("scripts/skills/actives/playful_slap_skill"));
 	}
 });
