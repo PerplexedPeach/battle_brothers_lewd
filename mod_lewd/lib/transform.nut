@@ -62,6 +62,42 @@
 		}
 	}
 
+	function sexy_stage_0 ( _actor ) {
+		local faces = this.Const.Faces.PrettyFemale;
+		local bodies = this.Const.Bodies.AllFemale;
+		local hairs = this.Const.Hair.AllFemale;
+		local hairColors = this.Const.HairColors.Young;
+
+		local hairColor = hairColors[this.Math.rand(0, hairColors.len() - 1)];
+
+		// head
+		local head = _actor.getSprite("head");
+		head.setBrush(faces[this.Math.rand(0, faces.len() - 1)]);
+
+		// body + injury layer
+		local bodyBrush = bodies[this.Math.rand(0, bodies.len() - 1)];
+		_actor.getSprite("body").setBrush(bodyBrush);
+		_actor.getSprite("injury_body").setBrush(bodyBrush + "_injured");
+
+		// match body skin tone to head
+		local body = _actor.getSprite("body");
+		body.Color = head.Color;
+		body.Saturation = head.Saturation;
+
+		// hair
+		local hair = _actor.getSprite("hair");
+		hair.setBrush("hair_" + hairColor + "_" + hairs[this.Math.rand(0, hairs.len() - 1)]);
+
+		// remove beard
+		_actor.getSprite("beard").setBrush("");
+		if (_actor.hasSprite("beard_top"))
+			_actor.getSprite("beard_top").setBrush("");
+
+		this.clearScarsAndTattoos(_actor);
+		_actor.getSprite("miniboss").setBrush("");
+		_actor.setDirty(true);
+	}
+
 	function sexy_stage_1 ( _woman ) {
 		local w = _woman;
 		// change sprite

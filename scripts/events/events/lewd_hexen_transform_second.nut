@@ -71,6 +71,10 @@ this.lewd_hexen_transform_second <- this.inherit("scripts/events/event", {
 				// Gender swap: male -> female
 				man.setGender(1);
 
+				// Switch to female sprites
+				::Lewd.Transform.sexy_stage_0(man);
+				::Lewd.Transform.adaptROTUAppearance(man);
+
 				// Mark transformation complete
 				man.getFlags().set("lewdHexenTransformStage", 2);
 
