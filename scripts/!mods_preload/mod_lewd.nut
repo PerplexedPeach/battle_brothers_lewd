@@ -301,14 +301,14 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC", function()
 	mod.hook("scripts/ui/screens/character/character_screen", function(q)
 	{
 		// Helper: check if a natural weapon would be displaced by equipping into its slot
-		local function hasNaturalWeaponTarget(_targetItems)
+		q.hasNaturalWeaponTarget <- function(_targetItems)
 		{
 			if (_targetItems.firstItem != null && _targetItems.firstItem.getFlags().has("naturalWeapon"))
 				return true;
 			if (_targetItems.secondItem != null && _targetItems.secondItem.getFlags().has("naturalWeapon"))
 				return true;
 			return false;
-		}
+		};
 
 		// Block dragging natural weapons to stash
 		q.general_onDropItemIntoStash = @(__original) function(_data) {
@@ -360,7 +360,7 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC", function()
 			if (!("error" in data))
 			{
 				local targetItems = this.helper_queryEquipmentTargetItems(data.inventory, data.sourceItem);
-				if (hasNaturalWeaponTarget(targetItems))
+				if (this.hasNaturalWeaponTarget(targetItems))
 					return this.helper_convertErrorToUIData(this.Const.CharacterScreen.ErrorCode.FailedToRemoveItemFromTargetSlot);
 			}
 			return __original(_data);
@@ -372,7 +372,7 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC", function()
 			if (!("error" in data))
 			{
 				local targetItems = this.helper_queryEquipmentTargetItems(data.inventory, data.sourceItem);
-				if (hasNaturalWeaponTarget(targetItems))
+				if (this.hasNaturalWeaponTarget(targetItems))
 					return this.helper_convertErrorToUIData(this.Const.CharacterScreen.ErrorCode.FailedToRemoveItemFromTargetSlot);
 			}
 			return __original(_data);
