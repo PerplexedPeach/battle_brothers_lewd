@@ -261,6 +261,19 @@ this.lewd_mounted_effect <- this.inherit("scripts/skills/skill", {
 		}
 	}
 
+	function onDeath( _fatalityType )
+	{
+		// Mounted target died — remove mounting effect from all mounters
+		foreach (mounterID in this.m.MounterIDs)
+		{
+			local mounter = this.Tactical.getEntityByID(mounterID);
+			if (mounter != null && mounter.isAlive())
+			{
+				mounter.getSkills().removeByID("effects.lewd_mounting");
+			}
+		}
+	}
+
 	function onRemoved()
 	{
 		local actor = this.getContainer().getActor();
