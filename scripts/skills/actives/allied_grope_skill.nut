@@ -47,5 +47,6 @@ this.allied_grope_skill <- this.inherit("scripts/skills/actives/male_grope_skill
 	{
 		// No horny application on allies, no self-pleasure
 		// Pleasure from calculatePleasure is dealt via the base onScheduledSexHit
+		return 0;
 	}
 });

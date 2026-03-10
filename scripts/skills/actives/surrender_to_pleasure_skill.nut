@@ -3,7 +3,9 @@
 // Requires: being mounted, sub score >= threshold
 // Granted/removed dynamically by lewd_subdom_effect based on sub tier
 this.surrender_to_pleasure_skill <- this.inherit("scripts/skills/skill", {
-	m = {},
+	m = {
+		LastAPCost = 0
+	},
 	function create()
 	{
 		this.m.ID = "actives.surrender_to_pleasure";
@@ -36,7 +38,8 @@ this.surrender_to_pleasure_skill <- this.inherit("scripts/skills/skill", {
 		local actor = this.getContainer().getActor();
 		if (actor == null)
 			return ::Lewd.Const.SurrenderToPleasureMinAP;
-		return this.Math.max(::Lewd.Const.SurrenderToPleasureMinAP, actor.getActionPoints());
+		this.m.LastAPCost = this.Math.max(::Lewd.Const.SurrenderToPleasureMinAP, actor.getActionPoints());
+		return this.m.LastAPCost;
 	}
 
 	function isHidden()
@@ -129,7 +132,7 @@ this.surrender_to_pleasure_skill <- this.inherit("scripts/skills/skill", {
 	{
 		if (!_user.getSkills().hasSkill("effects.surrender_to_pleasure"))
 		{
-			local apSpent = _user.getActionPoints(); // all AP consumed by this skill
+			local apSpent = this.m.LastAPCost; // cached from getActionPointCost() before engine deducted AP
 			local subScore = ::Lewd.Mastery.getSubScore(_user);
 			local effect = this.new("scripts/skills/effects/surrender_to_pleasure_effect");
 			effect.setParams(apSpent, subScore);

@@ -146,14 +146,16 @@ this.male_sex_skill <- this.inherit("scripts/skills/actives/sex_skill_base", {
 		if (surrenderEffect != null)
 			selfP = this.Math.floor(selfP * surrenderEffect.getMounterMult());
 
+		local actualSelfP = 0;
 		if (selfP > 0 && _user.getPleasureMax() > 0)
-			_user.addPleasure(selfP, _target);
+			actualSelfP += _user.addPleasure(selfP, _target);
 
 		// Willing Victim: target deals counter-pleasure back to attacker
 		if (_target.getSkills().hasSkill("perk.lewd_willing_victim") && _user.getPleasureMax() > 0)
-			_user.addPleasure(::Lewd.Const.WillingVictimCounterPleasure, _target);
+			actualSelfP += _user.addPleasure(::Lewd.Const.WillingVictimCounterPleasure, _target);
 
 		this.tryApplyHorny(_target);
+		return actualSelfP;
 	}
 
 	function getTooltip()

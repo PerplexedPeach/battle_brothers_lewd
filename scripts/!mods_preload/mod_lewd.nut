@@ -147,13 +147,13 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC", function()
 			else
 				this.m.LastPleasureSourceID = -1;
 			local max = this.getPleasureMax();
-			if (max <= 0) return;
+			if (max <= 0) return 0;
 			local amount = _amount;
 			// mounted targets take extra pleasure
 			if (this.getSkills().hasSkill("effects.lewd_mounted") && amount > 0)
-			{
 				amount = this.Math.floor(amount * ::Lewd.Const.MountPleasureVulnerability);
-			}
+			local sourceName = _source != null ? _source.getName() : "none";
+			::logInfo("[pleasure] " + this.getName() + " +" + amount + " from " + sourceName + " [" + this.m.Pleasure + "->" + (this.m.Pleasure + amount) + "/" + max + "]");
 			// Embrace Pain perk: self-pleasure restores fatigue
 			if (amount > 0 && this.getSkills().hasSkill("perk.lewd_embrace_pain"))
 			{
@@ -179,6 +179,7 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC", function()
 			{
 				this.m.Pleasure = this.Math.max(0, this.Math.round(cur));
 			}
+			return amount;
 		}
 
 		q.onClimax <- function() {

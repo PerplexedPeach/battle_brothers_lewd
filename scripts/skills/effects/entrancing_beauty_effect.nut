@@ -68,7 +68,6 @@ this.entrancing_beauty_effect <- this.inherit("scripts/skills/skill", {
 	{
 		if (this.m.TriggersThisTurn >= this.m.MaxTriggersPerTurn)
 		{
-			::logInfo("[beauty] trigger " + (this.m.TriggersThisTurn + 1) + " blocked (max " + this.m.MaxTriggersPerTurn + ")");
 			return;
 		}
 
@@ -103,7 +102,6 @@ this.entrancing_beauty_effect <- this.inherit("scripts/skills/skill", {
 			}
 		}
 
-		::logInfo("[beauty] " + actor.getName() + " trigger #" + this.m.TriggersThisTurn + " allure:" + allure + " targets:" + targets.len());
 
 		local dazedEntities = [];
 
@@ -118,12 +116,10 @@ this.entrancing_beauty_effect <- this.inherit("scripts/skills/skill", {
 				chance += ::Lewd.Const.PheromonesAllureBonus;
 			}
 
-			::logInfo("[beauty]   " + entity.getName() + " dist:" + distance + " resolve:" + resolve + (t.resolveBonus > 0 ? " (ally+" + t.resolveBonus + ")" : "") + " chance:" + chance + (hasPheromones ? " (pheromones)" : ""));
 
 			if (chance > 0)
 			{
 				local roll = this.Math.rand(0, 100);
-				::logInfo("[beauty]   roll:" + roll + " vs chance:" + chance + " -> " + (roll < chance ? "HIT" : "miss"));
 
 				if (roll < chance)
 				{

@@ -271,11 +271,13 @@ this.female_sex_skill <- this.inherit("scripts/skills/actives/sex_skill_base", {
 	}
 
 	// Post-hit hook — applies T3 debuff + self-pleasure + horny
+	// Returns actual self-pleasure applied (for logging)
 	function onHit( _user, _target )
 	{
 		this.applyT3Debuff(_target);
-		this.applySelfPleasure(_user, _target);
+		local selfP = this.applySelfPleasure(_user, _target);
 		this.tryApplyHorny(_target);
+		return selfP;
 	}
 
 	function applyT3Debuff( _target )
@@ -287,14 +289,15 @@ this.female_sex_skill <- this.inherit("scripts/skills/actives/sex_skill_base", {
 	{
 		local selfP = this.getSelfPleasure();
 		if (selfP <= 0 || _user.getPleasureMax() <= 0)
-			return;
+			return 0;
 
 		// Practiced Control: user receives less reflection
 		if (_user.getSkills().hasSkill("perk.lewd_practiced_control"))
 			selfP = this.Math.floor(selfP * ::Lewd.Const.PracticedControlReflectionMult);
 
 		if (selfP > 0)
-			_user.addPleasure(selfP, _target);
+			return _user.addPleasure(selfP, _target);
+		return 0;
 	}
 
 	// --- Log overrides (read from tier config instead of m.HitText/m.MissText) ---
@@ -311,6 +314,7 @@ this.female_sex_skill <- this.inherit("scripts/skills/actives/sex_skill_base", {
 		local cfg = this.getTierConfig();
 		local verb = cfg.HitText[this.Math.rand(0, cfg.HitText.len() - 1)];
 		local selfStr = _selfPleasure > 0 ? " (self: " + _selfPleasure + ")" : "";
+		::logInfo("[sex]   logHit: " + _user.getName() + " -> " + _target.getName() + " pleasure:" + _pleasure + " self:" + _selfPleasure);
 		this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(_user) + " " + verb + " " + this.Const.UI.getColorizedEntityName(_target) + " for " + _pleasure + " pleasure" + selfStr + " (roll:" + _hitResult.roll + " chance:" + _hitResult.chance + ")");
 	}
 });

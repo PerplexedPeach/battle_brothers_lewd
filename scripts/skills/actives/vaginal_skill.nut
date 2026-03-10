@@ -140,12 +140,12 @@ this.vaginal_skill <- this.inherit("scripts/skills/actives/female_sex_skill", {
 
 		this.applyMount(user, target);
 		local pleasure = this.calculatePleasure(target);
-		target.addPleasure(pleasure, user);
-		this.logHit(user, target, pleasure, hitResult, this.getSelfPleasure());
+		local actualPleasure = target.addPleasure(pleasure, user);
 		this.tryApplyHorny(target);
 
-		this.applySelfPleasure(user, target);
+		local selfP = this.applySelfPleasure(user, target);
 		this.applyT3Debuff(target);
+		this.logHit(user, target, actualPleasure, hitResult, selfP);
 		this.recordSexContinuation(user, target);
 	}
 

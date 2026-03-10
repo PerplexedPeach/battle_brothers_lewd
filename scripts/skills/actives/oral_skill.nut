@@ -106,14 +106,15 @@ this.oral_skill <- this.inherit("scripts/skills/actives/female_sex_skill", {
 
 	function onHit( _user, _target )
 	{
+		local extraSelfP = 0;
 		// T1: probabilistic self-pleasure before base hook
 		if (this.getTier() == 1 && this.Math.rand(1, 100) <= ::Lewd.Const.OralT1SelfPleasureChance)
 		{
-			local selfP = ::Lewd.Const.OralT1SelfPleasureAmount;
-			if (selfP > 0 && _user.getPleasureMax() > 0)
-				_user.addPleasure(selfP, _target);
+			extraSelfP = ::Lewd.Const.OralT1SelfPleasureAmount;
+			if (extraSelfP > 0 && _user.getPleasureMax() > 0)
+				_user.addPleasure(extraSelfP, _target);
 		}
-		this.female_sex_skill.onHit(_user, _target);
+		return extraSelfP + this.female_sex_skill.onHit(_user, _target);
 	}
 
 	function getTooltip()

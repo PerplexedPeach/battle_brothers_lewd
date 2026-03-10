@@ -88,9 +88,9 @@ this.male_penetrate_vaginal_skill <- this.inherit("scripts/skills/actives/male_s
 
 		this.applyMount(user, target);
 		local pleasure = this.calculatePleasure(target);
-		target.addPleasure(pleasure, user);
-		this.logHit(user, target, pleasure, hitResult, this.getSelfPleasure());
-		this.onHit(user, target);
+		local actualPleasure = target.addPleasure(pleasure, user);
+		local selfP = this.onHit(user, target);
+		this.logHit(user, target, actualPleasure, hitResult, selfP);
 		this.recordSexContinuation(user, target);
 	}
 

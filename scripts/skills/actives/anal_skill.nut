@@ -179,13 +179,13 @@ this.anal_skill <- this.inherit("scripts/skills/actives/female_sex_skill", {
 			}
 		}
 
-		target.addPleasure(pleasure, user);
-		this.logHit(user, target, pleasure, hitResult, selfP);
+		local actualPleasure = target.addPleasure(pleasure, user);
 		if (willClimax)
 			this.Tactical.EventLog.log("KAMIKAZE CLIMAX!");
 		this.tryApplyHorny(target);
 
-		this.applySelfPleasure(user, target);
+		local actualSelfP = this.applySelfPleasure(user, target);
+		this.logHit(user, target, actualPleasure, hitResult, actualSelfP);
 
 		// self HP damage
 		local selfDmg = this.getSelfDamage();
@@ -310,6 +310,7 @@ this.anal_skill <- this.inherit("scripts/skills/actives/female_sex_skill", {
 		});
 
 		// T3 special
+		local tier = this.getTier();
 		if (tier >= 3)
 		{
 			result.push({

@@ -235,12 +235,9 @@ this.sex_skill_base <- this.inherit("scripts/skills/skill", {
 		}
 
 		local pleasure = this.calculatePleasure(target);
-		local selfP = this.getSelfPleasure();
-		::logInfo("[sex]   pleasure:" + pleasure + " self:" + selfP + " target pleasure:"
-			+ target.getPleasure() + "/" + target.getPleasureMax());
-		target.addPleasure(pleasure, user);
-		this.logHit(user, target, pleasure, hitResult, selfP);
-		this.onHit(user, target);
+		local actualPleasure = target.addPleasure(pleasure, user);
+		local selfP = this.onHit(user, target);
+		this.logHit(user, target, actualPleasure, hitResult, selfP);
 		this.recordSexContinuation(user, target);
 	}
 
@@ -271,6 +268,7 @@ this.sex_skill_base <- this.inherit("scripts/skills/skill", {
 	{
 		local verb = this.m.HitText[this.Math.rand(0, this.m.HitText.len() - 1)];
 		local selfStr = _selfPleasure > 0 ? " (self: " + _selfPleasure + ")" : "";
+		::logInfo("[sex]   logHit: " + _user.getName() + " -> " + _target.getName() + " pleasure:" + _pleasure + " self:" + _selfPleasure);
 		this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(_user) + " " + verb + " " + this.Const.UI.getColorizedEntityName(_target) + " for " + _pleasure + " pleasure" + selfStr + " (roll:" + _hitResult.roll + " chance:" + _hitResult.chance + ")");
 	}
 
@@ -344,5 +342,6 @@ this.sex_skill_base <- this.inherit("scripts/skills/skill", {
 	function onHit( _user, _target )
 	{
 		this.tryApplyHorny(_target);
+		return 0;
 	}
 });
