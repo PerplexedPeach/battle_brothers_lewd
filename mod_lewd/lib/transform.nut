@@ -40,14 +40,15 @@
 		{
 			_actor.getSprite("tattoo_body").setBrush("");
 			_actor.getSprite("tattoo_body").Visible = true;
-			// _actor.getSprite("tattoo_body").Color = this.createColor("#8cff00");
 			_actor.getSprite("tattoo_body").Saturation = 1.0;
 
-			// _actor.addSprite("permanent_injury_xx1");
-			_actor.getSprite("permanent_injury_xx1").setBrush("zombie_rage_eyes");
-			_actor.getSprite("permanent_injury_xx1").Visible = true;
-			_actor.getSprite("permanent_injury_xx1").Color = this.createColor("#DB5079");
-			_actor.getSprite("permanent_injury_xx1").Saturation = 0.5;
+			if (_actor.hasSprite("permanent_injury_xx1"))
+			{
+				_actor.getSprite("permanent_injury_xx1").setBrush("zombie_rage_eyes");
+				_actor.getSprite("permanent_injury_xx1").Visible = true;
+				_actor.getSprite("permanent_injury_xx1").Color = this.createColor("#DB5079");
+				_actor.getSprite("permanent_injury_xx1").Saturation = 0.5;
+			}
 
 			_actor.getSprite("tattoo_head").setBrush("");
 			_actor.getSprite("tattoo_head").Visible = true;
