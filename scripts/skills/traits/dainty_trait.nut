@@ -77,6 +77,10 @@ this.dainty_trait <- this.inherit("scripts/skills/traits/character_trait", {
 			}
 		}, null);
 
+		// Grant Tease ability
+		if (!actor.getSkills().hasSkill("actives.tease"))
+			actor.getSkills().add(this.new("scripts/skills/actives/seduce_skill"));
+
 		// Seduction Arts perk tree
 		local bg = actor.getBackground();
 		if (bg != null && !bg.hasPerkGroup(::Const.Perks.SeductionArtsTree))

@@ -114,8 +114,5 @@ this.heels_black <- this.inherit("scripts/items/heels", {
 	function onEquip()
 	{
 		this.heels.onEquip();
-		local skill = this.new("scripts/skills/actives/seduce_skill");
-		skill.setItem(this);
-		this.addSkill(skill);
 	}
 });

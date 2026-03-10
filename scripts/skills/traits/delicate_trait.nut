@@ -100,6 +100,10 @@ this.delicate_trait <- this.inherit("scripts/skills/traits/character_trait", {
 			}
 		}, null);
 
+		// Grant Tease ability
+		if (!actor.getSkills().hasSkill("actives.tease"))
+			actor.getSkills().add(this.new("scripts/skills/actives/seduce_skill"));
+
 		// Grant pheromones ability
 		if (!actor.getSkills().hasSkill("actives.pheromones"))
 		{

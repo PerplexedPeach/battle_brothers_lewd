@@ -46,14 +46,20 @@
 ::Lewd.Const.ClimaxAllureBonus <- 5;
 
 // ability constants
-::Lewd.Const.AllureToDazeBaseChance <- 50;
-::Lewd.Const.AllureToDazeChanceMultiplier <- 1;
+::Lewd.Const.AllureToDazeBaseChance <- 40;
+::Lewd.Const.AllureToDazeChanceMultiplier <- 0.8;
 ::Lewd.Const.AllureToDazeDistancePenalty <- 20; // effect chance is reduced by this much for every tile of distance from the target
 ::Lewd.Const.BeautyAllyResolveBonus <- 30; // allied males get +30 effective resolve vs Entrancing Beauty
 
-::Lewd.Const.SeduceBaseChance <- 50;
-::Lewd.Const.SeduceAllureChanceMultiplier <- 1;
-::Lewd.Const.SeduceDistancePenalty <- 10;
+// Tease ability (ranged horny induction, melee alternate: Grind)
+::Lewd.Const.TeaseBaseChance <- 40;
+::Lewd.Const.TeaseAllureBonus <- 20; // flat allure bonus for hit calc
+::Lewd.Const.TeaseAllureScale <- 1.0; // (allure - resolve) * this
+::Lewd.Const.TeaseDistancePenalty <- 10; // per tile of distance
+::Lewd.Const.TeaseAP <- 5;
+::Lewd.Const.TeaseFatigue <- 15;
+::Lewd.Const.TeaseMaxRange <- 4;
+::Lewd.Const.TeaseGrindMeleeScale <- 0.1; // bonus from melee skill when in melee range
 
 // event occurance rates
 ::Lewd.Const.HeelFirstEventBaseScore <- 10;

@@ -1,31 +1,18 @@
+// Tease — targeted horny induction
+// Ranged: allure + bonus vs resolve, distance penalty
+// Melee (Grind): same formula + melee skill bonus
+// On hit: applies Horny to target
 this.seduce_skill <- this.inherit("scripts/skills/skill", {
-	m = {
-		Slaves = []
-	},
-	function removeSlave( _entityID )
-	{
-		local i = this.m.Slaves.find(_entityID);
-
-		if (i != null)
-		{
-			this.m.Slaves.remove(i);
-		}
-	}
-
-	function isAlive()
-	{
-		return this.getContainer() != null && !this.getContainer().isNull() && this.getContainer().getActor() != null && !this.getContainer().getActor().isNull() && this.getContainer().getActor().isAlive() && this.getContainer().getActor().getHitpoints() > 0;
-	}
-
+	m = {},
 	function create()
 	{
-		this.m.ID = "actives.seduce";
-		this.m.Name = "Seduce";
-		this.m.Description = "Work your charms you convince your enemies to fight for you.";
-		// TODO add icons
+		this.m.ID = "actives.tease";
+		this.m.Name = "Tease";
+		this.m.Description = "Flaunt yourself at a target to make them Horny. In melee range, becomes Grind for additional effectiveness.";
 		this.m.Icon = "skills/seduce.png";
 		this.m.IconDisabled = "skills/seduce_bw.png";
 		this.m.Overlay = "active_120";
+		// TODO: need a separate icon for the Grind melee variant
 		this.m.SoundOnUse = ::Lewd.Const.SoundMoans;
 		this.m.SoundOnHit = [
 			"sounds/enemies/dlc2/hexe_charm_chimes_01.wav",
@@ -40,18 +27,107 @@ this.seduce_skill <- this.inherit("scripts/skills/skill", {
 		this.m.IsActive = true;
 		this.m.IsTargeted = true;
 		this.m.IsStacking = false;
-		this.m.IsAttack = true;
+		this.m.IsAttack = false;
 		this.m.IsRanged = false;
 		this.m.IsIgnoredAsAOO = true;
 		this.m.IsShowingProjectile = false;
 		this.m.IsUsingHitchance = true;
 		this.m.IsDoingForwardMove = false;
 		this.m.IsVisibleTileNeeded = true;
-		this.m.ActionPointCost = 5;
-		this.m.FatigueCost = 15;
+		this.m.ActionPointCost = ::Lewd.Const.TeaseAP;
+		this.m.FatigueCost = ::Lewd.Const.TeaseFatigue;
 		this.m.MinRange = 1;
-		this.m.MaxRange = 4;
+		this.m.MaxRange = ::Lewd.Const.TeaseMaxRange;
 		this.m.MaxLevelDifference = 4;
+	}
+
+	function isMelee( _target )
+	{
+		local actor = this.getContainer().getActor();
+		if (actor == null || !actor.isPlacedOnMap()) return false;
+		return _target.getTile().getDistanceTo(actor.getTile()) <= 1;
+	}
+
+	function getTeaseChance( _target )
+	{
+		local actor = this.getContainer().getActor();
+		local allure = actor.allure() + ::Lewd.Const.TeaseAllureBonus;
+		local resolve = _target.getBravery();
+		local distance = _target.getTile().getDistanceTo(actor.getTile());
+		local chance = ::Lewd.Const.TeaseBaseChance + (allure - resolve) * ::Lewd.Const.TeaseAllureScale - distance * ::Lewd.Const.TeaseDistancePenalty;
+
+		// Melee bonus: Grind mode
+		if (distance <= 1)
+			chance += this.Math.floor(actor.getCurrentProperties().getMeleeSkill() * ::Lewd.Const.TeaseGrindMeleeScale);
+
+		return this.Math.max(5, this.Math.min(95, chance));
+	}
+
+	function getHitchance( _targetEntity )
+	{
+		if (!_targetEntity.isAttackable()) return 0;
+		return this.getTeaseChance(_targetEntity);
+	}
+
+	function getHitFactors( _targetTile )
+	{
+		local ret = [];
+		local target = _targetTile.IsOccupiedByActor ? _targetTile.getEntity() : null;
+		if (target == null) return ret;
+
+		local actor = this.getContainer().getActor();
+		local baseAllure = actor.allure();
+		local allure = baseAllure + ::Lewd.Const.TeaseAllureBonus;
+		local resolve = target.getBravery();
+		local distance = target.getTile().getDistanceTo(actor.getTile());
+		local diff = allure - resolve;
+		local pos = this.Const.UI.Color.PositiveValue;
+		local neg = this.Const.UI.Color.NegativeValue;
+
+		ret.push({
+			icon = "ui/icons/special.png",
+			text = "Base chance: [color=" + pos + "]" + ::Lewd.Const.TeaseBaseChance + "%[/color]"
+		});
+		ret.push({
+			icon = "ui/icons/allure.png",
+			text = "Allure: [color=" + pos + "]" + baseAllure + "[/color] [color=" + pos + "](+" + ::Lewd.Const.TeaseAllureBonus + " bonus)[/color]"
+		});
+		ret.push({
+			icon = "ui/icons/bravery.png",
+			text = "Target Resolve: [color=" + neg + "]" + resolve + "[/color]"
+		});
+
+		local scaled = this.Math.floor(diff * ::Lewd.Const.TeaseAllureScale);
+		if (scaled >= 0)
+			ret.push({
+				icon = "ui/tooltips/positive.png",
+				text = "[color=" + pos + "]+" + scaled + "%[/color] from Allure vs Resolve"
+			});
+		else
+			ret.push({
+				icon = "ui/tooltips/negative.png",
+				text = "[color=" + neg + "]" + scaled + "%[/color] from Allure vs Resolve"
+			});
+
+		if (distance > 1)
+		{
+			local distPenalty = distance * ::Lewd.Const.TeaseDistancePenalty;
+			ret.push({
+				icon = "ui/tooltips/negative.png",
+				text = "[color=" + neg + "]-" + distPenalty + "%[/color] from distance (" + distance + " tiles)"
+			});
+		}
+
+		if (distance <= 1)
+		{
+			local melBonus = this.Math.floor(actor.getCurrentProperties().getMeleeSkill() * ::Lewd.Const.TeaseGrindMeleeScale);
+			ret.push({
+				icon = "ui/icons/melee_skill.png",
+				text = "[color=" + pos + "]+" + melBonus + "%[/color] from Grind (Melee Skill)"
+			});
+		}
+
+		return ret;
 	}
 
 	function getTooltip()
@@ -80,88 +156,33 @@ this.seduce_skill <- this.inherit("scripts/skills/skill", {
 				id = 4,
 				type = "text",
 				icon = "ui/icons/special.png",
-				text = "Base chance: [color=" + pos + "]" + ::Lewd.Const.SeduceBaseChance + "%[/color]"
+				text = "On hit: inflicts [color=" + pos + "]Horny[/color] on the target"
 			},
 			{
 				id = 5,
 				type = "text",
-				icon = "ui/icons/allure.png",
-				text = "Your Allure: [color=" + pos + "]" + allure + "[/color] vs target Resolve (x" + ::Lewd.Const.SeduceAllureChanceMultiplier + ")"
+				icon = "ui/icons/special.png",
+				text = "Base chance: [color=" + pos + "]" + ::Lewd.Const.TeaseBaseChance + "%[/color] with [color=" + pos + "]+" + ::Lewd.Const.TeaseAllureBonus + "[/color] Allure bonus"
 			},
 			{
 				id = 6,
 				type = "text",
+				icon = "ui/icons/allure.png",
+				text = "Your Allure: [color=" + pos + "]" + allure + "[/color] vs target Resolve (x" + ::Lewd.Const.TeaseAllureScale + ")"
+			},
+			{
+				id = 7,
+				type = "text",
 				icon = "ui/icons/vision.png",
-				text = "Distance penalty: [color=" + neg + "]-" + ::Lewd.Const.SeduceDistancePenalty + "%[/color] per tile"
+				text = "Distance penalty: [color=" + neg + "]-" + ::Lewd.Const.TeaseDistancePenalty + "%[/color] per tile"
+			},
+			{
+				id = 8,
+				type = "text",
+				icon = "ui/icons/melee_skill.png",
+				text = "In melee: [color=" + pos + "]Grind[/color] mode, adds Melee Skill * " + ::Lewd.Const.TeaseGrindMeleeScale + " to hit chance"
 			}
 		];
-	}
-
-	function getSeduceChance( _target )
-	{
-		local actor = this.getContainer().getActor();
-		local allure = actor.allure();
-		local resolve = _target.getBravery();
-		local distance = _target.getTile().getDistanceTo(actor.getTile());
-		local chance = ::Lewd.Const.SeduceBaseChance + (allure - resolve) * ::Lewd.Const.SeduceAllureChanceMultiplier - distance * ::Lewd.Const.SeduceDistancePenalty;
-		return this.Math.max(0, this.Math.min(100, chance));
-	}
-
-	function getHitchance( _targetEntity )
-	{
-		if (!_targetEntity.isAttackable()) return 0;
-		return this.getSeduceChance(_targetEntity);
-	}
-
-	function getHitFactors( _targetTile )
-	{
-		local ret = [];
-		local target = _targetTile.IsOccupiedByActor ? _targetTile.getEntity() : null;
-		if (target == null) return ret;
-
-		local actor = this.getContainer().getActor();
-		local allure = actor.allure();
-		local resolve = target.getBravery();
-		local distance = target.getTile().getDistanceTo(actor.getTile());
-		local diff = allure - resolve;
-		local pos = this.Const.UI.Color.PositiveValue;
-		local neg = this.Const.UI.Color.NegativeValue;
-
-		ret.push({
-			icon = "ui/icons/special.png",
-			text = "Base chance: [color=" + pos + "]" + ::Lewd.Const.SeduceBaseChance + "%[/color]"
-		});
-		ret.push({
-			icon = "ui/icons/allure.png",
-			text = "Allure: [color=" + pos + "]" + allure + "[/color]"
-		});
-		ret.push({
-			icon = "ui/icons/bravery.png",
-			text = "Target Resolve: [color=" + neg + "]" + resolve + "[/color]"
-		});
-
-		local scaled = diff * ::Lewd.Const.SeduceAllureChanceMultiplier;
-		if (scaled >= 0)
-			ret.push({
-				icon = "ui/tooltips/positive.png",
-				text = "[color=" + pos + "]+" + scaled + "%[/color] from Allure vs Resolve (x" + ::Lewd.Const.SeduceAllureChanceMultiplier + ")"
-			});
-		else
-			ret.push({
-				icon = "ui/tooltips/negative.png",
-				text = "[color=" + neg + "]" + scaled + "%[/color] from Allure vs Resolve (x" + ::Lewd.Const.SeduceAllureChanceMultiplier + ")"
-			});
-
-		if (distance > 0)
-		{
-			local distPenalty = distance * ::Lewd.Const.SeduceDistancePenalty;
-			ret.push({
-				icon = "ui/tooltips/negative.png",
-				text = "[color=" + neg + "]-" + distPenalty + "%[/color] from distance (" + distance + " tiles)"
-			});
-		}
-
-		return ret;
 	}
 
 	function onVerifyTarget( _originTile, _targetTile )
@@ -170,27 +191,35 @@ this.seduce_skill <- this.inherit("scripts/skills/skill", {
 		local target = _targetTile.getEntity();
 		if (target == null) return false;
 		if (target.isAlliedWith(this.getContainer().getActor())) return false;
-		if (target.getGender() == 1) return false;
-		if (target.getMoraleState() == this.Const.MoraleState.Ignore || target.getMoraleState() == this.Const.MoraleState.Fleeing) return false;
-		if (target.getCurrentProperties().MoraleCheckBraveryMult[this.Const.MoraleCheckType.MentalAttack] >= 1000.0) return false;
-		if (target.getSkills().hasSkill("effects.charmed") || target.getSkills().hasSkill("effects.seduced")) return false;
+		if (target.getMoraleState() == this.Const.MoraleState.Ignore) return false;
 		return true;
-	}
-
-	function addResources()
-	{
-		this.skill.addResources();
-		foreach (s in ::Lewd.Const.SoundSpanking)
-			this.Tactical.addResource(s);
 	}
 
 	function onUse( _user, _targetTile )
 	{
-		if (::Lewd.Const.SoundSpanking.len() > 0)
-			this.Sound.play(::Lewd.Const.SoundSpanking[this.Math.rand(0, ::Lewd.Const.SoundSpanking.len() - 1)], this.Const.Sound.Volume.Skill, _user.getPos());
+		local target = _targetTile.getEntity();
+		if (target == null) return false;
+		local distance = _targetTile.getDistanceTo(_user.getTile());
+
+		if (distance <= 1)
+		{
+			// Grind mode: melee shake animation
+			if (::Lewd.Const.SoundSpanking.len() > 0)
+				this.Sound.play(::Lewd.Const.SoundSpanking[this.Math.rand(0, ::Lewd.Const.SoundSpanking.len() - 1)], this.Const.Sound.Volume.Skill, _user.getPos());
+			this.Tactical.getShaker().shake(_user, _targetTile, 3);
+			this.Tactical.getShaker().shake(target, _user.getTile(), 3);
+		}
+		else
+		{
+			// Ranged mode: moan + heart projectile
+			if (this.m.SoundOnUse.len() > 0)
+				this.Sound.play(this.m.SoundOnUse[this.Math.rand(0, this.m.SoundOnUse.len() - 1)], this.Const.Sound.Volume.Skill, _user.getPos());
+		}
+
 		local tag = {
 			User = _user,
-			TargetTile = _targetTile
+			TargetTile = _targetTile,
+			IsMelee = distance <= 1
 		};
 		this.Time.scheduleEvent(this.TimeUnit.Virtual, 500, this.onDelayedEffect.bindenv(this), tag);
 		return true;
@@ -201,69 +230,72 @@ this.seduce_skill <- this.inherit("scripts/skills/skill", {
 		local _targetTile = _tag.TargetTile;
 		local _user = _tag.User;
 		local target = _targetTile.getEntity();
-		local time = this.Tactical.spawnProjectileEffect("effect_heart_01", _user.getTile(), _targetTile, 0.33, 2.0, false, false);
+		if (target == null || !target.isAlive()) return;
+		if (!_user.isAlive()) return;
+
 		local self = this;
-		this.Time.scheduleEvent(this.TimeUnit.Virtual, time, function ( _e )
+
+		if (_tag.IsMelee)
 		{
-			local roll = this.Math.rand(0, 100);
-
-			local resolve = target.getBravery();
-			local allure = _user.allure();
-			local chance = ::Lewd.Const.SeduceBaseChance + (allure - resolve) * ::Lewd.Const.SeduceAllureChanceMultiplier - _targetTile.getDistanceTo(_user.getTile()) * ::Lewd.Const.SeduceDistancePenalty;
-
-			this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(target) + " is being seduced by " + this.Const.UI.getColorizedEntityName(_user) + " (Chance: " + chance + ", Rolled: " + roll + ") (" + allure + " allure vs " + resolve + " bravery)");
-
-			if (roll >= chance)
+			// Melee: resolve immediately
+			this.resolveTeaseHit(_user, target);
+		}
+		else
+		{
+			// Ranged: spawn heart projectile, resolve on arrival
+			local time = this.Tactical.spawnProjectileEffect("effect_heart_01", _user.getTile(), _targetTile, 0.33, 2.0, false, false);
+			this.Time.scheduleEvent(this.TimeUnit.Virtual, time, function ( _e )
 			{
-				if (!_user.isHiddenToPlayer() && !target.isHiddenToPlayer())
-				{
-					this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(target) + " resists being seduced thanks to his resolve");
-				}
-
-				return false;
-			}
-
-
-			if (target.getCurrentProperties().IsResistantToAnyStatuses && this.Math.rand(1, 100) <= 50)
-			{
-				if (!_user.isHiddenToPlayer() && !target.isHiddenToPlayer())
-				{
-					this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(target) + " resists being seduced thanks to their unnatural physiology");
-				}
-
-				return false;
-			}
-
-			this.m.Slaves.push(target.getID());
-			local charmed = this.new("scripts/skills/effects/charmed_effect");
-			charmed.setMasterFaction(_user.getFaction() == this.Const.Faction.Player ? this.Const.Faction.PlayerAnimals : _user.getFaction());
-			charmed.setMaster(self);
-			target.getSkills().add(charmed);
-
-			if (self.m.SoundOnHit.len() > 0)
-				this.Sound.play(self.m.SoundOnHit[this.Math.rand(0, self.m.SoundOnHit.len() - 1)], this.Const.Sound.Volume.Skill, target.getPos());
-
-			if (!_user.isHiddenToPlayer() && !target.isHiddenToPlayer())
-			{
-				this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(target) + " is seduced");
-			}
-
-		}.bindenv(this), this);
+				if (target.isAlive() && _user.isAlive())
+					self.resolveTeaseHit(_user, target);
+			}.bindenv(this), this);
+		}
 	}
 
-	function onDeath( _fatalityType )
+	function resolveTeaseHit( _user, _target )
 	{
-		foreach( id in this.m.Slaves )
-		{
-			local e = this.Tactical.getEntityByID(id);
+		local chance = this.getTeaseChance(_target);
+		local roll = this.Math.rand(1, 100);
+		local isMelee = _target.getTile().getDistanceTo(_user.getTile()) <= 1;
+		local modeName = isMelee ? "grinds against" : "teases";
 
-			if (e != null)
-			{
-				e.getSkills().removeByID("effects.charmed");
-			}
+		::logInfo("[tease] " + _user.getName() + " " + modeName + " " + _target.getName() + " (roll:" + roll + " chance:" + chance + ")");
+
+		if (roll > chance)
+		{
+			this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(_user) + " " + modeName + " " + this.Const.UI.getColorizedEntityName(_target) + " but fails (roll:" + roll + " chance:" + chance + ")");
+			return;
 		}
 
-		this.m.Slaves = [];
+		// Apply or refresh Horny
+		if (!_target.getSkills().hasSkill("effects.lewd_horny"))
+		{
+			local horny = this.new("scripts/skills/effects/lewd_horny_effect");
+			_target.getSkills().add(horny);
+		}
+		else
+		{
+			_target.getSkills().getSkillByID("effects.lewd_horny").onRefresh();
+		}
+
+		// Crit: if roll is far enough below chance, also stun
+		if (roll < chance - ::Lewd.Const.CritChanceThreshold)
+		{
+			local stunned = this.new("scripts/skills/effects/stunned_effect");
+			_target.getSkills().add(stunned);
+			this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(_target) + " is stunned by the display!");
+		}
+
+		if (this.m.SoundOnHit.len() > 0)
+			this.Sound.play(this.m.SoundOnHit[this.Math.rand(0, this.m.SoundOnHit.len() - 1)], this.Const.Sound.Volume.Skill, _target.getPos());
+
+		this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(_user) + " " + modeName + " " + this.Const.UI.getColorizedEntityName(_target) + " and makes them Horny! (roll:" + roll + " chance:" + chance + ")");
+	}
+
+	function addResources()
+	{
+		this.skill.addResources();
+		foreach (s in ::Lewd.Const.SoundSpanking)
+			this.Tactical.addResource(s);
 	}
 });
-
