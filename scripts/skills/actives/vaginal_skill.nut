@@ -81,6 +81,8 @@ this.vaginal_skill <- this.inherit("scripts/skills/actives/female_sex_skill", {
 		local pts = this.getMasteryPoints();
 		if (pts >= ::Lewd.Const.MasteryVaginalAPThreshold)
 			ap += ::Lewd.Const.MasteryVaginalAPBonus;
+		if (this.getContainer().getActor().getSkills().hasSkill("effects.lewd_mounting"))
+			ap -= ::Lewd.Const.MountedAPDiscount;
 		return this.Math.max(1, ap);
 	}
 

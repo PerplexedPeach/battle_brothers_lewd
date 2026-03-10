@@ -219,6 +219,20 @@ this.female_sex_skill <- this.inherit("scripts/skills/actives/sex_skill_base", {
 			text = "[color=" + pos + "]Auto-hit[/color] against Horny or Open Invitation targets"
 		});
 
+		// Mount AP discount indicator
+		local actor = this.getContainer().getActor();
+		local hasMountDiscount = (this.m.ID == "actives.lewd_vaginal" && actor.getSkills().hasSkill("effects.lewd_mounting"))
+			|| (this.m.ID == "actives.lewd_anal" && actor.getSkills().hasSkill("effects.lewd_mounted"));
+		if (hasMountDiscount)
+		{
+			result.push({
+				id = 11,
+				type = "text",
+				icon = "ui/icons/action_points.png",
+				text = "[color=" + pos + "]-" + ::Lewd.Const.MountedAPDiscount + " AP[/color] (already mounted)"
+			});
+		}
+
 		return result;
 	}
 

@@ -300,14 +300,14 @@
 ::Lewd.Const.AnalT3KamikazePleasure <- 10; // bonus pleasure to target if user climaxes
 
 // --- Feet Skill Tiers --- (high fatigue cost is the tradeoff for being safe)
-::Lewd.Const.FeetT1AP <- 3;
+::Lewd.Const.FeetT1AP <- 4;
 ::Lewd.Const.FeetT1Fatigue <- 12;
 ::Lewd.Const.FeetT1BasePleasure <- 4;
 ::Lewd.Const.FeetT1SelfPleasure <- 0;
 ::Lewd.Const.FeetT1HeelSkillScale <- 0.1;
 ::Lewd.Const.FeetT1BaseHitChance <- 40;
 
-::Lewd.Const.FeetT2AP <- 3;
+::Lewd.Const.FeetT2AP <- 4;
 ::Lewd.Const.FeetT2Fatigue <- 18;
 ::Lewd.Const.FeetT2BasePleasure <- 7;
 ::Lewd.Const.FeetT2SelfPleasure <- 0;
@@ -315,7 +315,7 @@
 ::Lewd.Const.FeetT2BaseHitChance <- 55;
 ::Lewd.Const.FeetT2MountBonus <- 3;
 
-::Lewd.Const.FeetT3AP <- 3;
+::Lewd.Const.FeetT3AP <- 4;
 ::Lewd.Const.FeetT3Fatigue <- 22;
 ::Lewd.Const.FeetT3BasePleasure <- 11;
 ::Lewd.Const.FeetT3SelfPleasure <- 0;
@@ -478,6 +478,9 @@
 ::Lewd.Const.OrgasmThresholdResolveDivisor <- 40;  // +1 per 40 Resolve
 ::Lewd.Const.OrgasmThresholdMinibossBonus <- 2;
 ::Lewd.Const.OrgasmThresholdOrcBonus <- 1;
+
+// --- Mount AP Discount ---
+::Lewd.Const.MountedAPDiscount <- 1; // AP reduction for vaginal/anal when already mounted with target
 ::Lewd.Const.OrgasmThresholdHPDivisor <- 200; // +1 per 200 max HP
 
 // Player thresholds (from traits)
