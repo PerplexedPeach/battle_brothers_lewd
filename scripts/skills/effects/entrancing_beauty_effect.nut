@@ -110,7 +110,7 @@ this.entrancing_beauty_effect <- this.inherit("scripts/skills/skill", {
 			local entity = t.entity;
 			local resolve = entity.getBravery() + t.resolveBonus;
 			local distance = entity.getTile().getDistanceTo(tile);
-			local chance = ::Lewd.Const.AllureToDazeBaseChance + (allure - resolve) * ::Lewd.Const.AllureToDazeChanceMultiplier - distance * ::Lewd.Const.AllureToDazeDistancePenalty;
+			local chance = ::Lewd.Const.AllureToDazeBaseChance + (allure - resolve) * ::Lewd.Const.AllureToDazeChanceMultiplier - (distance - 1) * ::Lewd.Const.AllureToDazeDistancePenalty;
 			if (hasPheromones)
 			{
 				chance += ::Lewd.Const.PheromonesAllureBonus;

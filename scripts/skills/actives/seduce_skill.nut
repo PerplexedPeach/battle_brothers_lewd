@@ -54,7 +54,7 @@ this.seduce_skill <- this.inherit("scripts/skills/skill", {
 		local allure = actor.allure() + ::Lewd.Const.TeaseAllureBonus;
 		local resolve = _target.getBravery();
 		local distance = _target.getTile().getDistanceTo(actor.getTile());
-		local chance = ::Lewd.Const.TeaseBaseChance + (allure - resolve) * ::Lewd.Const.TeaseAllureScale - distance * ::Lewd.Const.TeaseDistancePenalty;
+		local chance = ::Lewd.Const.TeaseBaseChance + (allure - resolve) * ::Lewd.Const.TeaseAllureScale - (distance - 1) * ::Lewd.Const.TeaseDistancePenalty;
 
 		// Melee bonus: Grind mode
 		if (distance <= 1)
@@ -111,10 +111,10 @@ this.seduce_skill <- this.inherit("scripts/skills/skill", {
 
 		if (distance > 1)
 		{
-			local distPenalty = distance * ::Lewd.Const.TeaseDistancePenalty;
+			local distPenalty = (distance - 1) * ::Lewd.Const.TeaseDistancePenalty;
 			ret.push({
 				icon = "ui/tooltips/negative.png",
-				text = "[color=" + neg + "]-" + distPenalty + "%[/color] from distance (" + distance + " tiles)"
+				text = "[color=" + neg + "]-" + distPenalty + "%[/color] from distance (" + (distance - 1) + " tiles beyond melee)"
 			});
 		}
 

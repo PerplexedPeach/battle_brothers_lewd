@@ -52,9 +52,9 @@
 ::Lewd.Const.BeautyAllyResolveBonus <- 30; // allied males get +30 effective resolve vs Entrancing Beauty
 
 // Tease ability (ranged horny induction, melee alternate: Grind)
-::Lewd.Const.TeaseBaseChance <- 40;
+::Lewd.Const.TeaseBaseChance <- 50;
 ::Lewd.Const.TeaseAllureBonus <- 20; // flat allure bonus for hit calc
-::Lewd.Const.TeaseAllureScale <- 1.0; // (allure - resolve) * this
+::Lewd.Const.TeaseAllureScale <- 0.8; // (allure - resolve) * this
 ::Lewd.Const.TeaseDistancePenalty <- 10; // per tile of distance
 ::Lewd.Const.TeaseAP <- 5;
 ::Lewd.Const.TeaseFatigue <- 15;
