@@ -21,6 +21,7 @@ this.masochism_third <- this.inherit("scripts/skills/traits/masochism_trait", {
 		this.m.HasStunImmunity = true;
 		this.m.AllureBonus = ::Lewd.Const.AllureFromMasochismThird;
 		this.m.PleasureMaxBonus = ::Lewd.Const.PleasureMaxFromMasochismThird;
+		this.m.ClimaxLimitBonus = ::Lewd.Const.OrgasmThresholdMasochismThird;
 		this.m.PleasureFromDamageRate = ::Lewd.Const.PleasureFromDamageMasochismThird;
 		this.m.HeadBrush = "piercing_nose_mouth";
 		this.m.HasBodyPiercing = true;

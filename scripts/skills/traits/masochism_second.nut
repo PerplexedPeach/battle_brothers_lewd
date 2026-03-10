@@ -20,6 +20,7 @@ this.masochism_second <- this.inherit("scripts/skills/traits/masochism_trait", {
 		this.m.HasPhysicalResist = true;
 		this.m.AllureBonus = ::Lewd.Const.AllureFromMasochismSecond;
 		this.m.PleasureMaxBonus = ::Lewd.Const.PleasureMaxFromMasochismSecond;
+		this.m.ClimaxLimitBonus = ::Lewd.Const.OrgasmThresholdMasochismSecond;
 		this.m.PleasureFromDamageRate = ::Lewd.Const.PleasureFromDamageMasochismSecond;
 		this.m.HeadBrush = "piercing_nose_mouth";
 		this.m.DamageLogText = "revels in the pain";

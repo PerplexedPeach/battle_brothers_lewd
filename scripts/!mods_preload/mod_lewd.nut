@@ -154,12 +154,6 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC", function()
 				amount = this.Math.floor(amount * ::Lewd.Const.MountPleasureVulnerability);
 			local sourceName = _source != null ? _source.getName() : "none";
 			::logInfo("[pleasure] " + this.getName() + " +" + amount + " from " + sourceName + " [" + this.m.Pleasure + "->" + (this.m.Pleasure + amount) + "/" + max + "]");
-			// Embrace Pain perk: self-pleasure restores fatigue
-			if (amount > 0 && this.getSkills().hasSkill("perk.lewd_embrace_pain"))
-			{
-				local fatigueRestore = amount * ::Lewd.Const.EmbracePainFatigueRestore;
-				this.m.Fatigue = this.Math.max(0, this.m.Fatigue - fatigueRestore);
-			}
 			local cur = this.m.Pleasure + amount;
 			if (cur >= max)
 			{

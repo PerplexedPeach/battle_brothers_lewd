@@ -195,6 +195,13 @@ this.anal_skill <- this.inherit("scripts/skills/actives/female_sex_skill", {
 			local actualDmg = user.getHitpoints() - newHP;
 			user.setHitpoints(newHP);
 			this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(user) + " takes [color=" + this.Const.UI.Color.NegativeValue + "]" + actualDmg + "[/color] damage from the act");
+
+			// Embrace Pain: recover fatigue from sexual HP damage
+			if (user.getSkills().hasSkill("perk.lewd_embrace_pain") && actualDmg > 0)
+			{
+				local fatigueRestore = actualDmg * ::Lewd.Const.EmbracePainSexDamageFatigueRestore;
+				user.m.Fatigue = this.Math.max(0, user.m.Fatigue - fatigueRestore);
+			}
 		}
 
 		this.recordSexContinuation(user, target);

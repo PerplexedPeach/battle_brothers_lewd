@@ -29,12 +29,12 @@
 ::Lewd.Const.AllureMeleeDefenseMultiplier <- 0.5;
 
 // --- Pleasure & Climax Constants ---
-::Lewd.Const.PleasureMaxFromDainty <- 40;
-::Lewd.Const.PleasureMaxFromDelicate <- 65;
-::Lewd.Const.PleasureMaxFromEthereal <- 100;
-::Lewd.Const.PleasureMaxFromMasochismFirst <- 10;
-::Lewd.Const.PleasureMaxFromMasochismSecond <- 20;
-::Lewd.Const.PleasureMaxFromMasochismThird <- 30;
+::Lewd.Const.PleasureMaxFromDainty <- 20;
+::Lewd.Const.PleasureMaxFromDelicate <- 30;
+::Lewd.Const.PleasureMaxFromEthereal <- 40;
+::Lewd.Const.PleasureMaxFromMasochismFirst <- 0;
+::Lewd.Const.PleasureMaxFromMasochismSecond <- 0;
+::Lewd.Const.PleasureMaxFromMasochismThird <- 0;
 ::Lewd.Const.PleasureFromDamageMasochismFirst <- 0.1;
 ::Lewd.Const.PleasureFromDamageMasochismSecond <- 0.2;
 ::Lewd.Const.PleasureFromDamageMasochismThird <- 0.3;
@@ -328,18 +328,19 @@
 // --- Perk Constants ---
 ::Lewd.Const.SensualFocusPleasureMult <- 1.1; // +10% pleasure dealt
 ::Lewd.Const.AlluringPresenceAllure <- 5;
-::Lewd.Const.AlluringPresencePleasureMax <- 10;
+::Lewd.Const.AlluringPresencePleasureMax <- 0;
+::Lewd.Const.OrgasmThresholdAlluringPresence <- 1;
 ::Lewd.Const.AlluringPresenceAuraPleasure <- 3; // pleasure to adjacent enemies per turn / on move adjacent
 ::Lewd.Const.AlluringPresenceHitBonus <- 15; // +15% hit chance on first sex ability use per turn
 ::Lewd.Const.SensualFocusOpenInvitationMult <- 1.25; // +25% additional pleasure when Open Invitation active (stacks with base 10%)
 ::Lewd.Const.PracticedControlReflectionMult <- 0.5; // -50% self-pleasure (reflection) from sex abilities
 ::Lewd.Const.PracticedControlFatigueMult <- 0.75; // -25% fatigue cost on sex abilities
 ::Lewd.Const.InsatiableAPGain <- 3; // AP gained when actively bringing someone to climax
-::Lewd.Const.EmbracePainPleasureMax <- 5;
-::Lewd.Const.EmbracePainFatigueRestore <- 1; // per self-pleasure point
+::Lewd.Const.EmbracePainPleasureMax <- 0;
+::Lewd.Const.EmbracePainSexDamageFatigueRestore <- 2; // fatigue recovered per HP of sexual damage taken (e.g. anal)
 ::Lewd.Const.EmbracePainFatiguePerHit <- 3; // fatigue recovered per hit taken
 ::Lewd.Const.WillingVictimAllure <- 10; // while grappled/mounted (was 5)
-::Lewd.Const.WillingVictimPleasureMax <- 15; // unconditional PleasureMax from mental resilience
+::Lewd.Const.WillingVictimPleasureMax <- 10; // unconditional PleasureMax from mental resilience
 ::Lewd.Const.WillingVictimCounterPleasure <- 5; // pleasure dealt back to enemy when they sex you
 ::Lewd.Const.WillingVictimAIPriority <- 0.8; // AI targeting bonus for willing victim targets
 ::Lewd.Const.PliantBodyReflectionMult <- 1.5; // +50% pleasure reflection dealt to attacker when they sex you
@@ -461,6 +462,7 @@
 ::Lewd.Const.CumFacialChanceDefault <- 20;
 
 // --- Enemy PleasureMax ---
+::Lewd.Const.FemalePleasureMaxBase <- 30; // base PleasureMax for all females
 ::Lewd.Const.EnemyPleasureMaxBase <- 20;
 ::Lewd.Const.EnemyPleasureMaxResolveScale <- 0.5; // PleasureMax = base + Resolve * this
 
@@ -474,9 +476,9 @@
 ::Lewd.Const.OrgasmThresholdDainty <- 2;
 ::Lewd.Const.OrgasmThresholdDelicate <- 3;
 ::Lewd.Const.OrgasmThresholdEthereal <- 5;
-::Lewd.Const.OrgasmThresholdMasochismFirst <- 1;
-::Lewd.Const.OrgasmThresholdMasochismSecond <- 2;
-::Lewd.Const.OrgasmThresholdMasochismThird <- 3;
+::Lewd.Const.OrgasmThresholdMasochismFirst <- 0;
+::Lewd.Const.OrgasmThresholdMasochismSecond <- 1;
+::Lewd.Const.OrgasmThresholdMasochismThird <- 2;
 
 // Perk bonuses
 ::Lewd.Const.OrgasmThresholdPracticedControl <- 1;

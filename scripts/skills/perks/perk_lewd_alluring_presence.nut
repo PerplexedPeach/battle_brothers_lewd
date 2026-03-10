@@ -16,7 +16,6 @@ this.perk_lewd_alluring_presence <- this.inherit("scripts/skills/skill", {
 	function onUpdate( _properties )
 	{
 		_properties.Allure += ::Lewd.Const.AlluringPresenceAllure;
-		_properties.PleasureMax += ::Lewd.Const.AlluringPresencePleasureMax;
 	}
 
 	function onTurnStart()

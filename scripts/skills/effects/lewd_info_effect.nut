@@ -107,6 +107,10 @@ this.lewd_info_effect <- this.inherit("scripts/skills/skill", {
 			_properties.Allure += ::Lewd.Const.AllureFromOld;
 		}
 
+		// Base PleasureMax for all females (stacks with lewd trait bonuses)
+		if (actor.getGender() == 1)
+			_properties.PleasureMax += ::Lewd.Const.FemalePleasureMaxBase;
+
 		// PleasureMax for non-lewd humanoids (enemies + allies without lewd traits)
 		// Entities with MoraleState.Ignore are undead/constructs/beasts — skip them
 		// Allies with lewd traits already get PleasureMax from those traits

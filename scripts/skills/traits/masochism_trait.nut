@@ -10,6 +10,7 @@ this.masochism_trait <- this.inherit("scripts/skills/traits/character_trait", {
 		PleasureFromDamagePct = 0,       // display value for tooltip (e.g. 10 for 10%)
 		AllureBonus = 0,
 		PleasureMaxBonus = 0,
+		ClimaxLimitBonus = 0,
 		HasPhysicalResist = false,
 		HasStunImmunity = false,
 		HeadBrush = "",
@@ -102,6 +103,16 @@ this.masochism_trait <- this.inherit("scripts/skills/traits/character_trait", {
 			icon = "ui/icons/pleasure.png",
 			text = "Converts [color=" + this.Const.UI.Color.PositiveValue + "]" + this.m.PleasureFromDamagePct + "%[/color] of hitpoint damage received into pleasure"
 		});
+
+		if (this.m.ClimaxLimitBonus > 0)
+		{
+			result.push({
+				id = 25,
+				type = "text",
+				icon = "ui/icons/special.png",
+				text = "[color=" + this.Const.UI.Color.PositiveValue + "]+" + this.m.ClimaxLimitBonus + "[/color] orgasm threshold before defeat"
+			});
+		}
 
 		return result;
 	}

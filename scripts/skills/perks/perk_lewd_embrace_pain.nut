@@ -15,7 +15,6 @@ this.perk_lewd_embrace_pain <- this.inherit("scripts/skills/skill", {
 
 	function onUpdate( _properties )
 	{
-		_properties.PleasureMax += ::Lewd.Const.EmbracePainPleasureMax;
 	}
 
 	function onDamageReceived( _attacker, _damageHitpoints, _damageArmor )

@@ -260,6 +260,8 @@
 			threshold += ::Lewd.Const.OrgasmThresholdMasochismFirst;
 
 		// Perk bonuses
+		if (skills.hasSkill("perk.lewd_alluring_presence"))
+			threshold += ::Lewd.Const.OrgasmThresholdAlluringPresence;
 		if (skills.hasSkill("perk.lewd_practiced_control"))
 			threshold += ::Lewd.Const.OrgasmThresholdPracticedControl;
 		if (skills.hasSkill("perk.lewd_transcendence"))
