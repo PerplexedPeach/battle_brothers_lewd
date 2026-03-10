@@ -475,8 +475,10 @@
 // --- Orgasm Defeat ---
 ::Lewd.Const.OrgasmDefeatEnabled <- true;
 ::Lewd.Const.OrgasmThresholdEnemyBase <- 1;
-::Lewd.Const.OrgasmThresholdResolveDivisor <- 50;  // +1 per 50 Resolve
+::Lewd.Const.OrgasmThresholdResolveDivisor <- 40;  // +1 per 40 Resolve
 ::Lewd.Const.OrgasmThresholdMinibossBonus <- 2;
+::Lewd.Const.OrgasmThresholdOrcBonus <- 1;
+::Lewd.Const.OrgasmThresholdHPDivisor <- 200; // +1 per 200 max HP
 
 // Player thresholds (from traits)
 ::Lewd.Const.OrgasmThresholdDainty <- 2;
