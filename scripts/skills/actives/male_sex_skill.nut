@@ -147,7 +147,7 @@ this.male_sex_skill <- this.inherit("scripts/skills/actives/sex_skill_base", {
 			selfP = this.Math.floor(selfP * surrenderEffect.getMounterMult());
 
 		if (selfP > 0 && _user.getPleasureMax() > 0)
-			_user.addPleasure(selfP);
+			_user.addPleasure(selfP, _target);
 
 		// Willing Victim: target deals counter-pleasure back to attacker
 		if (_target.getSkills().hasSkill("perk.lewd_willing_victim") && _user.getPleasureMax() > 0)

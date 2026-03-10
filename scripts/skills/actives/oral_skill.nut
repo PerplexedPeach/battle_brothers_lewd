@@ -111,7 +111,7 @@ this.oral_skill <- this.inherit("scripts/skills/actives/female_sex_skill", {
 		{
 			local selfP = ::Lewd.Const.OralT1SelfPleasureAmount;
 			if (selfP > 0 && _user.getPleasureMax() > 0)
-				_user.addPleasure(selfP);
+				_user.addPleasure(selfP, _target);
 		}
 		this.female_sex_skill.onHit(_user, _target);
 	}

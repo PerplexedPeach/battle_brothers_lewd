@@ -294,7 +294,7 @@ this.female_sex_skill <- this.inherit("scripts/skills/actives/sex_skill_base", {
 			selfP = this.Math.floor(selfP * ::Lewd.Const.PracticedControlReflectionMult);
 
 		if (selfP > 0)
-			_user.addPleasure(selfP);
+			_user.addPleasure(selfP, _target);
 	}
 
 	// --- Log overrides (read from tier config instead of m.HitText/m.MissText) ---
