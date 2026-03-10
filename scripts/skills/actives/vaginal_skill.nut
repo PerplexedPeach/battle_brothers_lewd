@@ -1,5 +1,5 @@
 // Vaginal skill — Straddle (T1) -> Riding (T2) -> Cowgirl (T3)
-// T1 establishes mount, T2/T3 require mounted target
+// All tiers establish/refresh mount on target
 // Scales with Initiative
 this.vaginal_skill <- this.inherit("scripts/skills/actives/female_sex_skill", {
 	m = {},
@@ -121,19 +121,6 @@ this.vaginal_skill <- this.inherit("scripts/skills/actives/female_sex_skill", {
 		return selfP;
 	}
 
-	function onVerifyTarget( _originTile, _targetTile )
-	{
-		if (!this.female_sex_skill.onVerifyTarget(_originTile, _targetTile)) return false;
-
-		local tier = this.getTier();
-		if (tier == 1) return true;
-
-		// T2/T3: requires user and target to be in a mount relationship (either direction)
-		local user = this.m.Container.getActor();
-		local target = _targetTile.getEntity();
-		return ::Lewd.Mastery.isMountedWith(user, target);
-	}
-
 	function onScheduledSexHit( _info )
 	{
 		_info.Container.setBusy(false);
@@ -143,46 +130,19 @@ this.vaginal_skill <- this.inherit("scripts/skills/actives/female_sex_skill", {
 
 		if (!user.isAlive() || !target.isAlive()) return;
 
-		local tier = this.getTier();
 		local hitResult = _info.HitResult;
 
-		// T1: establish mount first
-		if (tier == 1)
+		if (!hitResult.hit)
 		{
-			if (!hitResult.hit)
-			{
-				this.logMiss(user, target, hitResult);
-				return;
-			}
-
-			this.applyMount(user, target);
-			local pleasure = this.calculatePleasure(target);
-			target.addPleasure(pleasure, user);
-			this.logHit(user, target, pleasure, hitResult, this.getSelfPleasure());
-			this.tryApplyHorny(target);
+			this.logMiss(user, target, hitResult);
+			return;
 		}
-		else
-		{
-			// T2/T3: mounted continuation
-			if (!hitResult.hit)
-			{
-				this.logMiss(user, target, hitResult);
-				return;
-			}
 
-			local pleasure = this.calculatePleasure(target);
-			target.addPleasure(pleasure, user);
-			this.logHit(user, target, pleasure, hitResult, this.getSelfPleasure());
-			this.tryApplyHorny(target);
-
-			// refresh mount duration (whichever direction exists)
-			local mountedEffect = target.getSkills().getSkillByID("effects.lewd_mounted");
-			if (mountedEffect != null)
-				mountedEffect.setTurns(::Lewd.Const.MountDuration);
-			local userMountedEffect = user.getSkills().getSkillByID("effects.lewd_mounted");
-			if (userMountedEffect != null)
-				userMountedEffect.setTurns(::Lewd.Const.MountDuration);
-		}
+		this.applyMount(user, target);
+		local pleasure = this.calculatePleasure(target);
+		target.addPleasure(pleasure, user);
+		this.logHit(user, target, pleasure, hitResult, this.getSelfPleasure());
+		this.tryApplyHorny(target);
 
 		this.applySelfPleasure(user, target);
 		this.applyT3Debuff(target);
@@ -270,24 +230,12 @@ this.vaginal_skill <- this.inherit("scripts/skills/actives/female_sex_skill", {
 		}
 
 		// Mount mechanic
-		if (tier == 1)
-		{
-			result.push({
-				id = 7,
-				type = "text",
-				icon = "ui/icons/special.png",
-				text = "[color=" + pos + "]Establishes mount[/color] on the target"
-			});
-		}
-		else
-		{
-			result.push({
-				id = 7,
-				type = "text",
-				icon = "ui/icons/special.png",
-				text = "[color=" + neg + "]Requires[/color] active mount with target"
-			});
-		}
+		result.push({
+			id = 7,
+			type = "text",
+			icon = "ui/icons/special.png",
+			text = "[color=" + pos + "]Establishes mount[/color] on the target"
+		});
 
 		// Self-pleasure
 		local selfP = this.getSelfPleasure();

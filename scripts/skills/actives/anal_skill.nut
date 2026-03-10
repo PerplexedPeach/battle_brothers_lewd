@@ -1,5 +1,5 @@
 // Anal skill — Bend Over (T1) -> Rough It (T2) -> Breaking Point (T3)
-// T1 applies mount to SELF (enemy becomes mounter), T2/T3 require self-mounted
+// All tiers establish/refresh reverse mount (enemy mounts user)
 // Requires masochism tiers for upgrades
 this.anal_skill <- this.inherit("scripts/skills/actives/female_sex_skill", {
 	m = {},
@@ -145,19 +145,6 @@ this.anal_skill <- this.inherit("scripts/skills/actives/female_sex_skill", {
 		return ::Lewd.Const.AnalT1SelfDamage;
 	}
 
-	function onVerifyTarget( _originTile, _targetTile )
-	{
-		if (!this.female_sex_skill.onVerifyTarget(_originTile, _targetTile)) return false;
-
-		local tier = this.getTier();
-		if (tier == 1) return true;
-
-		// T2/T3: requires user and target to be in a mount relationship (either direction)
-		local user = this.m.Container.getActor();
-		local target = _targetTile.getEntity();
-		return ::Lewd.Mastery.isMountedWith(user, target);
-	}
-
 	function onScheduledSexHit( _info )
 	{
 		_info.Container.setBusy(false);
@@ -170,59 +157,33 @@ this.anal_skill <- this.inherit("scripts/skills/actives/female_sex_skill", {
 		local tier = this.getTier();
 		local hitResult = _info.HitResult;
 
-		// T1: establish reverse mount (enemy mounts user)
-		if (tier == 1)
+		if (!hitResult.hit)
 		{
-			if (!hitResult.hit)
-			{
-				this.logMiss(user, target, hitResult);
-				return;
-			}
-
-			this.applyReverseMount(user, target);
-			local pleasure = this.calculatePleasure(target);
-			target.addPleasure(pleasure, user);
-			this.logHit(user, target, pleasure, hitResult, this.getSelfPleasure());
-			this.tryApplyHorny(target);
+			this.logMiss(user, target, hitResult);
+			return;
 		}
-		else
+
+		this.applyReverseMount(user, target);
+		local pleasure = this.calculatePleasure(target);
+
+		// T3 kamikaze: check if user will climax from self-pleasure
+		local selfP = this.getSelfPleasure();
+		local willClimax = false;
+		if (tier >= 3 && user.getPleasureMax() > 0 && selfP > 0)
 		{
-			// T2/T3: mounted continuation
-			if (!hitResult.hit)
+			local afterSelf = user.getPleasure() + selfP;
+			if (afterSelf >= user.getPleasureMax())
 			{
-				this.logMiss(user, target, hitResult);
-				return;
+				willClimax = true;
+				pleasure += ::Lewd.Const.AnalT3KamikazePleasure;
 			}
-
-			local pleasure = this.calculatePleasure(target);
-
-			// T3 kamikaze: check if user will climax from self-pleasure
-			local selfP = this.getSelfPleasure();
-			local willClimax = false;
-			if (tier >= 3 && user.getPleasureMax() > 0 && selfP > 0)
-			{
-				local afterSelf = user.getPleasure() + selfP;
-				if (afterSelf >= user.getPleasureMax())
-				{
-					willClimax = true;
-					pleasure += ::Lewd.Const.AnalT3KamikazePleasure;
-				}
-			}
-
-			target.addPleasure(pleasure, user);
-			this.logHit(user, target, pleasure, hitResult, selfP);
-			if (willClimax)
-				this.Tactical.EventLog.log("KAMIKAZE CLIMAX!");
-			this.tryApplyHorny(target);
-
-			// refresh mount (whichever direction exists)
-			local mountedEffect = user.getSkills().getSkillByID("effects.lewd_mounted");
-			if (mountedEffect != null)
-				mountedEffect.setTurns(::Lewd.Const.MountDuration);
-			local targetMountedEffect = target.getSkills().getSkillByID("effects.lewd_mounted");
-			if (targetMountedEffect != null)
-				targetMountedEffect.setTurns(::Lewd.Const.MountDuration);
 		}
+
+		target.addPleasure(pleasure, user);
+		this.logHit(user, target, pleasure, hitResult, selfP);
+		if (willClimax)
+			this.Tactical.EventLog.log("KAMIKAZE CLIMAX!");
+		this.tryApplyHorny(target);
 
 		this.applySelfPleasure(user, target);
 
@@ -309,25 +270,12 @@ this.anal_skill <- this.inherit("scripts/skills/actives/female_sex_skill", {
 		});
 
 		// Mount mechanic
-		local tier = this.getTier();
-		if (tier == 1)
-		{
-			result.push({
-				id = 7,
-				type = "text",
-				icon = "ui/icons/special.png",
-				text = "[color=" + neg + "]Applies mount to yourself[/color] — the enemy mounts you"
-			});
-		}
-		else
-		{
-			result.push({
-				id = 7,
-				type = "text",
-				icon = "ui/icons/special.png",
-				text = "[color=" + neg + "]Requires[/color] active mount with target"
-			});
-		}
+		result.push({
+			id = 7,
+			type = "text",
+			icon = "ui/icons/special.png",
+			text = "[color=" + neg + "]Applies mount to yourself[/color] — the enemy mounts you"
+		});
 
 		// Self-pleasure
 		local selfP = this.getSelfPleasure();
