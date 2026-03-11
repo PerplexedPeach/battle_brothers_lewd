@@ -29,9 +29,9 @@
 ::Lewd.Const.AllureMeleeDefenseMultiplier <- 0.5;
 
 // --- Pleasure & Climax Constants ---
-::Lewd.Const.PleasureMaxFromDainty <- 20;
-::Lewd.Const.PleasureMaxFromDelicate <- 30;
-::Lewd.Const.PleasureMaxFromEthereal <- 40;
+::Lewd.Const.PleasureMaxFromDainty <- 10;
+::Lewd.Const.PleasureMaxFromDelicate <- 15;
+::Lewd.Const.PleasureMaxFromEthereal <- 20;
 ::Lewd.Const.PleasureMaxFromMasochismFirst <- 0;
 ::Lewd.Const.PleasureMaxFromMasochismSecond <- 0;
 ::Lewd.Const.PleasureMaxFromMasochismThird <- 0;
@@ -468,34 +468,36 @@
 ::Lewd.Const.CumFacialChanceDefault <- 20;
 
 // --- Enemy PleasureMax ---
-::Lewd.Const.FemalePleasureMaxBase <- 30; // base PleasureMax for all females
-::Lewd.Const.EnemyPleasureMaxBase <- 20;
-::Lewd.Const.EnemyPleasureMaxResolveScale <- 0.5; // PleasureMax = base + Resolve * this
+::Lewd.Const.PleasureMaxBase <- 20;
+::Lewd.Const.PleasureMaxResolveScale <- 0.5; // PleasureMax = base + Resolve * this
 
 // --- Orgasm Defeat ---
 ::Lewd.Const.OrgasmDefeatEnabled <- true;
-::Lewd.Const.OrgasmThresholdEnemyBase <- 1;
+// Common base for all entities
+::Lewd.Const.OrgasmThresholdBase <- 1;
 ::Lewd.Const.OrgasmThresholdResolveDivisor <- 40;  // +1 per 40 Resolve
+::Lewd.Const.OrgasmThresholdHPDivisor <- 200; // +1 per 200 max HP
+
+// Enemy-specific bonuses
 ::Lewd.Const.OrgasmThresholdMinibossBonus <- 2;
 ::Lewd.Const.OrgasmThresholdOrcBonus <- 1;
 
 // --- Mount AP Discount ---
 ::Lewd.Const.MountedAPDiscount <- 1; // AP reduction for vaginal/anal when already mounted with target
-::Lewd.Const.OrgasmThresholdHPDivisor <- 200; // +1 per 200 max HP
 
-// Player thresholds (from traits)
-::Lewd.Const.OrgasmThresholdDainty <- 2;
-::Lewd.Const.OrgasmThresholdDelicate <- 3;
-::Lewd.Const.OrgasmThresholdEthereal <- 5;
+// Player lewd trait bonuses (additive on top of common base)
+::Lewd.Const.OrgasmThresholdDainty <- 1;
+::Lewd.Const.OrgasmThresholdDelicate <- 2;
+::Lewd.Const.OrgasmThresholdEthereal <- 3;
 ::Lewd.Const.OrgasmThresholdMasochismFirst <- 0;
-::Lewd.Const.OrgasmThresholdMasochismSecond <- 1;
-::Lewd.Const.OrgasmThresholdMasochismThird <- 2;
+::Lewd.Const.OrgasmThresholdMasochismSecond <- 0;
+::Lewd.Const.OrgasmThresholdMasochismThird <- 1;
 
 // Perk bonuses
 ::Lewd.Const.OrgasmThresholdPracticedControl <- 1;
-::Lewd.Const.OrgasmThresholdTranscendence <- 2;
+::Lewd.Const.OrgasmThresholdTranscendence <- 1;
 ::Lewd.Const.OrgasmThresholdWillingVictim <- 1;
-::Lewd.Const.OrgasmThresholdInsatiable <- 3;
+::Lewd.Const.OrgasmThresholdInsatiable <- 2;
 
 // Drained Trait Tiers (consequence of succubus draining)
 // Tier 1: Sapped

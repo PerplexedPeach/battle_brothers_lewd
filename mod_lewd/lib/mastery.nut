@@ -234,22 +234,38 @@
 };
 
 // Orgasm threshold: how many climaxes before defeat
-// Returns 0 if immune (no pleasure capacity), 999 if PleasureMax <= 0 on enemies
+// Common base for all entities: Base + Bravery/40 + MaxHP/200
+// Player characters add lewd trait, masochism, and perk bonuses on top
+// Returns 0 if no pleasure capacity (immune)
 ::Lewd.Mastery.getOrgasmThreshold <- function( _actor )
 {
+	if (_actor.getPleasureMax() <= 0) return 0; // no pleasure capacity = immune
+
+	// Shared base: all humanoids scale with Resolve and HP
+	local resolve = _actor.getCurrentProperties().getBravery();
+	local threshold = ::Lewd.Const.OrgasmThresholdBase;
+	threshold += this.Math.floor(resolve / ::Lewd.Const.OrgasmThresholdResolveDivisor);
+	threshold += this.Math.floor(_actor.getHitpointsMax() / ::Lewd.Const.OrgasmThresholdHPDivisor);
+
+	// Enemy-specific bonuses
+	if (!_actor.isPlayerControlled())
+	{
+		if ("IsMiniboss" in _actor.m && _actor.m.IsMiniboss)
+			threshold += ::Lewd.Const.OrgasmThresholdMinibossBonus;
+
+		if (this.Const.getDefaultFaction(_actor.getType()) == this.Const.FactionType.Orcs)
+			threshold += ::Lewd.Const.OrgasmThresholdOrcBonus;
+	}
+
+	// Player-specific bonuses: lewd traits, masochism, perks
 	if (_actor.isPlayerControlled())
 	{
-		// Players: sum trait base + masochism + perk bonuses
-		// No lewd traits = immune (can't be orgasm-defeated without pleasure capacity)
 		local skills = _actor.getSkills();
 		local lewdTier = ::Lewd.Mastery.getLewdTier(_actor);
-		local threshold = 0;
 
-		if (lewdTier >= 3)      threshold = ::Lewd.Const.OrgasmThresholdEthereal;
-		else if (lewdTier >= 2) threshold = ::Lewd.Const.OrgasmThresholdDelicate;
-		else if (lewdTier >= 1) threshold = ::Lewd.Const.OrgasmThresholdDainty;
-
-		if (threshold == 0) return 0; // no lewd trait = immune
+		if (lewdTier >= 3)      threshold += ::Lewd.Const.OrgasmThresholdEthereal;
+		else if (lewdTier >= 2) threshold += ::Lewd.Const.OrgasmThresholdDelicate;
+		else if (lewdTier >= 1) threshold += ::Lewd.Const.OrgasmThresholdDainty;
 
 		// Masochism tier bonus (highest only)
 		if (skills.hasSkill("trait.masochism_third"))
@@ -270,27 +286,8 @@
 			threshold += ::Lewd.Const.OrgasmThresholdWillingVictim;
 		if (skills.hasSkill("perk.lewd_insatiable"))
 			threshold += ::Lewd.Const.OrgasmThresholdInsatiable;
-
-		return threshold;
 	}
-	else
-	{
-		// Enemies: base + Resolve scaling + miniboss bonus
-		if (_actor.getPleasureMax() <= 0) return 999; // immune (no pleasure capacity)
 
-		local resolve = _actor.getCurrentProperties().getBravery();
-		local threshold = ::Lewd.Const.OrgasmThresholdEnemyBase;
-		threshold += this.Math.floor(resolve / ::Lewd.Const.OrgasmThresholdResolveDivisor);
-
-		if ("IsMiniboss" in _actor.m && _actor.m.IsMiniboss)
-			threshold += ::Lewd.Const.OrgasmThresholdMinibossBonus;
-
-		if (this.Const.getDefaultFaction(_actor.getType()) == this.Const.FactionType.Orcs)
-			threshold += ::Lewd.Const.OrgasmThresholdOrcBonus;
-
-		threshold += this.Math.floor(_actor.getHitpointsMax() / ::Lewd.Const.OrgasmThresholdHPDivisor);
-
-		return threshold;
-	}
+	return threshold;
 };
 
