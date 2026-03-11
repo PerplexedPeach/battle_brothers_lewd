@@ -253,7 +253,7 @@
 		if ("IsMiniboss" in _actor.m && _actor.m.IsMiniboss)
 			threshold += ::Lewd.Const.OrgasmThresholdMinibossBonus;
 
-		if (this.Const.getDefaultFaction(_actor.getType()) == this.Const.FactionType.Orcs)
+		if (this.Const.EntityType.getDefaultFaction(_actor.getType()) == this.Const.FactionType.Orcs)
 			threshold += ::Lewd.Const.OrgasmThresholdOrcBonus;
 	}
 

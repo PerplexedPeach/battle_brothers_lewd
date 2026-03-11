@@ -29,9 +29,9 @@
 ::Lewd.Const.AllureMeleeDefenseMultiplier <- 0.5;
 
 // --- Pleasure & Climax Constants ---
-::Lewd.Const.PleasureMaxFromDainty <- 10;
-::Lewd.Const.PleasureMaxFromDelicate <- 15;
-::Lewd.Const.PleasureMaxFromEthereal <- 20;
+::Lewd.Const.PleasureMaxFromDainty <- 5;
+::Lewd.Const.PleasureMaxFromDelicate <- 10;
+::Lewd.Const.PleasureMaxFromEthereal <- 15;
 ::Lewd.Const.PleasureMaxFromMasochismFirst <- 0;
 ::Lewd.Const.PleasureMaxFromMasochismSecond <- 0;
 ::Lewd.Const.PleasureMaxFromMasochismThird <- 0;
@@ -346,7 +346,7 @@
 ::Lewd.Const.EmbracePainSexDamageFatigueRestore <- 2; // fatigue recovered per HP of sexual damage taken (e.g. anal)
 ::Lewd.Const.EmbracePainFatiguePerHit <- 3; // fatigue recovered per hit taken
 ::Lewd.Const.WillingVictimAllure <- 10; // while grappled/mounted (was 5)
-::Lewd.Const.WillingVictimPleasureMax <- 10; // unconditional PleasureMax from mental resilience
+::Lewd.Const.WillingVictimPleasureMax <- 5; // unconditional PleasureMax from mental resilience
 ::Lewd.Const.WillingVictimCounterPleasure <- 5; // pleasure dealt back to enemy when they sex you
 ::Lewd.Const.WillingVictimAIPriority <- 0.8; // AI targeting bonus for willing victim targets
 ::Lewd.Const.PliantBodyReflectionMult <- 1.5; // +50% pleasure reflection dealt to attacker when they sex you
