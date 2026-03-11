@@ -87,7 +87,10 @@ this.entrancing_beauty_effect <- this.inherit("scripts/skills/skill", {
 		local targets = [];
 		local enemies = this.Tactical.Entities.getAllHostilesAsArray();
 		foreach (e in enemies)
+		{
+			if (e.getGender() == 1) continue; // skip females; use Playful Slap instead
 			targets.push({ entity = e, resolveBonus = 0 });
+		}
 
 		// Allied males can also be affected
 		local factions = actor.getAlliedFactions();

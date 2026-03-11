@@ -192,6 +192,7 @@ this.seduce_skill <- this.inherit("scripts/skills/skill", {
 		if (target == null) return false;
 		if (target.isAlliedWith(this.getContainer().getActor())) return false;
 		if (target.getMoraleState() == this.Const.MoraleState.Ignore) return false;
+		if (target.getGender() == 1) return false; // cannot tease females; use Playful Slap instead
 		return true;
 	}
 
