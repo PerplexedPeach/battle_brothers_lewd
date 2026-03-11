@@ -55,7 +55,7 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC", function()
 	});
 
 	// Restored female hairstyles from legends 19.1.0 (renamed to avoid conflict with current legends)
-	local lewdHairs = ["lewd_01", "lewd_02", "lewd_03", "lewd_04"];
+	local lewdHairs = ["lewd_01", "lewd_02", "lewd_03", "lewd_04", "lewd_05", "lewd_06"];
 	::Const.Hair.AllFemale.extend(lewdHairs);
 	::Const.Hair.BarberFemale.extend(lewdHairs);
 	::Const.Hair.SouthernFemale.extend(lewdHairs);

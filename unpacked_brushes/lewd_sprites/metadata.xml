@@ -25,9 +25,28 @@
     <sprite id="bust_head_lewd_05" offsetY="35" ic="FF5B7CAD" width="104" height="142" img="body\bust_head_female_lewd_5.png" left="-30" right="40" top="-30" bottom="50"/>
     <sprite id="bust_head_lewd_05_dead" offsetX="6" offsetY="10" ic="FF5B7CAD" width="131" height="125" img="body\bust_head_lewd_05_dead.png" left="-50" right="22" top="-64" bottom="6"/>
 
-    <!-- <sprite id="hair_lewd_4" offsetY="35" ic="FF5B7CAD" width="104" height="142" img="body\hair_lewd_4.png" left="-31" right="39" top="-30" bottom="50"/> -->
-    <sprite id="hair_lewd_4" offsetY="35" ic="FF5B7CAD" width="104" height="142" img="body\hair_lewd_4.png" left="-31" right="39" top="-30" bottom="50"/>
-    <sprite id="hair_lewd_5" offsetY="35" ic="FF5B7CAD" width="104" height="142" img="body\hair_lewd_5.png" left="-31" right="39" top="-30" bottom="50"/>
+    <!-- lewd_05 (black-only hair, aliases for all colors) -->
+    <sprite id="hair_blonde_lewd_05" offsetY="35" ic="FF5B7CAD" width="104" height="142" img="body\hair_lewd_4.png" left="-31" right="39" top="-30" bottom="50"/>
+    <sprite id="hair_brown_lewd_05" offsetY="35" ic="FF5B7CAD" width="104" height="142" img="body\hair_lewd_4.png" left="-31" right="39" top="-30" bottom="50"/>
+    <sprite id="hair_red_lewd_05" offsetY="35" ic="FF5B7CAD" width="104" height="142" img="body\hair_lewd_4.png" left="-31" right="39" top="-30" bottom="50"/>
+    <sprite id="hair_black_lewd_05" offsetY="35" ic="FF5B7CAD" width="104" height="142" img="body\hair_lewd_4.png" left="-31" right="39" top="-30" bottom="50"/>
+    <sprite id="hair_grey_lewd_05" offsetY="35" ic="FF5B7CAD" width="104" height="142" img="body\hair_lewd_4.png" left="-31" right="39" top="-30" bottom="50"/>
+    <sprite id="hair_blonde_lewd_05_dead" offsetX="6" offsetY="10" f="64F2" f1="-15" f2="-15" ic="FF375C75" width="106" height="102" img="body\hair_lewd_4_dead.png" left="-49" right="15" top="-61" bottom="-7"/>
+    <sprite id="hair_brown_lewd_05_dead" offsetX="6" offsetY="10" f="64F2" f1="-15" f2="-15" ic="FF375C75" width="106" height="102" img="body\hair_lewd_4_dead.png" left="-49" right="15" top="-61" bottom="-7"/>
+    <sprite id="hair_red_lewd_05_dead" offsetX="6" offsetY="10" f="64F2" f1="-15" f2="-15" ic="FF375C75" width="106" height="102" img="body\hair_lewd_4_dead.png" left="-49" right="15" top="-61" bottom="-7"/>
+    <sprite id="hair_black_lewd_05_dead" offsetX="6" offsetY="10" f="64F2" f1="-15" f2="-15" ic="FF375C75" width="106" height="102" img="body\hair_lewd_4_dead.png" left="-49" right="15" top="-61" bottom="-7"/>
+    <sprite id="hair_grey_lewd_05_dead" offsetX="6" offsetY="10" f="64F2" f1="-15" f2="-15" ic="FF375C75" width="106" height="102" img="body\hair_lewd_4_dead.png" left="-49" right="15" top="-61" bottom="-7"/>
+    <!-- lewd_06 (color variants generated from black via .acv curves) -->
+    <sprite id="hair_blonde_lewd_06" offsetY="35" ic="FF5B7CAD" width="104" height="142" img="body\hair_blonde_lewd_06.png" left="-31" right="39" top="-30" bottom="50"/>
+    <sprite id="hair_brown_lewd_06" offsetY="35" ic="FF5B7CAD" width="104" height="142" img="body\hair_brown_lewd_06.png" left="-31" right="39" top="-30" bottom="50"/>
+    <sprite id="hair_red_lewd_06" offsetY="35" ic="FF5B7CAD" width="104" height="142" img="body\hair_red_lewd_06.png" left="-31" right="39" top="-30" bottom="50"/>
+    <sprite id="hair_black_lewd_06" offsetY="35" ic="FF5B7CAD" width="104" height="142" img="body\hair_lewd_5.png" left="-31" right="39" top="-30" bottom="50"/>
+    <sprite id="hair_grey_lewd_06" offsetY="35" ic="FF5B7CAD" width="104" height="142" img="body\hair_grey_lewd_06.png" left="-31" right="39" top="-30" bottom="50"/>
+    <sprite id="hair_blonde_lewd_06_dead" offsetX="6" offsetY="10" f="64F2" f1="-15" f2="-15" ic="FF375C75" width="106" height="102" img="body\hair_blonde_lewd_06_dead.png" left="-49" right="15" top="-61" bottom="-7"/>
+    <sprite id="hair_brown_lewd_06_dead" offsetX="6" offsetY="10" f="64F2" f1="-15" f2="-15" ic="FF375C75" width="106" height="102" img="body\hair_brown_lewd_06_dead.png" left="-49" right="15" top="-61" bottom="-7"/>
+    <sprite id="hair_red_lewd_06_dead" offsetX="6" offsetY="10" f="64F2" f1="-15" f2="-15" ic="FF375C75" width="106" height="102" img="body\hair_red_lewd_06_dead.png" left="-49" right="15" top="-61" bottom="-7"/>
+    <sprite id="hair_black_lewd_06_dead" offsetX="6" offsetY="10" f="64F2" f1="-15" f2="-15" ic="FF375C75" width="106" height="102" img="body\hair_lewd_5_dead.png" left="-49" right="15" top="-61" bottom="-7"/>
+    <sprite id="hair_grey_lewd_06_dead" offsetX="6" offsetY="10" f="64F2" f1="-15" f2="-15" ic="FF375C75" width="106" height="102" img="body\hair_grey_lewd_06_dead.png" left="-49" right="15" top="-61" bottom="-7"/>
 
     <!-- Restored female hairstyles (from legends 19.1.0, renamed to avoid conflict with current legends) -->
     <!-- lewd_01 (was style 26) -->

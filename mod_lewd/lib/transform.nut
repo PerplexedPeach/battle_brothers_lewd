@@ -126,7 +126,7 @@
 		local w = _woman;
 		// change sprite — lewd_05 set with matching skin tone
 		w.getSprite("head").setBrush("bust_head_lewd_05");
-		w.getSprite("hair").setBrush("hair_lewd_5");
+		w.getSprite("hair").setBrush("hair_black_lewd_06");
 		w.getSprite("beard").setBrush("");
 		w.getSprite("body").setBrush("bust_body_lewd_05");
 		// clear scars and tattoos
