@@ -24,4 +24,6 @@
   <sprite id="lewd_grope" ic="FF4C4B4D" img="skills/lewd_grope.png" />
   <sprite id="open_invitation" ic="FF4C4B4D" img="skills/open_invitation.png" />
   <sprite id="tail_lash" ic="FF4C4B4D" img="skills/tail_lash.png" />
+  <sprite id="whip_into_shape" ic="FF4C4B4D" img="skills/whip_into_shape.png" />
+  <sprite id="playful_slap" ic="FF4C4B4D" img="skills/playful_slap.png" />
 </brush>

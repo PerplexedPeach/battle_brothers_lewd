@@ -6,9 +6,9 @@ this.playful_slap_skill <- this.inherit("scripts/skills/skill", {
 		this.m.Name = "Playful Slap";
 		this.m.Description = "A teasing flick of the tail. Barely hurts, but the lingering supernatural touch can overwhelm the senses and leave the target burning with desire.";
 		this.m.KilledString = "Slapped to death";
-		this.m.Icon = "skills/tail_lash.png";
-		this.m.IconDisabled = "skills/tail_lash_bw.png";
-		this.m.Overlay = "tail_lash";
+		this.m.Icon = "skills/playful_slap.png";
+		this.m.IconDisabled = "skills/playful_slap_bw.png";
+		this.m.Overlay = "playful_slap";
 		this.m.SoundOnUse = [
 			"sounds/combat/whip_01.wav",
 			"sounds/combat/whip_02.wav",

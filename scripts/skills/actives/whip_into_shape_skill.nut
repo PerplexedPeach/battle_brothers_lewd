@@ -6,9 +6,9 @@ this.whip_into_shape_skill <- this.inherit("scripts/skills/skill", {
 		this.m.Name = "Whip Into Shape";
 		this.m.Description = "Crack your tail at an allied companion to snap them out of their funk. Triggers a morale check with high chance of success, but the intimate nature of the lash may leave them flustered.";
 		this.m.KilledString = "Whipped to death";
-		this.m.Icon = "skills/tail_lash.png";
-		this.m.IconDisabled = "skills/tail_lash_bw.png";
-		this.m.Overlay = "tail_lash";
+		this.m.Icon = "skills/whip_into_shape.png";
+		this.m.IconDisabled = "skills/whip_into_shape_bw.png";
+		this.m.Overlay = "whip_into_shape";
 		this.m.SoundOnUse = [
 			"sounds/combat/whip_01.wav",
 			"sounds/combat/whip_02.wav",
