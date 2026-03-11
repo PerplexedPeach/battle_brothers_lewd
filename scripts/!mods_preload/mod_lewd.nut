@@ -55,10 +55,9 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC", function()
 	});
 
 	// Restored female hairstyles from legends 19.1.0 (renamed to avoid conflict with current legends)
+	// Only added to BarberFemale (barbershop) — not AllFemale/SouthernFemale to avoid spawning on random characters
 	local lewdHairs = ["lewd_01", "lewd_02", "lewd_03", "lewd_04", "lewd_05", "lewd_06"];
-	::Const.Hair.AllFemale.extend(lewdHairs);
 	::Const.Hair.BarberFemale.extend(lewdHairs);
-	::Const.Hair.SouthernFemale.extend(lewdHairs);
 
 	// TODO when these get large, refactor out into separate files and include them
 	mod.hook("scripts/entity/tactical/actor", function (q)

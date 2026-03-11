@@ -17,10 +17,10 @@ this.tail_whip <- this.inherit("scripts/items/weapons/weapon", {
 		this.m.ShowQuiver = false;
 		this.m.ShowArmamentIcon = true;
 		this.m.ArmamentIcon = "icon_tail_whip";
-		this.m.Condition = 0;
-		this.m.ConditionMax = 0;
+		this.m.Condition = 1;
+		this.m.ConditionMax = 1;
 		this.m.StaminaModifier = 0;
-		this.m.Value = 0;
+		this.m.Value = 6969;
 		this.m.RangeMin = 1;
 		this.m.RangeMax = 2;
 		this.m.RangeIdeal = 2;
