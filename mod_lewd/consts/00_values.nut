@@ -551,7 +551,7 @@
 ::Lewd.Const.TailAllureDamageScale <- 0.5;         // bonus damage = floor(allure * this)
 ::Lewd.Const.TailArmorDamageMult <- 0.3;            // weak vs armor
 ::Lewd.Const.TailDirectDamageMultBase <- 0.3;       // base direct damage mult
-::Lewd.Const.TailDirectDamageMultBonus <- 0.4;      // asymptotic bonus from climaxes
+::Lewd.Const.TailDirectDamageMultBonus <- 0.6;      // asymptotic bonus from climaxes (caps at 90%)
 ::Lewd.Const.TailDirectDamageClimaxHalf <- 50;      // climaxes needed for half of bonus (higher = slower scaling)
 ::Lewd.Const.TailPleasureScale <- 0.05;             // pleasure dealt = floor(allure * this)
 ::Lewd.Const.TailHornyChance <- 20;                 // % chance to inflict horny on hit

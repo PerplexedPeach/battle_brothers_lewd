@@ -61,7 +61,7 @@ this.lewd_tail_growth <- this.inherit("scripts/events/event", {
 				this.List.push({
 					id = 11,
 					icon = "ui/items/weapons/tail_whip_icon.png",
-					text = w.getName() + " has grown a succubus tail (natural weapon)"
+					text = w.getName() + " has grown a spaded tail (natural weapon)"
 				});
 
 				this.Characters.push(w.getImagePath());

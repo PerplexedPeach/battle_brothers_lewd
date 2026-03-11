@@ -4,8 +4,8 @@ this.tail_whip <- this.inherit("scripts/items/weapons/weapon", {
 	{
 		this.weapon.create();
 		this.m.ID = "weapon.tail_whip";
-		this.m.Name = "Succubus Tail";
-		this.m.Description = "A long, sinuous tail ending in a tapered tip. Deceptively strong, it can lash out with surprising reach and force. In the hands of its owner, it is as much a weapon as it is a mark of her nature.";
+		this.m.Name = "Spaded Tail";
+		this.m.Description = "A long, sinuous tail ending in a spade-shaped tip. Deceptively strong, it can lash out with surprising reach and force. In the hands of its owner, it is as much a weapon as it is a mark of her nature.";
 		this.m.Categories = "Tail, One-Handed";
 		this.m.IconLarge = "weapons/tail_whip_icon_large.png";
 		this.m.Icon = "weapons/tail_whip_icon.png";

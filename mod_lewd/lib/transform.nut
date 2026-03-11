@@ -135,18 +135,27 @@
 		w.setDirty(true);
 	}
 
-	// Grant the succubus tail weapon to an actor.
-	// Adds +1 bag slot and places the tail in it, flagged as a natural weapon (can swap but not remove).
+	// Grant the spaded tail weapon to an actor.
+	// Adds +1 bag slot, moves current mainhand weapon to the new bag slot, and equips the tail.
 	function grantTail( _actor )
 	{
 		local items = _actor.getItems();
 
+		// Add a new bag slot
 		local slots = items.getUnlockedBagSlots();
 		items.setUnlockedBagSlots(slots + 1);
 
+		// Move current mainhand weapon to the new bag slot
+		local currentWeapon = items.getItemAtSlot(this.Const.ItemSlot.Mainhand);
+		if (currentWeapon != null)
+		{
+			items.unequip(currentWeapon);
+			items.addToBag(currentWeapon, slots);
+		}
+
+		// Equip the tail as mainhand
 		local tail = this.new("scripts/items/weapons/tail_whip");
 		tail.getFlags().set("naturalWeapon", true);
-
-		items.addToBag(tail, slots);
+		items.equip(tail);
 	}
 };
