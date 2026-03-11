@@ -537,6 +537,12 @@
 ::Lewd.Const.EtherealSecondEventBaseScore <- 15;
 ::Lewd.Const.EtherealThirdEventBaseScore <- 20;
 
+// Tail Growth Event
+::Lewd.Const.TailGrowthEventThreshold <- 120;     // combined climaxes (self + partner) needed
+::Lewd.Const.TailGrowthEventBaseScore <- 100;
+::Lewd.Const.TailGrowthEventClimaxScale <- 5;      // score per climax over threshold
+::Lewd.Const.TailGrowthEventCooldownDays <- 7;    // cooldown if rejected (event re-fires)
+
 // --- Tail Whip Weapon ---
 ::Lewd.Const.TailBaseDamageMin <- 10;
 ::Lewd.Const.TailBaseDamageMax <- 20;
