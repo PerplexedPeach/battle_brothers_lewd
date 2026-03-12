@@ -42,6 +42,13 @@ this.surrender_to_pleasure_skill <- this.inherit("scripts/skills/skill", {
 		return this.m.LastAPCost;
 	}
 
+	function onAfterUpdate( _properties )
+	{
+		local actor = this.getContainer().getActor();
+		if (actor != null)
+			this.m.ActionPointCost = this.Math.max(::Lewd.Const.SurrenderToPleasureMinAP, actor.getActionPoints());
+	}
+
 	function isHidden()
 	{
 		local actor = this.getContainer().getActor();
