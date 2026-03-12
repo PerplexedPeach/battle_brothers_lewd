@@ -26,4 +26,5 @@
   <sprite id="tail_lash" ic="FF4C4B4D" img="skills/tail_lash.png" />
   <sprite id="whip_into_shape" ic="FF4C4B4D" img="skills/whip_into_shape.png" />
   <sprite id="playful_slap" ic="FF4C4B4D" img="skills/playful_slap.png" />
+  <sprite id="ethereal_trait" ic="FF4C4B4D" img="skills/ethereal_trait.png" />
 </brush>

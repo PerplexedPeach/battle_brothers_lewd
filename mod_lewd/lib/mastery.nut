@@ -137,7 +137,7 @@
 {
 	if (!_actor.isPlacedOnMap()) return;
 
-	_Tactical.spawnSpriteEffect("climax", this.createColor("#ffffff"), _actor.getTile(),
+	_Tactical.spawnSpriteEffect("ethereal_trait", this.createColor("#ffffff"), _actor.getTile(),
 		_Const.Tactical.Settings.SkillOverlayOffsetX, _Const.Tactical.Settings.SkillOverlayOffsetY,
 		_Const.Tactical.Settings.SkillOverlayScale, _Const.Tactical.Settings.SkillOverlayScale,
 		_Const.Tactical.Settings.SkillOverlayStayDuration * 2, 0, _Const.Tactical.Settings.SkillOverlayFadeDuration);
