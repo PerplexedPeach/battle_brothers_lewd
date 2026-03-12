@@ -29,6 +29,14 @@ this.male_penetrate_anal_skill <- this.inherit("scripts/skills/actives/male_sex_
 		this.m.MissText = ["sodomize", "take from behind", "ravish"];
 	}
 
+	function isHidden()
+	{
+		local actor = this.getContainer().getActor();
+		if (actor.getSkills().hasSkill("effects.lewd_horny")) return false;
+		if (actor.getSkills().hasSkill("perk.lewd_forced_entry")) return false;
+		return true;
+	}
+
 	function onUse( _user, _targetTile )
 	{
 		local target = _targetTile.getEntity();

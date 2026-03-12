@@ -286,6 +286,8 @@
 			threshold += ::Lewd.Const.OrgasmThresholdWillingVictim;
 		if (skills.hasSkill("perk.lewd_insatiable"))
 			threshold += ::Lewd.Const.OrgasmThresholdInsatiable;
+		if (skills.hasSkill("perk.lewd_brutal_force"))
+			threshold += ::Lewd.Const.BrutalForceOrgasmThreshold;
 	}
 
 	return threshold;

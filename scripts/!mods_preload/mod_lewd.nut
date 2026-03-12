@@ -104,6 +104,9 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC", function()
 			this.getSkills().add(this.new("scripts/skills/effects/lewd_info_effect"));
 			this.getSkills().add(this.new("scripts/skills/effects/lewd_subdom_effect"));
 			this.getSkills().add(this.new("scripts/skills/actives/allied_grope_skill"));
+			this.getSkills().add(this.new("scripts/skills/actives/allied_force_oral_skill"));
+			this.getSkills().add(this.new("scripts/skills/actives/allied_penetrate_vaginal_skill"));
+			this.getSkills().add(this.new("scripts/skills/actives/allied_penetrate_anal_skill"));
 		}
 
 		// Render callback for animated effects
@@ -375,6 +378,119 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC", function()
 	// Perk tree injection is handled by the traits themselves (dainty, delicate, masochism)
 	// via onAdded() using Legends' addPerkGroup/hasPerkGroup API
 
+	// Debauchery perk tree injection for male Outlaw backgrounds
+	// Uses player onInit hook — background and gender are set by that point
+	mod.hook("scripts/entity/tactical/player", function(q)
+	{
+		q.onInit = @(__original) function()
+		{
+			__original();
+			if (this.getGender() == 1) return; // females don't get Debauchery
+			local bg = this.getBackground();
+			if (bg == null) return;
+			if (!bg.isBackgroundType(::Const.BackgroundType.Outlaw)) return;
+			if (bg.hasPerkGroup(::Const.Perks.DebaucheryTree)) return;
+			bg.addPerkGroup(::Const.Perks.DebaucheryTree.Tree);
+			::logInfo("[mod_lewd] Injected Debauchery perk tree for " + this.getName() + " (bg: " + bg.getName() + ")");
+		};
+	});
+
+	// Exploit Weakness: +25% armor damage against female targets
+	mod.hook("scripts/entity/tactical/actor", function(q)
+	{
+		q.onDamageReceived = @(__original) function( _attacker, _skill, _hitInfo )
+		{
+			// Boost armor damage if attacker has Exploit Weakness and this actor is female
+			if (_attacker != null && _attacker.getSkills().hasSkill("perk.lewd_exploit_weakness") && this.getGender() == 1)
+			{
+				_hitInfo.DamageArmor = this.Math.floor(_hitInfo.DamageArmor * ::Lewd.Const.ExploitWeaknessArmorDamageMult);
+			}
+			return __original(_attacker, _skill, _hitInfo);
+		};
+	});
+
+	// Conqueror: morale boost + fatigue restore + dom bonus when causing enemy climax
+	mod.hook("scripts/skills/effects/climax_effect", function(q)
+	{
+		q.onAdded = @(__original) function()
+		{
+			__original();
+
+			local actor = this.getContainer().getActor();
+			local sourceID = actor.m.LastPleasureSourceID;
+			if (sourceID < 0) return;
+
+			local source = this.Tactical.getEntityByID(sourceID);
+			if (source == null || !source.isAlive()) return;
+			if (!source.getSkills().hasSkill("perk.lewd_conqueror")) return;
+			if (source.isAlliedWith(actor)) return; // only on enemies
+
+			// Morale boost (positive morale check)
+			source.checkMorale(1, 0);
+
+			// Restore 50% max fatigue
+			local fatigueRestore = this.Math.floor(source.getFatigueMax() * ::Lewd.Const.ConquerorFatigueRestorePct);
+			source.m.Fatigue = this.Math.max(0, source.m.Fatigue - fatigueRestore);
+
+			// Bonus dom score
+			::Lewd.Mastery.addDomSub(source, ::Lewd.Const.ConquerorDomBonus);
+
+			::logInfo("[conqueror] " + source.getName() + " conquered " + actor.getName() + ": morale boost, -" + fatigueRestore + " fatigue, +" + ::Lewd.Const.ConquerorDomBonus + " dom");
+		};
+	});
+
+	// Conqueror: mounted targets get additional Resolve penalty
+	mod.hook("scripts/skills/effects/lewd_mounted_effect", function(q)
+	{
+		q.onUpdate = @(__original) function( _properties )
+		{
+			__original(_properties);
+
+			// Check if any mounter has Conqueror
+			local actor = this.getContainer().getActor();
+			foreach (mounterID in this.m.MounterIDs)
+			{
+				local mounter = this.Tactical.getEntityByID(mounterID);
+				if (mounter != null && mounter.isAlive() && mounter.getSkills().hasSkill("perk.lewd_conqueror"))
+				{
+					_properties.Bravery += ::Lewd.Const.ConquerorMountedResolvePenalty;
+					break;
+				}
+			}
+		};
+
+		// Remove restrained effect when mount ends
+		q.onRemoved = @(__original) function()
+		{
+			local actor = this.getContainer().getActor();
+			if (actor.getSkills().hasSkill("effects.lewd_restrained"))
+			{
+				actor.getSkills().removeByID("effects.lewd_restrained");
+			}
+			__original();
+		};
+	});
+
+	// Hook break_free to also remove the lewd_restrained effect
+	mod.hook("scripts/skills/actives/break_free_skill", function(q)
+	{
+		q.onUse = @(__original) function( _user, _targetTile )
+		{
+			local hadRestrained = _user.getSkills().hasSkill("effects.lewd_restrained");
+			local result = __original(_user, _targetTile);
+			// If break_free succeeded AND we had restrained, remove it
+			// (original only removes net/web/rooted/kraken/serpent)
+			if (result && hadRestrained)
+			{
+				_user.getSkills().removeByID("effects.lewd_restrained");
+			}
+			return result;
+		};
+	});
+
+	// Brutal Force: +1 orgasm threshold for perk owner
+	// (added to mastery.nut getOrgasmThreshold via this hook)
+
 	// Player orgasm defeat: go unconscious instead of dying
 	mod.hook("scripts/entity/tactical/player", function(q) {
 		q.isReallyKilled = @(__original) function( _fatalityType ) {
@@ -478,9 +594,6 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC", function()
 			if (!actor.isPlayerControlled()) return;
 			if (actor.getGender() == 1) return; // only males harass
 			if (!actor.getSkills().hasSkill("effects.lewd_horny")) return; // must be horny
-			local gropeSkill = actor.getSkills().getSkillByID("actives.allied_grope");
-			if (gropeSkill == null) return;
-			if (actor.getActionPoints() < gropeSkill.getActionPointCost()) return;
 
 			// Find the most alluring adjacent allied female
 			local bestTarget = null;
@@ -516,14 +629,70 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC", function()
 			::logInfo("[harassment] " + actor.getName() + " (horny) -> " + bestTarget.getName() + " allure:" + bestAllure + " resolve:" + resolve + " domSub:" + domSub + " chance:" + chance);
 
 			local roll = this.Math.rand(1, 100);
-			if (roll <= chance)
-			{
-				::logInfo("[harassment] TRIGGERED roll:" + roll + " <= " + chance);
-				gropeSkill.use(bestTarget.getTile());
-			}
-			else
+			if (roll > chance)
 			{
 				::logInfo("[harassment] missed roll:" + roll + " > " + chance);
+				return;
+			}
+
+			::logInfo("[harassment] TRIGGERED roll:" + roll + " <= " + chance);
+
+			// Select harassment skill based on whether target is mounted
+			local targetMounted = bestTarget.getSkills().hasSkill("effects.lewd_mounted");
+			local selectedSkill = null;
+
+			if (targetMounted)
+			{
+				// Escalation roll: base + allure*scale - resolve*scale, clamped [0, 80]
+				local escChance = ::Lewd.Const.HarassmentEscalateBaseChance
+					+ this.Math.floor(bestAllure * ::Lewd.Const.HarassmentEscalateAllureScale)
+					- this.Math.floor(resolve * ::Lewd.Const.HarassmentEscalateResolveScale);
+				escChance = this.Math.max(0, this.Math.min(80, escChance));
+
+				local escRoll = this.Math.rand(1, 100);
+				::logInfo("[harassment] escalation check: roll:" + escRoll + " chance:" + escChance + " (target mounted)");
+
+				if (escRoll <= escChance)
+				{
+					// Escalate: try penetration or oral
+					local pickRoll = this.Math.rand(1, 100);
+					if (pickRoll <= 40)
+					{
+						// Try vaginal penetration
+						local skill = actor.getSkills().getSkillByID("actives.allied_penetrate_vaginal");
+						if (skill != null && actor.getActionPoints() >= skill.getActionPointCost())
+							selectedSkill = skill;
+					}
+					else if (pickRoll <= 70)
+					{
+						// Try anal penetration
+						local skill = actor.getSkills().getSkillByID("actives.allied_penetrate_anal");
+						if (skill != null && actor.getActionPoints() >= skill.getActionPointCost())
+							selectedSkill = skill;
+					}
+
+					// Fallback: force oral
+					if (selectedSkill == null)
+					{
+						local skill = actor.getSkills().getSkillByID("actives.allied_force_oral");
+						if (skill != null && actor.getActionPoints() >= skill.getActionPointCost())
+							selectedSkill = skill;
+					}
+				}
+			}
+
+			// Fallback to grope (unmounted targets or failed escalation)
+			if (selectedSkill == null)
+			{
+				local gropeSkill = actor.getSkills().getSkillByID("actives.allied_grope");
+				if (gropeSkill != null && actor.getActionPoints() >= gropeSkill.getActionPointCost())
+					selectedSkill = gropeSkill;
+			}
+
+			if (selectedSkill != null)
+			{
+				::logInfo("[harassment] using " + selectedSkill.getID() + " on " + bestTarget.getName());
+				selectedSkill.use(bestTarget.getTile());
 			}
 		};
 

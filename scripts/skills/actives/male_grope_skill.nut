@@ -31,4 +31,12 @@ this.male_grope_skill <- this.inherit("scripts/skills/actives/male_sex_skill", {
 		this.m.HitText = ["roughly gropes", "fondles", "paws at"];
 		this.m.MissText = ["grope", "fondle", "grab"];
 	}
+
+	function isHidden()
+	{
+		local actor = this.getContainer().getActor();
+		if (actor.getSkills().hasSkill("effects.lewd_horny")) return false;
+		if (actor.getSkills().hasSkill("perk.lewd_wandering_hands")) return false;
+		return true;
+	}
 });

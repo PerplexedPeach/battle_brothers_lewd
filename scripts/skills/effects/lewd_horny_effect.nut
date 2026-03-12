@@ -75,8 +75,12 @@ this.lewd_horny_effect <- this.inherit("scripts/skills/skill", {
 
 		this.m.TurnsLeft = ::Lewd.Const.HornyDuration;
 
-		// AI integration: grant sex skills and inject behavior for non-player male humanoids
-		if (!actor.isPlayerControlled() && actor.getGender() != 1 && actor.getMoraleState() != this.Const.MoraleState.Ignore && ::Lewd.Mastery.isHumanoid(actor))
+		// Grant male sex skills to ALL male humanoids (player + enemy)
+		local isMaleHumanoid = actor.getGender() != 1
+			&& actor.getMoraleState() != this.Const.MoraleState.Ignore
+			&& ::Lewd.Mastery.isHumanoid(actor);
+
+		if (isMaleHumanoid)
 		{
 			::logInfo("[horny] " + actor.getName() + " became horny (gender:" + actor.getGender() + " playerControlled:" + actor.isPlayerControlled() + ")");
 
@@ -90,20 +94,22 @@ this.lewd_horny_effect <- this.inherit("scripts/skills/skill", {
 				actor.getSkills().add(this.new("scripts/skills/actives/male_penetrate_anal_skill"));
 			}
 
-			// Inject AI horny behaviors into existing agent (skip if already present
-			// from a previous horny application, behaviors persist and self-deactivate)
-			local agent = actor.getAIAgent();
-			if (agent != null && !this.m.HasAIBehavior)
+			// Inject AI horny behaviors only for non-player entities
+			if (!actor.isPlayerControlled())
 			{
-				::logInfo("[horny]   injecting AI behaviors for " + actor.getName());
-				agent.addBehavior(this.new("scripts/ai/tactical/behaviors/ai_horny"));
-				agent.addBehavior(this.new("scripts/ai/tactical/behaviors/ai_horny_engage"));
-				this.m.HasAIBehavior = true;
+				local agent = actor.getAIAgent();
+				if (agent != null && !this.m.HasAIBehavior)
+				{
+					::logInfo("[horny]   injecting AI behaviors for " + actor.getName());
+					agent.addBehavior(this.new("scripts/ai/tactical/behaviors/ai_horny"));
+					agent.addBehavior(this.new("scripts/ai/tactical/behaviors/ai_horny_engage"));
+					this.m.HasAIBehavior = true;
+				}
 			}
 		}
 		else
 		{
-			::logInfo("[horny] " + actor.getName() + " became horny (no AI: player=" + actor.isPlayerControlled() + " gender=" + actor.getGender() + " moraleIgnore=" + (actor.getMoraleState() == this.Const.MoraleState.Ignore) + " humanoid=" + ::Lewd.Mastery.isHumanoid(actor) + ")");
+			::logInfo("[horny] " + actor.getName() + " became horny (no skills: gender=" + actor.getGender() + " moraleIgnore=" + (actor.getMoraleState() == this.Const.MoraleState.Ignore) + " humanoid=" + ::Lewd.Mastery.isHumanoid(actor) + ")");
 		}
 	}
 
@@ -151,6 +157,16 @@ this.lewd_horny_effect <- this.inherit("scripts/skills/skill", {
 
 	function onTurnEnd()
 	{
+		// Pliant Body: horny doesn't tick down while mounting someone with the perk
+		local actor = this.getContainer().getActor();
+		if (actor.getSkills().hasSkill("effects.lewd_mounting"))
+		{
+			local mounting = actor.getSkills().getSkillByID("effects.lewd_mounting");
+			local target = this.Tactical.getEntityByID(mounting.getTargetID());
+			if (target != null && target.isAlive() && target.getSkills().hasSkill("perk.lewd_pliant_body"))
+				return;
+		}
+
 		if (--this.m.TurnsLeft <= 0)
 		{
 			this.removeSelf();

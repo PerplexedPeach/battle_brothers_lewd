@@ -25,8 +25,15 @@ this.male_sex_skill <- this.inherit("scripts/skills/actives/sex_skill_base", {
 	{
 		local actor = this.getContainer().getActor();
 		if (actor.getSkills().hasSkill("effects.lewd_horny")) return false;
-		// Future: check for male perk unlock
 		return true;
+	}
+
+	function hasAnyDebaucheryPerk()
+	{
+		local skills = this.getContainer().getActor().getSkills();
+		return skills.hasSkill("perk.lewd_wandering_hands")
+			|| skills.hasSkill("perk.lewd_carnal_knowledge")
+			|| skills.hasSkill("perk.lewd_forced_entry");
 	}
 
 	function onVerifyTarget( _originTile, _targetTile )
@@ -110,6 +117,14 @@ this.male_sex_skill <- this.inherit("scripts/skills/actives/sex_skill_base", {
 		// mount bonus
 		if (_target.getSkills().hasSkill("effects.lewd_mounted"))
 			pleasure += this.calculateMountBonus(_target);
+
+		// Brutal Force: +25% pleasure from male sex abilities
+		if (user.getSkills().hasSkill("perk.lewd_brutal_force"))
+			pleasure = this.Math.floor(pleasure * ::Lewd.Const.BrutalForcePleasureMult);
+
+		// Restrained: +25% pleasure received
+		if (_target.getSkills().hasSkill("effects.lewd_restrained"))
+			pleasure = this.Math.floor(pleasure * ::Lewd.Const.RestrainedPleasureVulnerability);
 
 		// Open Invitation: target receives more pleasure
 		if (_target.getSkills().hasSkill("effects.open_invitation"))

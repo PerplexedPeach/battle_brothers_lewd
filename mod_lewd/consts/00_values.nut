@@ -82,7 +82,7 @@
 
 // pheromones ability
 ::Lewd.Const.PheromonesAllureBonus <- 25; // flat bonus to entrancing beauty chance while pheromones active
-::Lewd.Const.PheromonesDuration <- 2; // turns
+::Lewd.Const.PheromonesDuration <- 3; // turns (includes cast turn's onTurnEnd)
 ::Lewd.Const.PheromonesAPCost <- 3;
 ::Lewd.Const.PheromonesFatigueCost <- 10;
 
@@ -579,3 +579,38 @@
 // Hexen Curse / Male-to-Female Transformation
 ::Lewd.Const.HexenTransformFirstBaseScore <- 150;
 ::Lewd.Const.HexenTransformSecondBaseScore <- 200;
+
+// --- Debauchery Perk Constants ---
+::Lewd.Const.ExploitWeaknessArmorDamageMult <- 1.25; // +25% damage to armor vs female targets
+::Lewd.Const.BrutalForcePleasureMult <- 1.25; // +25% pleasure dealt by male sex abilities
+::Lewd.Const.BrutalForceOrgasmThreshold <- 1; // +1 orgasm threshold for perk owner
+::Lewd.Const.ConquerorDomBonus <- 2; // bonus Dom score per enemy climax caused
+::Lewd.Const.ConquerorMountedResolvePenalty <- -10; // additional Resolve penalty on mounted targets
+::Lewd.Const.ConquerorFatigueRestorePct <- 0.5; // restore 50% of max fatigue on causing climax
+
+// --- Restrain (Iron Grip) ---
+::Lewd.Const.RestrainAP <- 2;
+::Lewd.Const.RestrainFatigue <- 8;
+::Lewd.Const.RestrainedMeleeDefPenalty <- -10;
+::Lewd.Const.RestrainedRangedDefPenalty <- -10;
+::Lewd.Const.RestrainedPleasureVulnerability <- 1.25; // +25% pleasure received
+::Lewd.Const.RestrainedBreakFreeBaseChance <- -10; // harder than net (net is meleeSkill - 10)
+
+// --- Allied Harassment Escalation ---
+::Lewd.Const.AlliedForceOralAP <- 5;
+::Lewd.Const.AlliedForceOralFatigue <- 12;
+::Lewd.Const.AlliedForceOralBasePleasure <- 1;
+
+::Lewd.Const.AlliedPenetrateVaginalAP <- 5;
+::Lewd.Const.AlliedPenetrateVaginalFatigue <- 15;
+::Lewd.Const.AlliedPenetrateVaginalBasePleasure <- 10;
+::Lewd.Const.AlliedPenetrateVaginalMeleeSkillScale <- 0.08;
+
+::Lewd.Const.AlliedPenetrateAnalAP <- 5;
+::Lewd.Const.AlliedPenetrateAnalFatigue <- 18;
+::Lewd.Const.AlliedPenetrateAnalBasePleasure <- 7;
+::Lewd.Const.AlliedPenetrateAnalMeleeSkillScale <- 0.06;
+
+::Lewd.Const.HarassmentEscalateBaseChance <- 20;
+::Lewd.Const.HarassmentEscalateAllureScale <- 0.5;
+::Lewd.Const.HarassmentEscalateResolveScale <- 0.5;

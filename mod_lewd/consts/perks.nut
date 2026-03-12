@@ -15,6 +15,15 @@
 ::Const.Strings.PerkName.LewdShameless <- "Shameless";
 ::Const.Strings.PerkName.LewdTranscendence <- "Transcendence";
 
+// Debauchery tree (male, Outlaw backgrounds)
+::Const.Strings.PerkName.LewdWanderingHands <- "Wandering Hands";
+::Const.Strings.PerkName.LewdExploitWeakness <- "Exploit Weakness";
+::Const.Strings.PerkName.LewdCarnalKnowledge <- "Carnal Knowledge";
+::Const.Strings.PerkName.LewdBrutalForce <- "Brutal Force";
+::Const.Strings.PerkName.LewdForcedEntry <- "Forced Entry";
+::Const.Strings.PerkName.LewdIronGrip <- "Iron Grip";
+::Const.Strings.PerkName.LewdConqueror <- "Conqueror";
+
 // --- Perk Descriptions ---
 // Uses Legends tooltip template variables: %positive%, %negative%, %passive%, %skill%, %status%
 // These are resolved by ::Legends.tooltip() in afterHooks/perk_tooltips.nut
@@ -41,13 +50,28 @@
 
 ::Const.Strings.PerkDescription.LewdWillingVictim <- "To be taken is not always to be defeated. By offering yourself willingly, you draw the enemy in, and while they are busy with you, they are not fighting your allies.\n\n[color=%passive%][u]Passive:[/u][/color]\n• [color=%positive%]+" + ::Lewd.Const.WillingVictimPleasureMax + "[/color] Pleasure Max.\n• [color=%positive%]+" + ::Lewd.Const.WillingVictimAllure + "[/color] Allure while grappled or mounted.\n• When enemies use sex abilities on you, deal [color=%positive%]" + ::Lewd.Const.WillingVictimCounterPleasure + "[/color] pleasure in return.\n• [color=%status%]Horny[/color] enemies prioritize you as a target.\n• [color=%positive%]+" + ::Lewd.Const.OrgasmThresholdWillingVictim + "[/color] orgasm threshold before defeat.";
 
-::Const.Strings.PerkDescription.LewdPliantBody <- "Soft where it matters, yielding without breaking. Your body has learned to move with whatever is done to it, turning every rough encounter into something that exhausts the other side more than you.\n\n[color=%passive%][u]Passive:[/u][/color]\n• Enemies receive [color=%positive%]+50%[/color] more self-pleasure when using sex abilities on you.\n• While mounted, drains [color=%positive%]" + ::Lewd.Const.PliantBodyFatigueDrain + "[/color] Fatigue from your mounter each turn.\n• Recover [color=%positive%]" + ::Lewd.Const.PliantBodyFatigueRecovery + "[/color] Fatigue when an enemy uses a sex ability on you.\n• Your own sex abilities cost [color=%positive%]-25%[/color] less Fatigue.";
+::Const.Strings.PerkDescription.LewdPliantBody <- "Soft where it matters, yielding without breaking. Your body has learned to move with whatever is done to it, turning every rough encounter into something that exhausts the other side more than you.\n\n[color=%passive%][u]Passive:[/u][/color]\n• Enemies receive [color=%positive%]+50%[/color] more self-pleasure when using sex abilities on you.\n• While mounted, drains [color=%positive%]" + ::Lewd.Const.PliantBodyFatigueDrain + "[/color] Fatigue from your mounter each turn.\n• Enemies mounting you do not lose their [color=%status%]Horny[/color] status while the mount persists.\n• Recover [color=%positive%]" + ::Lewd.Const.PliantBodyFatigueRecovery + "[/color] Fatigue when an enemy uses a sex ability on you.\n• Your own sex abilities cost [color=%positive%]-25%[/color] less Fatigue.";
 
 ::Const.Strings.PerkDescription.LewdPainFeedsPleasure <- "The line between agony and ecstasy has blurred beyond recognition. Every cut, every bruise sends a shiver that others would not understand, and your body has grown tougher for it.\n\n[color=%passive%][u]Passive:[/u][/color]\n• Masochism damage-to-pleasure conversion rate increased by [color=%positive%]+50%[/color].\n• Injury threshold increased by [color=%positive%]+33%[/color].";
 
 ::Const.Strings.PerkDescription.LewdShameless <- "Let them watch. Let them hear. Your cries of ecstasy are not weakness but a weapon that stirs something primal in anyone close enough to witness.\n\n[color=%passive%][u]Passive:[/u][/color]\n• When you climax, adjacent enemies are made [color=%status%]Horny[/color] by the spectacle.\n• Your climax deals [color=%positive%]" + ::Lewd.Const.ShamelessClimaxPleasure + "[/color] pleasure to your current sex partner.";
 
 ::Const.Strings.PerkDescription.LewdTranscendence <- "Where others crumble, you ascend. The peak of pleasure that would leave most shattered only makes you more radiant, a being who has mastered the body so completely that even climax becomes a source of power.\n\n[color=%passive%][u]Passive:[/u][/color]\n• Climax no longer applies [color=%negative%]AP[/color] or [color=%negative%]Melee Defense[/color] penalties.\n• Gain [color=%positive%]+" + ::Lewd.Const.TranscendenceClimaxAllure + "[/color] Allure during Climax instead.\n• Pleasure [color=%positive%]overflows[/color] instead of resetting after climax.\n• [color=%positive%]+" + ::Lewd.Const.OrgasmThresholdTranscendence + "[/color] orgasm threshold before defeat.";
+
+// --- Debauchery Perk Descriptions ---
+::Const.Strings.PerkDescription.LewdWanderingHands <- "Your hands have a mind of their own, and they know exactly where to wander. A lifetime of petty theft and dirty fighting has given you an intuition for where people are most vulnerable.\n\n[color=%passive%][u]Active:[/u][/color]\n• Unlocks the [color=%skill%]Grope[/color] sex ability, usable without being Horny.\n• Pleasure scales with Melee Skill.\n\n[color=%passive%][u]Passive:[/u][/color]\n• Grants male grope mastery tracking.\n\n[color=%negative%]Requires male gender and Outlaw background.[/color]";
+
+::Const.Strings.PerkDescription.LewdExploitWeakness <- "You have studied the female form with a predator's eye. Every gap in armor, every soft spot, is an opportunity you know how to press.\n\n[color=%passive%][u]Passive:[/u][/color]\n• [color=%positive%]+25%[/color] damage dealt to armor against female targets with all attacks.\n• Experienced with female anatomy.";
+
+::Const.Strings.PerkDescription.LewdCarnalKnowledge <- "Theory becomes practice. You have moved well beyond fumbling and groping into techniques that leave lasting impressions.\n\n[color=%passive%][u]Active:[/u][/color]\n• Unlocks [color=%skill%]Penetrate (Vaginal)[/color] and [color=%skill%]Force Oral[/color] sex abilities, usable without being Horny.\n\n[color=%passive%][u]Passive:[/u][/color]\n• Grants male penetration mastery tracking.";
+
+::Const.Strings.PerkDescription.LewdBrutalForce <- "Subtlety is for the weak. You overwhelm through sheer force and persistence, driving your targets past their limits while your own endurance holds.\n\n[color=%passive%][u]Passive:[/u][/color]\n• Male sex abilities deal [color=%positive%]+25%[/color] more pleasure.\n• [color=%positive%]+" + ::Lewd.Const.BrutalForceOrgasmThreshold + "[/color] orgasm threshold before defeat.";
+
+::Const.Strings.PerkDescription.LewdForcedEntry <- "No hole is sacred, no position is off limits. You take what you want from behind with the kind of confidence that only comes from experience.\n\n[color=%passive%][u]Active:[/u][/color]\n• Unlocks [color=%skill%]Penetrate (Anal)[/color] sex ability, usable without being Horny.\n\n[color=%passive%][u]Passive:[/u][/color]\n• Grants male anal mastery tracking.";
+
+::Const.Strings.PerkDescription.LewdIronGrip <- "Once you have someone pinned, they stay pinned. Your grip is unbreakable, your hold absolute. The more they struggle, the tighter you squeeze.\n\n[color=%passive%][u]Active:[/u][/color]\n• While mounting a target with a free offhand, unlocks the [color=%skill%]Restrain[/color] ability.\n• Restrained targets are [color=%negative%]rooted[/color] (like being netted), suffer [color=%negative%]" + ::Lewd.Const.RestrainedMeleeDefPenalty + "[/color] Melee Defense, [color=%negative%]" + ::Lewd.Const.RestrainedRangedDefPenalty + "[/color] Ranged Defense, and take [color=%negative%]+25%[/color] more pleasure.\n• Target must break free as if caught in a net.";
+
+::Const.Strings.PerkDescription.LewdConqueror <- "Victory is not just defeating the enemy. It is breaking them utterly, standing over the ruins of their composure, and feeling the rush of total domination.\n\n[color=%passive%][u]Passive:[/u][/color]\n• Causing an enemy climax grants a [color=%positive%]morale boost[/color] and restores [color=%positive%]50%[/color] of your max Fatigue.\n• [color=%positive%]+" + ::Lewd.Const.ConquerorDomBonus + "[/color] bonus Dominance per enemy climax caused.\n• Your mounted targets suffer an additional [color=%negative%]" + ::Lewd.Const.ConquerorMountedResolvePenalty + "[/color] Resolve.";
 
 // --- Perk Definitions ---
 local perkDefObjects = [
@@ -188,6 +212,70 @@ local perkDefObjects = [
 		Icon = "ui/perks/lewd_transcendence.png",
 		IconDisabled = "ui/perks/lewd_transcendence_sw.png",
 		Const = "LewdTranscendence"
+	},
+	// Debauchery tree (male, Outlaw backgrounds)
+	{
+		ID = "perk.lewd_wandering_hands",
+		Script = "scripts/skills/perks/perk_lewd_wandering_hands",
+		Name = ::Const.Strings.PerkName.LewdWanderingHands,
+		Tooltip = ::Const.Strings.PerkDescription.LewdWanderingHands,
+		Icon = "ui/perks/lewd_wandering_hands.png",
+		IconDisabled = "ui/perks/lewd_wandering_hands_sw.png",
+		Const = "LewdWanderingHands"
+	},
+	{
+		ID = "perk.lewd_exploit_weakness",
+		Script = "scripts/skills/perks/perk_lewd_exploit_weakness",
+		Name = ::Const.Strings.PerkName.LewdExploitWeakness,
+		Tooltip = ::Const.Strings.PerkDescription.LewdExploitWeakness,
+		Icon = "ui/perks/lewd_exploit_weakness.png",
+		IconDisabled = "ui/perks/lewd_exploit_weakness_sw.png",
+		Const = "LewdExploitWeakness"
+	},
+	{
+		ID = "perk.lewd_carnal_knowledge",
+		Script = "scripts/skills/perks/perk_lewd_carnal_knowledge",
+		Name = ::Const.Strings.PerkName.LewdCarnalKnowledge,
+		Tooltip = ::Const.Strings.PerkDescription.LewdCarnalKnowledge,
+		Icon = "ui/perks/lewd_carnal_knowledge.png",
+		IconDisabled = "ui/perks/lewd_carnal_knowledge_sw.png",
+		Const = "LewdCarnalKnowledge"
+	},
+	{
+		ID = "perk.lewd_brutal_force",
+		Script = "scripts/skills/perks/perk_lewd_brutal_force",
+		Name = ::Const.Strings.PerkName.LewdBrutalForce,
+		Tooltip = ::Const.Strings.PerkDescription.LewdBrutalForce,
+		Icon = "ui/perks/lewd_brutal_force.png",
+		IconDisabled = "ui/perks/lewd_brutal_force_sw.png",
+		Const = "LewdBrutalForce"
+	},
+	{
+		ID = "perk.lewd_forced_entry",
+		Script = "scripts/skills/perks/perk_lewd_forced_entry",
+		Name = ::Const.Strings.PerkName.LewdForcedEntry,
+		Tooltip = ::Const.Strings.PerkDescription.LewdForcedEntry,
+		Icon = "ui/perks/lewd_forced_entry.png",
+		IconDisabled = "ui/perks/lewd_forced_entry_sw.png",
+		Const = "LewdForcedEntry"
+	},
+	{
+		ID = "perk.lewd_iron_grip",
+		Script = "scripts/skills/perks/perk_lewd_iron_grip",
+		Name = ::Const.Strings.PerkName.LewdIronGrip,
+		Tooltip = ::Const.Strings.PerkDescription.LewdIronGrip,
+		Icon = "ui/perks/lewd_iron_grip.png",
+		IconDisabled = "ui/perks/lewd_iron_grip_sw.png",
+		Const = "LewdIronGrip"
+	},
+	{
+		ID = "perk.lewd_conqueror",
+		Script = "scripts/skills/perks/perk_lewd_conqueror",
+		Name = ::Const.Strings.PerkName.LewdConqueror,
+		Tooltip = ::Const.Strings.PerkDescription.LewdConqueror,
+		Icon = "ui/perks/lewd_conqueror.png",
+		IconDisabled = "ui/perks/lewd_conqueror_sw.png",
+		Const = "LewdConqueror"
 	}
 ];
 ::Const.Perks.addPerkDefObjects(perkDefObjects);
@@ -225,5 +313,23 @@ local perkDefObjects = [
 		[::Const.Perks.PerkDefs.LewdPainFeedsPleasure], // T5
 		[::Const.Perks.PerkDefs.LewdShameless], // T6
 		[::Const.Perks.PerkDefs.LewdTranscendence] // T7
+	]
+};
+
+// --- Perk Tree: Debauchery (requires male + Outlaw background) ---
+::Const.Perks.DebaucheryTree <- {
+	ID = "DebaucheryTree",
+	Name = "Debauchery",
+	Descriptions = [
+		"Debauchery"
+	],
+	Tree = [
+		[::Const.Perks.PerkDefs.LewdWanderingHands], // T1: unlock Grope
+		[::Const.Perks.PerkDefs.LewdExploitWeakness], // T2: +25% armor damage vs females
+		[::Const.Perks.PerkDefs.LewdCarnalKnowledge], // T3: unlock Penetrate Vaginal + Force Oral
+		[::Const.Perks.PerkDefs.LewdBrutalForce], // T4: +25% pleasure + orgasm threshold
+		[::Const.Perks.PerkDefs.LewdForcedEntry], // T5: unlock Penetrate Anal
+		[::Const.Perks.PerkDefs.LewdIronGrip], // T6: Restrain ability
+		[::Const.Perks.PerkDefs.LewdConqueror] // T7: climax rewards
 	]
 };

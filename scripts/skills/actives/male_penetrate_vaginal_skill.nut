@@ -29,6 +29,14 @@ this.male_penetrate_vaginal_skill <- this.inherit("scripts/skills/actives/male_s
 		this.m.MissText = ["penetrate", "thrust into", "take"];
 	}
 
+	function isHidden()
+	{
+		local actor = this.getContainer().getActor();
+		if (actor.getSkills().hasSkill("effects.lewd_horny")) return false;
+		if (actor.getSkills().hasSkill("perk.lewd_carnal_knowledge")) return false;
+		return true;
+	}
+
 	function onUse( _user, _targetTile )
 	{
 		local target = _targetTile.getEntity();

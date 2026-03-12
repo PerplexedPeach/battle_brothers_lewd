@@ -82,6 +82,14 @@ this.male_force_oral_skill <- this.inherit("scripts/skills/actives/male_sex_skil
 		return actualSelfP;
 	}
 
+	function isHidden()
+	{
+		local actor = this.getContainer().getActor();
+		if (actor.getSkills().hasSkill("effects.lewd_horny")) return false;
+		if (actor.getSkills().hasSkill("perk.lewd_carnal_knowledge")) return false;
+		return true;
+	}
+
 	function onVerifyTarget( _originTile, _targetTile )
 	{
 		if (!this.male_sex_skill.onVerifyTarget(_originTile, _targetTile)) return false;
