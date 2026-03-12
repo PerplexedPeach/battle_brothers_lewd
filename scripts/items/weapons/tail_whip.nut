@@ -12,7 +12,7 @@ this.tail_whip <- this.inherit("scripts/items/weapons/weapon", {
 		this.m.SlotType = this.Const.ItemSlot.Mainhand;
 		this.m.ItemType = this.Const.Items.ItemType.Weapon | this.Const.Items.ItemType.MeleeWeapon | this.Const.Items.ItemType.OneHanded;
 		this.m.IsDroppedAsLoot = false;
-		this.m.IsDoubleGrippable = false;
+		this.m.IsDoubleGrippable = true;
 		this.m.AddGenericSkill = true;
 		this.m.ShowQuiver = false;
 		this.m.ShowArmamentIcon = true;
@@ -32,50 +32,62 @@ this.tail_whip <- this.inherit("scripts/items/weapons/weapon", {
 
 	function getTooltip()
 	{
+		this._updateDynamicStats();
 		local result = this.weapon.getTooltip();
 		local actor = this.getContainer() != null ? this.getContainer().getActor() : null;
 
 		if (actor != null)
 		{
 			local allure = actor.getCurrentProperties().getAllure();
-			local bonus = this.Math.floor(allure * ::Lewd.Const.TailAllureDamageScale);
-			if (bonus > 0)
+			local climaxes = actor.getFlags().getAsInt("lewdPartnerClimaxes");
+
+			local allureBonus = this.Math.floor(allure * ::Lewd.Const.TailAllureDamageScale);
+			if (allureBonus > 0)
 			{
 				result.push({
 					id = 60,
 					type = "text",
-					icon = "ui/icons/special.png",
-					text = "Allure adds [color=" + this.Const.UI.Color.PositiveValue + "]+" + bonus + "[/color] damage (from [color=" + this.Const.UI.Color.PositiveValue + "]" + allure + "[/color] Allure)"
+					icon = "ui/icons/regular_damage.png",
+					text = "Damage includes [color=" + this.Const.UI.Color.PositiveValue + "]+" + allureBonus + "[/color] from [color=" + this.Const.UI.Color.PositiveValue + "]" + allure + "[/color] Allure"
 				});
 			}
 
-			local climaxes = actor.getFlags().getAsInt("lewdPartnerClimaxes");
-			local directMult = ::Lewd.Const.TailDirectDamageMultBase;
 			if (climaxes > 0)
-				directMult += ::Lewd.Const.TailDirectDamageMultBonus * (climaxes * 1.0 / (climaxes + ::Lewd.Const.TailDirectDamageClimaxHalf));
-			local directPct = this.Math.floor(directMult * 100);
-			result.push({
-				id = 61,
-				type = "text",
-				icon = "ui/icons/special.png",
-				text = "Direct damage: [color=" + this.Const.UI.Color.PositiveValue + "]" + directPct + "%[/color] (scales with climaxes dealt: " + climaxes + ")"
-			});
+			{
+				local armorPenBonus = this.Math.floor(::Lewd.Const.TailDirectDamageMultBonus * (climaxes * 1.0 / (climaxes + ::Lewd.Const.TailDirectDamageClimaxHalf)) * 100);
+				local headHitBonus = this.Math.floor(::Lewd.Const.TailHeadHitChanceBonus * (climaxes * 1.0 / (climaxes + ::Lewd.Const.TailHeadHitClimaxHalf)));
+				result.push({
+					id = 61,
+					type = "text",
+					icon = "ui/icons/direct_damage.png",
+					text = "Armor penetration includes [color=" + this.Const.UI.Color.PositiveValue + "]+" + armorPenBonus + "%[/color] from climaxes dealt (" + climaxes + ")"
+				});
+				if (headHitBonus > 0)
+				{
+					result.push({
+						id = 62,
+						type = "text",
+						icon = "ui/icons/chance_to_hit_head.png",
+						text = "Head hit chance includes [color=" + this.Const.UI.Color.PositiveValue + "]+" + headHitBonus + "%[/color] from climaxes dealt"
+					});
+				}
+			}
 
 			local pleasure = this.Math.floor(allure * ::Lewd.Const.TailPleasureScale);
 			if (pleasure > 0)
 			{
 				result.push({
-					id = 62,
+					id = 63,
 					type = "text",
-					icon = "ui/icons/special.png",
+					icon = "ui/icons/pleasure.png",
 					text = "Deals [color=" + this.Const.UI.Color.PositiveValue + "]" + pleasure + "[/color] pleasure on hit"
 				});
 			}
 
 			result.push({
-				id = 63,
+				id = 64,
 				type = "text",
-				icon = "ui/icons/special.png",
+				icon = "ui/icons/morale.png",
 				text = "[color=" + this.Const.UI.Color.PositiveValue + "]" + ::Lewd.Const.TailHornyChance + "%[/color] chance to inflict Horny on hit"
 			});
 		}
@@ -89,18 +101,38 @@ this.tail_whip <- this.inherit("scripts/items/weapons/weapon", {
 		return result;
 	}
 
-	function onUpdateProperties( _properties )
+	function _updateDynamicStats()
 	{
-		this.weapon.onUpdateProperties(_properties);
-
 		local actor = this.getContainer() != null ? this.getContainer().getActor() : null;
+
+		// Bake allure into weapon damage range
+		this.m.RegularDamage = ::Lewd.Const.TailBaseDamageMin;
+		this.m.RegularDamageMax = ::Lewd.Const.TailBaseDamageMax;
+
+		// Bake climax scaling into direct damage mult and head hit chance
+		this.m.DirectDamageMult = ::Lewd.Const.TailDirectDamageMultBase;
+		this.m.ChanceToHitHead = 0;
+
 		if (actor != null)
 		{
 			local allure = actor.getCurrentProperties().getAllure();
 			local bonus = this.Math.floor(allure * ::Lewd.Const.TailAllureDamageScale);
-			_properties.DamageRegularMin += bonus;
-			_properties.DamageRegularMax += bonus;
+			this.m.RegularDamage += bonus;
+			this.m.RegularDamageMax += bonus;
+
+			local climaxes = actor.getFlags().getAsInt("lewdPartnerClimaxes");
+			if (climaxes > 0)
+			{
+				this.m.DirectDamageMult += ::Lewd.Const.TailDirectDamageMultBonus * (climaxes * 1.0 / (climaxes + ::Lewd.Const.TailDirectDamageClimaxHalf));
+				this.m.ChanceToHitHead = this.Math.floor(::Lewd.Const.TailHeadHitChanceBonus * (climaxes * 1.0 / (climaxes + ::Lewd.Const.TailHeadHitClimaxHalf)));
+			}
 		}
+	}
+
+	function onUpdateProperties( _properties )
+	{
+		this._updateDynamicStats();
+		this.weapon.onUpdateProperties(_properties);
 	}
 
 	function onEquip()
