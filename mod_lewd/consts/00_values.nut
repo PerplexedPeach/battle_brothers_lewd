@@ -342,6 +342,7 @@
 ::Lewd.Const.PracticedControlReflectionMult <- 0.5; // -50% self-pleasure (reflection) from sex abilities
 ::Lewd.Const.PracticedControlFatigueMult <- 0.75; // -25% fatigue cost on sex abilities
 ::Lewd.Const.InsatiableAPGain <- 3; // AP gained when actively bringing someone to climax
+::Lewd.Const.InsatiableMaxTriggersPerTurn <- 1; // max AP grants per turn (0 = unlimited)
 ::Lewd.Const.EmbracePainPleasureMax <- 0;
 ::Lewd.Const.EmbracePainSexDamageFatigueRestore <- 2; // fatigue recovered per HP of sexual damage taken (e.g. anal)
 ::Lewd.Const.EmbracePainFatiguePerHit <- 3; // fatigue recovered per hit taken

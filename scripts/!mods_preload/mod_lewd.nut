@@ -54,6 +54,19 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC", function()
 		::Lewd.Const.EtherealStatAbsorptionEnabled = this.getValue();
 	});
 
+	local settingInsatiableLimit = page.addRangeSetting(
+		"InsatiableMaxTriggersPerTurn",
+		1, // default
+		0, // min (0 = no limit)
+		5, // max
+		1, // step
+		"Insatiable AP Triggers Per Turn"
+	);
+	settingInsatiableLimit.setDescription("Maximum number of times Insatiable can grant AP in a single turn. Set to 0 for no limit.");
+	settingInsatiableLimit.addAfterChangeCallback(function(_oldValue) {
+		::Lewd.Const.InsatiableMaxTriggersPerTurn = this.getValue();
+	});
+
 	// Restored female hairstyles from legends 19.1.0 (renamed to avoid conflict with current legends)
 	// Only added to BarberFemale (barbershop) — not AllFemale/SouthernFemale to avoid spawning on random characters
 	local lewdHairs = ["lewd_01", "lewd_02", "lewd_03", "lewd_04", "lewd_05", "lewd_06"];

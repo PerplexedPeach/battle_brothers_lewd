@@ -134,8 +134,13 @@ this.climax_effect <- this.inherit("scripts/skills/skill", {
 				local source = this.Tactical.getEntityByID(actor.m.LastPleasureSourceID);
 				if (source != null && source.isAlive() && source.getSkills().hasSkill("perk.lewd_insatiable"))
 				{
-					source.setActionPoints(this.Math.min(source.getActionPointsMax(), source.getActionPoints() + ::Lewd.Const.InsatiableAPGain));
-					this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(source) + " gains +" + ::Lewd.Const.InsatiableAPGain + " AP from Insatiable!");
+					local insatiable = source.getSkills().getSkillByID("perk.lewd_insatiable");
+					if (insatiable.canTrigger())
+					{
+						insatiable.recordTrigger();
+						source.setActionPoints(this.Math.min(source.getActionPointsMax(), source.getActionPoints() + ::Lewd.Const.InsatiableAPGain));
+						this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(source) + " gains +" + ::Lewd.Const.InsatiableAPGain + " AP from Insatiable!");
+					}
 				}
 			}
 
