@@ -170,8 +170,19 @@ this.lewd_mounted_effect <- this.inherit("scripts/skills/skill", {
 			});
 		}
 
-		// Sub-gated defensive bonuses
+		// Pliant Body: horny lock indicator
 		local actor = this.getContainer().getActor();
+		if (actor.getSkills().hasSkill("perk.lewd_pliant_body"))
+		{
+			result.push({
+				id = 21,
+				type = "text",
+				icon = "ui/icons/special.png",
+				text = "Mounters cannot lose [color=" + this.Const.UI.Color.PositiveValue + "]Horny[/color] status (Pliant Body)"
+			});
+		}
+
+		// Sub-gated defensive bonuses
 		local subScore = ::Lewd.Mastery.getSubScore(actor);
 		if (subScore > 0)
 		{
