@@ -1,7 +1,6 @@
 // Restrained status effect — applied by Iron Grip's Restrain ability
 // Like being netted: IsRooted, defense penalties, pleasure vulnerability
 // Target must use Break Free to escape (same mechanic as net/web)
-// TODO: restrained sprite (shibari?), status icon
 this.lewd_restrained_effect <- this.inherit("scripts/skills/skill", {
 	m = {},
 	function create()
@@ -9,9 +8,9 @@ this.lewd_restrained_effect <- this.inherit("scripts/skills/skill", {
 		this.m.ID = "effects.lewd_restrained";
 		this.m.Name = "Restrained";
 		this.m.Description = "Held down and bound in place. Unable to move, with reduced ability to defend. Must break free to escape.";
-		this.m.Icon = "skills/lewd_restrained.png"; // TODO: icon
-		this.m.IconMini = ""; // TODO: mini icon
-		this.m.Overlay = ""; // TODO: overlay
+		this.m.Icon = "skills/lewd_restrained.png";
+		this.m.IconMini = "lewd_restrained_mini";
+		this.m.Overlay = "lewd_restrain";
 		this.m.Type = this.Const.SkillType.StatusEffect;
 		this.m.IsActive = false;
 		this.m.IsRemovedAfterBattle = true;
@@ -79,12 +78,11 @@ this.lewd_restrained_effect <- this.inherit("scripts/skills/skill", {
 			actor.getSkills().add(breakFree);
 		}
 
-		// TODO: show restrained sprite
-		// if (actor.hasSprite("status_rooted"))
-		// {
-		// 	actor.getSprite("status_rooted").setBrush("status_restrained");
-		// 	actor.getSprite("status_rooted").Visible = true;
-		// }
+		if (actor.hasSprite("status_rooted"))
+		{
+			actor.getSprite("status_rooted").setBrush("status_restrained");
+			actor.getSprite("status_rooted").Visible = true;
+		}
 
 		actor.setDirty(true);
 	}
@@ -94,11 +92,10 @@ this.lewd_restrained_effect <- this.inherit("scripts/skills/skill", {
 		local actor = this.getContainer().getActor();
 		::logInfo("[restrained] removed from " + actor.getName());
 
-		// TODO: hide restrained sprite
-		// if (actor.hasSprite("status_rooted"))
-		// {
-		// 	actor.getSprite("status_rooted").Visible = false;
-		// }
+		if (actor.hasSprite("status_rooted"))
+		{
+			actor.getSprite("status_rooted").Visible = false;
+		}
 
 		actor.setDirty(true);
 	}

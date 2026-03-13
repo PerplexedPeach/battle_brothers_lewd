@@ -123,6 +123,10 @@
     <sprite id="lewd_silhouette_back" offsetY="35" ic="FF1A1A1A" width="150" height="150" img="entity\silhouette_back.png" left="-67" right="83" top="-91" bottom="59"/>
     <sprite id="lewd_silhouette_front" offsetY="35" ic="FF1A1A1A" width="150" height="150" img="entity\silhouette_front.png" left="-67" right="83" top="-91" bottom="59"/>
 
+    <!-- restrained status overlay (rope bondage, renders on status_rooted layer) -->
+    <sprite id="status_restrained" offsetY="35" ic="FF6095CB" width="102" height="80" img="body\restrained.png" left="-43" right="59" top="-56" bottom="24"/>
+    <sprite id="status_restrained_red" offsetY="35" ic="FF6095CB" width="102" height="80" img="body\restrained_red.png" left="-43" right="59" top="-56" bottom="24"/>
+
     <!-- horny status bust overlay (hearts above head) -->
     <sprite id="bust_horny" offsetY="35" ic="FFE04080" width="104" height="142" img="entity\bust_horny.png" left="-28" right="34" top="20" bottom="72"/>
     <!-- pheromone glow effect -->

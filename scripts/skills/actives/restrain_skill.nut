@@ -1,7 +1,6 @@
 // Restrain — active skill from Iron Grip perk
 // Requires: user is mounting a target, free offhand
 // Applies lewd_restrained_effect on the mounted target
-// TODO: ability icon, disabled icon, overlay
 this.restrain_skill <- this.inherit("scripts/skills/skill", {
 	m = {},
 	function create()
@@ -9,9 +8,9 @@ this.restrain_skill <- this.inherit("scripts/skills/skill", {
 		this.m.ID = "actives.lewd_restrain";
 		this.m.Name = "Restrain";
 		this.m.Description = "Pin down and bind the target you are mounting, holding them completely in place. The target must break free as if caught in a net.";
-		this.m.Icon = "skills/lewd_restrain.png"; // TODO: icon
-		this.m.IconDisabled = "skills/lewd_restrain_bw.png"; // TODO: icon
-		this.m.Overlay = ""; // TODO: overlay
+		this.m.Icon = "skills/lewd_restrain.png";
+		this.m.IconDisabled = "skills/lewd_restrain_bw.png";
+		this.m.Overlay = "lewd_restrain";
 		this.m.SoundOnUse = [];
 		this.m.Type = this.Const.SkillType.Active;
 		this.m.Order = this.Const.SkillOrder.UtilityTargeted;

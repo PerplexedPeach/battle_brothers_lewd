@@ -27,4 +27,6 @@
   <sprite id="whip_into_shape" ic="FF4C4B4D" img="skills/whip_into_shape.png" />
   <sprite id="playful_slap" ic="FF4C4B4D" img="skills/playful_slap.png" />
   <sprite id="ethereal_trait" ic="FF4C4B4D" img="skills/ethereal_trait.png" />
+  <sprite id="lewd_restrain" ic="FF4C4B4D" img="skills/lewd_restrain.png" />
+  <sprite id="lewd_restrained_mini" ic="FF4C4B4D" img="skills/mini/lewd_restrained_mini.png" />
 </brush>
