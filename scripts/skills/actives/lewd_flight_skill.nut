@@ -6,7 +6,7 @@ this.lewd_flight_skill <- this.inherit("scripts/skills/skill", {
 	function create()
 	{
 		this.m.ID = "actives.lewd_flight";
-		this.m.Name = "Arcane Flight";
+		this.m.Name = "Blink";
 		this.m.Description = "Dissolve into shimmering light and rematerialize at a distant point. Your body has become as much energy as flesh, and the space between two places is merely a suggestion.";
 		this.m.Icon = "skills/lewd_flight.png";
 		this.m.IconDisabled = "skills/lewd_flight_bw.png";
@@ -99,7 +99,7 @@ this.lewd_flight_skill <- this.inherit("scripts/skills/skill", {
 
 		if (!_user.isHiddenToPlayer() || _targetTile.IsVisibleForPlayer)
 		{
-			this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(_user) + " uses Arcane Flight");
+			this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(_user) + " uses Blink");
 		}
 
 		if (_user.getTile().IsVisibleForPlayer)

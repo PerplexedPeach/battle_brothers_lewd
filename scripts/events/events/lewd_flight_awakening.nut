@@ -57,7 +57,7 @@ this.lewd_flight_awakening <- this.inherit("scripts/events/event", {
 				this.List.push({
 					id = 11,
 					icon = "skills/lewd_flight.png",
-					text = w.getName() + " has awakened the ability to fly"
+					text = w.getName() + " has awakened the ability to Blink"
 				});
 
 				this.Characters.push(w.getImagePath());
