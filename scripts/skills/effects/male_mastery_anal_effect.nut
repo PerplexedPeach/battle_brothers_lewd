@@ -35,11 +35,11 @@ this.male_mastery_anal_effect <- this.inherit("scripts/skills/effects/lewd_maste
 		return 0;
 	}
 
-	function getMasoMult()
+	function getAPBonus()
 	{
-		if (this.m.Points >= ::Lewd.Const.MaleMasteryAnalMasoMultThreshold)
-			return ::Lewd.Const.MaleMasteryAnalMasoMultBonus;
-		return 0.0;
+		if (this.m.Points >= ::Lewd.Const.MaleMasteryAnalAPThreshold)
+			return ::Lewd.Const.MaleMasteryAnalAPBonus;
+		return 0;
 	}
 
 	function getTooltip()
@@ -75,13 +75,13 @@ this.male_mastery_anal_effect <- this.inherit("scripts/skills/effects/lewd_maste
 				text = "[color=" + pos + "]+" + ::Lewd.Const.MaleMasteryAnalPleasureBonus + "[/color] Penetrate (Anal) pleasure dealt"
 			});
 		}
-		if (pts >= ::Lewd.Const.MaleMasteryAnalMasoMultThreshold)
+		if (pts >= ::Lewd.Const.MaleMasteryAnalAPThreshold)
 		{
 			tooltip.push({
 				id = 13,
 				type = "text",
-				icon = "ui/icons/special.png",
-				text = "[color=" + pos + "]Double[/color] masochism tier bonus on Penetrate (Anal)"
+				icon = "ui/icons/action_points.png",
+				text = "[color=" + pos + "]" + ::Lewd.Const.MaleMasteryAnalAPBonus + "[/color] AP cost (Penetrate Anal)"
 			});
 		}
 
@@ -93,8 +93,8 @@ this.male_mastery_anal_effect <- this.inherit("scripts/skills/effects/lewd_maste
 			tooltip.push({ id = 20, type = "hint", icon = "ui/icons/special.png", text = "Next at " + ::Lewd.Const.MaleMasteryAnalPleasureThreshold + ": Bonus pleasure dealt" });
 		else if (pts < ::Lewd.Const.MaleMasteryAnalT3)
 			tooltip.push({ id = 20, type = "hint", icon = "ui/icons/special.png", text = "Next at " + ::Lewd.Const.MaleMasteryAnalT3 + ": Tier 3" });
-		else if (pts < ::Lewd.Const.MaleMasteryAnalMasoMultThreshold)
-			tooltip.push({ id = 20, type = "hint", icon = "ui/icons/special.png", text = "Next at " + ::Lewd.Const.MaleMasteryAnalMasoMultThreshold + ": Double masochism bonus" });
+		else if (pts < ::Lewd.Const.MaleMasteryAnalAPThreshold)
+			tooltip.push({ id = 20, type = "hint", icon = "ui/icons/special.png", text = "Next at " + ::Lewd.Const.MaleMasteryAnalAPThreshold + ": AP cost reduction" });
 
 		return tooltip;
 	}

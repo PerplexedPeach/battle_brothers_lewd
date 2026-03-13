@@ -97,25 +97,27 @@ this.male_penetrate_anal_skill <- this.inherit("scripts/skills/actives/male_sex_
 		return ::Lewd.Const.MalePenetrateAnalMountedPleasureBonus;
 	}
 
+	function getActionPointCost()
+	{
+		local cost = this.male_sex_skill.getActionPointCost();
+		local mastery = this.getAnalMastery();
+		if (mastery != null)
+			cost += mastery.getAPBonus();
+		return this.Math.max(1, cost);
+	}
+
 	function calculatePleasure( _target )
 	{
 		local pleasure = this.male_sex_skill.calculatePleasure(_target);
 
 		local mastery = this.getAnalMastery();
-
-		// Mastery flat pleasure bonus
 		if (mastery != null)
 			pleasure += mastery.getPleasureBonus();
 
-		// Masochism tier bonus (doubled at high mastery)
+		// Masochism tier bonus
 		local masoTier = ::Lewd.Mastery.getMasoTier(_target);
 		if (masoTier > 0)
-		{
-			local masoBonus = masoTier * ::Lewd.Const.MalePenetrateAnalMasoTierBonus;
-			if (mastery != null)
-				masoBonus += masoTier * this.Math.floor(mastery.getMasoMult() * ::Lewd.Const.MalePenetrateAnalMasoTierBonus);
-			pleasure += masoBonus;
-		}
+			pleasure += masoTier * ::Lewd.Const.MalePenetrateAnalMasoTierBonus;
 
 		return this.Math.max(1, pleasure);
 	}

@@ -648,5 +648,5 @@
 ::Lewd.Const.MaleMasteryAnalHitBonus <- 5;
 ::Lewd.Const.MaleMasteryAnalPleasureThreshold <- 40;
 ::Lewd.Const.MaleMasteryAnalPleasureBonus <- 3;
-::Lewd.Const.MaleMasteryAnalMasoMultThreshold <- 70;
-::Lewd.Const.MaleMasteryAnalMasoMultBonus <- 1.0; // doubles the per-tier masochism bonus
+::Lewd.Const.MaleMasteryAnalAPThreshold <- 70;
+::Lewd.Const.MaleMasteryAnalAPBonus <- -1;
