@@ -90,6 +90,36 @@ this.male_force_oral_skill <- this.inherit("scripts/skills/actives/male_sex_skil
 		return true;
 	}
 
+	function getPenetrationMastery()
+	{
+		return this.getContainer().getActor().getSkills().getSkillByID("effects.male_mastery_penetration");
+	}
+
+	function getHitChanceAgainst( _target )
+	{
+		local chance = this.male_sex_skill.getHitChanceAgainst(_target);
+		local mastery = this.getPenetrationMastery();
+		if (mastery != null)
+			chance += mastery.getHitBonus();
+		return this.Math.max(20, this.Math.min(95, chance));
+	}
+
+	function getHitFactors( _targetTile )
+	{
+		local ret = this.male_sex_skill.getHitFactors(_targetTile);
+		local mastery = this.getPenetrationMastery();
+		if (mastery != null)
+		{
+			local bonus = mastery.getHitBonus();
+			if (bonus > 0)
+				ret.push({
+					icon = "ui/tooltips/positive.png",
+					text = "[color=" + this.Const.UI.Color.PositiveValue + "]+" + bonus + "%[/color] from Penetration Mastery"
+				});
+		}
+		return ret;
+	}
+
 	function onVerifyTarget( _originTile, _targetTile )
 	{
 		if (!this.male_sex_skill.onVerifyTarget(_originTile, _targetTile)) return false;

@@ -37,6 +37,11 @@ this.male_penetrate_anal_skill <- this.inherit("scripts/skills/actives/male_sex_
 		return true;
 	}
 
+	function getAnalMastery()
+	{
+		return this.getContainer().getActor().getSkills().getSkillByID("effects.male_mastery_anal");
+	}
+
 	function onUse( _user, _targetTile )
 	{
 		local target = _targetTile.getEntity();
@@ -55,6 +60,9 @@ this.male_penetrate_anal_skill <- this.inherit("scripts/skills/actives/male_sex_
 		local chance = this.male_sex_skill.getHitChanceAgainst(_target);
 		if (_target.getSkills().hasSkill("effects.lewd_mounted"))
 			chance += ::Lewd.Const.MalePenetrateAnalMountedHitBonus;
+		local mastery = this.getAnalMastery();
+		if (mastery != null)
+			chance += mastery.getHitBonus();
 		return this.Math.max(20, this.Math.min(95, chance));
 	}
 
@@ -70,6 +78,17 @@ this.male_penetrate_anal_skill <- this.inherit("scripts/skills/actives/male_sex_
 				text = "[color=" + this.Const.UI.Color.PositiveValue + "]+" + ::Lewd.Const.MalePenetrateAnalMountedHitBonus + "%[/color] from target mounted"
 			});
 
+		local mastery = this.getAnalMastery();
+		if (mastery != null)
+		{
+			local bonus = mastery.getHitBonus();
+			if (bonus > 0)
+				ret.push({
+					icon = "ui/tooltips/positive.png",
+					text = "[color=" + this.Const.UI.Color.PositiveValue + "]+" + bonus + "%[/color] from Anal Mastery"
+				});
+		}
+
 		return ret;
 	}
 
@@ -82,10 +101,21 @@ this.male_penetrate_anal_skill <- this.inherit("scripts/skills/actives/male_sex_
 	{
 		local pleasure = this.male_sex_skill.calculatePleasure(_target);
 
-		// Masochism tier bonus
+		local mastery = this.getAnalMastery();
+
+		// Mastery flat pleasure bonus
+		if (mastery != null)
+			pleasure += mastery.getPleasureBonus();
+
+		// Masochism tier bonus (doubled at high mastery)
 		local masoTier = ::Lewd.Mastery.getMasoTier(_target);
 		if (masoTier > 0)
-			pleasure += masoTier * ::Lewd.Const.MalePenetrateAnalMasoTierBonus;
+		{
+			local masoBonus = masoTier * ::Lewd.Const.MalePenetrateAnalMasoTierBonus;
+			if (mastery != null)
+				masoBonus += masoTier * this.Math.floor(mastery.getMasoMult() * ::Lewd.Const.MalePenetrateAnalMasoTierBonus);
+			pleasure += masoBonus;
+		}
 
 		return this.Math.max(1, pleasure);
 	}

@@ -21,7 +21,10 @@ this.perk_lewd_forced_entry <- this.inherit("scripts/skills/skill", {
 		{
 			actor.getSkills().add(this.new("scripts/skills/actives/male_penetrate_anal_skill"));
 		}
-		// TODO: add male anal mastery effect when implemented
+		if (!actor.getSkills().hasSkill("effects.male_mastery_anal"))
+		{
+			actor.getSkills().add(this.new("scripts/skills/effects/male_mastery_anal_effect"));
+		}
 	}
 
 	function onRemoved()

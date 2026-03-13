@@ -39,4 +39,43 @@ this.male_grope_skill <- this.inherit("scripts/skills/actives/male_sex_skill", {
 		if (actor.getSkills().hasSkill("perk.lewd_wandering_hands")) return false;
 		return true;
 	}
+
+	function getGropeMastery()
+	{
+		return this.getContainer().getActor().getSkills().getSkillByID("effects.male_mastery_grope");
+	}
+
+	function getHitChanceAgainst( _target )
+	{
+		local chance = this.male_sex_skill.getHitChanceAgainst(_target);
+		local mastery = this.getGropeMastery();
+		if (mastery != null)
+			chance += mastery.getHitBonus();
+		return this.Math.max(20, this.Math.min(95, chance));
+	}
+
+	function calculatePleasure( _target )
+	{
+		local pleasure = this.male_sex_skill.calculatePleasure(_target);
+		local mastery = this.getGropeMastery();
+		if (mastery != null)
+			pleasure += mastery.getPleasureBonus();
+		return this.Math.max(1, pleasure);
+	}
+
+	function getHitFactors( _targetTile )
+	{
+		local ret = this.male_sex_skill.getHitFactors(_targetTile);
+		local mastery = this.getGropeMastery();
+		if (mastery != null)
+		{
+			local bonus = mastery.getHitBonus();
+			if (bonus > 0)
+				ret.push({
+					icon = "ui/tooltips/positive.png",
+					text = "[color=" + this.Const.UI.Color.PositiveValue + "]+" + bonus + "%[/color] from Grope Mastery"
+				});
+		}
+		return ret;
+	}
 });

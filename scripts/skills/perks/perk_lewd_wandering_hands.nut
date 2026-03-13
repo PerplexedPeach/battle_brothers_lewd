@@ -21,7 +21,10 @@ this.perk_lewd_wandering_hands <- this.inherit("scripts/skills/skill", {
 		{
 			actor.getSkills().add(this.new("scripts/skills/actives/male_grope_skill"));
 		}
-		// TODO: add male grope mastery effect when implemented
+		if (!actor.getSkills().hasSkill("effects.male_mastery_grope"))
+		{
+			actor.getSkills().add(this.new("scripts/skills/effects/male_mastery_grope_effect"));
+		}
 	}
 
 	function onRemoved()

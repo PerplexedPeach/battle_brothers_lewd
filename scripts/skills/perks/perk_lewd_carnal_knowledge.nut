@@ -25,7 +25,10 @@ this.perk_lewd_carnal_knowledge <- this.inherit("scripts/skills/skill", {
 		{
 			actor.getSkills().add(this.new("scripts/skills/actives/male_force_oral_skill"));
 		}
-		// TODO: add male penetration mastery effect when implemented
+		if (!actor.getSkills().hasSkill("effects.male_mastery_penetration"))
+		{
+			actor.getSkills().add(this.new("scripts/skills/effects/male_mastery_penetration_effect"));
+		}
 	}
 
 	function onRemoved()

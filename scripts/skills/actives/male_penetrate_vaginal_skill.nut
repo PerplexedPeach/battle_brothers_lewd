@@ -37,6 +37,20 @@ this.male_penetrate_vaginal_skill <- this.inherit("scripts/skills/actives/male_s
 		return true;
 	}
 
+	function getPenetrationMastery()
+	{
+		return this.getContainer().getActor().getSkills().getSkillByID("effects.male_mastery_penetration");
+	}
+
+	function getActionPointCost()
+	{
+		local cost = this.male_sex_skill.getActionPointCost();
+		local mastery = this.getPenetrationMastery();
+		if (mastery != null)
+			cost += mastery.getAPBonus();
+		return this.Math.max(1, cost);
+	}
+
 	function onUse( _user, _targetTile )
 	{
 		local target = _targetTile.getEntity();
@@ -55,6 +69,9 @@ this.male_penetrate_vaginal_skill <- this.inherit("scripts/skills/actives/male_s
 		local chance = this.male_sex_skill.getHitChanceAgainst(_target);
 		if (_target.getSkills().hasSkill("effects.lewd_mounted"))
 			chance += ::Lewd.Const.MalePenetrateVaginalMountedHitBonus;
+		local mastery = this.getPenetrationMastery();
+		if (mastery != null)
+			chance += mastery.getHitBonus();
 		return this.Math.max(20, this.Math.min(95, chance));
 	}
 
@@ -70,7 +87,27 @@ this.male_penetrate_vaginal_skill <- this.inherit("scripts/skills/actives/male_s
 				text = "[color=" + this.Const.UI.Color.PositiveValue + "]+" + ::Lewd.Const.MalePenetrateVaginalMountedHitBonus + "%[/color] from target mounted"
 			});
 
+		local mastery = this.getPenetrationMastery();
+		if (mastery != null)
+		{
+			local bonus = mastery.getHitBonus();
+			if (bonus > 0)
+				ret.push({
+					icon = "ui/tooltips/positive.png",
+					text = "[color=" + this.Const.UI.Color.PositiveValue + "]+" + bonus + "%[/color] from Penetration Mastery"
+				});
+		}
+
 		return ret;
+	}
+
+	function calculatePleasure( _target )
+	{
+		local pleasure = this.male_sex_skill.calculatePleasure(_target);
+		local mastery = this.getPenetrationMastery();
+		if (mastery != null)
+			pleasure += mastery.getPleasureBonus();
+		return this.Math.max(1, pleasure);
 	}
 
 	function calculateMountBonus( _target )

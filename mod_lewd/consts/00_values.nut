@@ -615,3 +615,38 @@
 ::Lewd.Const.HarassmentEscalateBaseChance <- 20;
 ::Lewd.Const.HarassmentEscalateAllureScale <- 0.5;
 ::Lewd.Const.HarassmentEscalateResolveScale <- 0.5;
+
+// --- Male Mastery System ---
+
+// Grope mastery (Wandering Hands perk)
+::Lewd.Const.MaleMasteryLimitGrope <- 60;
+::Lewd.Const.MaleMasteryGropeT2 <- 15;
+::Lewd.Const.MaleMasteryGropeT3 <- 40;
+::Lewd.Const.MaleMasteryGropeHitThreshold <- 8;
+::Lewd.Const.MaleMasteryGropeHitBonus <- 5;
+::Lewd.Const.MaleMasteryGropePleasureThreshold <- 25;
+::Lewd.Const.MaleMasteryGropePleasureBonus <- 2;
+::Lewd.Const.MaleMasteryGropeHitT3Threshold <- 50;
+::Lewd.Const.MaleMasteryGropeHitT3Bonus <- 5;
+
+// Penetration mastery (Carnal Knowledge perk) — tracks vaginal + force oral
+::Lewd.Const.MaleMasteryLimitPenetration <- 80;
+::Lewd.Const.MaleMasteryPenetrationT2 <- 20;
+::Lewd.Const.MaleMasteryPenetrationT3 <- 55;
+::Lewd.Const.MaleMasteryPenetrationPleasureThreshold <- 10;
+::Lewd.Const.MaleMasteryPenetrationPleasureBonus <- 3;
+::Lewd.Const.MaleMasteryPenetrationHitThreshold <- 35;
+::Lewd.Const.MaleMasteryPenetrationHitBonus <- 5;
+::Lewd.Const.MaleMasteryPenetrationAPThreshold <- 65;
+::Lewd.Const.MaleMasteryPenetrationAPBonus <- -1;
+
+// Anal mastery (Forced Entry perk)
+::Lewd.Const.MaleMasteryLimitAnal <- 80;
+::Lewd.Const.MaleMasteryAnalT2 <- 25;
+::Lewd.Const.MaleMasteryAnalT3 <- 60;
+::Lewd.Const.MaleMasteryAnalHitThreshold <- 10;
+::Lewd.Const.MaleMasteryAnalHitBonus <- 5;
+::Lewd.Const.MaleMasteryAnalPleasureThreshold <- 40;
+::Lewd.Const.MaleMasteryAnalPleasureBonus <- 3;
+::Lewd.Const.MaleMasteryAnalMasoMultThreshold <- 70;
+::Lewd.Const.MaleMasteryAnalMasoMultBonus <- 1.0; // doubles the per-tier masochism bonus
