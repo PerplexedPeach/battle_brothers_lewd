@@ -68,10 +68,12 @@ this.lewd_restrained_effect <- this.inherit("scripts/skills/skill", {
 	function onAdded()
 	{
 		local actor = this.getContainer().getActor();
+		::logInfo("[restrained] applied to " + actor.getName() + " (rooted, melDef" + ::Lewd.Const.RestrainedMeleeDefPenalty + " rngDef" + ::Lewd.Const.RestrainedRangedDefPenalty + ")");
 
 		// Grant break free skill if not already present
 		if (!actor.getSkills().hasSkill("actives.break_free"))
 		{
+			::logInfo("[restrained] granting break_free to " + actor.getName() + " (baseChance=" + ::Lewd.Const.RestrainedBreakFreeBaseChance + ")");
 			local breakFree = this.new("scripts/skills/actives/break_free_skill");
 			breakFree.setChanceBonus(::Lewd.Const.RestrainedBreakFreeBaseChance);
 			actor.getSkills().add(breakFree);
@@ -90,6 +92,7 @@ this.lewd_restrained_effect <- this.inherit("scripts/skills/skill", {
 	function onRemoved()
 	{
 		local actor = this.getContainer().getActor();
+		::logInfo("[restrained] removed from " + actor.getName());
 
 		// TODO: hide restrained sprite
 		// if (actor.hasSprite("status_rooted"))

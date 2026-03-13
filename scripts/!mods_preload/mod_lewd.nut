@@ -388,7 +388,7 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC", function()
 	// Perk tree injection is handled by the traits themselves (dainty, delicate, masochism)
 	// via onAdded() using Legends' addPerkGroup/hasPerkGroup API
 
-	// Allied harassment skills + Debauchery perk tree for male player characters
+	// Allied harassment skills for male player characters
 	mod.hook("scripts/entity/tactical/player", function(q)
 	{
 		q.onInit = @(__original) function()
@@ -401,10 +401,17 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC", function()
 			this.getSkills().add(this.new("scripts/skills/actives/allied_force_oral_skill"));
 			this.getSkills().add(this.new("scripts/skills/actives/allied_penetrate_vaginal_skill"));
 			this.getSkills().add(this.new("scripts/skills/actives/allied_penetrate_anal_skill"));
+		};
 
-			// Debauchery perk tree for Outlaw backgrounds
+		// Debauchery perk tree injection — must happen after setStartValuesEx
+		// because background is null during onInit (assigned in setStartValuesEx)
+		q.setStartValuesEx = @(__original) function( _backgrounds, _addTraits = true, _gender = -1, _addEquipment = true )
+		{
+			__original(_backgrounds, _addTraits, _gender, _addEquipment);
+
 			local bg = this.getBackground();
 			if (bg == null) return;
+			if (this.getGender() == 1) return;
 			if (!bg.isBackgroundType(::Const.BackgroundType.Outlaw)) return;
 			if (bg.hasPerkGroup(::Const.Perks.DebaucheryTree)) return;
 			bg.addPerkGroup(::Const.Perks.DebaucheryTree.Tree);

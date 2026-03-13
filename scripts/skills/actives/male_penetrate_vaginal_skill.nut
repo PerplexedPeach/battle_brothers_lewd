@@ -143,6 +143,7 @@ this.male_penetrate_vaginal_skill <- this.inherit("scripts/skills/actives/male_s
 	{
 		if (!_target.getSkills().hasSkill("effects.lewd_mounted"))
 		{
+			::logInfo("[male_sex] penVag: establishing NEW mount " + _user.getName() + " -> " + _target.getName());
 			local mounted = this.new("scripts/skills/effects/lewd_mounted_effect");
 			_target.getSkills().add(mounted);
 			mounted.addMounter(_user.getID());
@@ -150,6 +151,7 @@ this.male_penetrate_vaginal_skill <- this.inherit("scripts/skills/actives/male_s
 		}
 		else
 		{
+			::logInfo("[male_sex] penVag: refreshing mount " + _user.getName() + " -> " + _target.getName());
 			local mounted = _target.getSkills().getSkillByID("effects.lewd_mounted");
 			mounted.addMounter(_user.getID());
 			mounted.setTurns(::Lewd.Const.MountDuration);

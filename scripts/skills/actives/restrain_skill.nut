@@ -61,14 +61,30 @@ this.restrain_skill <- this.inherit("scripts/skills/skill", {
 		// Must be mounting this specific target
 		local actor = this.getContainer().getActor();
 		local mountingEffect = actor.getSkills().getSkillByID("effects.lewd_mounting");
-		if (mountingEffect == null) return false;
-		if (mountingEffect.getTargetID() != target.getID()) return false;
+		if (mountingEffect == null)
+		{
+			::logInfo("[restrain] onVerifyTarget FAIL: " + actor.getName() + " has no mounting effect");
+			return false;
+		}
+		if (mountingEffect.getTargetID() != target.getID())
+		{
+			::logInfo("[restrain] onVerifyTarget FAIL: " + actor.getName() + " mounting targetID=" + mountingEffect.getTargetID() + " but clicked targetID=" + target.getID());
+			return false;
+		}
 
 		// Target not already restrained
-		if (target.getSkills().hasSkill("effects.lewd_restrained")) return false;
+		if (target.getSkills().hasSkill("effects.lewd_restrained"))
+		{
+			::logInfo("[restrain] onVerifyTarget FAIL: " + target.getName() + " already restrained");
+			return false;
+		}
 
 		// Target not immune to root
-		if (target.getCurrentProperties().IsImmuneToRoot) return false;
+		if (target.getCurrentProperties().IsImmuneToRoot)
+		{
+			::logInfo("[restrain] onVerifyTarget FAIL: " + target.getName() + " is immune to root");
+			return false;
+		}
 
 		return true;
 	}
@@ -78,6 +94,7 @@ this.restrain_skill <- this.inherit("scripts/skills/skill", {
 		local target = _targetTile.getEntity();
 		if (target == null) return false;
 
+		::logInfo("[restrain] " + _user.getName() + " restrains " + target.getName());
 		target.getSkills().add(this.new("scripts/skills/effects/lewd_restrained_effect"));
 
 		this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(_user) + " restrains " + this.Const.UI.getColorizedEntityName(target) + "!");
