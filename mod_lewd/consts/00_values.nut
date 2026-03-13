@@ -547,7 +547,7 @@
 ::Lewd.Const.TailGrowthEventCooldownDays <- 7;    // cooldown if rejected (event re-fires)
 
 // --- Flight Awakening Event ---
-::Lewd.Const.FlightEventThreshold <- 200;          // combined climaxes needed (higher than tail at 120)
+::Lewd.Const.FlightEventThreshold <- 350;          // combined climaxes needed (higher than tail at 120)
 ::Lewd.Const.FlightEventBaseScore <- 80;
 ::Lewd.Const.FlightEventClimaxScale <- 3;
 
