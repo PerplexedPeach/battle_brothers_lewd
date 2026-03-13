@@ -116,10 +116,6 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC", function()
 			__original();
 			this.getSkills().add(this.new("scripts/skills/effects/lewd_info_effect"));
 			this.getSkills().add(this.new("scripts/skills/effects/lewd_subdom_effect"));
-			this.getSkills().add(this.new("scripts/skills/actives/allied_grope_skill"));
-			this.getSkills().add(this.new("scripts/skills/actives/allied_force_oral_skill"));
-			this.getSkills().add(this.new("scripts/skills/actives/allied_penetrate_vaginal_skill"));
-			this.getSkills().add(this.new("scripts/skills/actives/allied_penetrate_anal_skill"));
 		}
 
 		// Render callback for animated effects
@@ -391,14 +387,21 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC", function()
 	// Perk tree injection is handled by the traits themselves (dainty, delicate, masochism)
 	// via onAdded() using Legends' addPerkGroup/hasPerkGroup API
 
-	// Debauchery perk tree injection for male Outlaw backgrounds
-	// Uses player onInit hook — background and gender are set by that point
+	// Allied harassment skills + Debauchery perk tree for male player characters
 	mod.hook("scripts/entity/tactical/player", function(q)
 	{
 		q.onInit = @(__original) function()
 		{
 			__original();
-			if (this.getGender() == 1) return; // females don't get Debauchery
+			if (this.getGender() == 1) return; // females skip all male-only setup
+
+			// Allied harassment skills (hidden, used by horny male AI against female allies)
+			this.getSkills().add(this.new("scripts/skills/actives/allied_grope_skill"));
+			this.getSkills().add(this.new("scripts/skills/actives/allied_force_oral_skill"));
+			this.getSkills().add(this.new("scripts/skills/actives/allied_penetrate_vaginal_skill"));
+			this.getSkills().add(this.new("scripts/skills/actives/allied_penetrate_anal_skill"));
+
+			// Debauchery perk tree for Outlaw backgrounds
 			local bg = this.getBackground();
 			if (bg == null) return;
 			if (!bg.isBackgroundType(::Const.BackgroundType.Outlaw)) return;
