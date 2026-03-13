@@ -546,6 +546,20 @@
 ::Lewd.Const.TailGrowthEventClimaxScale <- 5;      // score per climax over threshold
 ::Lewd.Const.TailGrowthEventCooldownDays <- 7;    // cooldown if rejected (event re-fires)
 
+// --- Flight Awakening Event ---
+::Lewd.Const.FlightEventThreshold <- 200;          // combined climaxes needed (higher than tail at 120)
+::Lewd.Const.FlightEventBaseScore <- 80;
+::Lewd.Const.FlightEventClimaxScale <- 3;
+
+// --- Flight Skill ---
+::Lewd.Const.FlightAP <- 3;
+::Lewd.Const.FlightFatigue <- 15;
+::Lewd.Const.FlightMinRange <- 2;
+::Lewd.Const.FlightMaxRange <- 7;
+::Lewd.Const.FlightMaxLevelDifference <- 4;
+::Lewd.Const.FlightFadeOutDuration <- 350;
+::Lewd.Const.FlightFadeInDuration <- 400;
+
 // --- Tail Whip Weapon ---
 ::Lewd.Const.TailBaseDamageMin <- 10;
 ::Lewd.Const.TailBaseDamageMax <- 20;

@@ -116,6 +116,7 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC", function()
 			__original();
 			this.getSkills().add(this.new("scripts/skills/effects/lewd_info_effect"));
 			this.getSkills().add(this.new("scripts/skills/effects/lewd_subdom_effect"));
+			this.getSkills().add(this.new("scripts/skills/actives/lewd_flight_skill"));
 		}
 
 		// Render callback for animated effects
