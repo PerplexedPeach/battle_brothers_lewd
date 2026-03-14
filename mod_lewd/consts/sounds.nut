@@ -100,6 +100,14 @@
 	"sounds/male_orgasm/5.wav"
 ];
 
+// Charm chimes — base game hexe sounds, used by Seduce hit and Ethereal drain
+::Lewd.Const.SoundCharmChimes <- [
+	"sounds/enemies/dlc2/hexe_charm_chimes_01.wav",
+	"sounds/enemies/dlc2/hexe_charm_chimes_02.wav",
+	"sounds/enemies/dlc2/hexe_charm_chimes_03.wav",
+	"sounds/enemies/dlc2/hexe_charm_chimes_04.wav"
+];
+
 // --- Heel Terrain Movement Sounds ---
 ::Lewd.Const.TerrainMovementSound <- [
 	[],

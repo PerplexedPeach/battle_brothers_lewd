@@ -71,6 +71,66 @@ this.lewd_hexen_transform_second <- this.inherit("scripts/events/event", {
 				// Gender swap: male -> female
 				man.setGender(1);
 
+				// Remove male-only Debauchery perk tree and refund spent perk points
+				local bg = man.getBackground();
+				if (bg != null && bg.hasPerkGroup(::Const.Perks.DebaucheryTree))
+				{
+					bg.removePerkGroup(::Const.Perks.DebaucheryTree);
+
+					local debaucherySkills = [
+						"perk.lewd_wandering_hands",
+						"perk.lewd_exploit_weakness",
+						"perk.lewd_carnal_knowledge",
+						"perk.lewd_brutal_force",
+						"perk.lewd_forced_entry",
+						"perk.lewd_iron_grip",
+						"perk.lewd_conqueror"
+					];
+					local refunded = 0;
+					foreach (skillID in debaucherySkills)
+					{
+						if (man.getSkills().hasSkill(skillID))
+						{
+							man.getSkills().removeByID(skillID);
+							man.m.PerkPoints++;
+							man.m.PerkPointsSpent = this.Math.max(0, man.m.PerkPointsSpent - 1);
+							refunded++;
+						}
+					}
+					if (refunded > 0)
+					{
+						this.List.push({
+							id = 12,
+							icon = "ui/icons/special.png",
+							text = "[color=" + this.Const.UI.Color.PositiveValue + "]" + refunded + "[/color] perk " + (refunded == 1 ? "point" : "points") + " refunded from Debauchery perks"
+						});
+					}
+				}
+
+				// Remove allied harassment skills (granted to males in onInit)
+				local harassSkills = [
+					"actives.allied_grope",
+					"actives.allied_force_oral",
+					"actives.allied_penetrate_vaginal",
+					"actives.allied_penetrate_anal"
+				];
+				foreach (skillID in harassSkills)
+				{
+					man.getSkills().removeByID(skillID);
+				}
+
+				// Also remove male sex skills if they were granted by horny effect
+				local maleSexSkills = [
+					"actives.male_grope",
+					"actives.male_force_oral",
+					"actives.male_penetrate_vaginal",
+					"actives.male_penetrate_anal"
+				];
+				foreach (skillID in maleSexSkills)
+				{
+					man.getSkills().removeByID(skillID);
+				}
+
 				// Switch to female sprites
 				::Lewd.Transform.sexy_stage_0(man);
 				::Lewd.Transform.adaptROTUAppearance(man);

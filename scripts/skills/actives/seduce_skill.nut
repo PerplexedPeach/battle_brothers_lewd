@@ -14,12 +14,7 @@ this.seduce_skill <- this.inherit("scripts/skills/skill", {
 		this.m.Overlay = "active_120";
 		// TODO: need a separate icon for the Grind melee variant
 		this.m.SoundOnUse = ::Lewd.Const.SoundMoans;
-		this.m.SoundOnHit = [
-			"sounds/enemies/dlc2/hexe_charm_chimes_01.wav",
-			"sounds/enemies/dlc2/hexe_charm_chimes_02.wav",
-			"sounds/enemies/dlc2/hexe_charm_chimes_03.wav",
-			"sounds/enemies/dlc2/hexe_charm_chimes_04.wav"
-		];
+		this.m.SoundOnHit = ::Lewd.Const.SoundCharmChimes;
 		this.m.Type = this.Const.SkillType.Active;
 		this.m.Order = this.Const.SkillOrder.UtilityTargeted;
 		this.m.Delay = 500;

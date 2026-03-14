@@ -403,6 +403,98 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC", function()
 			this.getSkills().add(this.new("scripts/skills/actives/allied_penetrate_anal_skill"));
 		};
 
+		// Save-compat cleanup: remove Debauchery tree from females after save loads
+		// Must be in onDeserialize (not onInit) because perk tree is loaded during deserialization
+		// PerkTree and PerkTreeMap are already built by background.onDeserialize -> buildPerkTree()
+		q.onDeserialize = @(__original) function( _in )
+		{
+			__original(_in);
+
+			if (this.getGender() != 1) return;
+
+			local bg = this.getBackground();
+			if (bg == null) return;
+
+			// Build set of debauchery perk IDs to remove
+			local debaucheryIDs = {};
+			local debaucheryConsts = [
+				::Const.Perks.PerkDefs.LewdWanderingHands,
+				::Const.Perks.PerkDefs.LewdExploitWeakness,
+				::Const.Perks.PerkDefs.LewdCarnalKnowledge,
+				::Const.Perks.PerkDefs.LewdBrutalForce,
+				::Const.Perks.PerkDefs.LewdForcedEntry,
+				::Const.Perks.PerkDefs.LewdIronGrip,
+				::Const.Perks.PerkDefs.LewdConqueror
+			];
+			foreach (c in debaucheryConsts)
+			{
+				local def = ::Const.Perks.PerkDefObjects[c];
+				debaucheryIDs[def.ID] <- c;
+			}
+
+			// Remove from visual PerkTree by matching ID
+			local removed = 0;
+			local perkTree = bg.getPerkTree();
+			if (perkTree != null)
+			{
+				foreach (row in perkTree)
+				{
+					for (local i = row.len() - 1; i >= 0; i--)
+					{
+						if (row[i].ID in debaucheryIDs)
+						{
+							row.remove(i);
+							removed++;
+						}
+					}
+				}
+			}
+
+			// Remove from CustomPerkTree (stores perk consts as U16 integers)
+			if (bg.m.CustomPerkTree != null)
+			{
+				local constSet = {};
+				foreach (c in debaucheryConsts)
+					constSet[c] <- true;
+				foreach (row in bg.m.CustomPerkTree)
+				{
+					for (local i = row.len() - 1; i >= 0; i--)
+					{
+						if (row[i] in constSet)
+							row.remove(i);
+					}
+				}
+			}
+
+			// Remove from PerkTreeMap
+			foreach (id, c in debaucheryIDs)
+			{
+				if (bg.m.PerkTreeMap != null && id in bg.m.PerkTreeMap)
+					delete bg.m.PerkTreeMap[id];
+			}
+
+			if (removed == 0) return;
+
+			// Refund any learned debauchery perk skills
+			local debaucherySkillIDs = [
+				"perk.lewd_wandering_hands", "perk.lewd_exploit_weakness",
+				"perk.lewd_carnal_knowledge", "perk.lewd_brutal_force",
+				"perk.lewd_forced_entry", "perk.lewd_iron_grip", "perk.lewd_conqueror"
+			];
+			local refunded = 0;
+			foreach (id in debaucherySkillIDs)
+			{
+				if (this.getSkills().hasSkill(id))
+				{
+					this.getSkills().removeByID(id);
+					this.m.PerkPoints++;
+					this.m.PerkPointsSpent = this.Math.max(0, this.m.PerkPointsSpent - 1);
+					refunded++;
+				}
+			}
+			::logInfo("[mod_lewd] Cleaned up Debauchery perks from " + this.getName() + " (removed " + removed + " tree entries, refunded " + refunded + " perk points)");
+		};
+
 		// Debauchery perk tree injection — must happen after setStartValuesEx
 		// because background is null during onInit (assigned in setStartValuesEx)
 		q.setStartValuesEx = @(__original) function( _backgrounds, _addTraits = true, _gender = -1, _addEquipment = true )
@@ -411,7 +503,9 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC", function()
 
 			local bg = this.getBackground();
 			if (bg == null) return;
+
 			if (this.getGender() == 1) return;
+			if (bg.isBackgroundType(::Const.BackgroundType.Female)) return;
 			if (!bg.isBackgroundType(::Const.BackgroundType.Outlaw)) return;
 			if (bg.hasPerkGroup(::Const.Perks.DebaucheryTree)) return;
 			bg.addPerkGroup(::Const.Perks.DebaucheryTree.Tree);

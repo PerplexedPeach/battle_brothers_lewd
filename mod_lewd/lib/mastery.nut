@@ -145,6 +145,9 @@
 	local moans = ::Lewd.Const.SoundLongMoans;
 	_Sound.play(moans[this.Math.rand(0, moans.len() - 1)], _Const.Sound.Volume.Skill, _actor.getPos());
 
+	local chimes = ::Lewd.Const.SoundCharmChimes;
+	_Sound.play(chimes[this.Math.rand(0, chimes.len() - 1)], _Const.Sound.Volume.Skill * 0.8, _actor.getPos());
+
 	local layers = _Const.ShakeCharacterLayers[2];
 	local tile = _actor.getTile();
 	_Tactical.getShaker().shake(_actor, tile, 2,
