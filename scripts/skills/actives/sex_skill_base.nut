@@ -248,7 +248,7 @@ this.sex_skill_base <- this.inherit("scripts/skills/skill", {
 			: this.m.SoundOnHit;
 
 		if (pool.len() > 0)
-			this.Sound.play(pool[this.Math.rand(0, pool.len() - 1)], this.Const.Sound.Volume.Skill, _target.getPos());
+			this.Sound.play(pool[this.Math.rand(0, pool.len() - 1)], this.Const.Sound.Volume.Skill * ::Lewd.Const.SexSoundVolume, _target.getPos());
 	}
 
 	function rollHit( _user, _target )

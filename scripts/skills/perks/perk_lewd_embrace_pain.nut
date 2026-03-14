@@ -31,7 +31,7 @@ this.perk_lewd_embrace_pain <- this.inherit("scripts/skills/skill", {
 		if (actor.isAlive() && actor.isPlacedOnMap())
 		{
 			local moans = ::Lewd.Const.SoundMoans;
-			this.Sound.play(moans[this.Math.rand(0, moans.len() - 1)], this.Const.Sound.Volume.Skill * 0.5, actor.getPos());
+			this.Sound.play(moans[this.Math.rand(0, moans.len() - 1)], this.Const.Sound.Volume.Skill * 0.5 * ::Lewd.Const.SexSoundVolume, actor.getPos());
 		}
 
 		// Chance to make attacker horny, scaling with sub score

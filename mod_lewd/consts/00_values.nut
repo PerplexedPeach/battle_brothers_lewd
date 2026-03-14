@@ -152,6 +152,7 @@
 ::Lewd.Const.MasteryFeetResolveIgnorePct <- 0.2;
 
 // --- Sex Ability Constants ---
+::Lewd.Const.SexSoundVolume <- 1.0; // multiplier for sex sound volume (0.0 to 2.0, from settings slider)
 ::Lewd.Const.SexAbilityDelayDefault <- 400;
 ::Lewd.Const.SexFlashColor <- this.createColor("#ffffff");
 ::Lewd.Const.SexFlashHighlight <- this.createColor("#ff1493");

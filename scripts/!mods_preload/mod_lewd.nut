@@ -67,6 +67,19 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC", function()
 		::Lewd.Const.InsatiableMaxTriggersPerTurn = this.getValue();
 	});
 
+	local settingSexSoundVolume = page.addRangeSetting(
+		"SexSoundVolume",
+		100, // default
+		0,   // min
+		200, // max
+		5,   // step
+		"Sex Sound Volume"
+	);
+	settingSexSoundVolume.setDescription("Volume multiplier for sex-related sounds. 100% is default game volume. Set to 0% to mute.");
+	settingSexSoundVolume.addAfterChangeCallback(function(_oldValue) {
+		::Lewd.Const.SexSoundVolume = this.getValue() / 100.0;
+	});
+
 	// Restored female hairstyles from legends 19.1.0 (renamed to avoid conflict with current legends)
 	// Only added to BarberFemale (barbershop) — not AllFemale/SouthernFemale to avoid spawning on random characters
 	local lewdHairs = ["lewd_01", "lewd_02", "lewd_03", "lewd_04", "lewd_05", "lewd_06"];

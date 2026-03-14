@@ -77,7 +77,7 @@ this.climax_effect <- this.inherit("scripts/skills/skill", {
 			local soundPool = this.m.SoundOnUse;
 			if (actor.getGender() == 0 && ::Lewd.Const.SoundMaleOrgasm.len() > 0)
 				soundPool = ::Lewd.Const.SoundMaleOrgasm;
-			this.Sound.play(soundPool[this.Math.rand(0, soundPool.len() - 1)], this.Const.Sound.Volume.Skill, actor.getPos());
+			this.Sound.play(soundPool[this.Math.rand(0, soundPool.len() - 1)], this.Const.Sound.Volume.Skill * ::Lewd.Const.SexSoundVolume, actor.getPos());
 			this.Tactical.spawnSpriteEffect("climax", this.createColor("#ffffff"), actor.getTile(),
 				this.Const.Tactical.Settings.SkillOverlayOffsetX, this.Const.Tactical.Settings.SkillOverlayOffsetY,
 				this.Const.Tactical.Settings.SkillOverlayScale, this.Const.Tactical.Settings.SkillOverlayScale,

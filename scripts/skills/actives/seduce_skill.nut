@@ -201,7 +201,7 @@ this.seduce_skill <- this.inherit("scripts/skills/skill", {
 		{
 			// Grind mode: melee shake animation
 			if (::Lewd.Const.SoundSpanking.len() > 0)
-				this.Sound.play(::Lewd.Const.SoundSpanking[this.Math.rand(0, ::Lewd.Const.SoundSpanking.len() - 1)], this.Const.Sound.Volume.Skill, _user.getPos());
+				this.Sound.play(::Lewd.Const.SoundSpanking[this.Math.rand(0, ::Lewd.Const.SoundSpanking.len() - 1)], this.Const.Sound.Volume.Skill * ::Lewd.Const.SexSoundVolume, _user.getPos());
 			this.Tactical.getShaker().shake(_user, _targetTile, 3);
 			this.Tactical.getShaker().shake(target, _user.getTile(), 3);
 		}
@@ -209,7 +209,7 @@ this.seduce_skill <- this.inherit("scripts/skills/skill", {
 		{
 			// Ranged mode: moan + heart projectile
 			if (this.m.SoundOnUse.len() > 0)
-				this.Sound.play(this.m.SoundOnUse[this.Math.rand(0, this.m.SoundOnUse.len() - 1)], this.Const.Sound.Volume.Skill, _user.getPos());
+				this.Sound.play(this.m.SoundOnUse[this.Math.rand(0, this.m.SoundOnUse.len() - 1)], this.Const.Sound.Volume.Skill * ::Lewd.Const.SexSoundVolume, _user.getPos());
 		}
 
 		local tag = {
@@ -283,7 +283,7 @@ this.seduce_skill <- this.inherit("scripts/skills/skill", {
 		}
 
 		if (this.m.SoundOnHit.len() > 0)
-			this.Sound.play(this.m.SoundOnHit[this.Math.rand(0, this.m.SoundOnHit.len() - 1)], this.Const.Sound.Volume.Skill, _target.getPos());
+			this.Sound.play(this.m.SoundOnHit[this.Math.rand(0, this.m.SoundOnHit.len() - 1)], this.Const.Sound.Volume.Skill * ::Lewd.Const.SexSoundVolume, _target.getPos());
 
 		this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(_user) + " " + modeName + " " + this.Const.UI.getColorizedEntityName(_target) + " and makes them Horny! (roll:" + roll + " chance:" + chance + ")");
 	}
