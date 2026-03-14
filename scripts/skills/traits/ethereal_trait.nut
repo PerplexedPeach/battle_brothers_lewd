@@ -122,6 +122,10 @@ this.ethereal_trait <- this.inherit("scripts/skills/traits/character_trait", {
 		if (bg != null && !bg.hasPerkGroup(::Const.Perks.EnduranceTree))
 			bg.addPerkGroup(::Const.Perks.EnduranceTree.Tree);
 
+		// Succubus perk tree
+		if (bg != null && !bg.hasPerkGroup(::Const.Perks.SuccubusTree))
+			bg.addPerkGroup(::Const.Perks.SuccubusTree.Tree);
+
 		// Grant perk points (flag prevents double-granting on load)
 		if (!actor.getFlags().has("lewdEtherealPerkPointGranted"))
 		{

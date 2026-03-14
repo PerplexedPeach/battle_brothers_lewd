@@ -429,11 +429,37 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC", function()
 			{
 				_hitInfo.DamageArmor = this.Math.floor(_hitInfo.DamageArmor * ::Lewd.Const.ExploitWeaknessArmorDamageMult);
 			}
+
+			// Predatory Instinct: +15% damage vs Horny targets
+			if (_attacker != null && _attacker.getSkills().hasSkill("perk.lewd_predatory_instinct")
+				&& this.getSkills().hasSkill("effects.lewd_horny"))
+			{
+				_hitInfo.DamageRegular = this.Math.floor(_hitInfo.DamageRegular * ::Lewd.Const.PredatoryInstinctDamageMult);
+			}
+
 			return __original(_attacker, _skill, _hitInfo);
 		};
 	});
 
-	// Conqueror: morale boost + fatigue restore + dom bonus when causing enemy climax
+	// Predatory Instinct: +hit% vs Horny targets (applied as defense reduction on target side)
+	mod.hook("scripts/skills/skill_container", function(q)
+	{
+		q.buildPropertiesForDefense = @(__original) function( _attacker, _skill )
+		{
+			local result = __original(_attacker, _skill);
+
+			if (_attacker != null && _attacker.getSkills().hasSkill("perk.lewd_predatory_instinct")
+				&& this.m.Actor.getSkills().hasSkill("effects.lewd_horny"))
+			{
+				result.MeleeDefense -= ::Lewd.Const.PredatoryInstinctHitBonus;
+				result.RangedDefense -= ::Lewd.Const.PredatoryInstinctHitBonus;
+			}
+
+			return result;
+		};
+	});
+
+	// Climax-triggered perk hooks: Conqueror, Soul Harvest, Unquenchable
 	mod.hook("scripts/skills/effects/climax_effect", function(q)
 	{
 		q.onAdded = @(__original) function()
@@ -446,20 +472,37 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC", function()
 
 			local source = this.Tactical.getEntityByID(sourceID);
 			if (source == null || !source.isAlive()) return;
-			if (!source.getSkills().hasSkill("perk.lewd_conqueror")) return;
-			if (source.isAlliedWith(actor)) return; // only on enemies
+			local isEnemy = !source.isAlliedWith(actor);
 
-			// Morale boost (positive morale check)
-			source.checkMorale(1, 0);
+			// Conqueror: morale boost + fatigue restore + dom bonus
+			if (isEnemy && source.getSkills().hasSkill("perk.lewd_conqueror"))
+			{
+				source.checkMorale(1, 0);
+				local fatigueRestore = this.Math.floor(source.getFatigueMax() * ::Lewd.Const.ConquerorFatigueRestorePct);
+				source.m.Fatigue = this.Math.max(0, source.m.Fatigue - fatigueRestore);
+				::Lewd.Mastery.addDomSub(source, ::Lewd.Const.ConquerorDomBonus);
+				::logInfo("[conqueror] " + source.getName() + " conquered " + actor.getName() + ": morale boost, -" + fatigueRestore + " fatigue, +" + ::Lewd.Const.ConquerorDomBonus + " dom");
+			}
 
-			// Restore 50% max fatigue
-			local fatigueRestore = this.Math.floor(source.getFatigueMax() * ::Lewd.Const.ConquerorFatigueRestorePct);
-			source.m.Fatigue = this.Math.max(0, source.m.Fatigue - fatigueRestore);
+			// Soul Harvest: heal 10% of target's PleasureMax when causing climax
+			if (isEnemy && source.getSkills().hasSkill("perk.lewd_soul_harvest"))
+			{
+				local pleasureMax = actor.getCurrentProperties().getPleasureMax();
+				local healAmount = this.Math.max(1, this.Math.floor(pleasureMax * ::Lewd.Const.SoulHarvestClimaxHealPct));
+				source.setHitpoints(this.Math.min(source.getHitpointsMax(), source.getHitpoints() + healAmount));
+				::logInfo("[soul_harvest] " + source.getName() + " healed " + healAmount + " HP from " + actor.getName() + "'s climax");
+			}
 
-			// Bonus dom score
-			::Lewd.Mastery.addDomSub(source, ::Lewd.Const.ConquerorDomBonus);
-
-			::logInfo("[conqueror] " + source.getName() + " conquered " + actor.getName() + ": morale boost, -" + fatigueRestore + " fatigue, +" + ::Lewd.Const.ConquerorDomBonus + " dom");
+			// Unquenchable: +Allure per climax caused
+			if (isEnemy)
+			{
+				local unquenchable = source.getSkills().getSkillByID("perk.lewd_unquenchable");
+				if (unquenchable != null)
+				{
+					unquenchable.addClimax();
+					::logInfo("[unquenchable] " + source.getName() + " gained +" + ::Lewd.Const.UnquenchableAllurePerClimax + " Allure (total stacks: " + unquenchable.m.ClimaxCount + ")");
+				}
+			}
 		};
 	});
 

@@ -664,3 +664,17 @@
 ::Lewd.Const.MaleMasteryAnalPleasureBonus <- 3;
 ::Lewd.Const.MaleMasteryAnalAPThreshold <- 70;
 ::Lewd.Const.MaleMasteryAnalAPBonus <- -1;
+
+// --- Succubus Perk Tree ---
+::Lewd.Const.PredatoryInstinctHitBonus <- 10;         // +10% hit vs Horny
+::Lewd.Const.PredatoryInstinctDamageMult <- 1.15;     // +15% damage vs Horny
+
+::Lewd.Const.EssenceFeedRange <- 2;                   // tile range
+::Lewd.Const.EssenceFeedAllurePerHorny <- 3;
+::Lewd.Const.EssenceFeedInitiativePerHorny <- 5;
+::Lewd.Const.EssenceFeedResolvePerHorny <- 3;
+
+::Lewd.Const.SoulHarvestClimaxHealPct <- 0.10;        // 10% of target PleasureMax
+::Lewd.Const.SoulHarvestKillHealPct <- 0.10;          // 10% of target max HP
+
+::Lewd.Const.UnquenchableAllurePerClimax <- 3;

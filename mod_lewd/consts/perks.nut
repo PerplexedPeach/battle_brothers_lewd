@@ -24,6 +24,12 @@
 ::Const.Strings.PerkName.LewdIronGrip <- "Iron Grip";
 ::Const.Strings.PerkName.LewdConqueror <- "Conqueror";
 
+// Succubus tree (Ethereal gate)
+::Const.Strings.PerkName.LewdPredatoryInstinct <- "Predatory Instinct";
+::Const.Strings.PerkName.LewdEssenceFeed <- "Essence Feed";
+::Const.Strings.PerkName.LewdSoulHarvest <- "Soul Harvest";
+::Const.Strings.PerkName.LewdUnquenchable <- "Unquenchable";
+
 // --- Perk Descriptions ---
 // Uses Legends tooltip template variables: %positive%, %negative%, %passive%, %skill%, %status%
 // These are resolved by ::Legends.tooltip() in afterHooks/perk_tooltips.nut
@@ -57,6 +63,15 @@
 ::Const.Strings.PerkDescription.LewdShameless <- "Let them watch. Let them hear. Your cries of ecstasy are not weakness but a weapon that stirs something primal in anyone close enough to witness.\n\n[color=%passive%][u]Passive:[/u][/color]\n• When you climax, adjacent enemies are made [color=%status%]Horny[/color] by the spectacle.\n• Your climax deals [color=%positive%]" + ::Lewd.Const.ShamelessClimaxPleasure + "[/color] pleasure to your current sex partner.";
 
 ::Const.Strings.PerkDescription.LewdTranscendence <- "Where others crumble, you ascend. The peak of pleasure that would leave most shattered only makes you more radiant, a being who has mastered the body so completely that even climax becomes a source of power.\n\n[color=%passive%][u]Passive:[/u][/color]\n• Climax no longer applies [color=%negative%]AP[/color] or [color=%negative%]Melee Defense[/color] penalties.\n• Gain [color=%positive%]+" + ::Lewd.Const.TranscendenceClimaxAllure + "[/color] Allure during Climax instead.\n• Pleasure [color=%positive%]overflows[/color] instead of resetting after climax.\n• [color=%positive%]+" + ::Lewd.Const.OrgasmThresholdTranscendence + "[/color] orgasm threshold before defeat.";
+
+// --- Succubus Perk Descriptions ---
+::Const.Strings.PerkDescription.LewdPredatoryInstinct <- "You can sense when prey is vulnerable. The scent of arousal sharpens your focus, making every strike against a flustered target land harder and more precisely.\n\n[color=%passive%][u]Passive:[/u][/color]\n• [color=%positive%]+" + ::Lewd.Const.PredatoryInstinctHitBonus + "%[/color] hit chance with regular attacks against [color=%status%]Horny[/color] targets.\n• [color=%positive%]+15%[/color] damage with regular attacks against [color=%status%]Horny[/color] targets.";
+
+::Const.Strings.PerkDescription.LewdEssenceFeed <- "The arousal of nearby enemies sustains you. Their frustrated desire becomes your strength, feeding your supernatural allure and quickening your reflexes.\n\n[color=%passive%][u]Passive:[/u][/color]\n• For each [color=%status%]Horny[/color] enemy within [color=%positive%]" + ::Lewd.Const.EssenceFeedRange + "[/color] tiles:\n  [color=%positive%]+" + ::Lewd.Const.EssenceFeedAllurePerHorny + "[/color] Allure\n  [color=%positive%]+" + ::Lewd.Const.EssenceFeedInitiativePerHorny + "[/color] Initiative\n  [color=%positive%]+" + ::Lewd.Const.EssenceFeedResolvePerHorny + "[/color] Resolve";
+
+::Const.Strings.PerkDescription.LewdSoulHarvest <- "Every climax you wring from an enemy leaves a fragment of their vitality behind. Every kill of an aroused foe feeds you even more deeply.\n\n[color=%passive%][u]Passive:[/u][/color]\n• Heal [color=%positive%]10%[/color] of target's Pleasure Max as HP when you cause their climax.\n• Heal [color=%positive%]10%[/color] of target's max HP when you kill a [color=%status%]Horny[/color] enemy.";
+
+::Const.Strings.PerkDescription.LewdUnquenchable <- "Each conquest only deepens your hunger. Every climax you force from an enemy makes you more alluring, an escalating presence that becomes impossible to resist as battle wears on.\n\n[color=%passive%][u]Passive:[/u][/color]\n• [color=%positive%]+" + ::Lewd.Const.UnquenchableAllurePerClimax + "[/color] Allure per enemy climax you cause this battle (resets between fights).";
 
 // --- Debauchery Perk Descriptions ---
 ::Const.Strings.PerkDescription.LewdWanderingHands <- "Your hands have a mind of their own, and they know exactly where to wander. A lifetime of petty theft and dirty fighting has given you an intuition for where people are most vulnerable.\n\n[color=%passive%][u]Active:[/u][/color]\n• Unlocks the [color=%skill%]Grope[/color] sex ability, usable without being Horny.\n• Pleasure scales with Melee Skill.\n\n[color=%passive%][u]Passive:[/u][/color]\n• Grants male grope mastery tracking.\n\n[color=%negative%]Requires male gender and Outlaw background.[/color]";
@@ -213,6 +228,43 @@ local perkDefObjects = [
 		IconDisabled = "ui/perks/lewd_transcendence_sw.png",
 		Const = "LewdTranscendence"
 	},
+	// Succubus tree (Ethereal gate)
+	{
+		ID = "perk.lewd_predatory_instinct",
+		Script = "scripts/skills/perks/perk_lewd_predatory_instinct",
+		Name = ::Const.Strings.PerkName.LewdPredatoryInstinct,
+		Tooltip = ::Const.Strings.PerkDescription.LewdPredatoryInstinct,
+		Icon = "ui/perks/lewd_predatory_instinct.png",
+		IconDisabled = "ui/perks/lewd_predatory_instinct_sw.png",
+		Const = "LewdPredatoryInstinct"
+	},
+	{
+		ID = "perk.lewd_essence_feed",
+		Script = "scripts/skills/perks/perk_lewd_essence_feed",
+		Name = ::Const.Strings.PerkName.LewdEssenceFeed,
+		Tooltip = ::Const.Strings.PerkDescription.LewdEssenceFeed,
+		Icon = "ui/perks/lewd_essence_feed.png",
+		IconDisabled = "ui/perks/lewd_essence_feed_sw.png",
+		Const = "LewdEssenceFeed"
+	},
+	{
+		ID = "perk.lewd_soul_harvest",
+		Script = "scripts/skills/perks/perk_lewd_soul_harvest",
+		Name = ::Const.Strings.PerkName.LewdSoulHarvest,
+		Tooltip = ::Const.Strings.PerkDescription.LewdSoulHarvest,
+		Icon = "ui/perks/lewd_soul_harvest.png",
+		IconDisabled = "ui/perks/lewd_soul_harvest_sw.png",
+		Const = "LewdSoulHarvest"
+	},
+	{
+		ID = "perk.lewd_unquenchable",
+		Script = "scripts/skills/perks/perk_lewd_unquenchable",
+		Name = ::Const.Strings.PerkName.LewdUnquenchable,
+		Tooltip = ::Const.Strings.PerkDescription.LewdUnquenchable,
+		Icon = "ui/perks/lewd_unquenchable.png",
+		IconDisabled = "ui/perks/lewd_unquenchable_sw.png",
+		Const = "LewdUnquenchable"
+	},
 	// Debauchery tree (male, Outlaw backgrounds)
 	{
 		ID = "perk.lewd_wandering_hands",
@@ -313,6 +365,24 @@ local perkDefObjects = [
 		[::Const.Perks.PerkDefs.LewdPainFeedsPleasure], // T5
 		[::Const.Perks.PerkDefs.LewdShameless], // T6
 		[::Const.Perks.PerkDefs.LewdTranscendence] // T7
+	]
+};
+
+// --- Perk Tree: Succubus (requires Ethereal) ---
+::Const.Perks.SuccubusTree <- {
+	ID = "SuccubusTree",
+	Name = "Succubus",
+	Descriptions = [
+		"Succubus"
+	],
+	Tree = [
+		[::Const.Perks.PerkDefs.LewdPredatoryInstinct], // T1
+		[],                                               // T2
+		[::Const.Perks.PerkDefs.LewdEssenceFeed],        // T3
+		[],                                               // T4
+		[::Const.Perks.PerkDefs.LewdSoulHarvest],        // T5
+		[],                                               // T6
+		[::Const.Perks.PerkDefs.LewdUnquenchable]        // T7
 	]
 };
 
