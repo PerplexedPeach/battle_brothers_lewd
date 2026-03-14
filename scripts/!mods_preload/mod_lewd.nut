@@ -403,36 +403,95 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC", function()
 			this.getSkills().add(this.new("scripts/skills/actives/allied_penetrate_anal_skill"));
 		};
 
-		// Save-compat cleanup: remove Debauchery tree from females after save loads
-		// Must be in onDeserialize (not onInit) because perk tree is loaded during deserialization
+		// Save-compat cleanup: remove lewd perk trees from characters who shouldn't have them
+		// Fixes U16 index corruption from inserting PerkDefs in the middle of the array
 		// PerkTree and PerkTreeMap are already built by background.onDeserialize -> buildPerkTree()
 		q.onDeserialize = @(__original) function( _in )
 		{
 			__original(_in);
 
-			if (this.getGender() != 1) return;
-
 			local bg = this.getBackground();
 			if (bg == null) return;
 
-			// Build set of debauchery perk IDs to remove
-			local debaucheryIDs = {};
-			local debaucheryConsts = [
-				::Const.Perks.PerkDefs.LewdWanderingHands,
-				::Const.Perks.PerkDefs.LewdExploitWeakness,
-				::Const.Perks.PerkDefs.LewdCarnalKnowledge,
-				::Const.Perks.PerkDefs.LewdBrutalForce,
-				::Const.Perks.PerkDefs.LewdForcedEntry,
-				::Const.Perks.PerkDefs.LewdIronGrip,
-				::Const.Perks.PerkDefs.LewdConqueror
-			];
-			foreach (c in debaucheryConsts)
+			local skills = this.getSkills();
+			local isFemale = this.getGender() == 1;
+			local hasDainty = skills.hasSkill("trait.dainty");
+			local hasDelicate = skills.hasSkill("trait.delicate");
+			local hasEthereal = skills.hasSkill("trait.ethereal");
+			local hasMasochism = skills.hasSkill("trait.masochism_first")
+				|| skills.hasSkill("trait.masochism_second")
+				|| skills.hasSkill("trait.masochism_third");
+
+			// Build list of perk consts that should be removed from this character
+			local toRemove = [];
+
+			// SeductionArts: requires Dainty, Delicate, or Ethereal
+			if (!hasDainty && !hasDelicate && !hasEthereal)
 			{
-				local def = ::Const.Perks.PerkDefObjects[c];
-				debaucheryIDs[def.ID] <- c;
+				toRemove.extend([
+					::Const.Perks.PerkDefs.LewdNimbleFingers,
+					::Const.Perks.PerkDefs.LewdOralArts,
+					::Const.Perks.PerkDefs.LewdFootTease,
+					::Const.Perks.PerkDefs.LewdMounting,
+					::Const.Perks.PerkDefs.LewdOffering,
+					::Const.Perks.PerkDefs.LewdSensualFocus,
+					::Const.Perks.PerkDefs.LewdAlluringPresence,
+					::Const.Perks.PerkDefs.LewdPracticedControl,
+					::Const.Perks.PerkDefs.LewdInsatiable
+				]);
 			}
 
-			// Remove from visual PerkTree by matching ID
+			// Endurance: requires (Masochism + Delicate) or Ethereal
+			if (!(hasMasochism && hasDelicate) && !hasEthereal)
+			{
+				toRemove.extend([
+					::Const.Perks.PerkDefs.LewdEmbracePain,
+					::Const.Perks.PerkDefs.LewdWillingVictim,
+					::Const.Perks.PerkDefs.LewdPliantBody,
+					::Const.Perks.PerkDefs.LewdPainFeedsPleasure,
+					::Const.Perks.PerkDefs.LewdShameless,
+					::Const.Perks.PerkDefs.LewdTranscendence
+				]);
+			}
+
+			// Succubus: requires Ethereal
+			if (!hasEthereal)
+			{
+				toRemove.extend([
+					::Const.Perks.PerkDefs.LewdPredatoryInstinct,
+					::Const.Perks.PerkDefs.LewdEssenceFeed,
+					::Const.Perks.PerkDefs.LewdSoulHarvest,
+					::Const.Perks.PerkDefs.LewdUnquenchable
+				]);
+			}
+
+			// Debauchery: requires male + Outlaw
+			if (isFemale || !bg.isBackgroundType(::Const.BackgroundType.Outlaw))
+			{
+				toRemove.extend([
+					::Const.Perks.PerkDefs.LewdWanderingHands,
+					::Const.Perks.PerkDefs.LewdExploitWeakness,
+					::Const.Perks.PerkDefs.LewdCarnalKnowledge,
+					::Const.Perks.PerkDefs.LewdBrutalForce,
+					::Const.Perks.PerkDefs.LewdForcedEntry,
+					::Const.Perks.PerkDefs.LewdIronGrip,
+					::Const.Perks.PerkDefs.LewdConqueror
+				]);
+			}
+
+			if (toRemove.len() == 0) return;
+
+			// Build lookup sets
+			local constSet = {};
+			local idSet = {};
+			foreach (c in toRemove)
+			{
+				constSet[c] <- true;
+				local def = ::Const.Perks.PerkDefObjects[c];
+				idSet[def.ID] <- true;
+			}
+
+			// Remove from visual PerkTree
 			local removed = 0;
 			local perkTree = bg.getPerkTree();
 			if (perkTree != null)
@@ -441,7 +500,7 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC", function()
 				{
 					for (local i = row.len() - 1; i >= 0; i--)
 					{
-						if (row[i].ID in debaucheryIDs)
+						if (row[i].ID in idSet)
 						{
 							row.remove(i);
 							removed++;
@@ -450,12 +509,9 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC", function()
 				}
 			}
 
-			// Remove from CustomPerkTree (stores perk consts as U16 integers)
+			// Remove from CustomPerkTree (U16 consts)
 			if (bg.m.CustomPerkTree != null)
 			{
-				local constSet = {};
-				foreach (c in debaucheryConsts)
-					constSet[c] <- true;
 				foreach (row in bg.m.CustomPerkTree)
 				{
 					for (local i = row.len() - 1; i >= 0; i--)
@@ -467,32 +523,30 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC", function()
 			}
 
 			// Remove from PerkTreeMap
-			foreach (id, c in debaucheryIDs)
+			if (bg.m.PerkTreeMap != null)
 			{
-				if (bg.m.PerkTreeMap != null && id in bg.m.PerkTreeMap)
-					delete bg.m.PerkTreeMap[id];
+				foreach (id, _ in idSet)
+				{
+					if (id in bg.m.PerkTreeMap)
+						delete bg.m.PerkTreeMap[id];
+				}
 			}
 
 			if (removed == 0) return;
 
-			// Refund any learned debauchery perk skills
-			local debaucherySkillIDs = [
-				"perk.lewd_wandering_hands", "perk.lewd_exploit_weakness",
-				"perk.lewd_carnal_knowledge", "perk.lewd_brutal_force",
-				"perk.lewd_forced_entry", "perk.lewd_iron_grip", "perk.lewd_conqueror"
-			];
+			// Refund any learned perk skills
 			local refunded = 0;
-			foreach (id in debaucherySkillIDs)
+			foreach (id, _ in idSet)
 			{
-				if (this.getSkills().hasSkill(id))
+				if (skills.hasSkill(id))
 				{
-					this.getSkills().removeByID(id);
+					skills.removeByID(id);
 					this.m.PerkPoints++;
 					this.m.PerkPointsSpent = this.Math.max(0, this.m.PerkPointsSpent - 1);
 					refunded++;
 				}
 			}
-			::logInfo("[mod_lewd] Cleaned up Debauchery perks from " + this.getName() + " (removed " + removed + " tree entries, refunded " + refunded + " perk points)");
+			::logInfo("[mod_lewd] Cleaned up " + removed + " phantom lewd perks from " + this.getName() + " (refunded " + refunded + ")");
 		};
 
 		// Debauchery perk tree injection — must happen after setStartValuesEx
