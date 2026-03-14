@@ -228,43 +228,6 @@ local perkDefObjects = [
 		IconDisabled = "ui/perks/lewd_transcendence_sw.png",
 		Const = "LewdTranscendence"
 	},
-	// Succubus tree (Ethereal gate)
-	{
-		ID = "perk.lewd_predatory_instinct",
-		Script = "scripts/skills/perks/perk_lewd_predatory_instinct",
-		Name = ::Const.Strings.PerkName.LewdPredatoryInstinct,
-		Tooltip = ::Const.Strings.PerkDescription.LewdPredatoryInstinct,
-		Icon = "ui/perks/lewd_predatory_instinct.png",
-		IconDisabled = "ui/perks/lewd_predatory_instinct_sw.png",
-		Const = "LewdPredatoryInstinct"
-	},
-	{
-		ID = "perk.lewd_essence_feed",
-		Script = "scripts/skills/perks/perk_lewd_essence_feed",
-		Name = ::Const.Strings.PerkName.LewdEssenceFeed,
-		Tooltip = ::Const.Strings.PerkDescription.LewdEssenceFeed,
-		Icon = "ui/perks/lewd_essence_feed.png",
-		IconDisabled = "ui/perks/lewd_essence_feed_sw.png",
-		Const = "LewdEssenceFeed"
-	},
-	{
-		ID = "perk.lewd_soul_harvest",
-		Script = "scripts/skills/perks/perk_lewd_soul_harvest",
-		Name = ::Const.Strings.PerkName.LewdSoulHarvest,
-		Tooltip = ::Const.Strings.PerkDescription.LewdSoulHarvest,
-		Icon = "ui/perks/lewd_soul_harvest.png",
-		IconDisabled = "ui/perks/lewd_soul_harvest_sw.png",
-		Const = "LewdSoulHarvest"
-	},
-	{
-		ID = "perk.lewd_unquenchable",
-		Script = "scripts/skills/perks/perk_lewd_unquenchable",
-		Name = ::Const.Strings.PerkName.LewdUnquenchable,
-		Tooltip = ::Const.Strings.PerkDescription.LewdUnquenchable,
-		Icon = "ui/perks/lewd_unquenchable.png",
-		IconDisabled = "ui/perks/lewd_unquenchable_sw.png",
-		Const = "LewdUnquenchable"
-	},
 	// Debauchery tree (male, Outlaw backgrounds)
 	{
 		ID = "perk.lewd_wandering_hands",
@@ -328,6 +291,45 @@ local perkDefObjects = [
 		Icon = "ui/perks/lewd_conqueror.png",
 		IconDisabled = "ui/perks/lewd_conqueror_sw.png",
 		Const = "LewdConqueror"
+	},
+	// Succubus tree (Ethereal gate)
+	// IMPORTANT: new perks must always be appended at the END of this array.
+	// Inserting in the middle shifts U16 const values and corrupts saved perk trees.
+	{
+		ID = "perk.lewd_predatory_instinct",
+		Script = "scripts/skills/perks/perk_lewd_predatory_instinct",
+		Name = ::Const.Strings.PerkName.LewdPredatoryInstinct,
+		Tooltip = ::Const.Strings.PerkDescription.LewdPredatoryInstinct,
+		Icon = "ui/perks/lewd_predatory_instinct.png",
+		IconDisabled = "ui/perks/lewd_predatory_instinct_sw.png",
+		Const = "LewdPredatoryInstinct"
+	},
+	{
+		ID = "perk.lewd_essence_feed",
+		Script = "scripts/skills/perks/perk_lewd_essence_feed",
+		Name = ::Const.Strings.PerkName.LewdEssenceFeed,
+		Tooltip = ::Const.Strings.PerkDescription.LewdEssenceFeed,
+		Icon = "ui/perks/lewd_essence_feed.png",
+		IconDisabled = "ui/perks/lewd_essence_feed_sw.png",
+		Const = "LewdEssenceFeed"
+	},
+	{
+		ID = "perk.lewd_soul_harvest",
+		Script = "scripts/skills/perks/perk_lewd_soul_harvest",
+		Name = ::Const.Strings.PerkName.LewdSoulHarvest,
+		Tooltip = ::Const.Strings.PerkDescription.LewdSoulHarvest,
+		Icon = "ui/perks/lewd_soul_harvest.png",
+		IconDisabled = "ui/perks/lewd_soul_harvest_sw.png",
+		Const = "LewdSoulHarvest"
+	},
+	{
+		ID = "perk.lewd_unquenchable",
+		Script = "scripts/skills/perks/perk_lewd_unquenchable",
+		Name = ::Const.Strings.PerkName.LewdUnquenchable,
+		Tooltip = ::Const.Strings.PerkDescription.LewdUnquenchable,
+		Icon = "ui/perks/lewd_unquenchable.png",
+		IconDisabled = "ui/perks/lewd_unquenchable_sw.png",
+		Const = "LewdUnquenchable"
 	}
 ];
 ::Const.Perks.addPerkDefObjects(perkDefObjects);
