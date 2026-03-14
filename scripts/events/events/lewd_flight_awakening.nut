@@ -5,17 +5,17 @@ this.lewd_flight_awakening <- this.inherit("scripts/events/event", {
 	function create()
 	{
 		this.m.ID = "event.lewd_flight_awakening";
-		this.m.Title = "Weightless";
+		this.m.Title = "The Stumble";
 		this.m.Cooldown = 999999 * this.World.getTime().SecondsPerDay;
 		this.m.Screens.push({
 			ID = "A",
-			Text = "It happens while you are walking.\n\nNot in the heat of battle, not at the peak of passion, but on a quiet stretch of road between two unremarkable hills. One moment your boots are pressing into the packed earth, and the next they are not. You take another step and your foot finds nothing, just air, and you do not fall.\n\nYou stop. You are standing six inches above the ground.\n\nThe sensation is not dramatic. There is no rush of wind, no crackling of energy, no blinding light. It feels like the most natural thing in the world, like you have been carrying a weight your entire life and only now realized you could set it down. The ground is still there beneath you. You simply do not need it anymore.\n\nYou lift higher, experimentally. A foot. Two. The grass bends away from you in a soft circle, pushed by something you cannot see. The air tastes different up here, cleaner, charged with the faintest electric sweetness. You can feel the lattice of forces that holds you aloft: not wings, not wind, but something deeper. The same energy that remakes your flesh after every climax, the same warmth that pulses through you when desire fills the air around you. It has always been there, woven into your bones and blood since your transformation. You just did not know you could ask it to lift you.",
+			Text = "You have worn the heels for so long now that you have forgotten what flat ground feels like against a bare sole. They are part of you, as natural as breathing, as unconscious as blinking. You do not think about balance anymore. You have not stumbled in months.\n\nSo when it happens, it catches you completely off guard.\n\nA loose stone, hidden beneath a layer of dried leaves. Your heel catches its edge at precisely the wrong angle and the world tilts sideways. Your ankle folds. Your arms fly out. For one lurching, graceless moment you are falling, truly falling, and the packed earth is rushing up to meet your face.\n\nYou do not hit the ground.\n\nThere is a sensation like being pulled through warm water, a heartbeat of weightlessness where your body is neither here nor there, and then you are standing. Upright. Steady. Six paces from where you were, on the other side of a shallow ditch you definitely did not jump across. Your heels are planted firmly on solid ground. Your heart is hammering.\n\n%randombrother% saw the whole thing. His mouth is hanging open, the waterskin in his hand forgotten and dribbling onto his boots.",
 			Image = "",
 			List = [],
 			Characters = [],
 			Options = [
 				{
-					Text = "You rise higher.",
+					Text = "What just happened?",
 					function getResult( _event )
 					{
 						return "B";
@@ -30,13 +30,13 @@ this.lewd_flight_awakening <- this.inherit("scripts/events/event", {
 
 		this.m.Screens.push({
 			ID = "B",
-			Text = "You drift above the treeline, turning slowly, and the landscape unfolds beneath you like a map drawn in living color. Fields, forests, the distant smudge of a town, the silver thread of a river. The company is a cluster of tiny figures on the road below, some of them pointing upward, but their voices are too far away to hear.\n\nYou are not afraid. That is the strange part. Heights have never bothered you particularly, but this is different. This is the absence of fear, the bone-deep certainty that you will not fall because falling is something that happens to bodies, and whatever you are becoming, you are less body and more something else with each passing day.\n\nYou hang there for a long time, feeling the wind pull at your hair, watching the shadow of a cloud drift across the patchwork below. You think about what you were before all of this. A woman with ambitions and a sword and a knack for staying alive. How far that feels from where you are now, suspended between the earth and the sky by nothing but your own desire to be here.\n\nThe descent is as easy as the ascent. You settle back onto the road as gently as a leaf, and the world resumes its normal weight.\n\nIn battle, this will change everything. The ability to move where you need to be, instantly, without regard for walls or shields or bodies in your way. You close your eyes and feel the lattice of force still humming inside you, patient, waiting to be called upon again.",
+			Text = "You try it again that evening, away from the camp, standing at the edge of a clearing with the last grey light filtering through the branches. You stare at a spot ten paces away. You think about being there. You will yourself toward it.\n\nNothing happens. You stand there like a fool, fists clenched, jaw tight, straining toward something you cannot name. The spot remains exactly ten paces away.\n\nYou try again. And again. Each time, nothing. The magic that caught you mid-fall is silent now, indifferent to your commands. Whatever it was, it does not answer to will.\n\nFrustration builds. You are about to give up when a branch snaps somewhere behind you and your body floods with the sudden need to be elsewhere. Not a thought. A need. Primal, wordless, immediate.\n\nThe warm water feeling again. A blink of displacement. You are standing behind the tree you were staring at, pulse racing, the taste of something sweet and electric on your tongue.\n\nYou understand now. It does not respond to desire. It responds to need. The body you inhabit has become something that bends the space around it, but only when that space becomes unbearable. A cage it must escape. A distance it must close. A place it cannot bear to remain.\n\nSo you learn to lie to yourself. You stand in the clearing and you tell yourself that you must be there, that every fiber of your being aches to be in that exact spot three paces to the left. You manufacture the craving. You conjure the urgency from nothing, the way you might summon a blush or force tears. Your body does not know the difference between genuine need and a need you have convinced yourself is real.\n\nThe world folds. You are there.\n\nIt is exhausting. You cannot sustain it for more than an instant, cannot cross great distances, and each blink leaves you slightly breathless, as though you ran the distance your body skipped. But it is enough. More than enough.",
 			Image = "",
 			List = [],
 			Characters = [],
 			Options = [
 				{
-					Text = "Another boundary dissolved. You wonder how many remain.",
+					Text = "Mortals walk. You simply come.",
 					function getResult( _event )
 					{
 						return 0;
@@ -47,7 +47,7 @@ this.lewd_flight_awakening <- this.inherit("scripts/events/event", {
 			{
 				local w = _event.m.Woman;
 
-				// Grant flight
+				// Grant blink
 				w.getFlags().set("lewdFlightGranted", true);
 				if (!w.getSkills().hasSkill("actives.lewd_flight"))
 				{
@@ -82,14 +82,14 @@ this.lewd_flight_awakening <- this.inherit("scripts/events/event", {
 			return;
 		}
 
-		// Must already have tail (flight comes after tail)
+		// Must already have tail (blink comes after tail)
 		if (!this.m.Woman.getFlags().has("lewdTailGranted"))
 		{
 			this.m.Score = 0;
 			return;
 		}
 
-		// Must not already have flight
+		// Must not already have blink
 		if (this.m.Woman.getFlags().has("lewdFlightGranted"))
 		{
 			this.m.Score = 0;

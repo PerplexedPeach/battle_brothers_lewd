@@ -1,5 +1,6 @@
-// Magical flight — teleport to an empty tile within range
+// Blink — short-range teleport to an empty tile
 // Based on darkflight (necrosavant), but uses pink magic visuals instead of bat particles
+// Breaks roots and mounts on use (you cannot sustain flight, only fold space briefly)
 // Unlocked via lewd_flight_awakening event at high climax count
 this.lewd_flight_skill <- this.inherit("scripts/skills/skill", {
 	m = {},
@@ -7,7 +8,7 @@ this.lewd_flight_skill <- this.inherit("scripts/skills/skill", {
 	{
 		this.m.ID = "actives.lewd_flight";
 		this.m.Name = "Blink";
-		this.m.Description = "Dissolve into shimmering light and rematerialize at a distant point. Your body has become as much energy as flesh, and the space between two places is merely a suggestion.";
+		this.m.Description = "Dissolve into shimmering light and rematerialize a short distance away. You cannot sustain true flight, but by convincing yourself you need to be somewhere else, you can fold the space between here and there for a single heartbeat.";
 		this.m.Icon = "skills/lewd_flight.png";
 		this.m.IconDisabled = "skills/lewd_flight_bw.png";
 		this.m.Overlay = "lewd_flight";
@@ -68,6 +69,12 @@ this.lewd_flight_skill <- this.inherit("scripts/skills/skill", {
 				type = "text",
 				icon = "ui/icons/special.png",
 				text = "Ignores Zone of Control"
+			},
+			{
+				id = 6,
+				type = "text",
+				icon = "ui/icons/special.png",
+				text = "Breaks free of roots, nets, and mounts"
 			}
 		];
 	}
@@ -86,6 +93,23 @@ this.lewd_flight_skill <- this.inherit("scripts/skills/skill", {
 
 	function onUse( _user, _targetTile )
 	{
+		// Break free of roots, nets, and similar effects
+		local skills = _user.getSkills();
+		local rootEffects = ["effects.net", "effects.web", "effects.ensnare", "effects.grabbed", "effects.lewd_restrained"];
+		foreach (id in rootEffects)
+		{
+			if (skills.hasSkill(id))
+				skills.removeByID(id);
+		}
+
+		// Break any mount (both directions)
+		local mounting = skills.getSkillByID("effects.lewd_mounting");
+		if (mounting != null)
+			mounting.removeSelf();
+		local mounted = skills.getSkillByID("effects.lewd_mounted");
+		if (mounted != null)
+			mounted.removeSelf();
+
 		local tag = {
 			Skill = this,
 			User = _user,
