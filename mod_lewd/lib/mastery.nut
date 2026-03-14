@@ -246,9 +246,10 @@
 
 	// Shared base: all humanoids scale with Resolve and HP
 	local resolve = _actor.getCurrentProperties().getBravery();
+	local maxHP = _actor.getHitpointsMax();
 	local threshold = ::Lewd.Const.OrgasmThresholdBase;
 	threshold += this.Math.floor(resolve / ::Lewd.Const.OrgasmThresholdResolveDivisor);
-	threshold += this.Math.floor(_actor.getHitpointsMax() / ::Lewd.Const.OrgasmThresholdHPDivisor);
+	threshold += this.Math.floor(maxHP / ::Lewd.Const.OrgasmThresholdHPDivisor);
 
 	// Enemy-specific bonuses
 	if (!_actor.isPlayerControlled())
@@ -291,6 +292,8 @@
 			threshold += ::Lewd.Const.OrgasmThresholdInsatiable;
 		if (skills.hasSkill("perk.lewd_brutal_force"))
 			threshold += ::Lewd.Const.BrutalForceOrgasmThreshold;
+
+		::logInfo("[orgasmThreshold] " + _actor.getName() + " resolve=" + resolve + " maxHP=" + maxHP + " lewdTier=" + lewdTier + " isPC=" + _actor.isPlayerControlled() + " threshold=" + threshold);
 	}
 
 	return threshold;

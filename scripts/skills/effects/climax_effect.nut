@@ -304,6 +304,7 @@ this.climax_effect <- this.inherit("scripts/skills/skill", {
 		// Orgasm defeat: kill at end of their last turn
 		if (actor.getFlags().has("lewdOrgasmDefeat"))
 		{
+			::logInfo("[climax] onTurnEnd killing " + actor.getName() + " via lewdOrgasmDefeat, OrgasmCount=" + actor.m.OrgasmCount);
 			actor.getFlags().set("lewdPleasureDeath", true);
 			local killer = null;
 			if (actor.m.LastPleasureSourceID >= 0)

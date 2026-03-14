@@ -190,6 +190,8 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC", function()
 
 		q.onClimax <- function() {
 			this.m.OrgasmCount++;
+			local staleFlag = this.getFlags().has("lewdOrgasmDefeat");
+			::logInfo("[climax] " + this.getName() + " OrgasmCount=" + this.m.OrgasmCount + " staleOrgasmDefeat=" + staleFlag);
 
 			// Persistent self-climax counter (world-map flag, survives across battles)
 			if (this.isPlayerControlled())
@@ -210,6 +212,7 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC", function()
 			if (::Lewd.Const.OrgasmDefeatEnabled)
 			{
 				local threshold = ::Lewd.Mastery.getOrgasmThreshold(this);
+				::logInfo("[climax] " + this.getName() + " threshold=" + threshold + " count=" + this.m.OrgasmCount + " defeat=" + (threshold > 0 && this.m.OrgasmCount >= threshold));
 				if (threshold > 0 && this.m.OrgasmCount >= threshold)
 					this.onOrgasmDefeat();
 			}
@@ -950,31 +953,48 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC", function()
 				}
 			}
 
-			if (!this.World.Statistics.getFlags().get("lewdFoughtHexen"))
-				return;
-
-			// Must have won
-			if (this.World.Statistics.getFlags().getAsInt("LastCombatResult") != 1)
+			// --- Hexen curse trigger ---
+			if (this.World.Statistics.getFlags().get("lewdFoughtHexen"))
 			{
 				this.World.Statistics.getFlags().set("lewdFoughtHexen", false);
-				return;
-			}
 
-			// Find eligible male avatar (not already cursed or transformed)
-			local brothers = this.World.getPlayerRoster().getAll();
-			foreach (bro in brothers)
-			{
-				if (bro.getGender() == 0 && bro.getFlags().get("IsPlayerCharacter")
-					&& !bro.getFlags().has("lewdHexenCursed") && ::Lewd.Mastery.getLewdTier(bro) == 0)
+				if (this.World.Statistics.getFlags().getAsInt("LastCombatResult") == 1)
 				{
-					::logInfo("[mod_lewd] Firing hexen curse event for " + bro.getName());
-					this.World.Events.fire("event.lewd_hexen_curse");
-					this.World.Statistics.getFlags().set("lewdFoughtHexen", false);
-					return;
+					local brothers = this.World.getPlayerRoster().getAll();
+					foreach (bro in brothers)
+					{
+						if (bro.getGender() == 0 && bro.getFlags().get("IsPlayerCharacter")
+							&& !bro.getFlags().has("lewdHexenCursed") && ::Lewd.Mastery.getLewdTier(bro) == 0)
+						{
+							::logInfo("[mod_lewd] Firing hexen curse event for " + bro.getName());
+							this.World.Events.fire("event.lewd_hexen_curse");
+							break;
+						}
+					}
 				}
 			}
 
-			this.World.Statistics.getFlags().set("lewdFoughtHexen", false);
+			// --- Ethereal quest chain: gheist encounter trigger ---
+			if (this.World.Statistics.getFlags().get("lewdFoughtGheist"))
+			{
+				this.World.Statistics.getFlags().set("lewdFoughtGheist", false);
+
+				if (this.World.Statistics.getFlags().getAsInt("LastCombatResult") == 1)
+				{
+					local woman = ::Lewd.Transform.target();
+					if (woman != null && this.World.Flags.getAsInt("lewdEtherealQuestStage") == 0
+						&& ::Lewd.Mastery.getLewdTier(woman) >= 2)
+					{
+						local climaxes = woman.getFlags().getAsInt("lewdPartnerClimaxes")
+							+ woman.getFlags().getAsInt("lewdSelfClimaxes");
+						if (climaxes >= ::Lewd.Const.EtherealQuestClimaxThreshold)
+						{
+							::logInfo("[mod_lewd] Firing ethereal gheist encounter event");
+							this.World.Events.fire("event.lewd_ethereal_gheist");
+						}
+					}
+				}
+			}
 		};
 	});
 

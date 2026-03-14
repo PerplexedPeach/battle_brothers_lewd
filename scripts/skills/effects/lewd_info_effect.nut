@@ -38,13 +38,29 @@ this.lewd_info_effect <- this.inherit("scripts/skills/skill", {
 			}
 		}
 
+		// Scan for Gheists in this battle (for ethereal quest chain)
+		if (actor.isPlayerControlled() && !this.World.Statistics.getFlags().get("lewdFoughtGheist"))
+		{
+			local hostiles = this.Tactical.Entities.getAllHostilesAsArray();
+			foreach (e in hostiles)
+			{
+				if (e.getType() == this.Const.EntityType.Ghost)
+				{
+					this.World.Statistics.getFlags().set("lewdFoughtGheist", true);
+					break;
+				}
+			}
+		}
+
 		// Reset pleasure and orgasm count at battle start
 		actor.m.Pleasure = 0;
 		actor.m.OrgasmCount = 0;
 
-		// Clear stale orgasm defeat flag from previous combat
+		// Clear stale orgasm defeat flags from previous combat
 		if (actor.getFlags().has("lewdPleasureDeath"))
 			actor.getFlags().remove("lewdPleasureDeath");
+		if (actor.getFlags().has("lewdOrgasmDefeat"))
+			actor.getFlags().remove("lewdOrgasmDefeat");
 
 		// Reset cum facial sprite from previous combat
 		if (actor.hasSprite("cum_facial"))
