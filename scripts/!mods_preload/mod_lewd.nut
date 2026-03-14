@@ -109,6 +109,13 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC", function()
 
 				local ret = old_addSprite(_layerID);
 
+				// Add piercing_body right after body (renders under armor)
+				if (_layerID == "body")
+				{
+					local pb = old_addSprite("piercing_body");
+					pb.Visible = false;
+				}
+
 				if (_layerID == "socket")
 				{
 					old_addSprite("lewd_glow");
@@ -990,20 +997,29 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC", function()
 			// --- Ethereal quest chain: gheist encounter trigger ---
 			if (this.World.Statistics.getFlags().get("lewdFoughtGheist"))
 			{
+				::logInfo("[mod_lewd] Ethereal quest: post-combat gheist check (won=" + (this.World.Statistics.getFlags().getAsInt("LastCombatResult") == 1) + ", stage=" + this.World.Flags.getAsInt("lewdEtherealQuestStage") + ")");
 				this.World.Statistics.getFlags().set("lewdFoughtGheist", false);
 
 				if (this.World.Statistics.getFlags().getAsInt("LastCombatResult") == 1)
 				{
 					local woman = ::Lewd.Transform.target();
+					local lewdTier = woman != null ? ::Lewd.Mastery.getLewdTier(woman) : -1;
+					local climaxes = woman != null
+						? woman.getFlags().getAsInt("lewdPartnerClimaxes") + woman.getFlags().getAsInt("lewdSelfClimaxes")
+						: 0;
+					::logInfo("[mod_lewd] Ethereal quest: woman=" + (woman != null ? woman.getName() : "null") + " lewdTier=" + lewdTier + " climaxes=" + climaxes + " threshold=" + ::Lewd.Const.EtherealQuestClimaxThreshold);
+
 					if (woman != null && this.World.Flags.getAsInt("lewdEtherealQuestStage") == 0
-						&& ::Lewd.Mastery.getLewdTier(woman) >= 2)
+						&& lewdTier >= 2)
 					{
-						local climaxes = woman.getFlags().getAsInt("lewdPartnerClimaxes")
-							+ woman.getFlags().getAsInt("lewdSelfClimaxes");
 						if (climaxes >= ::Lewd.Const.EtherealQuestClimaxThreshold)
 						{
 							::logInfo("[mod_lewd] Firing ethereal gheist encounter event");
 							this.World.Events.fire("event.lewd_ethereal_gheist");
+						}
+						else
+						{
+							::logInfo("[mod_lewd] Ethereal quest: not enough climaxes (" + climaxes + "/" + ::Lewd.Const.EtherealQuestClimaxThreshold + ")");
 						}
 					}
 				}

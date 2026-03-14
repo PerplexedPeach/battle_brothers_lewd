@@ -5,17 +5,17 @@ this.lewd_ethereal_second <- this.inherit("scripts/events/event", {
 	function create()
 	{
 		this.m.ID = "event.lewd_ethereal_second";
-		this.m.Title = "The Hunger Beneath";
+		this.m.Title = "The Presence";
 		this.m.Cooldown = 999999 * this.World.getTime().SecondsPerDay;
 		this.m.Screens.push({
 			ID = "A",
-			Text = "[img]gfx/ui/events/ethereal_2_1.png[/img]It has been getting worse. Or better, depending on how you look at it.\n\nEvery battle now leaves you restless in ways that steel and victory never used to. The rush of combat mingles with something deeper: a thrumming heat that builds whenever you are close to men, whenever you feel their breath quicken, whenever you sense their desire cresting like a wave about to break. And when they break, when the enemies you've seduced on the battlefield shudder and lose themselves to climax, something inside you drinks deep.\n\nYou feel it now, sitting cross-legged in your tent as night falls. That warmth beneath your skin is no longer subtle. It pulses with its own rhythm, independent of your heartbeat, as though a second heart has kindled in your belly. Your skin shimmers faintly in the lamplight. Not the oily sheen of sweat, but something internal, a soft, rosy luminescence that outlines the contours of your collarbones, the curve of your breasts, the hollow of your throat.\n\nYou hold your hand before the lamp and watch the light pass through your fingers. The flesh is almost translucent at the edges, veins glowing faintly rose-gold. Beautiful. Alien.",
+			Text = "[img]gfx/ui/events/ethereal_2_1.png[/img]It has been getting worse. Or better, depending on how you look at it.\n\nThe presence you first sensed weeks ago has grown bolder. You feel it most strongly after battle, in the trembling aftermath when the blood is still hot and the men around you are slick with sweat and adrenaline. It watches you then with an intensity that borders on hunger. Not threatening. Covetous.\n\nTonight, sitting cross-legged in your tent as night falls, the sensation is stronger than ever. You feel it behind you like a warm breath on your neck. When you turn, there is nothing. But the air where nothing stands carries a scent: something floral and musky, night-blooming jasmine mixed with something older, wilder. A woman's perfume from centuries past.\n\nYou hold your hand before the lamp and watch the light play across your skin. For a moment, just a heartbeat, your shadow on the tent wall does not match your posture. It is taller, with longer hair, and the silhouette of something trailing behind it. A tail, or a trick of the flickering light.\n\nYou blink, and it is your shadow again.",
 			Image = "",
 			List = [],
 			Characters = [],
 			Options = [
 				{
-					Text = "Examine yourself further.",
+					Text = "Who are you?",
 					function getResult( _event )
 					{
 						return "B";
@@ -30,13 +30,13 @@ this.lewd_ethereal_second <- this.inherit("scripts/events/event", {
 
 		this.m.Screens.push({
 			ID = "B",
-			Text = "You strip and stand before the small camp mirror. The changes are undeniable now.\n\nYour body, already remade by Qingde's unguent and the seed of his servants, has continued its transformation without their help. Your waist has narrowed further. Your hips flare with a pronounced curve that makes your silhouette look less like a warrior and more like something painted on a temple wall. A fertility spirit. A fox demon from southern folklore. Your skin is flawless beyond what alchemy should allow: no pores, no blemishes, a seamless porcelain that radiates faint warmth to the touch.\n\nBut it is your eyes that arrest you. The irises have darkened, pupils now permanently dilated into wide, inviting pools that seem to swallow light. When you tilt your head, you catch a fleeting glint, something iridescent, like the sheen on a dragonfly's wing. It vanishes when you look straight on.\n\nYou press a finger to your lower lip. The crimson lacquer Qingde's servants painted there has not faded, but it no longer looks like lacquer. It looks natural, as though your lips simply are that color now. Wine-dark, perpetually flushed, perpetually inviting.\n\nA sound outside the tent flap. %randombrother% clears his throat.%SPEECH_ON%Captain? The lads are asking if you're... well. You've been in there a while. Some of them say they can smell something. Like... flowers. And something else.%SPEECH_OFF%He trails off, embarrassed. You know what the something else is. You can smell it too: your own arousal, amplified and sweetened into something that no longer smells human. It smells like a lure.\n\nYou dress and step out. Every man within ten paces turns. Not because you command attention, you do, you always have, but because something in their hindbrain screams at them to look, to want, to approach. Two brothers nearest the fire shift uncomfortably, and you feel it: the faint pull of their desire, like threads connecting their chests to yours. When one of them swallows hard, his throat bobbing, a tiny spark of warmth flares in your belly as though you've been fed.\n\nYou are feeding on them. Not their bodies. Their want.\n\nThe realization should frighten you. Instead, it sends a slow, liquid thrill down your spine. You smile, and watch three men lose their train of thought simultaneously.",
+			Text = "You whisper the question into the empty tent. The lamp flame bends sideways, as though someone breathed on it. The scent of jasmine intensifies.\n\nNo answer comes. But something shifts in the quality of the silence. It feels, for lack of a better word, pleased. As though whatever haunts your peripheral vision is delighted that you have finally acknowledged it.\n\nA sound outside the tent flap. %randombrother% clears his throat.%SPEECH_ON%Captain? The lads are asking if you're... well. You've been in there a while. Some of them say they can smell something. Like... flowers. And something else.%SPEECH_OFF%He trails off, embarrassed. You know what the something else is. The musky sweetness that has been growing stronger with every battle, every climax drawn from willing and unwilling partners on the field.\n\nYou dress and step out. Every man within ten paces turns. Not because you command attention, though you do, but because something in the air around you has changed. There is a weight to your presence now, a gravity that pulls the eye and quickens the pulse.\n\nYou feel the watcher's approval like a warm hand on your shoulder. Whatever it is, wherever it came from, it has chosen you. And it is waiting for something.\n\nAs you settle by the fire, you catch a whisper at the edge of hearing. Not words, exactly. More like the memory of a voice, ancient and feminine, carried on the scent of dead flowers.%SPEECH_ON%Soon.%SPEECH_OFF%",
 			Image = "",
 			List = [],
 			Characters = [],
 			Options = [
 				{
-					Text = "You are becoming something more than human.",
+					Text = "Something ancient has found you.",
 					function getResult( _event )
 					{
 						return 0;
@@ -51,7 +51,7 @@ this.lewd_ethereal_second <- this.inherit("scripts/events/event", {
 				this.List.push({
 					id = 10,
 					icon = "ui/icons/special.png",
-					text = "You feel the warmth growing stronger with each partner you bring to climax."
+					text = "You feel watched by something that is not human. It grows stronger after every battle."
 				});
 			}
 		});
@@ -68,7 +68,8 @@ this.lewd_ethereal_second <- this.inherit("scripts/events/event", {
 			|| this.m.Woman.getFlags().has("lewdEtherealSecondFired")
 			|| ::Lewd.Mastery.getLewdTier(this.m.Woman) < 2
 			|| !this.m.Woman.getFlags().has("lewdEtherealFirstFired")
-			|| climaxes < ::Lewd.Const.EtherealSecondEventThreshold)
+			|| climaxes < ::Lewd.Const.EtherealSecondEventThreshold
+			|| this.World.Flags.getAsInt("lewdEtherealQuestStage") >= 1)
 		{
 			this.m.Score = 0;
 		} else {

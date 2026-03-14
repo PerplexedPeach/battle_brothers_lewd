@@ -536,10 +536,13 @@
 // Ethereal Progression Event Thresholds
 ::Lewd.Const.EtherealFirstEventThreshold <- 20;   // combined climaxes (self + partner) for foreshadowing
 ::Lewd.Const.EtherealSecondEventThreshold <- 40;  // combined climaxes for awakening
-::Lewd.Const.EtherealThirdEventThreshold <- 80;   // combined climaxes for full transformation
 ::Lewd.Const.EtherealFirstEventBaseScore <- 10;
 ::Lewd.Const.EtherealSecondEventBaseScore <- 15;
-::Lewd.Const.EtherealThirdEventBaseScore <- 20;
+
+// Ethereal Quest Chain
+::Lewd.Const.EtherealQuestClimaxThreshold <- 80;  // combined climaxes to trigger gheist encounter
+::Lewd.Const.EtherealQuestSpawnMinDist <- 5;       // min tile distance for quest locations
+::Lewd.Const.EtherealQuestSpawnMaxDist <- 10;      // max tile distance for quest locations
 
 // Tail Growth Event
 ::Lewd.Const.TailGrowthEventThreshold <- 120;     // combined climaxes (self + partner) needed

@@ -46,6 +46,7 @@ this.lewd_info_effect <- this.inherit("scripts/skills/skill", {
 			{
 				if (e.getType() == this.Const.EntityType.Ghost)
 				{
+					::logInfo("[mod_lewd] Gheist detected in combat - flagging for post-battle check");
 					this.World.Statistics.getFlags().set("lewdFoughtGheist", true);
 					break;
 				}

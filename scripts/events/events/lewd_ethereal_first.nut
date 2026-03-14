@@ -5,17 +5,17 @@ this.lewd_ethereal_first <- this.inherit("scripts/events/event", {
 	function create()
 	{
 		this.m.ID = "event.lewd_ethereal_first";
-		this.m.Title = "Strange Warmth";
+		this.m.Title = "Watching Eyes";
 		this.m.Cooldown = 999999 * this.World.getTime().SecondsPerDay;
 		this.m.Screens.push({
 			ID = "A",
-			Text = "[img]gfx/ui/events/ethereal_1_1.png[/img]You wake before dawn, skin damp with sweat that carries a scent you don't recognize. Not the usual campfire smoke and leather, but something floral, almost intoxicating, like night-blooming jasmine crushed between warm fingers. Your body hums with a low, pleasant vibration that has nothing to do with dreams. You press a palm to your sternum and feel heat radiating outward, pulsing faintly in time with your heartbeat.\n\nSitting up in your bedroll, you notice a faint luminescence on the backs of your hands. It fades when you blink, like afterimages of lightning. You flex your fingers. The porcelain skin Qingde's rituals gave you looks... different. Smoother, if that were possible. The veins beneath have taken on a faintly rosy hue, as though something warmer than blood flows through them.\n\nYou step outside the tent. The pre-dawn air is cold, but you barely feel it. A sentry, %randombrother%, turns at your approach and stares for a beat too long before catching himself.%SPEECH_ON%Morning, captain. You look... rested.%SPEECH_OFF%He says it carefully, the way men speak when they mean something else entirely. You nod and walk past. Each step in your heels sends the familiar ache through your arches, but tonight even that pain feels different. Sharper, more alive, feeding something deep in your core rather than merely hurting.\n\nBy the fire, you catch your reflection in a water pail. Your eyes seem brighter, pupils dilated in a way that has nothing to do with the dim light. Your lips, still lacquered crimson, look fuller than yesterday. You touch them and a shiver runs through you, electric, originating from somewhere far south of your mouth.\n\nThe sensation fades as the sun crests the hills. By the time camp breaks, you feel normal again, or close enough. But somewhere beneath your ribs, that strange warmth lingers, patient and growing.",
+			Text = "[img]gfx/ui/events/ethereal_1_1.png[/img]You wake before dawn, skin damp with sweat. Something pulled you out of sleep. Not a sound. Not a dream. A feeling. The certainty that you were being observed.\n\nYou sit up in your bedroll and scan the tent. Nothing. The camp is quiet, the sentry's footsteps crunching a slow patrol outside. But the sensation lingers: a prickling awareness at the back of your skull, the kind of animal instinct that kept your ancestors alive in dark forests.\n\nYou step outside. The pre-dawn air is cold, but the feeling persists. It is not hostile. That is the strangest part. Whatever watches you does so with an attention that feels almost... appreciative. Like a connoisseur examining a vintage before deciding whether to drink.\n\n%randombrother% turns at your approach and stares for a beat too long before catching himself.%SPEECH_ON%Morning, captain. You look... rested.%SPEECH_OFF%He says it carefully, the way men speak when they mean something else entirely. You nod and walk past.\n\nBy the fire, you catch your reflection in a water pail. Your eyes seem brighter than usual. For a moment, just a flicker, you thought you saw a second reflection behind yours. Something pale and translucent, watching from just over your shoulder.\n\nYou turn. Nothing there. Only the fading stars and the cold breath of morning.\n\nThe sensation fades as the sun crests the hills. By the time camp breaks, you feel normal again. But somewhere beneath your ribs, a faint warmth lingers. Patient. Waiting. As though something ancient has taken notice of you and has not yet decided what to do about it.",
 			Image = "",
 			List = [],
 			Characters = [],
 			Options = [
 				{
-					Text = "Something is changing inside you.",
+					Text = "Something is watching you.",
 					function getResult( _event )
 					{
 						return 0;
@@ -40,7 +40,8 @@ this.lewd_ethereal_first <- this.inherit("scripts/events/event", {
 		if (this.m.Woman == null
 			|| this.m.Woman.getFlags().has("lewdEtherealFirstFired")
 			|| ::Lewd.Mastery.getLewdTier(this.m.Woman) < 2
-			|| climaxes < ::Lewd.Const.EtherealFirstEventThreshold)
+			|| climaxes < ::Lewd.Const.EtherealFirstEventThreshold
+			|| this.World.Flags.getAsInt("lewdEtherealQuestStage") >= 1)
 		{
 			this.m.Score = 0;
 		} else {

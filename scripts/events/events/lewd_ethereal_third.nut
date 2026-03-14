@@ -170,20 +170,9 @@ this.lewd_ethereal_third <- this.inherit("scripts/events/event", {
 
 	function onUpdateScore()
 	{
-		this.m.Woman = ::Lewd.Transform.target();
-
-		local climaxes = this.m.Woman == null ? 0
-			: this.m.Woman.getFlags().getAsInt("lewdPartnerClimaxes") + this.m.Woman.getFlags().getAsInt("lewdSelfClimaxes");
-
-		if (this.m.Woman == null
-			|| ::Lewd.Mastery.getLewdTier(this.m.Woman) != 2
-			|| !this.m.Woman.getFlags().has("lewdEtherealSecondFired")
-			|| climaxes < ::Lewd.Const.EtherealThirdEventThreshold)
-		{
-			this.m.Score = 0;
-		} else {
-			this.m.Score = ::Lewd.Const.EtherealThirdEventBaseScore + climaxes * 10;
-		}
+		// Disabled: replaced by ethereal quest chain (lewd_ethereal_gheist.nut)
+		// Will be removed entirely in Session 4
+		this.m.Score = 0;
 	}
 
 	function onPrepare()

@@ -137,7 +137,7 @@ this.masochism_trait <- this.inherit("scripts/skills/traits/character_trait", {
 
 		if (this.m.HasBodyPiercing)
 		{
-			local piercing_body = actor.addSprite("piercing_body");
+			local piercing_body = actor.getSprite("piercing_body");
 			piercing_body.setBrush("plug_nipple");
 			piercing_body.Visible = true;
 		}
