@@ -78,8 +78,16 @@ this.lewd_bandit_boss <- this.inherit("scripts/entity/tactical/human", {
 		this.m.Skills.add(this.new("scripts/skills/traits/trait_iron_lungs"));
 		this.m.Skills.add(this.new("scripts/skills/traits/trait_brave"));
 
-		// Miniboss status
-		this.makeMiniboss();
+		// Champion status (set directly; visual applied when entering tactical)
+		this.m.IsMiniboss = true;
+		this.m.IsGeneratingKillName = false;
+		this.m.Skills.add(this.new("scripts/skills/racial/champion_racial"));
+	}
+
+	function onPlacedOnMap()
+	{
+		this.human.onPlacedOnMap();
+		this.getSprite("miniboss").setBrush("bust_miniboss");
 	}
 
 	function onAppearanceChanged( _appearance, _setDirty = true )

@@ -169,7 +169,11 @@ this.lewd_ethereal_gheist <- this.inherit("scripts/events/event", {
 
 	function onClear()
 	{
+		if (this.m.Gheist != null)
+		{
+			this.World.getGuestRoster().remove(this.m.Gheist);
+			this.m.Gheist = null;
+		}
 		this.m.Woman = null;
-		this.m.Gheist = null;
 	}
 });

@@ -1078,19 +1078,13 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC", function()
 				local items = woman.getItems();
 				local mainhand = items.getItemAtSlot(this.Const.ItemSlot.Mainhand);
 				if (mainhand != null && mainhand.getID() == "weapon.tail_whip")
-				{
 					items.unequip(mainhand);
-					mainhand.removeSelf();
-				}
 				// Also check bag for tail
 				local bagItems = items.getAllItemsAtSlot(this.Const.ItemSlot.Bag);
 				foreach (item in bagItems)
 				{
 					if (item != null && item.getID() == "weapon.tail_whip")
-					{
 						items.removeFromBag(item);
-						item.removeSelf();
-					}
 				}
 				woman.getFlags().remove("lewdTailGranted");
 				::logInfo("[mod_lewd] Save migration: removed tail weapon");
