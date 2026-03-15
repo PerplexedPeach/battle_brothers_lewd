@@ -53,7 +53,8 @@ this.succubus_gheist <- this.inherit("scripts/entity/tactical/player", {
 		// Hide layers that setAppearance populated
 		local hideLayers = ["head", "hair", "beard", "tattoo_head", "tattoo_body",
 			"armor", "helmet", "helmet_damage", "armor_upgrade_back",
-			"armor_upgrade_front", "surcoat", "shield_icon", "dirt"];
+			"armor_upgrade_front", "surcoat", "shield_icon", "dirt",
+			"miniboss", "arrow"];
 		foreach (layer in hideLayers)
 		{
 			if (this.hasSprite(layer))

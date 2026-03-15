@@ -29,6 +29,9 @@ this.lewd_tentacle_lair_location <- this.inherit("scripts/entity/world/location"
 
 		this.setFaction(this.World.FactionManager.getFactionOfType(this.Const.FactionType.Beasts).getID());
 		this.location.onSpawned();
+		this.m.CombatLocation.Template[0] = "tactical.tentacle_lair";
+		this.m.CombatLocation.CutDownTrees = true;
+		this.m.CombatLocation.AdditionalRadius = 4;
 	}
 
 	function onInit()

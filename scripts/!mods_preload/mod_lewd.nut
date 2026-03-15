@@ -36,11 +36,14 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC", function()
 	local count = ::Const.AI.Behavior.ID.COUNT;
 	::Const.AI.Behavior.ID.LewdHorny <- count++;
 	::Const.AI.Behavior.ID.LewdHornyEngage <- count++;
+	::Const.AI.Behavior.ID.LewdPiledriver <- count++;
 	::Const.AI.Behavior.ID.COUNT = count;
 	::Const.AI.Behavior.Name.push("LewdHorny");
 	::Const.AI.Behavior.Name.push("LewdHornyEngage");
+	::Const.AI.Behavior.Name.push("LewdPiledriver");
 	::Lewd.Const.AIBehaviorIDHorny = ::Const.AI.Behavior.ID.LewdHorny;
 	::Lewd.Const.AIBehaviorIDHornyEngage = ::Const.AI.Behavior.ID.LewdHornyEngage;
+	::Lewd.Const.AIBehaviorIDPiledriver = ::Const.AI.Behavior.ID.LewdPiledriver;
 
 	// --- Mod Settings ---
 	local page = ::Lewd.Mod.ModSettings.addPage("General");

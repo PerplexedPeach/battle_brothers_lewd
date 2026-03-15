@@ -451,6 +451,10 @@
 ::Lewd.Const.AIBehaviorIDHorny <- 0; // set dynamically in mod_lewd.nut via Const.AI.Behavior.ID.COUNT
 ::Lewd.Const.AIBehaviorIDHornyEngage <- 0; // set dynamically in mod_lewd.nut via Const.AI.Behavior.ID.COUNT
 
+// --- Piledriver (Unhold Boss) ---
+::Lewd.Const.AIBehaviorIDPiledriver <- 0; // set dynamically in mod_lewd.nut via Const.AI.Behavior.ID.COUNT
+::Lewd.Const.PiledriverAIScore <- 500; // high priority to use piledriver over normal attacks
+
 // --- AI Continuation ---
 ::Lewd.Const.AIContinuationMap <- {
 	vaginal = "actives.male_penetrate_vaginal",

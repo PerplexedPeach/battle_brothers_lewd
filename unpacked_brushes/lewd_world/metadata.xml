@@ -5,4 +5,15 @@
   <!-- world map location sprites -->
   <sprite id="world_lewd_unhold_lair" ic="FF574E30" width="256" height="256" img="world_lewd_unhold_lair.png"/>
   <sprite id="world_lewd_tentacle_lair" ic="FF633657" width="256" height="256" img="world_lewd_tentacle_lair.png"/>
+
+  <!-- tactical detail overlays (170x110, ground decals) -->
+  <sprite id="lewd_tentacle_slime_01" ic="FF5A2D80" width="170" height="110" img="tentacle_slime_01.png"/>
+  <sprite id="lewd_tentacle_slime_02" ic="FF5A2D80" width="170" height="110" img="tentacle_slime_02.png"/>
+  <sprite id="lewd_tentacle_veins_01" ic="FF6B5070" width="170" height="110" img="tentacle_veins_01.png"/>
+  <sprite id="lewd_tentacle_flesh_01" ic="FF7A3050" width="170" height="110" img="tentacle_flesh_01.png"/>
+
+  <!-- tactical object sprites -->
+  <sprite id="lewd_tentacle_pillar_01" offsetY="35" ic="FF6B2D80" width="174" height="214" img="tentacle_pillar_01.png" left="-58" right="72" top="-61" bottom="79"/>
+  <sprite id="lewd_tentacle_cluster_01" offsetY="35" ic="FF7A2D70" width="174" height="214" img="tentacle_cluster_01.png" left="-58" right="72" top="-61" bottom="79"/>
+  <sprite id="lewd_tentacle_mound_01" offsetY="35" ic="FF6B3070" width="174" height="160" img="tentacle_mound_01.png" left="-58" right="72" top="-40" bottom="60"/>
 </brush>

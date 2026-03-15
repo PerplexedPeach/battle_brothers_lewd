@@ -22,10 +22,16 @@ this.lewd_unhold_lair_location <- this.inherit("scripts/entity/world/location", 
 	{
 		this.m.Name = "Beast's Lair";
 
-		// TODO Session 3: Replace with custom unhold boss entity
-		// Boss unhold (always present)
+		// Custom boss: The Ancient One
 		this.Const.World.Common.addTroop(this, {
-			Type = this.Const.World.Spawn.Troops.Unhold
+			Type = {
+				ID = this.Const.EntityType.Unhold,
+				Variant = 1,
+				Strength = 80,
+				Cost = 80,
+				Row = -1,
+				Script = "scripts/entity/tactical/enemies/lewd_unhold_boss"
+			}
 		}, false);
 
 		// Scale escort unholds with player party strength
