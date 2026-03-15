@@ -16,7 +16,7 @@ this.masochism_second <- this.inherit("scripts/skills/traits/masochism_trait", {
 		this.m.NegStatusDuration = 2;
 		this.m.DamageReductionMult = 0.6;
 		this.m.DamageReductionPct = 60;
-		this.m.PleasureFromDamagePct = 20;
+		this.m.PleasureFromDamagePct = 35;
 		this.m.HasPhysicalResist = true;
 		this.m.AllureBonus = ::Lewd.Const.AllureFromMasochismSecond;
 		this.m.PleasureMaxBonus = ::Lewd.Const.PleasureMaxFromMasochismSecond;

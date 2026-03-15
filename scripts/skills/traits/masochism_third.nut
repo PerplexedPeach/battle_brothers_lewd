@@ -16,7 +16,7 @@ this.masochism_third <- this.inherit("scripts/skills/traits/masochism_trait", {
 		this.m.NegStatusDuration = 2;
 		this.m.DamageReductionMult = 0.5;
 		this.m.DamageReductionPct = 50;
-		this.m.PleasureFromDamagePct = 30;
+		this.m.PleasureFromDamagePct = 50;
 		this.m.HasPhysicalResist = true;
 		this.m.HasStunImmunity = true;
 		this.m.AllureBonus = ::Lewd.Const.AllureFromMasochismThird;

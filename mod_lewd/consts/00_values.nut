@@ -35,9 +35,9 @@
 ::Lewd.Const.PleasureMaxFromMasochismFirst <- 0;
 ::Lewd.Const.PleasureMaxFromMasochismSecond <- 0;
 ::Lewd.Const.PleasureMaxFromMasochismThird <- 0;
-::Lewd.Const.PleasureFromDamageMasochismFirst <- 0.1;
-::Lewd.Const.PleasureFromDamageMasochismSecond <- 0.2;
-::Lewd.Const.PleasureFromDamageMasochismThird <- 0.3;
+::Lewd.Const.PleasureFromDamageMasochismFirst <- 0.2;
+::Lewd.Const.PleasureFromDamageMasochismSecond <- 0.35;
+::Lewd.Const.PleasureFromDamageMasochismThird <- 0.5;
 ::Lewd.Const.ClimaxDuration <- 2;
 ::Lewd.Const.ClimaxAPPenalty <- -2;
 ::Lewd.Const.ClimaxMeleeDefensePenalty <- -10;
@@ -355,8 +355,9 @@
 ::Lewd.Const.PliantBodyFatigueDrain <- 5; // fatigue added to mounter per turn while mounting you
 ::Lewd.Const.PliantBodyFatigueRecovery <- 5; // fatigue recovered when an enemy uses a sex ability on you
 ::Lewd.Const.PliantBodyFatigueMult <- 0.75; // 25% reduced fatigue cost on your own sex abilities
-::Lewd.Const.PainFeedsPleasureMult <- 1.5; // masochism damage-to-pleasure +50%
+::Lewd.Const.PainFeedsPleasureMult <- 2.0; // masochism damage-to-pleasure +100%
 ::Lewd.Const.PainFeedsPleasureInjuryMult <- 1.33; // +33% injury threshold
+::Lewd.Const.PainFeedsPleasureDamageReductionMult <- 0.8; // 20% damage reduction (multiplicative)
 ::Lewd.Const.ShamelessClimaxPleasure <- 10; // pleasure dealt to sex partner on own climax
 ::Lewd.Const.TranscendenceClimaxAllure <- 10; // allure bonus during Climax (replaces penalties)
 

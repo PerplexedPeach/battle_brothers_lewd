@@ -1,6 +1,6 @@
-// Pain Feeds Pleasure: +50% masochism damage-to-pleasure rate + 33% injury threshold
+// Pain Feeds Pleasure: +100% masochism damage-to-pleasure rate, 20% damage reduction, +33% injury threshold
 // Damage-to-pleasure checked in masochism trait onDamageReceived
-// Injury threshold applied via onUpdate on ThresholdToReceiveInjuryMult
+// Injury threshold and damage reduction applied via onUpdate
 this.perk_lewd_pain_feeds_pleasure <- this.inherit("scripts/skills/skill", {
 	m = {},
 	function create()
@@ -19,5 +19,6 @@ this.perk_lewd_pain_feeds_pleasure <- this.inherit("scripts/skills/skill", {
 	function onUpdate( _properties )
 	{
 		_properties.ThresholdToReceiveInjuryMult *= ::Lewd.Const.PainFeedsPleasureInjuryMult;
+		_properties.DamageReceivedTotalMult *= ::Lewd.Const.PainFeedsPleasureDamageReductionMult;
 	}
 });
