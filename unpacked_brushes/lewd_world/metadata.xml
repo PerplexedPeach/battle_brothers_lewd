@@ -2,4 +2,7 @@
   <sprite id="figure_player_delicate" offsetY="20" ic="FF334959" width="68" height="106" img="figure_player_delicate.png" left="-18" right="24" top="-39" bottom="9" />
   <sprite id="figure_player_dainty" offsetY="20" ic="FF334959" width="68" height="106" img="figure_player_dainty.png" left="-18" right="24" top="-39" bottom="9" />
   <sprite id="figure_player_ethereal" offsetY="20" ic="FF334959" width="68" height="106" img="figure_player_ethereal.png" left="-18" right="24" top="-39" bottom="9" />
+  <!-- world map location sprites -->
+  <sprite id="world_lewd_unhold_lair" ic="FF574E30" width="256" height="256" img="world_lewd_unhold_lair.png"/>
+  <sprite id="world_lewd_tentacle_lair" ic="FF633657" width="256" height="256" img="world_lewd_tentacle_lair.png"/>
 </brush>

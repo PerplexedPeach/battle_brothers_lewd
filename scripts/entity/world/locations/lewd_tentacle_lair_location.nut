@@ -11,8 +11,6 @@ this.lewd_tentacle_lair_location <- this.inherit("scripts/entity/world/location"
 		this.location.create();
 		this.m.TypeID = "location.lewd_tentacle_lair";
 		this.m.LocationType = this.Const.World.LocationType.Lair;
-		this.m.CombatLocation.Template[0] = "tactical.swamp";
-		this.m.CombatLocation.CutDownTrees = true;
 		this.m.IsDespawningDefenders = false;
 		this.m.IsShowingDefenders = false;
 		this.m.IsScalingDefenders = false;
@@ -37,7 +35,7 @@ this.lewd_tentacle_lair_location <- this.inherit("scripts/entity/world/location"
 	{
 		this.location.onInit();
 		local body = this.addSprite("body");
-		body.setBrush("world_monster_lair_01");
+		body.setBrush("world_lewd_tentacle_lair");
 	}
 
 	function onDeserialize( _in )
