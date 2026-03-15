@@ -1014,6 +1014,95 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC", function()
 				}
 			}
 		};
+
+		// --- Save migration: revert pre-questchain Ethereal to Delicate ---
+		// Players who got Ethereal via the old automatic event (lewd_ethereal_third)
+		// need to redo it through the quest chain. Detect by checking for Ethereal
+		// trait without the quest completion flag.
+		q.onDeserialize = @(__original) function( _in )
+		{
+			__original(_in);
+
+			// Only run once per save
+			if (this.World.Flags.has("lewdEtherealQuestMigrated"))
+				return;
+
+			this.World.Flags.set("lewdEtherealQuestMigrated", true);
+
+			local woman = ::Lewd.Transform.target();
+			if (woman == null) return;
+
+			local skills = woman.getSkills();
+			if (!skills.hasSkill("trait.ethereal")) return;
+
+			// Has Ethereal + quest complete flag = legitimate, skip
+			if (this.World.Flags.getAsInt("lewdEtherealQuestStage") >= 6) return;
+
+			::logInfo("[mod_lewd] Save migration: reverting pre-questchain Ethereal for " + woman.getName());
+
+			// Remove Ethereal trait, add back Delicate
+			skills.removeByID("trait.ethereal");
+			if (!skills.hasSkill("trait.delicate"))
+				skills.add(this.new("scripts/skills/traits/delicate_trait"));
+
+			// Refund Succubus perks
+			local succubusPerks = [
+				"perk.lewd_predatory_instinct",
+				"perk.lewd_essence_feed",
+				"perk.lewd_soul_harvest",
+				"perk.lewd_unquenchable"
+			];
+			local refunded = 0;
+			foreach (id in succubusPerks)
+			{
+				if (skills.hasSkill(id))
+				{
+					skills.removeByID(id);
+					woman.m.PerkPoints++;
+					woman.m.PerkPointsSpent = this.Math.max(0, woman.m.PerkPointsSpent - 1);
+					refunded++;
+				}
+			}
+
+			// Remove flight skill
+			if (skills.hasSkill("actives.lewd_flight"))
+			{
+				skills.removeByID("actives.lewd_flight");
+				woman.getFlags().remove("lewdFlightGranted");
+				::logInfo("[mod_lewd] Save migration: removed flight skill");
+			}
+
+			// Remove tail weapon
+			if (woman.getFlags().has("lewdTailGranted"))
+			{
+				local items = woman.getItems();
+				local mainhand = items.getItemAtSlot(this.Const.ItemSlot.Mainhand);
+				if (mainhand != null && mainhand.getID() == "weapon.tail_whip")
+				{
+					items.unequip(mainhand);
+					mainhand.removeSelf();
+				}
+				// Also check bag for tail
+				local bagItems = items.getAllItemsAtSlot(this.Const.ItemSlot.Bag);
+				foreach (item in bagItems)
+				{
+					if (item != null && item.getID() == "weapon.tail_whip")
+					{
+						items.removeFromBag(item);
+						item.removeSelf();
+					}
+				}
+				woman.getFlags().remove("lewdTailGranted");
+				::logInfo("[mod_lewd] Save migration: removed tail weapon");
+			}
+
+			if (refunded > 0)
+				::logInfo("[mod_lewd] Save migration: refunded " + refunded + " succubus perks");
+
+			// Reset quest stage; gheist encounter will trigger naturally after next ghost battle
+			this.World.Flags.set("lewdEtherealQuestStage", 0);
+			::logInfo("[mod_lewd] Save migration: quest stage reset to 0, gheist encounter will trigger after next ghost battle");
+		};
 	});
 
 	// Register pleasure bar CSS
