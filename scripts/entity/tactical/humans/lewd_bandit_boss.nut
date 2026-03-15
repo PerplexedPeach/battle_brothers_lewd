@@ -75,8 +75,8 @@ this.lewd_bandit_boss <- this.inherit("scripts/entity/tactical/human", {
 		this.m.Skills.add(this.new("scripts/skills/actives/recover_skill"));
 
 		// Traits: iron lungs, brave
-		this.m.Skills.add(this.new("scripts/skills/traits/trait_iron_lungs"));
-		this.m.Skills.add(this.new("scripts/skills/traits/trait_brave"));
+		this.m.Skills.add(this.new("scripts/skills/traits/iron_lungs_trait"));
+		this.m.Skills.add(this.new("scripts/skills/traits/brave_trait"));
 
 		// Champion status (set directly; visual applied when entering tactical)
 		this.m.IsMiniboss = true;

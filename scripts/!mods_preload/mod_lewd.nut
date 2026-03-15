@@ -1045,12 +1045,18 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC", function()
 			if (!skills.hasSkill("trait.delicate"))
 				skills.add(this.new("scripts/skills/traits/delicate_trait"));
 
-			// Refund Succubus perks
+			// Refund Succubus perks and remove perk tree
 			local succubusPerks = [
 				"perk.lewd_predatory_instinct",
 				"perk.lewd_essence_feed",
 				"perk.lewd_soul_harvest",
 				"perk.lewd_unquenchable"
+			];
+			local succubusConsts = [
+				::Const.Perks.PerkDefs.LewdPredatoryInstinct,
+				::Const.Perks.PerkDefs.LewdEssenceFeed,
+				::Const.Perks.PerkDefs.LewdSoulHarvest,
+				::Const.Perks.PerkDefs.LewdUnquenchable
 			];
 			local refunded = 0;
 			foreach (id in succubusPerks)
@@ -1062,6 +1068,59 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC", function()
 					woman.m.PerkPointsSpent = this.Math.max(0, woman.m.PerkPointsSpent - 1);
 					refunded++;
 				}
+			}
+
+			// Remove Succubus perk tree from background
+			local bg = woman.getBackground();
+			if (bg != null)
+			{
+				// Build ID lookup for succubus perk defs
+				local constSet = {};
+				local idSet = {};
+				foreach (c in succubusConsts)
+				{
+					constSet[c] <- true;
+					idSet[::Const.Perks.PerkDefObjects[c].ID] <- true;
+				}
+
+				// Remove from visual PerkTree
+				local perkTree = bg.getPerkTree();
+				if (perkTree != null)
+				{
+					foreach (row in perkTree)
+					{
+						for (local i = row.len() - 1; i >= 0; i--)
+						{
+							if (row[i].ID in idSet)
+								row.remove(i);
+						}
+					}
+				}
+
+				// Remove from CustomPerkTree
+				if (bg.m.CustomPerkTree != null)
+				{
+					foreach (row in bg.m.CustomPerkTree)
+					{
+						for (local i = row.len() - 1; i >= 0; i--)
+						{
+							if (row[i] in constSet)
+								row.remove(i);
+						}
+					}
+				}
+
+				// Remove from PerkTreeMap
+				if (bg.m.PerkTreeMap != null)
+				{
+					foreach (id, _ in idSet)
+					{
+						if (id in bg.m.PerkTreeMap)
+							delete bg.m.PerkTreeMap[id];
+					}
+				}
+
+				::logInfo("[mod_lewd] Save migration: removed Succubus perk tree");
 			}
 
 			// Remove flight skill
