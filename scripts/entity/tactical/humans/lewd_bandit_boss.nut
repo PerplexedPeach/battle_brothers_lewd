@@ -23,19 +23,19 @@ this.lewd_bandit_boss <- this.inherit("scripts/entity/tactical/human", {
 		this.human.onInit();
 		local b = this.m.BaseProperties;
 
-		// Enhanced stats: tougher than a normal bandit leader (~day 60-80 equivalent)
+		// Named boss: hardened veteran who spurned a succubus and lived
 		b.ActionPoints = 9;
-		b.Hitpoints = 130;
-		b.Bravery = 80;
-		b.Stamina = 140;
-		b.MeleeSkill = 82;
+		b.Hitpoints = 150;
+		b.Bravery = 150;
+		b.Stamina = 150;
+		b.MeleeSkill = 85;
 		b.RangedSkill = 50;
-		b.MeleeDefense = 20;
-		b.RangedDefense = 12;
+		b.MeleeDefense = 25;
+		b.RangedDefense = 15;
 		b.Initiative = 110;
 		b.FatigueEffectMult = 1.0;
 		b.MoraleEffectMult = 1.0;
-		b.FatigueRecoveryRate = 22;
+		b.FatigueRecoveryRate = 25;
 
 		// Specialized in all melee weapon types
 		b.IsSpecializedInSwords = true;
@@ -74,9 +74,12 @@ this.lewd_bandit_boss <- this.inherit("scripts/entity/tactical/human", {
 		this.m.Skills.add(this.new("scripts/skills/actives/rotation"));
 		this.m.Skills.add(this.new("scripts/skills/actives/recover_skill"));
 
-		// Traits: iron lungs, brave, tough
+		// Traits: iron lungs, brave
 		this.m.Skills.add(this.new("scripts/skills/traits/trait_iron_lungs"));
 		this.m.Skills.add(this.new("scripts/skills/traits/trait_brave"));
+
+		// Miniboss status
+		this.makeMiniboss();
 	}
 
 	function onAppearanceChanged( _appearance, _setDirty = true )

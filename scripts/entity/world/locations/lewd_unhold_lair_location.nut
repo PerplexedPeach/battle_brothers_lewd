@@ -24,14 +24,47 @@ this.lewd_unhold_lair_location <- this.inherit("scripts/entity/world/location", 
 	{
 		this.m.Name = "Beast's Lair";
 
-		// TODO Session 3: Add custom unhold boss + escort unholds
-		this.Const.World.Common.addTroop(this, {
-			Type = this.Const.World.Spawn.Troops.Unhold
-		}, false);
+		// TODO Session 3: Replace with custom unhold boss entity
+		// Boss unhold (always present)
 		this.Const.World.Common.addTroop(this, {
 			Type = this.Const.World.Spawn.Troops.Unhold
 		}, false);
 
+		// Scale escort unholds with player party strength
+		// <200: 1 extra, 200-299: 2 extra, 300-499: 2 + 1 bog, 500+: 3 + 1 bog
+		local strength = this.World.State.getPlayer().getStrength();
+		local extraUnholds = 1;
+		local bogUnholds = 0;
+		if (strength >= 500)
+		{
+			extraUnholds = 3;
+			bogUnholds = 1;
+		}
+		else if (strength >= 300)
+		{
+			extraUnholds = 2;
+			bogUnholds = 1;
+		}
+		else if (strength >= 200)
+		{
+			extraUnholds = 2;
+		}
+
+		for (local i = 0; i < extraUnholds; i++)
+		{
+			this.Const.World.Common.addTroop(this, {
+				Type = this.Const.World.Spawn.Troops.Unhold
+			}, false);
+		}
+
+		for (local i = 0; i < bogUnholds; i++)
+		{
+			this.Const.World.Common.addTroop(this, {
+				Type = this.Const.World.Spawn.Troops.UnholdBog
+			}, false);
+		}
+
+		::logInfo("[mod_lewd] Unhold lair spawned: strength=" + strength + " unholds=" + (1 + extraUnholds) + " bog=" + bogUnholds);
 		this.setFaction(this.World.FactionManager.getFactionOfType(this.Const.FactionType.Beasts).getID());
 		this.location.onSpawned();
 	}

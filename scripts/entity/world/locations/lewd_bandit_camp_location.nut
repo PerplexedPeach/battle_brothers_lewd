@@ -24,6 +24,31 @@ this.lewd_bandit_camp_location <- this.inherit("scripts/entity/world/location", 
 	{
 		this.m.Name = "Bandit Hideout";
 
+		// Scale escort count with player party strength
+		// <200: base, 200-299: +2 raiders +1 thug,
+		// 300-499: +4 raiders +1 marksman +2 thugs, 500+: +6 raiders +2 marksmen +3 thugs
+		local strength = this.World.State.getPlayer().getStrength();
+		local extraRaiders = 0;
+		local extraMarksmen = 0;
+		local extraThugs = 0;
+		if (strength >= 500)
+		{
+			extraRaiders = 6;
+			extraMarksmen = 2;
+			extraThugs = 3;
+		}
+		else if (strength >= 300)
+		{
+			extraRaiders = 4;
+			extraMarksmen = 1;
+			extraThugs = 2;
+		}
+		else if (strength >= 200)
+		{
+			extraRaiders = 2;
+			extraThugs = 1;
+		}
+
 		// Add custom boss: Roderick the Faithless
 		this.Const.World.Common.addTroop(this, {
 			Type = {
@@ -36,8 +61,8 @@ this.lewd_bandit_camp_location <- this.inherit("scripts/entity/world/location", 
 			}
 		}, false);
 
-		// Add escort: 2 raiders, 2 marksmen, 4 thugs
-		for (local i = 0; i < 2; i++)
+		// Base escort: 2 raiders, 2 marksmen, 4 thugs + scaling extras
+		for (local i = 0; i < 2 + extraRaiders; i++)
 		{
 			this.Const.World.Common.addTroop(this, {
 				Type = {
@@ -51,7 +76,7 @@ this.lewd_bandit_camp_location <- this.inherit("scripts/entity/world/location", 
 			}, false);
 		}
 
-		for (local i = 0; i < 2; i++)
+		for (local i = 0; i < 2 + extraMarksmen; i++)
 		{
 			this.Const.World.Common.addTroop(this, {
 				Type = {
@@ -65,7 +90,7 @@ this.lewd_bandit_camp_location <- this.inherit("scripts/entity/world/location", 
 			}, false);
 		}
 
-		for (local i = 0; i < 4; i++)
+		for (local i = 0; i < 4 + extraThugs; i++)
 		{
 			this.Const.World.Common.addTroop(this, {
 				Type = {
@@ -79,6 +104,7 @@ this.lewd_bandit_camp_location <- this.inherit("scripts/entity/world/location", 
 			}, false);
 		}
 
+		::logInfo("[mod_lewd] Bandit camp spawned: strength=" + strength + " raiders=" + (2 + extraRaiders) + " marksmen=" + (2 + extraMarksmen) + " thugs=" + (4 + extraThugs));
 		this.setFaction(this.World.FactionManager.getFactionOfType(this.Const.FactionType.Bandits).getID());
 		this.location.onSpawned();
 	}

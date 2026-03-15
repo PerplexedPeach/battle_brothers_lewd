@@ -13,7 +13,7 @@ this.succubus_gheist <- this.inherit("scripts/entity/tactical/player", {
 	function create()
 	{
 		this.m.Type = this.Const.EntityType.Ghost;
-		this.m.BloodType = this.Const.BloodType.Red;
+		this.m.BloodType = this.Const.BloodType.None;
 		this.m.XP = 0;
 		this.m.IsGuest = true;
 		this.player.create();
@@ -43,7 +43,21 @@ this.succubus_gheist <- this.inherit("scripts/entity/tactical/player", {
 		this.m.Attributes.resize(this.Const.Attributes.COUNT, [
 			0
 		]);
-		this.getSprite("socket").setBrush("bust_base_military");
+
+		// Use custom succubus gheist sprite instead of generic appearance
 		this.setAppearance();
+		this.getSprite("socket").setBrush("bust_base_undead");
+		this.getSprite("body").setBrush("bust_succubus_gheist");
+		this.m.Items.getAppearance().Body = "bust_succubus_gheist";
+
+		// Hide layers that setAppearance populated
+		local hideLayers = ["head", "hair", "beard", "tattoo_head", "tattoo_body",
+			"armor", "helmet", "helmet_damage", "armor_upgrade_back",
+			"armor_upgrade_front", "surcoat", "shield_icon", "dirt"];
+		foreach (layer in hideLayers)
+		{
+			if (this.hasSprite(layer))
+				this.getSprite(layer).Visible = false;
+		}
 	}
 });
