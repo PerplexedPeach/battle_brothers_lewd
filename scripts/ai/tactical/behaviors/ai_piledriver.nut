@@ -14,7 +14,7 @@ this.ai_piledriver <- this.inherit("scripts/ai/tactical/behavior", {
 	function create()
 	{
 		this.m.ID = ::Lewd.Const.AIBehaviorIDPiledriver;
-		this.m.Order = this.Const.AI.Behavior.Order.AttackDefault;
+		this.m.Order = this.Const.AI.Behavior.Order.Protect;
 		this.behavior.create();
 	}
 
@@ -24,12 +24,20 @@ this.ai_piledriver <- this.inherit("scripts/ai/tactical/behavior", {
 		this.m.MoveTile = null;
 		this.m.IsEngaging = false;
 
-		if (!_entity.isAlive() || _entity.getCurrentProperties().IsRooted)
+		::logInfo("[ai_piledriver] onEvaluate called for " + _entity.getName());
+
+		if (!_entity.isAlive())
+		{
+			::logInfo("[ai_piledriver] Early exit: dead");
 			return this.Const.AI.Behavior.Score.Zero;
+		}
 
 		local skill = _entity.getSkills().getSkillByID("actives.lewd_piledriver");
-		if (skill == null || !skill.isUsable())
+		if (skill == null || !skill.isUsable() || !skill.isAffordable())
+		{
+			::logInfo("[ai_piledriver] Early exit: skill=" + (skill == null ? "null" : (!skill.isUsable() ? "not usable" : "not affordable")));
 			return this.Const.AI.Behavior.Score.Zero;
+		}
 
 		local myTile = _entity.getTile();
 
@@ -45,13 +53,19 @@ this.ai_piledriver <- this.inherit("scripts/ai/tactical/behavior", {
 
 			local target = adjTile.getEntity();
 			if (target == null || target.isAlliedWith(_entity)) continue;
+
+			::logInfo("[ai_piledriver] Checking adjacent: " + target.getName() + " gender=" + target.getGender() + " pleasureMax=" + target.getPleasureMax());
+
 			if (target.getGender() != 1) continue;
 			if (target.getPleasureMax() <= 0) continue;
 
 			local allure = target.allure();
+			::logInfo("[ai_piledriver] " + target.getName() + " allure=" + allure);
 			if (allure < 50) continue;
 
-			if (!skill.onVerifyTarget(myTile, adjTile)) continue;
+			local verified = skill.onVerifyTarget(myTile, adjTile);
+			::logInfo("[ai_piledriver] " + target.getName() + " onVerifyTarget=" + verified);
+			if (!verified) continue;
 
 			if (allure > bestAllure)
 			{
@@ -76,7 +90,7 @@ this.ai_piledriver <- this.inherit("scripts/ai/tactical/behavior", {
 
 		foreach (opp in opponents)
 		{
-			local e = opp[1];
+			local e = opp.Actor;
 			if (!e.isAlive() || e.getGender() != 1) continue;
 			if (e.getPleasureMax() <= 0) continue;
 
@@ -127,6 +141,7 @@ this.ai_piledriver <- this.inherit("scripts/ai/tactical/behavior", {
 
 	function onExecute( _entity )
 	{
+		::logInfo("[ai_piledriver] onExecute called for " + _entity.getName());
 		if (!_entity.isAlive()) return false;
 
 		if (this.m.IsEngaging && this.m.MoveTile != null)
@@ -139,7 +154,7 @@ this.ai_piledriver <- this.inherit("scripts/ai/tactical/behavior", {
 
 			// After moving, re-check if we can piledriver
 			local skill = _entity.getSkills().getSkillByID("actives.lewd_piledriver");
-			if (skill != null && skill.isUsable() && this.m.TargetTile != null
+			if (skill != null && skill.isUsable() && skill.isAffordable() && this.m.TargetTile != null
 				&& this.m.TargetTile.IsOccupiedByActor
 				&& skill.onVerifyTarget(_entity.getTile(), this.m.TargetTile))
 			{
@@ -153,10 +168,15 @@ this.ai_piledriver <- this.inherit("scripts/ai/tactical/behavior", {
 		if (this.m.TargetTile != null)
 		{
 			local skill = _entity.getSkills().getSkillByID("actives.lewd_piledriver");
-			if (skill != null && skill.isUsable())
+			if (skill != null && skill.isUsable() && skill.isAffordable())
 			{
-				skill.use(this.m.TargetTile);
-				return true;
+				local result = skill.use(this.m.TargetTile);
+				::logInfo("[ai_piledriver] skill.use result=" + result);
+				return result;
+			}
+			else
+			{
+				::logInfo("[ai_piledriver] onExecute: skill not usable/affordable");
 			}
 		}
 

@@ -453,7 +453,7 @@
 
 // --- Piledriver (Unhold Boss) ---
 ::Lewd.Const.AIBehaviorIDPiledriver <- 0; // set dynamically in mod_lewd.nut via Const.AI.Behavior.ID.COUNT
-::Lewd.Const.PiledriverAIScore <- 500; // high priority to use piledriver over normal attacks
+::Lewd.Const.PiledriverAIScore <- 5000; // must outbid ai_horny which can score 2000+
 
 // --- AI Continuation ---
 ::Lewd.Const.AIContinuationMap <- {

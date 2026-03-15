@@ -138,7 +138,7 @@
 
     <!-- unhold subjugator entity -->
     <sprite id="bust_unhold_subjugator" offsetY="35" ic="FF4A3A2A" width="174" height="214" img="entity\unhold_subjugator.png" left="-89" right="95" top="-68" bottom="95"/>
-    <!-- dead: uses base game bust_unhold_body_01_dead -->
+    <sprite id="bust_unhold_subjugator_dead" offsetY="30" f="6403" ic="FF3F4149" width="169" height="139" img="entity\bust_unhold_body_01_dead.png" left="-84" right="85" top="-70" bottom="62"/>
 
     <!-- tentacle monster entity -->
     <sprite id="bust_tentacle_monster" offsetY="35" ic="FF402040" width="340" height="558" img="entity\tentacle.png" left="-89" right="95" top="-68" bottom="95"/>

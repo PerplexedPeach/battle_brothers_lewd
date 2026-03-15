@@ -12,7 +12,7 @@ this.lewd_piledriver_skill <- this.inherit("scripts/skills/skill", {
 	{
 		this.m.ID = "actives.lewd_piledriver";
 		this.m.Name = "Piledriver";
-		this.m.Description = "Grab a target and slam them into the ground, mounting and penetrating in one brutal motion.";
+		this.m.Description = "Grab a target and pin them to the ground, overwhelming them with a long, dexterous tongue.";
 		this.m.Icon = "skills/active_110.png";
 		this.m.IconDisabled = "skills/active_110.png";
 		this.m.Overlay = "active_110";
@@ -31,7 +31,7 @@ this.lewd_piledriver_skill <- this.inherit("scripts/skills/skill", {
 		this.m.IsAttack = false;
 		this.m.IsIgnoredAsAOO = true;
 		this.m.IsUsingActorPitch = true;
-		this.m.ActionPointCost = 6;
+		this.m.ActionPointCost = 4;
 		this.m.FatigueCost = 25;
 		this.m.MinRange = 1;
 		this.m.MaxRange = 1;
@@ -39,7 +39,10 @@ this.lewd_piledriver_skill <- this.inherit("scripts/skills/skill", {
 
 	function isUsable()
 	{
-		return this.skill.isUsable() && !this.getContainer().getActor().getCurrentProperties().IsRooted;
+		// Cannot use base isUsable() because it checks !isHidden(), and this skill is hidden from player UI
+		local actor = this.getContainer().getActor();
+		return this.m.IsUsable
+			&& actor.getCurrentProperties().IsAbleToUseSkills;
 	}
 
 	function isHidden()
@@ -58,22 +61,34 @@ this.lewd_piledriver_skill <- this.inherit("scripts/skills/skill", {
 
 		local user = this.getContainer().getActor();
 		if (target.isAlliedWith(user))
+		{
+			::logInfo("[piledriver] verify failed: allied");
 			return false;
+		}
 
-		// Only target females with pleasure capacity
 		if (target.getGender() != 1)
+		{
+			::logInfo("[piledriver] verify failed: gender=" + target.getGender());
 			return false;
+		}
 
 		if (target.getPleasureMax() <= 0)
+		{
+			::logInfo("[piledriver] verify failed: pleasureMax=" + target.getPleasureMax());
 			return false;
+		}
 
-		// Target must not be immune to grab
 		if (target.getCurrentProperties().IsImmuneToKnockBackAndGrab)
+		{
+			::logInfo("[piledriver] verify failed: immune to grab");
 			return false;
+		}
 
-		// Need a tile behind the target to knock them to
 		if (this.findKnockTile(_originTile, _targetTile) == null)
+		{
+			::logInfo("[piledriver] verify failed: no knock tile");
 			return false;
+		}
 
 		return true;
 	}
@@ -123,43 +138,51 @@ this.lewd_piledriver_skill <- this.inherit("scripts/skills/skill", {
 		skills.removeByID("effects.spearwall");
 		skills.removeByID("effects.riposte");
 
-		// Knock target back
+		// Knock target back (follow fling_back pattern)
 		target.setCurrentMovementType(this.Const.Tactical.MovementType.Involuntary);
+		this.Tactical.getNavigator().teleport(target, knockTile, null, null, true);
+
+		// Schedule follow-up: unhold moves to old tile, then applies effects
 		local tag = {
-			Skill = this,
 			User = _user,
 			Target = target,
 			OldTargetTile = _targetTile
 		};
-		this.Tactical.getNavigator().teleport(target, knockTile, this.onTargetKnocked, tag, true);
+		this.Time.scheduleEvent(this.TimeUnit.Virtual, 250, this.onFollow.bindenv(this), tag);
 		return true;
 	}
 
-	function onTargetKnocked( _entity, _tag )
+	function onFollow( _tag )
 	{
-		// Move unhold to where target was standing
 		local user = _tag.User;
+		local target = _tag.Target;
 		local targetOldTile = _tag.OldTargetTile;
 
-		if (!user.isAlive() || !_entity.isAlive()) return;
+		if (!user.isAlive() || !target.isAlive()) return;
 
-		user.setCurrentMovementType(this.Const.Tactical.MovementType.Involuntary);
+		// Move unhold to where target was standing
+		if (targetOldTile.IsEmpty)
+		{
+			user.setCurrentMovementType(this.Const.Tactical.MovementType.Default);
+			this.Tactical.getNavigator().teleport(user, targetOldTile, null, null, false);
+		}
+
+		// Schedule the pleasure/mount effects
 		local tag2 = {
-			Skill = _tag.Skill,
 			User = user,
-			Target = _entity
+			Target = target
 		};
-		this.Tactical.getNavigator().teleport(user, targetOldTile, this.onUserArrived, tag2, false);
+		this.Time.scheduleEvent(this.TimeUnit.Virtual, 250, this.onApplyEffects.bindenv(this), tag2);
 	}
 
-	function onUserArrived( _entity, _tag )
+	function onApplyEffects( _tag )
 	{
 		local user = _tag.User;
 		local target = _tag.Target;
 
 		if (!user.isAlive() || !target.isAlive()) return;
 
-		// Now roll for penetration hit
+		// Roll for hit
 		local hitChance = this.calculateHitChance(user, target);
 		local roll = this.Math.rand(1, 100);
 		local hit = roll <= hitChance;
@@ -186,14 +209,14 @@ this.lewd_piledriver_skill <- this.inherit("scripts/skills/skill", {
 
 			if (target.getTile().IsVisibleForPlayer)
 			{
-				this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(user) + " slams " + this.Const.UI.getColorizedEntityName(target) + " into the ground and penetrates (+" + actualPleasure + " pleasure)");
+				this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(user) + " pins " + this.Const.UI.getColorizedEntityName(target) + " down and ravishes them with its tongue (+" + actualPleasure + " pleasure)");
 			}
 		}
 		else
 		{
 			if (target.getTile().IsVisibleForPlayer)
 			{
-				this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(user) + " slams " + this.Const.UI.getColorizedEntityName(target) + " but fails to penetrate");
+				this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(user) + " pins " + this.Const.UI.getColorizedEntityName(target) + " but fails to find purchase");
 			}
 		}
 	}

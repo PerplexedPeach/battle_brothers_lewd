@@ -74,10 +74,41 @@ this.climax_effect <- this.inherit("scripts/skills/skill", {
 
 		if (actor.isPlacedOnMap())
 		{
+			// Default: female orgasm sounds
 			local soundPool = this.m.SoundOnUse;
-			if (actor.getGender() == 0 && ::Lewd.Const.SoundMaleOrgasm.len() > 0)
-				soundPool = ::Lewd.Const.SoundMaleOrgasm;
-			this.Sound.play(soundPool[this.Math.rand(0, soundPool.len() - 1)], this.Const.Sound.Volume.Skill * ::Lewd.Const.SexSoundVolume, actor.getPos());
+			local pitch = 1.0;
+
+			if (::Lewd.Const.SoundMaleOrgasm.len() > 0)
+			{
+				local gender = actor.getGender();
+				local entityType = actor.getType();
+
+				// Male humanoids: use male orgasm sounds at normal pitch
+				if (gender == 0)
+				{
+					soundPool = ::Lewd.Const.SoundMaleOrgasm;
+				}
+				// Non-humanoids (gender -1 or undefined): use male orgasm sounds pitched by species
+				// TODO: species-specific climax sounds for each creature type
+				else if (gender != 1)
+				{
+					soundPool = ::Lewd.Const.SoundMaleOrgasm;
+
+					if (entityType == this.Const.EntityType.Unhold || entityType == this.Const.EntityType.UnholdBog || entityType == this.Const.EntityType.UnholdFrost)
+						pitch = 0.6; // deep, rumbling
+					else if (entityType == this.Const.EntityType.Orc || entityType == this.Const.EntityType.OrcWarrior || entityType == this.Const.EntityType.OrcBerserker || entityType == this.Const.EntityType.OrcWarlord || entityType == this.Const.EntityType.OrcYoung)
+						pitch = 0.75; // guttural
+					else if (entityType == this.Const.EntityType.Goblin || entityType == this.Const.EntityType.GoblinWolfrider || entityType == this.Const.EntityType.GoblinOverseer || entityType == this.Const.EntityType.GoblinSkirmisher || entityType == this.Const.EntityType.GoblinAmbusher)
+						pitch = 1.4; // high-pitched
+					else if (entityType == this.Const.EntityType.Direwolf || entityType == this.Const.EntityType.Wolf)
+						pitch = 0.5; // bestial growl
+					else
+						pitch = 0.8; // generic non-humanoid fallback
+				}
+				// gender == 1 (female): keep default female sounds
+			}
+
+			this.Sound.play(soundPool[this.Math.rand(0, soundPool.len() - 1)], this.Const.Sound.Volume.Skill * ::Lewd.Const.SexSoundVolume, actor.getPos(), pitch);
 			this.Tactical.spawnSpriteEffect("climax", this.createColor("#ffffff"), actor.getTile(),
 				this.Const.Tactical.Settings.SkillOverlayOffsetX, this.Const.Tactical.Settings.SkillOverlayOffsetY,
 				this.Const.Tactical.Settings.SkillOverlayScale, this.Const.Tactical.Settings.SkillOverlayScale,
