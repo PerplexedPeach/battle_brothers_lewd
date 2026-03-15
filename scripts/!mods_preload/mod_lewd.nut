@@ -395,17 +395,6 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC", function()
 			return __original(_data);
 		};
 
-		// Block equipping a bag item into a slot occupied by a natural weapon
-		q.general_onEquipBagItem = @(__original) function(_data) {
-			local data = this.helper_queryEntityItemData(_data);
-			if (!("error" in data))
-			{
-				local targetItems = this.helper_queryEquipmentTargetItems(data.inventory, data.sourceItem);
-				if (this.hasNaturalWeaponTarget(targetItems))
-					return this.helper_convertErrorToUIData(this.Const.CharacterScreen.ErrorCode.FailedToRemoveItemFromTargetSlot);
-			}
-			return __original(_data);
-		};
 	});
 
 	// Perk tree injection is handled by the traits themselves (dainty, delicate, masochism)
