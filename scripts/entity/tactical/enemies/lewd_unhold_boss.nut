@@ -51,7 +51,9 @@ this.lewd_unhold_boss <- this.inherit("scripts/entity/tactical/enemies/unhold", 
 		injury_body.setBrush("bust_unhold_02_injured");
 		this.addSprite("armor");
 		local head = this.addSprite("head");
+		head.setBrush("bust_unhold_head_02");
 		head.Visible = false;
+		this.m.Items.getAppearance().HideCorpseHead = true;
 		this.addSprite("helmet");
 		this.addDefaultStatusSprites();
 		this.getSprite("status_rooted").Scale = 0.65;

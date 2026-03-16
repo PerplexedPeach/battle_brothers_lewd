@@ -3,9 +3,9 @@
 // Only targets females with allure > 0 and PleasureMax > 0.
 this.lewd_piledriver_skill <- this.inherit("scripts/skills/skill", {
 	m = {
-		BasePleasure = 36,
-		MeleeSkillScale = 0.30,
-		BaseHitChance = 60,
+		BasePleasure = 60,
+		MeleeSkillScale = 0.50,
+		BaseHitChance = 80,
 		SelfPleasure = 6
 	},
 	function create()
@@ -31,7 +31,7 @@ this.lewd_piledriver_skill <- this.inherit("scripts/skills/skill", {
 		this.m.IsAttack = false;
 		this.m.IsIgnoredAsAOO = true;
 		this.m.IsUsingActorPitch = true;
-		this.m.ActionPointCost = 4;
+		this.m.ActionPointCost = 7;
 		this.m.FatigueCost = 25;
 		this.m.MinRange = 1;
 		this.m.MaxRange = 1;
@@ -84,16 +84,18 @@ this.lewd_piledriver_skill <- this.inherit("scripts/skills/skill", {
 			return false;
 		}
 
-		if (this.findKnockTile(_originTile, _targetTile) == null)
+		// Need a tile behind the unhold to fling target to
+		if (this.findFlingTile(_originTile, _targetTile) == null)
 		{
-			::logInfo("[piledriver] verify failed: no knock tile");
+			::logInfo("[piledriver] verify failed: no fling tile");
 			return false;
 		}
 
 		return true;
 	}
 
-	function findKnockTile( _userTile, _targetTile )
+	// Find tile behind the TARGET (away from unhold) to slam target into
+	function findFlingTile( _userTile, _targetTile )
 	{
 		local dir = _userTile.getDirectionTo(_targetTile);
 
@@ -104,7 +106,6 @@ this.lewd_piledriver_skill <- this.inherit("scripts/skills/skill", {
 				return tile;
 		}
 
-		// Try adjacent directions
 		local altdir = dir - 1 >= 0 ? dir - 1 : 5;
 		if (_targetTile.hasNextTile(altdir))
 		{
@@ -129,8 +130,18 @@ this.lewd_piledriver_skill <- this.inherit("scripts/skills/skill", {
 		local target = _targetTile.getEntity();
 		if (target == null) return false;
 
-		local knockTile = this.findKnockTile(_user.getTile(), _targetTile);
-		if (knockTile == null) return false;
+		local flingTile = this.findFlingTile(_user.getTile(), _targetTile);
+		if (flingTile == null) return false;
+
+		this.getContainer().setBusy(true);
+
+		// Ensure enemy is visible to player during animation
+		if (!_user.isPlayerControlled() && target.isPlayerControlled())
+			_user.getTile().addVisibilityForFaction(this.Const.Faction.Player);
+
+		// Play sound
+		if (this.m.SoundOnUse.len() != 0)
+			this.Sound.play(this.m.SoundOnUse[this.Math.rand(0, this.m.SoundOnUse.len() - 1)], this.Const.Sound.Volume.Skill, _user.getPos());
 
 		// Strip defensive stances
 		local skills = target.getSkills();
@@ -138,17 +149,17 @@ this.lewd_piledriver_skill <- this.inherit("scripts/skills/skill", {
 		skills.removeByID("effects.spearwall");
 		skills.removeByID("effects.riposte");
 
-		// Knock target back (follow fling_back pattern)
+		// Fling target past the unhold (same direction as fling_back)
 		target.setCurrentMovementType(this.Const.Tactical.MovementType.Involuntary);
-		this.Tactical.getNavigator().teleport(target, knockTile, null, null, true);
+		this.Tactical.getNavigator().teleport(target, flingTile, null, null, true);
 
-		// Schedule follow-up: unhold moves to old tile, then applies effects
+		// Unhold follows to target's old tile
 		local tag = {
 			User = _user,
 			Target = target,
 			OldTargetTile = _targetTile
 		};
-		this.Time.scheduleEvent(this.TimeUnit.Virtual, 250, this.onFollow.bindenv(this), tag);
+		this.Time.scheduleEvent(this.TimeUnit.Virtual, 750, this.onFollow.bindenv(this), tag);
 		return true;
 	}
 
@@ -158,7 +169,11 @@ this.lewd_piledriver_skill <- this.inherit("scripts/skills/skill", {
 		local target = _tag.Target;
 		local targetOldTile = _tag.OldTargetTile;
 
-		if (!user.isAlive() || !target.isAlive()) return;
+		if (!user.isAlive() || !target.isAlive())
+		{
+			this.getContainer().setBusy(false);
+			return;
+		}
 
 		// Move unhold to where target was standing
 		if (targetOldTile.IsEmpty)
@@ -167,12 +182,12 @@ this.lewd_piledriver_skill <- this.inherit("scripts/skills/skill", {
 			this.Tactical.getNavigator().teleport(user, targetOldTile, null, null, false);
 		}
 
-		// Schedule the pleasure/mount effects
+		// Apply effects after unhold arrives
 		local tag2 = {
 			User = user,
 			Target = target
 		};
-		this.Time.scheduleEvent(this.TimeUnit.Virtual, 250, this.onApplyEffects.bindenv(this), tag2);
+		this.Time.scheduleEvent(this.TimeUnit.Virtual, 750, this.onApplyEffects.bindenv(this), tag2);
 	}
 
 	function onApplyEffects( _tag )
@@ -180,7 +195,11 @@ this.lewd_piledriver_skill <- this.inherit("scripts/skills/skill", {
 		local user = _tag.User;
 		local target = _tag.Target;
 
-		if (!user.isAlive() || !target.isAlive()) return;
+		if (!user.isAlive() || !target.isAlive())
+		{
+			this.getContainer().setBusy(false);
+			return;
+		}
 
 		// Roll for hit
 		local hitChance = this.calculateHitChance(user, target);
@@ -189,35 +208,87 @@ this.lewd_piledriver_skill <- this.inherit("scripts/skills/skill", {
 
 		if (hit)
 		{
-			// Apply mount
-			this.applyMount(user, target);
+			local layers = this.Const.ShakeCharacterLayers[2];
+			local userTile = user.getTile();
+			local targetTile = target.getTile();
 
-			// Deal pleasure
-			local pleasure = this.calculatePleasure(user, target);
-			local actualPleasure = target.addPleasure(pleasure, user);
+			// 3 shakes: unhold thrusts toward target, target shakes away
+			local beyondTile = targetTile.hasNextTile(userTile.getDirectionTo(targetTile))
+				? targetTile.getNextTile(userTile.getDirectionTo(targetTile))
+				: targetTile;
 
-			// Self pleasure
-			if (this.m.SelfPleasure > 0 && user.getPleasureMax() > 0)
-				user.addPleasure(this.m.SelfPleasure);
-
-			// Always apply horny
-			if (!target.getSkills().hasSkill("effects.lewd_horny"))
+			for (local i = 0; i < 3; i++)
 			{
-				local horny = this.new("scripts/skills/effects/lewd_horny_effect");
-				target.getSkills().add(horny);
+				local shakeDelay = i * 400;
+				local isLast = i == 2;
+				this.Time.scheduleEvent(this.TimeUnit.Virtual, shakeDelay,
+					function(_d) {
+						if (!_d.User.isAlive() || !_d.Target.isAlive()) return;
+						// Play sex sound on each thrust
+						local sounds = ::Lewd.Const.SoundFucking;
+						if (sounds.len() > 0)
+							this.Sound.play(sounds[this.Math.rand(0, sounds.len() - 1)], this.Const.Sound.Volume.Skill * ::Lewd.Const.SexSoundVolume, _d.Target.getPos());
+						// Shake user toward target
+						this.Tactical.getShaker().cancel(_d.User);
+						this.Tactical.getShaker().shake(_d.User, _d.TargetTile, 3);
+						// Shake target away with pink flash on final shake
+						this.Tactical.getShaker().cancel(_d.Target);
+						if (_d.IsLast)
+							this.Tactical.getShaker().shake(_d.Target, _d.BeyondTile, 3,
+								this.createColor("#ff1493"), this.createColor("#ff69b4"),
+								1.5, 0.8, _d.Layers, 1.0);
+						else
+							this.Tactical.getShaker().shake(_d.Target, _d.BeyondTile, 2);
+						this.Tactical.getCamera().quake(_d.User, _d.Target, 2.0, 0.1, 0.2);
+					}.bindenv(this),
+					{ User = user, Target = target, TargetTile = targetTile, BeyondTile = beyondTile, IsLast = isLast, Layers = layers });
 			}
 
-			if (target.getTile().IsVisibleForPlayer)
-			{
-				this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(user) + " pins " + this.Const.UI.getColorizedEntityName(target) + " down and ravishes them with its tongue (+" + actualPleasure + " pleasure)");
-			}
+			// Apply effects after animation (3 shakes * 400ms)
+			this.Time.scheduleEvent(this.TimeUnit.Virtual, 1200,
+				function(_d) {
+					if (!_d.User.isAlive() || !_d.Target.isAlive())
+					{
+						_d.Container.setBusy(false);
+						return;
+					}
+
+					this.applyMount(_d.User, _d.Target);
+
+					local pleasure = this.calculatePleasure(_d.User, _d.Target);
+					local actualPleasure = _d.Target.addPleasure(pleasure, _d.User);
+
+					if (this.m.SelfPleasure > 0 && _d.User.getPleasureMax() > 0)
+						_d.User.addPleasure(this.m.SelfPleasure);
+
+					if (!_d.Target.getSkills().hasSkill("effects.lewd_horny"))
+					{
+						local horny = this.new("scripts/skills/effects/lewd_horny_effect");
+						_d.Target.getSkills().add(horny);
+					}
+
+					if (_d.Target.getTile().IsVisibleForPlayer)
+						this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(_d.User) + " pins " + this.Const.UI.getColorizedEntityName(_d.Target) + " down and ravishes them with its tongue (+" + actualPleasure + " pleasure)");
+
+					_d.Container.setBusy(false);
+				}.bindenv(this),
+				{ User = user, Target = target, Container = this.getContainer() });
 		}
 		else
 		{
-			if (target.getTile().IsVisibleForPlayer)
+			// Miss: light shake, then release
+			if (!user.isHiddenToPlayer() || !target.isHiddenToPlayer())
 			{
-				this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(user) + " pins " + this.Const.UI.getColorizedEntityName(target) + " but fails to find purchase");
+				this.Tactical.getShaker().shake(user, target.getTile(), 2);
+				this.Tactical.getShaker().shake(target, user.getTile(), 2);
 			}
+
+			if (target.getTile().IsVisibleForPlayer)
+				this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(user) + " pins " + this.Const.UI.getColorizedEntityName(target) + " but fails to find purchase");
+
+			this.Time.scheduleEvent(this.TimeUnit.Virtual, 300,
+				function(_d) { _d.Container.setBusy(false); }.bindenv(this),
+				{ Container = this.getContainer() });
 		}
 	}
 
