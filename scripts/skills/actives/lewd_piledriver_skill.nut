@@ -84,54 +84,13 @@ this.lewd_piledriver_skill <- this.inherit("scripts/skills/skill", {
 			return false;
 		}
 
-		// Need a tile behind the unhold to fling target to
-		if (this.findFlingTile(_originTile, _targetTile) == null)
-		{
-			::logInfo("[piledriver] verify failed: no fling tile");
-			return false;
-		}
-
 		return true;
-	}
-
-	// Find tile behind the TARGET (away from unhold) to slam target into
-	function findFlingTile( _userTile, _targetTile )
-	{
-		local dir = _userTile.getDirectionTo(_targetTile);
-
-		if (_targetTile.hasNextTile(dir))
-		{
-			local tile = _targetTile.getNextTile(dir);
-			if (tile.IsEmpty && this.Math.abs(tile.Level - _targetTile.Level) <= 1)
-				return tile;
-		}
-
-		local altdir = dir - 1 >= 0 ? dir - 1 : 5;
-		if (_targetTile.hasNextTile(altdir))
-		{
-			local tile = _targetTile.getNextTile(altdir);
-			if (tile.IsEmpty && this.Math.abs(tile.Level - _targetTile.Level) <= 1)
-				return tile;
-		}
-
-		altdir = dir + 1 <= 5 ? dir + 1 : 0;
-		if (_targetTile.hasNextTile(altdir))
-		{
-			local tile = _targetTile.getNextTile(altdir);
-			if (tile.IsEmpty && this.Math.abs(tile.Level - _targetTile.Level) <= 1)
-				return tile;
-		}
-
-		return null;
 	}
 
 	function onUse( _user, _targetTile )
 	{
 		local target = _targetTile.getEntity();
 		if (target == null) return false;
-
-		local flingTile = this.findFlingTile(_user.getTile(), _targetTile);
-		if (flingTile == null) return false;
 
 		this.getContainer().setBusy(true);
 
@@ -149,45 +108,17 @@ this.lewd_piledriver_skill <- this.inherit("scripts/skills/skill", {
 		skills.removeByID("effects.spearwall");
 		skills.removeByID("effects.riposte");
 
-		// Fling target past the unhold (same direction as fling_back)
+		// Swap positions: unhold grabs target and flings them behind
 		target.setCurrentMovementType(this.Const.Tactical.MovementType.Involuntary);
-		this.Tactical.getNavigator().teleport(target, flingTile, null, null, true);
+		this.Tactical.getNavigator().switchEntities(_user, target, null, null, 1.0);
 
-		// Unhold follows to target's old tile
+		// Apply effects after fling animation completes
 		local tag = {
 			User = _user,
-			Target = target,
-			OldTargetTile = _targetTile
-		};
-		this.Time.scheduleEvent(this.TimeUnit.Virtual, 750, this.onFollow.bindenv(this), tag);
-		return true;
-	}
-
-	function onFollow( _tag )
-	{
-		local user = _tag.User;
-		local target = _tag.Target;
-		local targetOldTile = _tag.OldTargetTile;
-
-		if (!user.isAlive() || !target.isAlive())
-		{
-			this.getContainer().setBusy(false);
-			return;
-		}
-
-		// Move unhold to where target was standing
-		if (targetOldTile.IsEmpty)
-		{
-			user.setCurrentMovementType(this.Const.Tactical.MovementType.Default);
-			this.Tactical.getNavigator().teleport(user, targetOldTile, null, null, false);
-		}
-
-		// Apply effects after unhold arrives
-		local tag2 = {
-			User = user,
 			Target = target
 		};
-		this.Time.scheduleEvent(this.TimeUnit.Virtual, 750, this.onApplyEffects.bindenv(this), tag2);
+		this.Time.scheduleEvent(this.TimeUnit.Virtual, 750, this.onApplyEffects.bindenv(this), tag);
+		return true;
 	}
 
 	function onApplyEffects( _tag )
