@@ -23,7 +23,7 @@ this.lewd_flight_skill <- this.inherit("scripts/skills/skill", {
 			"sounds/enemies/vampire_landing_03.wav"
 		];
 		this.m.Type = this.Const.SkillType.Active;
-		this.m.Order = this.Const.SkillOrder.UtilityTargeted;
+		this.m.Order = this.Const.SkillOrder.First + 1;
 		this.m.IsSerialized = false;
 		this.m.IsActive = true;
 		this.m.IsTargeted = true;
@@ -134,15 +134,6 @@ this.lewd_flight_skill <- this.inherit("scripts/skills/skill", {
 				this.Const.Tactical.Settings.SkillOverlayScale, this.Const.Tactical.Settings.SkillOverlayScale,
 				this.Const.Tactical.Settings.SkillOverlayStayDuration, 0, this.Const.Tactical.Settings.SkillOverlayFadeDuration);
 
-			// Use darkflight bat particles for the departure
-			if (this.Const.Tactical.DarkflightStartParticles.len() != 0)
-			{
-				for (local i = 0; i < this.Const.Tactical.DarkflightStartParticles.len(); i = ++i)
-				{
-					this.Tactical.spawnParticleEffect(false, this.Const.Tactical.DarkflightStartParticles[i].Brushes, _user.getTile(), this.Const.Tactical.DarkflightStartParticles[i].Delay, this.Const.Tactical.DarkflightStartParticles[i].Quantity, this.Const.Tactical.DarkflightStartParticles[i].LifeTimeQuantity, this.Const.Tactical.DarkflightStartParticles[i].SpawnRate, this.Const.Tactical.DarkflightStartParticles[i].Stages);
-				}
-			}
-
 			_user.storeSpriteColors();
 			_user.fadeTo(this.createColor("00000000"), ::Lewd.Const.FlightFadeOutDuration);
 			this.Time.scheduleEvent(this.TimeUnit.Virtual, ::Lewd.Const.FlightFadeOutDuration, this.onTeleportStart, tag);
@@ -164,7 +155,8 @@ this.lewd_flight_skill <- this.inherit("scripts/skills/skill", {
 
 	function onTeleportStart( _tag )
 	{
-		this.Tactical.getNavigator().teleport(_tag.User, _tag.TargetTile, _tag.OnDone, _tag, false, 2.0);
+		// Speed 0.0 = instant teleport (no visible travel stream)
+		this.Tactical.getNavigator().teleport(_tag.User, _tag.TargetTile, _tag.OnDone, _tag, false, 0.0);
 	}
 
 	function onTeleportDone( _entity, _tag )
@@ -177,16 +169,7 @@ this.lewd_flight_skill <- this.inherit("scripts/skills/skill", {
 				this.Const.Tactical.Settings.SkillOverlayScale, this.Const.Tactical.Settings.SkillOverlayScale,
 				this.Const.Tactical.Settings.SkillOverlayStayDuration, 0, this.Const.Tactical.Settings.SkillOverlayFadeDuration);
 
-			// Darkflight arrival particles
-			if (this.Const.Tactical.DarkflightEndParticles.len() != 0)
-			{
-				for (local i = 0; i < this.Const.Tactical.DarkflightEndParticles.len(); i = ++i)
-				{
-					this.Tactical.spawnParticleEffect(false, this.Const.Tactical.DarkflightEndParticles[i].Brushes, _entity.getTile(), this.Const.Tactical.DarkflightEndParticles[i].Delay, this.Const.Tactical.DarkflightEndParticles[i].Quantity, this.Const.Tactical.DarkflightEndParticles[i].LifeTimeQuantity, this.Const.Tactical.DarkflightEndParticles[i].SpawnRate, this.Const.Tactical.DarkflightEndParticles[i].Stages);
-				}
-			}
-
-			this.Time.scheduleEvent(this.TimeUnit.Virtual, 800, _tag.OnFadeIn, _tag);
+			this.Time.scheduleEvent(this.TimeUnit.Virtual, 200, _tag.OnFadeIn, _tag);
 
 			if (_entity.getTile().IsVisibleForPlayer && _tag.Skill.m.SoundOnHit.len() > 0)
 			{

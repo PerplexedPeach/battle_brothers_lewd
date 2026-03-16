@@ -564,7 +564,7 @@
 // --- Flight Skill ---
 ::Lewd.Const.FlightAP <- 3;
 ::Lewd.Const.FlightFatigue <- 15;
-::Lewd.Const.FlightMinRange <- 2;
+::Lewd.Const.FlightMinRange <- 1;
 ::Lewd.Const.FlightMaxRange <- 4;
 ::Lewd.Const.FlightMaxLevelDifference <- 4;
 ::Lewd.Const.FlightFadeOutDuration <- 350;
