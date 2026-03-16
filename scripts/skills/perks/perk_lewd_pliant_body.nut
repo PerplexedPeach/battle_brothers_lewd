@@ -1,5 +1,5 @@
-// Pliant Body: +50% enemy self-pleasure when they sex you, mounter fatigue drain, horny lock while mounting you, fatigue recovery on being sexed, -25% own sex ability fatigue cost
-// Checked in male_sex_skill.onHit, male_force_oral_skill.onHit, lewd_mounted_effect.onTurnEnd, lewd_horny_effect.onTurnEnd, female_sex_skill.getFatigueCost
+// Pliant Body: +50% pleasure reflection, mounter fatigue drain, horny lock while mounting you, fatigue recovery on being sexed, -25% own sex ability fatigue cost
+// Reflection via PleasureReflectionMult property. Other effects checked in lewd_mounted_effect.onTurnEnd, lewd_horny_effect.onTurnEnd, female_sex_skill.getFatigueCost
 this.perk_lewd_pliant_body <- this.inherit("scripts/skills/skill", {
 	m = {},
 	function create()
@@ -15,4 +15,8 @@ this.perk_lewd_pliant_body <- this.inherit("scripts/skills/skill", {
 		this.m.IsHidden = false;
 	}
 
+	function onUpdate( _properties )
+	{
+		_properties.PleasureReflectionMult *= ::Lewd.Const.PliantBodyReflectionMult;
+	}
 });

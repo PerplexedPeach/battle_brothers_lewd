@@ -144,17 +144,17 @@ this.male_sex_skill <- this.inherit("scripts/skills/actives/sex_skill_base", {
 		return 0;
 	}
 
-	// Post-hit hook — base applies self-pleasure + horny + Pliant Body + Willing Victim + Surrender
+	// Post-hit hook — base applies self-pleasure + horny + Willing Victim + Surrender
 	function onHit( _user, _target )
 	{
 		local selfP = this.m.SelfPleasure;
 
-		// Pliant Body: target's accommodating body gives attacker more self-pleasure + target recovers fatigue
+		// Target's PleasureReflectionMult (Pliant Body, Overwhelming Presence, etc.)
+		selfP = this.Math.floor(selfP * _target.getCurrentProperties().PleasureReflectionMult);
+
+		// Pliant Body: fatigue recovery on being sexed (non-reflection effect)
 		if (_target.getSkills().hasSkill("perk.lewd_pliant_body"))
-		{
-			selfP = this.Math.floor(selfP * ::Lewd.Const.PliantBodyReflectionMult);
 			_target.m.Fatigue = this.Math.max(0, _target.m.Fatigue - ::Lewd.Const.PliantBodyFatigueRecovery);
-		}
 
 		// Surrender to Pleasure: target has given in, mounters feel it more
 		local surrenderEffect = _target.getSkills().getSkillByID("effects.surrender_to_pleasure");

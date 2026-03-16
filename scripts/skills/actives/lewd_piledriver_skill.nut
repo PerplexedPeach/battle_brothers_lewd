@@ -3,10 +3,10 @@
 // Only targets females with allure > 0 and PleasureMax > 0.
 this.lewd_piledriver_skill <- this.inherit("scripts/skills/skill", {
 	m = {
-		BasePleasure = 18,
-		MeleeSkillScale = 0.15,
+		BasePleasure = 36,
+		MeleeSkillScale = 0.30,
 		BaseHitChance = 60,
-		SelfPleasure = 3
+		SelfPleasure = 6
 	},
 	function create()
 	{

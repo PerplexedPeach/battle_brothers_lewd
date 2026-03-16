@@ -1,6 +1,7 @@
 // --- Character Properties ---
 ::Const.CharacterProperties.Allure <- 0;
 ::Const.CharacterProperties.PleasureMax <- 0;
+::Const.CharacterProperties.PleasureReflectionMult <- 1.0;
 ::Const.CharacterProperties.getAllure <- function() { return this.Math.floor(this.Allure); };
 ::Const.CharacterProperties.getPleasureMax <- function() { return this.Math.floor(this.PleasureMax); };
 

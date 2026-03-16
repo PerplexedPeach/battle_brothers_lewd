@@ -305,9 +305,13 @@ this.female_sex_skill <- this.inherit("scripts/skills/actives/sex_skill_base", {
 		if (selfP <= 0 || _user.getPleasureMax() <= 0)
 			return 0;
 
-		// Practiced Control: user receives less reflection
+		// Practiced Control: user receives less reflection (user-side modifier)
 		if (_user.getSkills().hasSkill("perk.lewd_practiced_control"))
 			selfP = this.Math.floor(selfP * ::Lewd.Const.PracticedControlReflectionMult);
+
+		// Target's PleasureReflectionMult (Pliant Body, Overwhelming Presence, etc.)
+		if (_target != null)
+			selfP = this.Math.floor(selfP * _target.getCurrentProperties().PleasureReflectionMult);
 
 		if (selfP > 0)
 			return _user.addPleasure(selfP, _target);

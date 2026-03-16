@@ -134,7 +134,7 @@ this.anal_skill <- this.inherit("scripts/skills/actives/female_sex_skill", {
 		else if (tier >= 2) selfP = ::Lewd.Const.AnalT2SelfPleasure;
 		else selfP = ::Lewd.Const.AnalT1SelfPleasure;
 
-		// (Pliant Body reflection now handled centrally in applySelfPleasure)
+		// Reflection modifiers (Pliant Body, Overwhelming Presence, etc.) applied via PleasureReflectionMult in applySelfPleasure
 
 		return selfP;
 	}
