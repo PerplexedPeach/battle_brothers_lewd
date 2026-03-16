@@ -51,6 +51,14 @@ this.lewd_ethereal_tentacle_destroyed <- this.inherit("scripts/events/event", {
 						icon = skill.getIcon(),
 						text = w.getName() + " is now " + skill.getName()
 					});
+
+					// Update world map figure immediately
+					local player = this.World.State.m.Player;
+					if (player != null)
+					{
+						player.getSprite("body").setBrush("figure_player_ethereal");
+						player.getSprite("body").setHorizontalFlipping(false);
+					}
 				}
 
 				// Complete quest

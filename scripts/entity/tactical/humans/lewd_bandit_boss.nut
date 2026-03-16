@@ -110,6 +110,16 @@ this.lewd_bandit_boss <- this.inherit("scripts/entity/tactical/human", {
 		this.m.Items.addToBag(this.new("scripts/items/weapons/throwing_axe"));
 	}
 
+	function getLootForTile( _killer, _loot )
+	{
+		// Boss money reward
+		local money = this.new("scripts/items/supplies/money_item");
+		money.setAmount(this.Math.rand(500, 800));
+		_loot.push(money);
+
+		return this.human.getLootForTile(_killer, _loot);
+	}
+
 	function makeMiniboss()
 	{
 		if (!this.actor.makeMiniboss())

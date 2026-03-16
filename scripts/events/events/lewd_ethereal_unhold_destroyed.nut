@@ -60,14 +60,17 @@ this.lewd_ethereal_unhold_destroyed <- this.inherit("scripts/events/event", {
 
 				// Spawn tentacle lair
 				local playerTile = this.World.State.getPlayer().getTile();
+				// Spawn in swamp terrain so the lair gets swamp combat tiles
 				local tile = ::Lewd.Location.findNearbyTile(playerTile,
 					::Lewd.Const.EtherealQuestSpawnMinDist,
-					::Lewd.Const.EtherealQuestSpawnMaxDist);
+					::Lewd.Const.EtherealQuestSpawnMaxDist,
+					[],
+					this.Const.World.TerrainType.Swamp);
 
 				if (tile != null)
 				{
 					local loc = this.World.spawnLocation(
-						"scripts/entity/world/locations/lewd_tentacle_lair_location",
+						"scripts/entity/world/locations/lewd_broodthing_lair_location",
 						tile.Coords);
 					loc.onSpawned();
 					loc.setDiscovered(true);

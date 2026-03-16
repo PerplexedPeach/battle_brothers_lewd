@@ -97,6 +97,19 @@ this.lewd_unhold_boss <- this.inherit("scripts/entity/tactical/enemies/unhold", 
 		this.getSprite("miniboss").setBrush("bust_miniboss");
 	}
 
+	function getLootForTile( _killer, _loot )
+	{
+		// Base unhold loot (bones/skin)
+		_loot = this.unhold.getLootForTile(_killer, _loot);
+
+		// Boss money reward
+		local money = this.new("scripts/items/supplies/money_item");
+		money.setAmount(this.Math.rand(800, 1200));
+		_loot.push(money);
+
+		return _loot;
+	}
+
 	function generateCorpse( _tile, _fatalityType, _killer )
 	{
 		local corpse = clone this.Const.Corpse;

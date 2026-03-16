@@ -986,6 +986,29 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC", function()
 				}
 			}
 
+			// --- Restore world map figure based on current trait ---
+			local player = this.World.State.m.Player;
+			if (player != null)
+			{
+				local woman = ::Lewd.Transform.target();
+				if (woman != null)
+				{
+					local figureBrush = null;
+					if (woman.getSkills().hasSkill("trait.ethereal"))
+						figureBrush = "figure_player_ethereal";
+					else if (woman.getSkills().hasSkill("trait.delicate"))
+						figureBrush = "figure_player_delicate";
+					else if (woman.getSkills().hasSkill("trait.dainty"))
+						figureBrush = "figure_player_dainty";
+
+					if (figureBrush != null)
+					{
+						player.getSprite("body").setBrush(figureBrush);
+						player.getSprite("body").setHorizontalFlipping(false);
+					}
+				}
+			}
+
 			// --- Ethereal quest chain: gheist encounter trigger ---
 			if (this.World.Statistics.getFlags().get("lewdFoughtGheist"))
 			{

@@ -39,7 +39,7 @@
 
 	// Find a valid tile to spawn a location near a pivot point.
 	// Replicates core logic from contract.getTileToSpawnLocation().
-	function findNearbyTile( _pivotTile, _minDist, _maxDist, _excludedTerrains = [] )
+	function findNearbyTile( _pivotTile, _minDist, _maxDist, _excludedTerrains = [], _requiredTerrain = null )
 	{
 		local mapSize = this.World.getMapSize();
 		local tries = 0;
@@ -87,6 +87,9 @@
 				continue;
 
 			if (tile.getDistanceTo(_pivotTile) < _minDist)
+				continue;
+
+			if (_requiredTerrain != null && tile.Type != _requiredTerrain)
 				continue;
 
 			local abort = false;

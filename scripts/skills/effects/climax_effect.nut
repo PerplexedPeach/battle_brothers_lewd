@@ -96,7 +96,7 @@ this.climax_effect <- this.inherit("scripts/skills/skill", {
 
 					if (entityType == this.Const.EntityType.Unhold || entityType == this.Const.EntityType.UnholdBog || entityType == this.Const.EntityType.UnholdFrost)
 						pitch = 0.6; // deep, rumbling
-					else if (entityType == this.Const.EntityType.Orc || entityType == this.Const.EntityType.OrcWarrior || entityType == this.Const.EntityType.OrcBerserker || entityType == this.Const.EntityType.OrcWarlord || entityType == this.Const.EntityType.OrcYoung)
+					else if (entityType == this.Const.EntityType.OrcWarrior || entityType == this.Const.EntityType.OrcBerserker || entityType == this.Const.EntityType.OrcWarlord || entityType == this.Const.EntityType.OrcYoung)
 						pitch = 0.75; // guttural
 					else if (entityType == this.Const.EntityType.Goblin || entityType == this.Const.EntityType.GoblinWolfrider || entityType == this.Const.EntityType.GoblinOverseer || entityType == this.Const.EntityType.GoblinSkirmisher || entityType == this.Const.EntityType.GoblinAmbusher)
 						pitch = 1.4; // high-pitched
