@@ -62,6 +62,7 @@ this.lewd_restrained_effect <- this.inherit("scripts/skills/skill", {
 		_properties.IsRooted = true;
 		_properties.MeleeDefense += ::Lewd.Const.RestrainedMeleeDefPenalty;
 		_properties.RangedDefense += ::Lewd.Const.RestrainedRangedDefPenalty;
+		_properties.ReceivedPleasureMult *= ::Lewd.Const.RestrainedPleasureVulnerability;
 	}
 
 	function onAdded()

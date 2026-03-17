@@ -82,7 +82,8 @@ this.lewd_horny_effect <- this.inherit("scripts/skills/skill", {
 
 		if (isMaleHumanoid)
 		{
-			::logInfo("[horny] " + actor.getName() + " became horny (gender:" + actor.getGender() + " playerControlled:" + actor.isPlayerControlled() + ")");
+			local isGoblin = ::Lewd.Mastery.isGoblin(actor);
+			::logInfo("[horny] " + actor.getName() + " became horny (gender:" + actor.getGender() + " playerControlled:" + actor.isPlayerControlled() + " goblin:" + isGoblin + ")");
 
 			// Grant male sex skills if not already present
 			if (!actor.getSkills().hasSkill("actives.male_grope"))
@@ -100,9 +101,19 @@ this.lewd_horny_effect <- this.inherit("scripts/skills/skill", {
 				local agent = actor.getAIAgent();
 				if (agent != null && !this.m.HasAIBehavior)
 				{
-					::logInfo("[horny]   injecting AI behaviors for " + actor.getName());
-					agent.addBehavior(this.new("scripts/ai/tactical/behaviors/ai_horny"));
-					agent.addBehavior(this.new("scripts/ai/tactical/behaviors/ai_horny_engage"));
+					if (isGoblin)
+					{
+						// Goblins use species-specific horny behavior + shared engage
+						::logInfo("[horny]   injecting GOBLIN AI behaviors for " + actor.getName());
+						agent.addBehavior(this.new("scripts/ai/tactical/behaviors/ai_goblin_horny"));
+						agent.addBehavior(this.new("scripts/ai/tactical/behaviors/ai_horny_engage"));
+					}
+					else
+					{
+						::logInfo("[horny]   injecting AI behaviors for " + actor.getName());
+						agent.addBehavior(this.new("scripts/ai/tactical/behaviors/ai_horny"));
+						agent.addBehavior(this.new("scripts/ai/tactical/behaviors/ai_horny_engage"));
+					}
 					this.m.HasAIBehavior = true;
 				}
 			}

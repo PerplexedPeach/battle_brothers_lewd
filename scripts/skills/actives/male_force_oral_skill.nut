@@ -124,8 +124,9 @@ this.male_force_oral_skill <- this.inherit("scripts/skills/actives/male_sex_skil
 	{
 		if (!this.male_sex_skill.onVerifyTarget(_originTile, _targetTile)) return false;
 		local target = _targetTile.getEntity();
-		// Requires target to be mounted (restrained)
-		if (!target.getSkills().hasSkill("effects.lewd_mounted")) return false;
+		// Requires target to be mounted or rooted (netted/restrained/shaman root)
+		if (!target.getSkills().hasSkill("effects.lewd_mounted") && !target.getCurrentProperties().IsRooted)
+			return false;
 		return true;
 	}
 

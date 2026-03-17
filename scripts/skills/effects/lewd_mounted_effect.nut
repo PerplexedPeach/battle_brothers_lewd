@@ -236,6 +236,7 @@ this.lewd_mounted_effect <- this.inherit("scripts/skills/skill", {
 		_properties.MeleeSkill += ::Lewd.Const.MountMeleeSkillPenalty;
 		_properties.RangedSkill += ::Lewd.Const.MountRangedSkillPenalty;
 		_properties.InitiativeMult *= ::Lewd.Const.MountInitiativeMult;
+		_properties.ReceivedPleasureMult *= ::Lewd.Const.MountPleasureVulnerability;
 		_properties.IsRooted = true;
 
 		// Sub-gated defensive bonuses while mounted

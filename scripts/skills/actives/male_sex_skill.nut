@@ -122,18 +122,8 @@ this.male_sex_skill <- this.inherit("scripts/skills/actives/sex_skill_base", {
 		if (user.getSkills().hasSkill("perk.lewd_brutal_force"))
 			pleasure = this.Math.floor(pleasure * ::Lewd.Const.BrutalForcePleasureMult);
 
-		// Restrained: +25% pleasure received
-		if (_target.getSkills().hasSkill("effects.lewd_restrained"))
-			pleasure = this.Math.floor(pleasure * ::Lewd.Const.RestrainedPleasureVulnerability);
-
-		// Open Invitation: target receives more pleasure
-		if (_target.getSkills().hasSkill("effects.open_invitation"))
-			pleasure = this.Math.floor(pleasure * ::Lewd.Const.OpenInvitationReceivedPleasureMult);
-
-		// Surrender to Pleasure: target is more vulnerable to pleasure (half scaling)
-		local surrenderEffect = _target.getSkills().getSkillByID("effects.surrender_to_pleasure");
-		if (surrenderEffect != null)
-			pleasure = this.Math.floor(pleasure * surrenderEffect.getSelfVulnMult());
+		// ReceivedPleasureMult (mounted, restrained, open invitation, surrender, etc.)
+		// is applied in addPleasure via the target's property
 
 		return this.Math.max(1, pleasure);
 	}

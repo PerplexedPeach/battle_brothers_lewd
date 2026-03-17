@@ -2,6 +2,7 @@
 ::Const.CharacterProperties.Allure <- 0;
 ::Const.CharacterProperties.PleasureMax <- 0;
 ::Const.CharacterProperties.PleasureReflectionMult <- 1.0;
+::Const.CharacterProperties.ReceivedPleasureMult <- 1.0;
 ::Const.CharacterProperties.getAllure <- function() { return this.Math.floor(this.Allure); };
 ::Const.CharacterProperties.getPleasureMax <- function() { return this.Math.floor(this.PleasureMax); };
 
@@ -696,3 +697,23 @@
 ::Lewd.Const.SoulHarvestKillHealPct <- 0.10;          // 10% of target max HP
 
 ::Lewd.Const.UnquenchableAllurePerClimax <- 3;
+
+// --- Goblin Sex AI ---
+::Lewd.Const.GoblinGangUpPleasureMult <- 0.20;         // +20% received pleasure per adjacent goblin (excl attacker)
+::Lewd.Const.GoblinHornyAllureThreshold <- 20;          // min allure to trigger goblin horny from adjacent restrained
+::Lewd.Const.GoblinRestrainMinAP <- 4;                  // minimum AP to use goblin restrain
+::Lewd.Const.GoblinRestrainFatigue <- 10;
+::Lewd.Const.GoblinPenetrateWeightVaginal <- 50;        // weighted random: vaginal
+::Lewd.Const.GoblinPenetrateWeightAnal <- 30;           // weighted random: anal
+::Lewd.Const.GoblinPenetrateWeightOral <- 20;           // weighted random: force oral
+::Lewd.Const.GoblinHornyAIScore <- 500;                 // higher than generic (400) -- goblins are eager
+::Lewd.Const.GoblinRestrainAIScore <- 600;              // highest priority -- restrain climaxing targets
+
+// Goblin entity type list for type-checking
+::Lewd.Const.GoblinEntityTypes <- [
+	::Const.EntityType.GoblinFighter,
+	::Const.EntityType.GoblinAmbusher,
+	::Const.EntityType.GoblinLeader,
+	::Const.EntityType.GoblinShaman,
+	::Const.EntityType.GoblinWolfrider
+];

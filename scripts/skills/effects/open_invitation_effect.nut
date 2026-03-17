@@ -15,6 +15,11 @@ this.open_invitation_effect <- this.inherit("scripts/skills/skill", {
 		this.m.IsRemovedAfterBattle = true;
 	}
 
+	function onUpdate( _properties )
+	{
+		_properties.ReceivedPleasureMult *= ::Lewd.Const.OpenInvitationReceivedPleasureMult;
+	}
+
 	function getTooltip()
 	{
 		local pctDealt = this.Math.floor((::Lewd.Const.SensualFocusOpenInvitationMult - 1.0) * 100);

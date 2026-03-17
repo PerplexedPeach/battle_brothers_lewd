@@ -236,6 +236,15 @@
 	return _actor.hasSprite("helmet");
 };
 
+// Whether an actor is a goblin entity type
+::Lewd.Mastery.isGoblin <- function( _actor )
+{
+	local t = _actor.getType();
+	foreach (gtype in ::Lewd.Const.GoblinEntityTypes)
+		if (t == gtype) return true;
+	return false;
+};
+
 // Orgasm threshold: how many climaxes before defeat
 // Common base for all entities: Base + Bravery/40 + MaxHP/200
 // Player characters add lewd trait, masochism, and perk bonuses on top

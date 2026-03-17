@@ -37,13 +37,19 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC", function()
 	::Const.AI.Behavior.ID.LewdHorny <- count++;
 	::Const.AI.Behavior.ID.LewdHornyEngage <- count++;
 	::Const.AI.Behavior.ID.LewdPiledriver <- count++;
+	::Const.AI.Behavior.ID.LewdGoblinHorny <- count++;
+	::Const.AI.Behavior.ID.LewdGoblinRestrain <- count++;
 	::Const.AI.Behavior.ID.COUNT = count;
 	::Const.AI.Behavior.Name.push("LewdHorny");
 	::Const.AI.Behavior.Name.push("LewdHornyEngage");
 	::Const.AI.Behavior.Name.push("LewdPiledriver");
+	::Const.AI.Behavior.Name.push("LewdGoblinHorny");
+	::Const.AI.Behavior.Name.push("LewdGoblinRestrain");
 	::Lewd.Const.AIBehaviorIDHorny = ::Const.AI.Behavior.ID.LewdHorny;
 	::Lewd.Const.AIBehaviorIDHornyEngage = ::Const.AI.Behavior.ID.LewdHornyEngage;
 	::Lewd.Const.AIBehaviorIDPiledriver = ::Const.AI.Behavior.ID.LewdPiledriver;
+	::Lewd.Const.AIBehaviorIDGoblinHorny = ::Const.AI.Behavior.ID.LewdGoblinHorny;
+	::Lewd.Const.AIBehaviorIDGoblinRestrain = ::Const.AI.Behavior.ID.LewdGoblinRestrain;
 
 	// --- Mod Settings ---
 	local page = ::Lewd.Mod.ModSettings.addPage("General");
@@ -139,6 +145,10 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC", function()
 			this.getSkills().add(this.new("scripts/skills/effects/lewd_info_effect"));
 			this.getSkills().add(this.new("scripts/skills/effects/lewd_subdom_effect"));
 			this.getSkills().add(this.new("scripts/skills/actives/lewd_flight_skill"));
+
+			// Goblin lewd racial — grants restrain behavior and horny trigger
+			if (::Lewd.Mastery.isGoblin(this))
+				this.getSkills().add(this.new("scripts/skills/racial/goblin_lewd_racial"));
 		}
 
 		// Render callback for animated effects
@@ -183,9 +193,9 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC", function()
 			local max = this.getPleasureMax();
 			if (max <= 0) return 0;
 			local amount = _amount;
-			// mounted targets take extra pleasure
-			if (this.getSkills().hasSkill("effects.lewd_mounted") && amount > 0)
-				amount = this.Math.floor(amount * ::Lewd.Const.MountPleasureVulnerability);
+			// apply received pleasure multiplier (mounted, restrained, open invitation, etc.)
+			if (amount > 0)
+				amount = this.Math.floor(amount * this.getCurrentProperties().ReceivedPleasureMult);
 			local sourceName = _source != null ? _source.getName() : "none";
 			::logInfo("[pleasure] " + this.getName() + " +" + amount + " from " + sourceName + " [" + this.m.Pleasure + "->" + (this.m.Pleasure + amount) + "/" + max + "]");
 			local cur = this.m.Pleasure + amount;

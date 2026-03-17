@@ -39,6 +39,11 @@ this.surrender_to_pleasure_effect <- this.inherit("scripts/skills/skill", {
 		return 1.0 + (this.m.APSpent * this.m.SubScore) / ::Lewd.Const.SurrenderToPleasureSelfDivisor;
 	}
 
+	function onUpdate( _properties )
+	{
+		_properties.ReceivedPleasureMult *= this.getSelfVulnMult();
+	}
+
 	function getTooltip()
 	{
 		local mounterPct = this.Math.floor((this.getMounterMult() - 1.0) * 100);
