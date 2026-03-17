@@ -58,9 +58,18 @@
 				_minDist = origMinDist / 2;
 			}
 
-			if (tries >= 3000)
+			if (tries == 3000 && _requiredTerrain != null)
 			{
-				::logWarning("[mod_lewd] findNearbyTile: failed after 3000 tries");
+				::logWarning("[mod_lewd] findNearbyTile: expanding to full map search for required terrain");
+				_minDist = 0;
+				_maxDist = this.Math.max(mapSize.X, mapSize.Y);
+				minDistToLocations = 2;
+				used = [];
+			}
+
+			if (tries >= 6000)
+			{
+				::logWarning("[mod_lewd] findNearbyTile: failed after 6000 tries (3000 local + 3000 full map)");
 				return null;
 			}
 
