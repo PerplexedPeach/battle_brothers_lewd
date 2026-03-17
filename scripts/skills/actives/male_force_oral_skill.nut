@@ -39,7 +39,8 @@ this.male_force_oral_skill <- this.inherit("scripts/skills/actives/male_sex_skil
 
 	function calculatePleasure( _target )
 	{
-		// Minimal pleasure to target — being forced isn't pleasurable
+		// Minimal fixed pleasure to target — being forced isn't pleasurable
+		// Intentionally skips DealtPleasureMult; the payoff is self-pleasure to the user
 		return this.Math.max(1, this.m.BasePleasure);
 	}
 
@@ -57,6 +58,9 @@ this.male_force_oral_skill <- this.inherit("scripts/skills/actives/male_sex_skil
 	{
 		// Self-pleasure to user, scaled by target's oral mastery
 		local selfP = this.calculateSelfPleasure(_target);
+
+		// SelfPleasureMult: user-side modifier (Practiced Control, etc.)
+		selfP = this.Math.floor(selfP * _user.getCurrentProperties().SelfPleasureMult);
 
 		// Target's PleasureReflectionMult (Pliant Body, Overwhelming Presence, etc.)
 		selfP = this.Math.floor(selfP * _target.getCurrentProperties().PleasureReflectionMult);

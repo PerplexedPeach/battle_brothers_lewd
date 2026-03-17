@@ -138,6 +138,9 @@ this.male_sex_skill <- this.inherit("scripts/skills/actives/sex_skill_base", {
 	{
 		local selfP = this.m.SelfPleasure;
 
+		// SelfPleasureMult: user-side modifier (Practiced Control, etc.)
+		selfP = this.Math.floor(selfP * _user.getCurrentProperties().SelfPleasureMult);
+
 		// Target's PleasureReflectionMult (Pliant Body, Overwhelming Presence, etc.)
 		selfP = this.Math.floor(selfP * _target.getCurrentProperties().PleasureReflectionMult);
 
