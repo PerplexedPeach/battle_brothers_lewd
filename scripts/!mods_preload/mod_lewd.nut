@@ -750,16 +750,6 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC", function()
 			}
 		};
 
-		// Remove restrained effect when mount ends
-		q.onRemoved = @(__original) function()
-		{
-			local actor = this.getContainer().getActor();
-			if (actor.getSkills().hasSkill("effects.lewd_restrained"))
-			{
-				actor.getSkills().removeByID("effects.lewd_restrained");
-			}
-			__original();
-		};
 	});
 
 	// Hook break_free to also remove the lewd_restrained effect
