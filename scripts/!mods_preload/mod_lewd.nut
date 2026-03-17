@@ -1,6 +1,6 @@
 ::Lewd <- {
 	ID = "mod_lewd",
-	Version = "1.7.0",
+	Version = "1.7.1",
 	Name = "Lewdness",
 	IsStartingNewCampaign = false
 };
@@ -88,7 +88,6 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC", function()
 	local lewdHairs = ["lewd_01", "lewd_02", "lewd_03", "lewd_04", "lewd_05", "lewd_06"];
 	::Const.Hair.BarberFemale.extend(lewdHairs);
 
-	// TODO when these get large, refactor out into separate files and include them
 	mod.hook("scripts/entity/tactical/actor", function (q)
 	{
 		// Add Pleasure as a member variable on actor (same pattern as m.Fatigue)
@@ -311,6 +310,33 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC", function()
 		q.spawnBloodPool = @(__original) function( _tile, _amount ) {
 			if (this.getFlags().has("lewdPleasureDeath")) return;
 			__original(_tile, _amount);
+		};
+
+		// Exploit Weakness: +25% armor damage against female targets
+		// Predatory Instinct: +15% damage vs Horny targets
+		q.onDamageReceived = @(__original) function( _attacker, _skill, _hitInfo )
+		{
+			if (_attacker != null && _attacker.getSkills().hasSkill("perk.lewd_exploit_weakness") && this.getGender() == 1)
+			{
+				_hitInfo.DamageArmor = this.Math.floor(_hitInfo.DamageArmor * ::Lewd.Const.ExploitWeaknessArmorDamageMult);
+			}
+
+			if (_attacker != null && _attacker.getSkills().hasSkill("perk.lewd_predatory_instinct")
+				&& this.getSkills().hasSkill("effects.lewd_horny"))
+			{
+				_hitInfo.DamageRegular = this.Math.floor(_hitInfo.DamageRegular * ::Lewd.Const.PredatoryInstinctDamageMult);
+			}
+
+			return __original(_attacker, _skill, _hitInfo);
+		};
+
+		// Embrace Pain: auto-pass morale loss checks
+		// _type default: 0 = Const.MoraleCheckType.Default (can't use `this.Const` here, LSP chokes on it)
+		q.checkMorale = @(__original) function( _change, _difficulty, _type = 0, _showIconBeforeMoraleIcon = "", _noNewLine = false )
+		{
+			if (_change < 0 && this.getSkills().hasSkill("perk.lewd_embrace_pain"))
+				return false;
+			return __original(_change, _difficulty, _type, _showIconBeforeMoraleIcon, _noNewLine);
 		};
 
 	});
@@ -580,27 +606,62 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC", function()
 			bg.addPerkGroup(::Const.Perks.DebaucheryTree.Tree);
 			::logInfo("[mod_lewd] Injected Debauchery perk tree for " + this.getName() + " (bg: " + bg.getName() + ")");
 		};
-	});
 
-	// Exploit Weakness: +25% armor damage against female targets
-	mod.hook("scripts/entity/tactical/actor", function(q)
-	{
-		q.onDamageReceived = @(__original) function( _attacker, _skill, _hitInfo )
+		// Player orgasm defeat: go unconscious instead of dying
+		q.isReallyKilled = @(__original) function( _fatalityType ) {
+			if (this.getFlags().has("lewdPleasureDeath"))
+				return false; // -> unconscious, recoverable after battle
+			return __original(_fatalityType);
+		};
+
+		// Pleasure bar + orgasm count on player tactical tooltip
+		q.getTooltip = @(__original) function( _targetedWithSkill = null )
 		{
-			// Boost armor damage if attacker has Exploit Weakness and this actor is female
-			if (_attacker != null && _attacker.getSkills().hasSkill("perk.lewd_exploit_weakness") && this.getGender() == 1)
+			local tooltip = __original(_targetedWithSkill);
+
+			if (this.getPleasureMax() > 0)
 			{
-				_hitInfo.DamageArmor = this.Math.floor(_hitInfo.DamageArmor * ::Lewd.Const.ExploitWeaknessArmorDamageMult);
+				local insertIdx = tooltip.len();
+
+				for (local i = tooltip.len() - 1; i >= 0; i--)
+				{
+					if ("type" in tooltip[i] && tooltip[i].type == "progressbar")
+					{
+						insertIdx = i + 1;
+						break;
+					}
+				}
+
+				tooltip.insert(insertIdx, {
+					id = 50,
+					type = "progressbar",
+					icon = "ui/icons/pleasure.png",
+					value = this.getPleasure(),
+					valueMax = this.getPleasureMax(),
+					text = "" + this.getPleasure() + " / " + this.getPleasureMax(),
+					style = "pleasure-slim"
+				});
+
+				// Orgasm threshold bar (right after pleasure bar)
+				if (::Lewd.Const.OrgasmDefeatEnabled)
+				{
+					local threshold = ::Lewd.Mastery.getOrgasmThreshold(this);
+					if (threshold > 0 && threshold < 999)
+					{
+						tooltip.insert(insertIdx + 1, {
+							id = 51,
+							type = "progressbar",
+							icon = "skills/climax.png",
+							value = this.m.OrgasmCount,
+							valueMax = threshold,
+							text = "" + this.m.OrgasmCount + " / " + threshold,
+							style = "orgasm-slim"
+						});
+					}
+				}
 			}
 
-			// Predatory Instinct: +15% damage vs Horny targets
-			if (_attacker != null && _attacker.getSkills().hasSkill("perk.lewd_predatory_instinct")
-				&& this.getSkills().hasSkill("effects.lewd_horny"))
-			{
-				_hitInfo.DamageRegular = this.Math.floor(_hitInfo.DamageRegular * ::Lewd.Const.PredatoryInstinctDamageMult);
-			}
-
-			return __original(_attacker, _skill, _hitInfo);
+			return tooltip;
 		};
 	});
 
@@ -720,79 +781,6 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC", function()
 
 	// Brutal Force: +1 orgasm threshold for perk owner
 	// (added to mastery.nut getOrgasmThreshold via this hook)
-
-	// Player orgasm defeat: go unconscious instead of dying
-	mod.hook("scripts/entity/tactical/player", function(q) {
-		q.isReallyKilled = @(__original) function( _fatalityType ) {
-			if (this.getFlags().has("lewdPleasureDeath"))
-				return false; // -> unconscious, recoverable after battle
-			return __original(_fatalityType);
-		};
-	});
-
-	// Add pleasure bar + orgasm count to tactical tooltip (player characters)
-	mod.hook("scripts/entity/tactical/player", function(q) {
-		q.getTooltip = @(__original) function( _targetedWithSkill = null )
-		{
-			local tooltip = __original(_targetedWithSkill);
-
-			if (this.getPleasureMax() > 0)
-			{
-				local insertIdx = tooltip.len();
-
-				for (local i = tooltip.len() - 1; i >= 0; i--)
-				{
-					if ("type" in tooltip[i] && tooltip[i].type == "progressbar")
-					{
-						insertIdx = i + 1;
-						break;
-					}
-				}
-
-				tooltip.insert(insertIdx, {
-					id = 50,
-					type = "progressbar",
-					icon = "ui/icons/pleasure.png",
-					value = this.getPleasure(),
-					valueMax = this.getPleasureMax(),
-					text = "" + this.getPleasure() + " / " + this.getPleasureMax(),
-					style = "pleasure-slim"
-				});
-
-				// Orgasm threshold bar (right after pleasure bar)
-				if (::Lewd.Const.OrgasmDefeatEnabled)
-				{
-					local threshold = ::Lewd.Mastery.getOrgasmThreshold(this);
-					if (threshold > 0 && threshold < 999)
-					{
-						tooltip.insert(insertIdx + 1, {
-							id = 51,
-							type = "progressbar",
-							icon = "skills/climax.png",
-							value = this.m.OrgasmCount,
-							valueMax = threshold,
-							text = "" + this.m.OrgasmCount + " / " + threshold,
-							style = "orgasm-slim"
-						});
-					}
-				}
-			}
-
-			return tooltip;
-		};
-	});
-
-	// Embrace Pain: auto-pass morale loss checks
-	mod.hook("scripts/entity/tactical/actor", function(q)
-	{
-		// _type default: 0 = Const.MoraleCheckType.Default (can't use `this.Const` here, LSP chokes on it)
-		q.checkMorale = @(__original) function( _change, _difficulty, _type = 0, _showIconBeforeMoraleIcon = "", _noNewLine = false )
-		{
-			if (_change < 0 && this.getSkills().hasSkill("perk.lewd_embrace_pain"))
-				return false;
-			return __original(_change, _difficulty, _type, _showIconBeforeMoraleIcon, _noNewLine);
-		};
-	});
 
 	// Alluring Presence aura: apply pleasure to enemies on their turn start and when they move adjacent
 	// Allied harassment: male brothers may grope adjacent high-allure allied females
