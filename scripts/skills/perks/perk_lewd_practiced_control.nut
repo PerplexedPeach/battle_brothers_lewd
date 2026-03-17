@@ -1,5 +1,5 @@
 // Practiced Control: -50% self-pleasure reflection + -25% fatigue cost on sex abilities
-// Reflection checked in female_sex_skill.applySelfPleasure, fatigue in female_sex_skill.getFatigueCost
+// SelfPleasureMult and SexFatigueMult set via onUpdate
 this.perk_lewd_practiced_control <- this.inherit("scripts/skills/skill", {
 	m = {},
 	function create()
@@ -15,4 +15,9 @@ this.perk_lewd_practiced_control <- this.inherit("scripts/skills/skill", {
 		this.m.IsHidden = false;
 	}
 
+	function onUpdate( _properties )
+	{
+		_properties.SelfPleasureMult *= ::Lewd.Const.PracticedControlReflectionMult;
+		_properties.SexFatigueMult *= ::Lewd.Const.PracticedControlFatigueMult;
+	}
 });

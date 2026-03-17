@@ -1,5 +1,5 @@
 // Brutal Force: T4 Debauchery — +25% pleasure from male sex abilities, +1 orgasm threshold
-// Pleasure mult is checked in male_sex_skill.calculatePleasure()
+// DealtPleasureMult set via onUpdate; orgasm threshold in mastery.nut getOrgasmThreshold()
 this.perk_lewd_brutal_force <- this.inherit("scripts/skills/skill", {
 	m = {},
 	function create()
@@ -15,6 +15,8 @@ this.perk_lewd_brutal_force <- this.inherit("scripts/skills/skill", {
 		this.m.IsHidden = false;
 	}
 
-	// Orgasm threshold bonus is applied in mastery.nut getOrgasmThreshold()
-	// Pleasure multiplier is applied in male_sex_skill.calculatePleasure()
+	function onUpdate( _properties )
+	{
+		_properties.DealtPleasureMult *= ::Lewd.Const.BrutalForcePleasureMult;
+	}
 });

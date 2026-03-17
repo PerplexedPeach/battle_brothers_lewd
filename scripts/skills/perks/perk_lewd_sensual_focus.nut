@@ -1,5 +1,5 @@
 // Sensual Focus: +10% pleasure dealt by all sex abilities + Open Invitation toggle
-// Checked directly in skill scripts via actor.getSkills().hasSkill("perk.lewd_sensual_focus")
+// DealtPleasureMult set via onUpdate; Open Invitation adds additional dealt mult
 this.perk_lewd_sensual_focus <- this.inherit("scripts/skills/skill", {
 	m = {},
 	function create()
@@ -13,6 +13,11 @@ this.perk_lewd_sensual_focus <- this.inherit("scripts/skills/skill", {
 		this.m.IsActive = false;
 		this.m.IsStacking = false;
 		this.m.IsHidden = false;
+	}
+
+	function onUpdate( _properties )
+	{
+		_properties.DealtPleasureMult *= ::Lewd.Const.SensualFocusPleasureMult;
 	}
 
 	function onAdded()

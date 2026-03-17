@@ -55,10 +55,7 @@ this.female_sex_skill <- this.inherit("scripts/skills/actives/sex_skill_base", {
 	{
 		local cost = this.getTierConfig().Fatigue;
 		local actor = this.getContainer().getActor();
-		if (actor.getSkills().hasSkill("perk.lewd_practiced_control"))
-			cost = this.Math.ceil(cost * ::Lewd.Const.PracticedControlFatigueMult);
-		if (actor.getSkills().hasSkill("perk.lewd_pliant_body"))
-			cost = this.Math.ceil(cost * ::Lewd.Const.PliantBodyFatigueMult);
+		cost = this.Math.ceil(cost * actor.getCurrentProperties().SexFatigueMult);
 		return cost;
 	}
 
@@ -254,14 +251,8 @@ this.female_sex_skill <- this.inherit("scripts/skills/actives/sex_skill_base", {
 		// fatigue vulnerability
 		pleasure += ::Lewd.Mastery.calcFatigueVulnerability(_target);
 
-		// Sensual Focus perk
-		if (user.getSkills().hasSkill("perk.lewd_sensual_focus"))
-		{
-			pleasure = this.Math.floor(pleasure * ::Lewd.Const.SensualFocusPleasureMult);
-			// Open Invitation: additional +25% pleasure when active
-			if (user.getSkills().hasSkill("effects.open_invitation"))
-				pleasure = this.Math.floor(pleasure * ::Lewd.Const.SensualFocusOpenInvitationMult);
-		}
+		// DealtPleasureMult (Sensual Focus, Open Invitation, etc.)
+		pleasure = this.Math.floor(pleasure * user.getCurrentProperties().DealtPleasureMult);
 
 		return this.Math.max(1, pleasure);
 	}
@@ -305,9 +296,8 @@ this.female_sex_skill <- this.inherit("scripts/skills/actives/sex_skill_base", {
 		if (selfP <= 0 || _user.getPleasureMax() <= 0)
 			return 0;
 
-		// Practiced Control: user receives less reflection (user-side modifier)
-		if (_user.getSkills().hasSkill("perk.lewd_practiced_control"))
-			selfP = this.Math.floor(selfP * ::Lewd.Const.PracticedControlReflectionMult);
+		// SelfPleasureMult: user-side modifier (Practiced Control, etc.)
+		selfP = this.Math.floor(selfP * _user.getCurrentProperties().SelfPleasureMult);
 
 		// Target's PleasureReflectionMult (Pliant Body, Overwhelming Presence, etc.)
 		if (_target != null)

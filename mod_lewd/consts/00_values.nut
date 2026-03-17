@@ -3,6 +3,9 @@
 ::Const.CharacterProperties.PleasureMax <- 0;
 ::Const.CharacterProperties.PleasureReflectionMult <- 1.0;
 ::Const.CharacterProperties.ReceivedPleasureMult <- 1.0;
+::Const.CharacterProperties.DealtPleasureMult <- 1.0;
+::Const.CharacterProperties.SelfPleasureMult <- 1.0;
+::Const.CharacterProperties.SexFatigueMult <- 1.0;
 ::Const.CharacterProperties.getAllure <- function() { return this.Math.floor(this.Allure); };
 ::Const.CharacterProperties.getPleasureMax <- function() { return this.Math.floor(this.PleasureMax); };
 

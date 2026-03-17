@@ -18,6 +18,7 @@ this.open_invitation_effect <- this.inherit("scripts/skills/skill", {
 	function onUpdate( _properties )
 	{
 		_properties.ReceivedPleasureMult *= ::Lewd.Const.OpenInvitationReceivedPleasureMult;
+		_properties.DealtPleasureMult *= ::Lewd.Const.SensualFocusOpenInvitationMult;
 	}
 
 	function getTooltip()

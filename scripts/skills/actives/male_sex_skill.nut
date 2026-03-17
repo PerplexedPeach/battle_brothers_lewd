@@ -118,9 +118,8 @@ this.male_sex_skill <- this.inherit("scripts/skills/actives/sex_skill_base", {
 		if (_target.getSkills().hasSkill("effects.lewd_mounted"))
 			pleasure += this.calculateMountBonus(_target);
 
-		// Brutal Force: +25% pleasure from male sex abilities
-		if (user.getSkills().hasSkill("perk.lewd_brutal_force"))
-			pleasure = this.Math.floor(pleasure * ::Lewd.Const.BrutalForcePleasureMult);
+		// DealtPleasureMult (Brutal Force, etc.) — user-side multiplier
+		pleasure = this.Math.floor(pleasure * user.getCurrentProperties().DealtPleasureMult);
 
 		// ReceivedPleasureMult (mounted, restrained, open invitation, surrender, etc.)
 		// is applied in addPleasure via the target's property
