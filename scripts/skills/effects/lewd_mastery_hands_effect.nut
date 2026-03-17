@@ -61,6 +61,22 @@ this.lewd_mastery_hands_effect <- this.inherit("scripts/skills/effects/lewd_mast
 			});
 		}
 
+		if (pts >= this.m.Limit)
+		{
+			tooltip.push({
+				id = 14,
+				type = "text",
+				icon = "ui/icons/allure.png",
+				text = "[color=" + this.Const.UI.Color.PositiveValue + "]+" + ::Lewd.Const.MasteryCapstoneAllure + "[/color] Allure (mastered)"
+			});
+			tooltip.push({
+				id = 15,
+				type = "text",
+				icon = "ui/icons/melee_skill.png",
+				text = "[color=" + this.Const.UI.Color.PositiveValue + "]+" + ::Lewd.Const.MasteryCapstoneHandsMeleeSkill + "[/color] Melee Skill (mastered)"
+			});
+		}
+
 		if (pts < ::Lewd.Const.MasteryHandsHitThreshold)
 			tooltip.push({ id = 20, type = "hint", icon = "ui/icons/special.png", text = "Next at " + ::Lewd.Const.MasteryHandsHitThreshold + ": Hit chance bonus" });
 		else if (pts < ::Lewd.Const.MasteryHandsT2)
@@ -71,7 +87,19 @@ this.lewd_mastery_hands_effect <- this.inherit("scripts/skills/effects/lewd_mast
 			tooltip.push({ id = 20, type = "hint", icon = "ui/icons/special.png", text = "Next at " + ::Lewd.Const.MasteryHandsT3 + ": Skill upgrades to Skilled Handjob" });
 		else if (pts < ::Lewd.Const.MasteryHandsHitT3Threshold)
 			tooltip.push({ id = 20, type = "hint", icon = "ui/icons/special.png", text = "Next at " + ::Lewd.Const.MasteryHandsHitT3Threshold + ": Hit chance bonus" });
+		else if (pts < this.m.Limit)
+			tooltip.push({ id = 20, type = "hint", icon = "ui/icons/special.png", text = "Max at " + this.m.Limit + ": Mastery capstone bonus" });
 
 		return tooltip;
+	}
+
+	function onUpdate( _properties )
+	{
+		if (this.getPoints() < 0) return;
+		if (this.m.Points >= this.m.Limit)
+		{
+			_properties.Allure += ::Lewd.Const.MasteryCapstoneAllure;
+			_properties.MeleeSkill += ::Lewd.Const.MasteryCapstoneHandsMeleeSkill;
+		}
 	}
 });

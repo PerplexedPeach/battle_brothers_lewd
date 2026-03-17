@@ -62,6 +62,22 @@ this.lewd_mastery_vaginal_effect <- this.inherit("scripts/skills/effects/lewd_ma
 			});
 		}
 
+		if (pts >= this.m.Limit)
+		{
+			tooltip.push({
+				id = 14,
+				type = "text",
+				icon = "ui/icons/allure.png",
+				text = "[color=" + this.Const.UI.Color.PositiveValue + "]+" + ::Lewd.Const.MasteryCapstoneAllure + "[/color] Allure (mastered)"
+			});
+			tooltip.push({
+				id = 15,
+				type = "text",
+				icon = "ui/icons/fatigue.png",
+				text = "[color=" + this.Const.UI.Color.PositiveValue + "]+" + ::Lewd.Const.MasteryCapstoneVaginalStamina + "[/color] Stamina (mastered)"
+			});
+		}
+
 		if (pts < ::Lewd.Const.MasteryVaginalSelfPleasureThreshold)
 			tooltip.push({ id = 20, type = "hint", icon = "ui/icons/special.png", text = "Next at " + ::Lewd.Const.MasteryVaginalSelfPleasureThreshold + ": Self-pleasure reduction" });
 		else if (pts < ::Lewd.Const.MasteryVaginalT2)
@@ -72,7 +88,19 @@ this.lewd_mastery_vaginal_effect <- this.inherit("scripts/skills/effects/lewd_ma
 			tooltip.push({ id = 20, type = "hint", icon = "ui/icons/special.png", text = "Next at " + ::Lewd.Const.MasteryVaginalT3 + ": Skill upgrades to Cowgirl" });
 		else if (pts < ::Lewd.Const.MasteryVaginalAPThreshold)
 			tooltip.push({ id = 20, type = "hint", icon = "ui/icons/special.png", text = "Next at " + ::Lewd.Const.MasteryVaginalAPThreshold + ": AP cost reduction" });
+		else if (pts < this.m.Limit)
+			tooltip.push({ id = 20, type = "hint", icon = "ui/icons/special.png", text = "Max at " + this.m.Limit + ": Mastery capstone bonus" });
 
 		return tooltip;
+	}
+
+	function onUpdate( _properties )
+	{
+		if (this.getPoints() < 0) return;
+		if (this.m.Points >= this.m.Limit)
+		{
+			_properties.Allure += ::Lewd.Const.MasteryCapstoneAllure;
+			_properties.Stamina += ::Lewd.Const.MasteryCapstoneVaginalStamina;
+		}
 	}
 });

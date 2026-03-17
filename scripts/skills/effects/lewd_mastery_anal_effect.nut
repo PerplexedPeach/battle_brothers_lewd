@@ -61,6 +61,22 @@ this.lewd_mastery_anal_effect <- this.inherit("scripts/skills/effects/lewd_maste
 			});
 		}
 
+		if (pts >= this.m.Limit)
+		{
+			tooltip.push({
+				id = 14,
+				type = "text",
+				icon = "ui/icons/allure.png",
+				text = "[color=" + this.Const.UI.Color.PositiveValue + "]+" + ::Lewd.Const.MasteryCapstoneAllure + "[/color] Allure (mastered)"
+			});
+			tooltip.push({
+				id = 15,
+				type = "text",
+				icon = "ui/icons/hitpoints.png",
+				text = "[color=" + this.Const.UI.Color.PositiveValue + "]+" + ::Lewd.Const.MasteryCapstoneAnalHitpoints + "[/color] Hitpoints (mastered)"
+			});
+		}
+
 		if (pts < ::Lewd.Const.MasteryAnalResolveThreshold)
 			tooltip.push({ id = 20, type = "hint", icon = "ui/icons/special.png", text = "Next at " + ::Lewd.Const.MasteryAnalResolveThreshold + ": Resolve bonus" });
 		else if (pts < ::Lewd.Const.MasteryAnalT2)
@@ -71,6 +87,8 @@ this.lewd_mastery_anal_effect <- this.inherit("scripts/skills/effects/lewd_maste
 			tooltip.push({ id = 20, type = "hint", icon = "ui/icons/special.png", text = "Next at " + ::Lewd.Const.MasteryAnalT3 + ": Skill upgrades to Pain is Pleasure" });
 		else if (pts < ::Lewd.Const.MasteryAnalSplashThreshold)
 			tooltip.push({ id = 20, type = "hint", icon = "ui/icons/special.png", text = "Next at " + ::Lewd.Const.MasteryAnalSplashThreshold + ": Climax splash" });
+		else if (pts < this.m.Limit)
+			tooltip.push({ id = 20, type = "hint", icon = "ui/icons/special.png", text = "Max at " + this.m.Limit + ": Mastery capstone bonus" });
 
 		return tooltip;
 	}
@@ -81,6 +99,11 @@ this.lewd_mastery_anal_effect <- this.inherit("scripts/skills/effects/lewd_maste
 		if (this.m.Points >= ::Lewd.Const.MasteryAnalResolveThreshold)
 		{
 			_properties.Bravery += ::Lewd.Const.MasteryAnalResolveBonus;
+		}
+		if (this.m.Points >= this.m.Limit)
+		{
+			_properties.Allure += ::Lewd.Const.MasteryCapstoneAllure;
+			_properties.Hitpoints += ::Lewd.Const.MasteryCapstoneAnalHitpoints;
 		}
 	}
 });

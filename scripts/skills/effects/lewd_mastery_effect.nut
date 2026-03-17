@@ -26,9 +26,24 @@ this.lewd_mastery_effect <- this.inherit("scripts/skills/skill", {
 
 	function addPoints( _add )
 	{
+		local wasCapped = this.m.Points >= this.m.Limit;
 		local add = _add;
 		// (Practiced Control no longer boosts mastery — it reduces reflection instead)
 		this.m.Points = this.Math.min(this.m.Points + add, this.m.Limit);
+
+		// Capstone: refund perk point when first reaching max mastery
+		if (!wasCapped && this.m.Points >= this.m.Limit)
+		{
+			local actor = this.getContainer().getActor();
+			local flagKey = "lewdMasteryCap_" + this.m.BodyPart;
+			if (!actor.getFlags().has(flagKey))
+			{
+				actor.getFlags().set(flagKey, true);
+				actor.m.PerkPoints++;
+				::logInfo("[mastery] " + actor.getName() + " reached max " + this.m.BodyPart + " mastery! Refunded 1 perk point.");
+				this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(actor) + " has mastered " + this.m.BodyPart + "! [color=" + this.Const.UI.Color.PositiveValue + "]+1 perk point[/color]");
+			}
+		}
 	}
 
 	function getPoints()

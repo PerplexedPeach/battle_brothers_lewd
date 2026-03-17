@@ -62,6 +62,22 @@ this.lewd_mastery_feet_effect <- this.inherit("scripts/skills/effects/lewd_maste
 			});
 		}
 
+		if (pts >= this.m.Limit)
+		{
+			tooltip.push({
+				id = 14,
+				type = "text",
+				icon = "ui/icons/allure.png",
+				text = "[color=" + this.Const.UI.Color.PositiveValue + "]+" + ::Lewd.Const.MasteryCapstoneAllure + "[/color] Allure (mastered)"
+			});
+			tooltip.push({
+				id = 15,
+				type = "text",
+				icon = "ui/icons/initiative.png",
+				text = "[color=" + this.Const.UI.Color.PositiveValue + "]+" + ::Lewd.Const.MasteryCapstoneFeetInitiative + "[/color] Initiative (mastered)"
+			});
+		}
+
 		if (pts < ::Lewd.Const.MasteryFeetFatigueThreshold)
 			tooltip.push({ id = 20, type = "hint", icon = "ui/icons/special.png", text = "Next at " + ::Lewd.Const.MasteryFeetFatigueThreshold + ": Fatigue reduction" });
 		else if (pts < ::Lewd.Const.MasteryFeetT2)
@@ -72,7 +88,19 @@ this.lewd_mastery_feet_effect <- this.inherit("scripts/skills/effects/lewd_maste
 			tooltip.push({ id = 20, type = "hint", icon = "ui/icons/special.png", text = "Next at " + ::Lewd.Const.MasteryFeetT3 + ": Skill upgrades to Heel Domination" });
 		else if (pts < ::Lewd.Const.MasteryFeetResolveIgnoreThreshold)
 			tooltip.push({ id = 20, type = "hint", icon = "ui/icons/special.png", text = "Next at " + ::Lewd.Const.MasteryFeetResolveIgnoreThreshold + ": Ignore target Resolve" });
+		else if (pts < this.m.Limit)
+			tooltip.push({ id = 20, type = "hint", icon = "ui/icons/special.png", text = "Max at " + this.m.Limit + ": Mastery capstone bonus" });
 
 		return tooltip;
+	}
+
+	function onUpdate( _properties )
+	{
+		if (this.getPoints() < 0) return;
+		if (this.m.Points >= this.m.Limit)
+		{
+			_properties.Allure += ::Lewd.Const.MasteryCapstoneAllure;
+			_properties.Initiative += ::Lewd.Const.MasteryCapstoneFeetInitiative;
+		}
 	}
 });

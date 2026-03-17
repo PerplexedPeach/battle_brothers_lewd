@@ -62,6 +62,22 @@ this.lewd_mastery_oral_effect <- this.inherit("scripts/skills/effects/lewd_maste
 			});
 		}
 
+		if (pts >= this.m.Limit)
+		{
+			tooltip.push({
+				id = 14,
+				type = "text",
+				icon = "ui/icons/allure.png",
+				text = "[color=" + this.Const.UI.Color.PositiveValue + "]+" + ::Lewd.Const.MasteryCapstoneAllure + "[/color] Allure (mastered)"
+			});
+			tooltip.push({
+				id = 15,
+				type = "text",
+				icon = "ui/icons/bravery.png",
+				text = "[color=" + this.Const.UI.Color.PositiveValue + "]+" + ::Lewd.Const.MasteryCapstoneOralResolve + "[/color] Resolve (mastered)"
+			});
+		}
+
 		// next unlock preview
 		if (pts < ::Lewd.Const.MasteryOralFatigueThreshold)
 			tooltip.push({ id = 20, type = "hint", icon = "ui/icons/special.png", text = "Next at " + ::Lewd.Const.MasteryOralFatigueThreshold + ": Fatigue reduction" });
@@ -73,6 +89,8 @@ this.lewd_mastery_oral_effect <- this.inherit("scripts/skills/effects/lewd_maste
 			tooltip.push({ id = 20, type = "hint", icon = "ui/icons/special.png", text = "Next at " + ::Lewd.Const.MasteryOralT3 + ": Skill upgrades to Deepthroat" });
 		else if (pts < ::Lewd.Const.MasteryOralResolveThreshold)
 			tooltip.push({ id = 20, type = "hint", icon = "ui/icons/special.png", text = "Next at " + ::Lewd.Const.MasteryOralResolveThreshold + ": Resolve bonus" });
+		else if (pts < this.m.Limit)
+			tooltip.push({ id = 20, type = "hint", icon = "ui/icons/special.png", text = "Max at " + this.m.Limit + ": Mastery capstone bonus" });
 
 		return tooltip;
 	}
@@ -83,6 +101,11 @@ this.lewd_mastery_oral_effect <- this.inherit("scripts/skills/effects/lewd_maste
 		if (this.m.Points >= ::Lewd.Const.MasteryOralResolveThreshold)
 		{
 			_properties.Bravery += ::Lewd.Const.MasteryOralResolveBonus;
+		}
+		if (this.m.Points >= this.m.Limit)
+		{
+			_properties.Allure += ::Lewd.Const.MasteryCapstoneAllure;
+			_properties.Bravery += ::Lewd.Const.MasteryCapstoneOralResolve;
 		}
 	}
 });

@@ -152,6 +152,14 @@
 ::Lewd.Const.MasteryFeetResolveIgnoreThreshold <- 85;
 ::Lewd.Const.MasteryFeetResolveIgnorePct <- 0.2;
 
+// mastery capstone bonuses (awarded at max mastery)
+::Lewd.Const.MasteryCapstoneAllure <- 3;
+::Lewd.Const.MasteryCapstoneHandsMeleeSkill <- 3;
+::Lewd.Const.MasteryCapstoneOralResolve <- 5;
+::Lewd.Const.MasteryCapstoneFeetInitiative <- 10;
+::Lewd.Const.MasteryCapstoneVaginalStamina <- 10;
+::Lewd.Const.MasteryCapstoneAnalHitpoints <- 8;
+
 // --- Sex Ability Constants ---
 ::Lewd.Const.SexSoundVolume <- 1.0; // multiplier for sex sound volume (0.0 to 2.0, from settings slider)
 ::Lewd.Const.SexAbilityDelayDefault <- 400;
