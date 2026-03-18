@@ -236,14 +236,22 @@
 	return _actor.hasSprite("helmet");
 };
 
-// Whether an actor is a goblin entity type
-::Lewd.Mastery.isGoblin <- function( _actor )
+// Species type-checkers — match entity type against base game + Legends lists
+::Lewd.Mastery.isSpecies <- function( _actor, _typeList )
 {
 	local t = _actor.getType();
-	foreach (gtype in ::Lewd.Const.GoblinEntityTypes)
-		if (t == gtype) return true;
+	foreach (stype in _typeList)
+		if (t == stype) return true;
 	return false;
 };
+
+::Lewd.Mastery.isGoblin <- function( _actor ) { return ::Lewd.Mastery.isSpecies(_actor, ::Lewd.Const.GoblinEntityTypes); };
+::Lewd.Mastery.isOrc <- function( _actor ) { return ::Lewd.Mastery.isSpecies(_actor, ::Lewd.Const.OrcEntityTypes); };
+::Lewd.Mastery.isUnhold <- function( _actor ) { return ::Lewd.Mastery.isSpecies(_actor, ::Lewd.Const.UnholdEntityTypes); };
+::Lewd.Mastery.isWolf <- function( _actor ) { return ::Lewd.Mastery.isSpecies(_actor, ::Lewd.Const.WolfEntityTypes); };
+::Lewd.Mastery.isSpider <- function( _actor ) { return ::Lewd.Mastery.isSpecies(_actor, ::Lewd.Const.SpiderEntityTypes); };
+::Lewd.Mastery.isAlp <- function( _actor ) { return ::Lewd.Mastery.isSpecies(_actor, ::Lewd.Const.AlpEntityTypes); };
+::Lewd.Mastery.isLindwurm <- function( _actor ) { return ::Lewd.Mastery.isSpecies(_actor, ::Lewd.Const.LindwurmEntityTypes); };
 
 // Orgasm threshold: how many climaxes before defeat
 // Common base for all entities: Base + Bravery/40 + MaxHP/200

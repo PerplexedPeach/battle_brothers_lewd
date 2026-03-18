@@ -714,7 +714,8 @@
 ::Lewd.Const.AIBehaviorIDGoblinHorny <- 0;              // set dynamically in mod_lewd.nut via Const.AI.Behavior.ID.COUNT
 ::Lewd.Const.AIBehaviorIDGoblinRestrain <- 0;           // set dynamically in mod_lewd.nut via Const.AI.Behavior.ID.COUNT
 
-// Goblin entity type list for type-checking (base game + Legends)
+// --- Species Entity Type Lists (base game + Legends) ---
+
 ::Lewd.Const.GoblinEntityTypes <- [
 	::Const.EntityType.GoblinFighter,
 	::Const.EntityType.GoblinAmbusher,
@@ -728,4 +729,46 @@
 	::Const.EntityType.LegendGoblinWhiteDirewolfRider,
 	::Const.EntityType.LegendGoblinWitchDoctor,
 	::Const.EntityType.LegendGoblinPlunderer
+];
+
+::Lewd.Const.OrcEntityTypes <- [
+	::Const.EntityType.OrcYoung,
+	::Const.EntityType.OrcBerserker,
+	::Const.EntityType.OrcWarrior,
+	::Const.EntityType.OrcWarlord,
+	::Const.EntityType.LegendOrcElite,
+	::Const.EntityType.LegendOrcBehemoth
+];
+
+::Lewd.Const.UnholdEntityTypes <- [
+	::Const.EntityType.Unhold,
+	::Const.EntityType.UnholdFrost,
+	::Const.EntityType.UnholdBog,
+	::Const.EntityType.BarbarianUnhold,
+	::Const.EntityType.BarbarianUnholdFrost,
+	::Const.EntityType.LegendRockUnhold
+];
+
+::Lewd.Const.WolfEntityTypes <- [
+	::Const.EntityType.Wolf,
+	::Const.EntityType.Direwolf,
+	::Const.EntityType.LegendWhiteDirewolf,
+	::Const.EntityType.LegendWhiteWarwolf
+];
+
+::Lewd.Const.SpiderEntityTypes <- [
+	::Const.EntityType.Spider,
+	::Const.EntityType.LegendRedbackSpider,
+	::Const.EntityType.LegendSpiderCluster
+];
+
+::Lewd.Const.AlpEntityTypes <- [
+	::Const.EntityType.Alp,
+	::Const.EntityType.AlpShadow,
+	::Const.EntityType.LegendDemonAlp
+];
+
+::Lewd.Const.LindwurmEntityTypes <- [
+	::Const.EntityType.Lindwurm,
+	::Const.EntityType.LegendStollwurm
 ];
