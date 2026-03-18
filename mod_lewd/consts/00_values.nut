@@ -711,6 +711,8 @@
 ::Lewd.Const.GoblinPenetrateWeightOral <- 20;           // weighted random: force oral
 ::Lewd.Const.GoblinHornyAIScore <- 500;                 // higher than generic (400) -- goblins are eager
 ::Lewd.Const.GoblinRestrainAIScore <- 600;              // highest priority -- restrain climaxing targets
+::Lewd.Const.AIBehaviorIDGoblinHorny <- 0;              // set dynamically in mod_lewd.nut via Const.AI.Behavior.ID.COUNT
+::Lewd.Const.AIBehaviorIDGoblinRestrain <- 0;           // set dynamically in mod_lewd.nut via Const.AI.Behavior.ID.COUNT
 
 // Goblin entity type list for type-checking
 ::Lewd.Const.GoblinEntityTypes <- [
