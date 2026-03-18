@@ -51,9 +51,21 @@ this.ai_goblin_horny <- this.inherit("scripts/ai/tactical/behavior", {
 			if (!tile.IsOccupiedByActor) continue;
 			local target = tile.getEntity();
 			if (target == null || !target.isAlive()) continue;
-			if (_entity.isAlliedWith(target)) continue;
-			if (target.getGender() != 1) continue;
-			if (target.getPleasureMax() <= 0) continue;
+			if (_entity.isAlliedWith(target))
+			{
+				::logInfo("[ai_goblin_horny]   adj: " + target.getName() + " -- ALLIED, skip");
+				continue;
+			}
+			if (target.getGender() != 1)
+			{
+				::logInfo("[ai_goblin_horny]   adj: " + target.getName() + " -- gender:" + target.getGender() + ", skip");
+				continue;
+			}
+			if (target.getPleasureMax() <= 0)
+			{
+				::logInfo("[ai_goblin_horny]   adj: " + target.getName() + " -- pleasureMax:" + target.getPleasureMax() + ", skip");
+				continue;
+			}
 
 			local targetScore = 1.0;
 			local isRooted = target.getCurrentProperties().IsRooted;

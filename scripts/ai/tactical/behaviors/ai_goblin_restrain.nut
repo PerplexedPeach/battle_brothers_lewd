@@ -27,7 +27,11 @@ this.ai_goblin_restrain <- this.inherit("scripts/ai/tactical/behavior", {
 		// Must have the goblin restrain skill
 		local restrainSkill = _entity.getSkills().getSkillByID("actives.goblin_restrain");
 		if (restrainSkill == null)
+		{
+			::logInfo("[ai_goblin_restrain] " + _entity.getName() + " has no restrain skill");
+			this.m.GaveUp = true;
 			return 0;
+		}
 
 		if (!restrainSkill.isUsable())
 			return 0;
@@ -56,10 +60,7 @@ this.ai_goblin_restrain <- this.inherit("scripts/ai/tactical/behavior", {
 		}
 
 		if (bestTile == null)
-		{
-			this.m.GaveUp = true;
-			return 0;
-		}
+			return 0; // Don't set GaveUp -- target may climax later this turn
 
 		this.m.TargetTile = bestTile;
 		this.m.SelectedSkill = restrainSkill;
