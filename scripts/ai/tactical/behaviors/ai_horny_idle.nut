@@ -63,7 +63,13 @@ this.ai_horny_idle <- this.inherit("scripts/ai/tactical/behavior", {
 			}
 		}
 
-		// No adjacent target AND no reachable distant target -- idle to suppress combat
+		// No adjacent target AND no reachable distant target -- chance to idle
+		if (this.Math.rand(1, 100) > ::Lewd.Const.HornyIdleChance)
+		{
+			::logInfo("[ai_horny_idle] " + _entity.getName() + " shakes it off and fights (AP:" + _entity.getActionPoints() + ")");
+			return 0;
+		}
+
 		::logInfo("[ai_horny_idle] " + _entity.getName() + " evaluating: no sex target reachable, will idle (AP:" + _entity.getActionPoints() + ")");
 		return ::Lewd.Const.HornyIdleAIScore * this.getProperties().BehaviorMult[this.m.ID];
 	}
