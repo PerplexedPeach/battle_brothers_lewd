@@ -39,17 +39,20 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC", function()
 	::Const.AI.Behavior.ID.LewdPiledriver <- count++;
 	::Const.AI.Behavior.ID.LewdGoblinHorny <- count++;
 	::Const.AI.Behavior.ID.LewdGoblinRestrain <- count++;
+	::Const.AI.Behavior.ID.LewdHornyIdle <- count++;
 	::Const.AI.Behavior.ID.COUNT = count;
 	::Const.AI.Behavior.Name.push("LewdHorny");
 	::Const.AI.Behavior.Name.push("LewdHornyEngage");
 	::Const.AI.Behavior.Name.push("LewdPiledriver");
 	::Const.AI.Behavior.Name.push("LewdGoblinHorny");
 	::Const.AI.Behavior.Name.push("LewdGoblinRestrain");
+	::Const.AI.Behavior.Name.push("LewdHornyIdle");
 	::Lewd.Const.AIBehaviorIDHorny = ::Const.AI.Behavior.ID.LewdHorny;
 	::Lewd.Const.AIBehaviorIDHornyEngage = ::Const.AI.Behavior.ID.LewdHornyEngage;
 	::Lewd.Const.AIBehaviorIDPiledriver = ::Const.AI.Behavior.ID.LewdPiledriver;
 	::Lewd.Const.AIBehaviorIDGoblinHorny = ::Const.AI.Behavior.ID.LewdGoblinHorny;
 	::Lewd.Const.AIBehaviorIDGoblinRestrain = ::Const.AI.Behavior.ID.LewdGoblinRestrain;
+	::Lewd.Const.AIBehaviorIDHornyIdle = ::Const.AI.Behavior.ID.LewdHornyIdle;
 
 	// --- Mod Settings ---
 	local page = ::Lewd.Mod.ModSettings.addPage("General");

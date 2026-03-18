@@ -114,6 +114,8 @@ this.lewd_horny_effect <- this.inherit("scripts/skills/skill", {
 						agent.addBehavior(this.new("scripts/ai/tactical/behaviors/ai_horny"));
 						agent.addBehavior(this.new("scripts/ai/tactical/behaviors/ai_horny_engage"));
 					}
+					// Shared idle fallback: do nothing instead of weapon attacks while horny
+					agent.addBehavior(this.new("scripts/ai/tactical/behaviors/ai_horny_idle"));
 					this.m.HasAIBehavior = true;
 				}
 			}

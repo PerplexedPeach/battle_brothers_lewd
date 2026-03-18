@@ -713,6 +713,8 @@
 ::Lewd.Const.GoblinRestrainAIScore <- 600;              // highest priority -- restrain climaxing targets
 ::Lewd.Const.AIBehaviorIDGoblinHorny <- 0;              // set dynamically in mod_lewd.nut via Const.AI.Behavior.ID.COUNT
 ::Lewd.Const.AIBehaviorIDGoblinRestrain <- 0;           // set dynamically in mod_lewd.nut via Const.AI.Behavior.ID.COUNT
+::Lewd.Const.AIBehaviorIDHornyIdle <- 0;                // set dynamically in mod_lewd.nut via Const.AI.Behavior.ID.COUNT
+::Lewd.Const.HornyIdleAIScore <- 250;                   // beats normal combat (~100-200) but loses to sex skills and engage
 
 // --- Species Entity Type Lists (base game + Legends) ---
 
