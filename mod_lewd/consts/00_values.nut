@@ -714,7 +714,7 @@
 ::Lewd.Const.AIBehaviorIDGoblinHorny <- 0;              // set dynamically in mod_lewd.nut via Const.AI.Behavior.ID.COUNT
 ::Lewd.Const.AIBehaviorIDGoblinRestrain <- 0;           // set dynamically in mod_lewd.nut via Const.AI.Behavior.ID.COUNT
 ::Lewd.Const.AIBehaviorIDHornyIdle <- 0;                // set dynamically in mod_lewd.nut via Const.AI.Behavior.ID.COUNT
-::Lewd.Const.HornyIdleAIScore <- 80;                    // beats normal combat but loses to engage (120+) and sex skills (400+)
+::Lewd.Const.HornyIdleAIScore <- 9999;                   // very high -- behavior self-gates to only fire when sex skills AND engage both fail
 
 // --- Species Entity Type Lists (base game + Legends) ---
 
