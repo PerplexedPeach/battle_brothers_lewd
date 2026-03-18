@@ -714,11 +714,18 @@
 ::Lewd.Const.AIBehaviorIDGoblinHorny <- 0;              // set dynamically in mod_lewd.nut via Const.AI.Behavior.ID.COUNT
 ::Lewd.Const.AIBehaviorIDGoblinRestrain <- 0;           // set dynamically in mod_lewd.nut via Const.AI.Behavior.ID.COUNT
 
-// Goblin entity type list for type-checking
+// Goblin entity type list for type-checking (base game + Legends)
 ::Lewd.Const.GoblinEntityTypes <- [
 	::Const.EntityType.GoblinFighter,
 	::Const.EntityType.GoblinAmbusher,
 	::Const.EntityType.GoblinLeader,
 	::Const.EntityType.GoblinShaman,
-	::Const.EntityType.GoblinWolfrider
+	::Const.EntityType.GoblinWolfrider,
+	::Const.EntityType.LegendGoblinHarrier,
+	::Const.EntityType.LegendGoblinBerserker,
+	::Const.EntityType.LegendGoblinTribeDefender,
+	::Const.EntityType.LegendGoblinDirewolfRider,
+	::Const.EntityType.LegendGoblinWhiteDirewolfRider,
+	::Const.EntityType.LegendGoblinWitchDoctor,
+	::Const.EntityType.LegendGoblinPlunderer
 ];
