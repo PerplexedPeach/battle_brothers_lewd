@@ -21,6 +21,9 @@ this.ai_goblin_restrain <- this.inherit("scripts/ai/tactical/behavior", {
 
 	function onEvaluate( _entity )
 	{
+		// Log that we're being evaluated at all (catches BehaviorMult silent skip)
+		::logInfo("[ai_goblin_restrain] " + _entity.getName() + " evaluating (AP:" + _entity.getActionPoints() + " GaveUp:" + this.m.GaveUp + ")");
+
 		if (this.m.GaveUp)
 			return 0;
 
@@ -34,7 +37,10 @@ this.ai_goblin_restrain <- this.inherit("scripts/ai/tactical/behavior", {
 		}
 
 		if (!restrainSkill.isUsable())
+		{
+			::logInfo("[ai_goblin_restrain] " + _entity.getName() + " restrain not usable");
 			return 0;
+		}
 
 		if (_entity.getMoraleState() == this.Const.MoraleState.Fleeing)
 			return 0;
@@ -52,6 +58,10 @@ this.ai_goblin_restrain <- this.inherit("scripts/ai/tactical/behavior", {
 			if (target == null || !target.isAlive()) continue;
 			if (_entity.isAlliedWith(target)) continue;
 
+			local hasClimax = target.getSkills().hasSkill("effects.climax");
+			local hasRestrained = target.getSkills().hasSkill("effects.lewd_restrained");
+			::logInfo("[ai_goblin_restrain]   adj: " + target.getName() + " climax:" + hasClimax + " restrained:" + hasRestrained);
+
 			if (!restrainSkill.onVerifyTarget(myTile, tile))
 				continue;
 
@@ -60,7 +70,7 @@ this.ai_goblin_restrain <- this.inherit("scripts/ai/tactical/behavior", {
 		}
 
 		if (bestTile == null)
-			return 0; // Don't set GaveUp -- target may climax later this turn
+			return 0;
 
 		this.m.TargetTile = bestTile;
 		this.m.SelectedSkill = restrainSkill;

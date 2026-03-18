@@ -457,8 +457,8 @@
 ::Lewd.Const.MalePenetrateAnalMasoTierBonus <- 3;
 
 // --- Horny AI ---
-::Lewd.Const.HornyAIScore <- 400;
-::Lewd.Const.HornyAIEngageScore <- 120;
+::Lewd.Const.HornyAIScore <- 2000; // must be >1600 so attacks (max ~400) fall below pickBehavior 25% cutoff
+::Lewd.Const.HornyAIEngageScore <- 1000; // must beat attacks (~400) and be above their 25% cutoff
 ::Lewd.Const.HornyAIEngageAllurePerTile <- 10; // allure penalty per tile of distance when scoring targets
 ::Lewd.Const.HornyAIEngageAllureNorm <- 30.0; // normalizer — 30 adjusted allure = 1.0x score
 ::Lewd.Const.AIBehaviorIDHorny <- 0; // set dynamically in mod_lewd.nut via Const.AI.Behavior.ID.COUNT
@@ -709,8 +709,8 @@
 ::Lewd.Const.GoblinPenetrateWeightVaginal <- 50;        // weighted random: vaginal
 ::Lewd.Const.GoblinPenetrateWeightAnal <- 30;           // weighted random: anal
 ::Lewd.Const.GoblinPenetrateWeightOral <- 20;           // weighted random: force oral
-::Lewd.Const.GoblinHornyAIScore <- 500;                 // higher than generic (400) -- goblins are eager
-::Lewd.Const.GoblinRestrainAIScore <- 600;              // highest priority -- restrain climaxing targets
+::Lewd.Const.GoblinHornyAIScore <- 2000;                 // must beat attack 25% cutoff
+::Lewd.Const.GoblinRestrainAIScore <- 3000;              // highest priority -- restrain climaxing targets
 ::Lewd.Const.AIBehaviorIDGoblinHorny <- 0;              // set dynamically in mod_lewd.nut via Const.AI.Behavior.ID.COUNT
 ::Lewd.Const.AIBehaviorIDGoblinRestrain <- 0;           // set dynamically in mod_lewd.nut via Const.AI.Behavior.ID.COUNT
 ::Lewd.Const.AIBehaviorIDHornyIdle <- 0;                // set dynamically in mod_lewd.nut via Const.AI.Behavior.ID.COUNT
