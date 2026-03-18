@@ -1,22 +1,16 @@
-// AI behavior for horny entities that can't reach a target
-// On first evaluation each turn, defers to engage if a distant target exists.
-// On subsequent evaluations (after engage had its chance), fires to suppress
-// normal combat AI (weapon attacks / footwork while horny).
+// AI behavior for horny entities that can't use sex skills on an adjacent target.
+// Scores very high to suppress normal combat AI (weapon attacks / footwork).
+// Engage (Order=EngageMelee) runs in an earlier phase and gets first shot at
+// moving the entity. By the time idle evaluates (Order=AttackDefault), engage
+// already either moved us adjacent (sex skills handle it) or failed.
 // Shared by all species (not goblin-specific)
 this.ai_horny_idle <- this.inherit("scripts/ai/tactical/behavior", {
-	m = {
-		HasDeferred = false
-	},
+	m = {},
 	function create()
 	{
 		this.m.ID = ::Lewd.Const.AIBehaviorIDHornyIdle;
 		this.m.Order = this.Const.AI.Behavior.Order.AttackDefault;
 		this.behavior.create();
-	}
-
-	function onTurnStarted()
-	{
-		this.m.HasDeferred = false;
 	}
 
 	function onEvaluate( _entity )
@@ -30,7 +24,7 @@ this.ai_horny_idle <- this.inherit("scripts/ai/tactical/behavior", {
 		if (_entity.getActionPoints() < 2)
 			return 0;
 
-		// Check if there's an adjacent female target -- sex skills would handle this
+		// If adjacent to a valid female target, let sex skills handle it
 		local myTile = _entity.getTile();
 		for (local i = 0; i < 6; i++)
 		{
@@ -45,49 +39,7 @@ this.ai_horny_idle <- this.inherit("scripts/ai/tactical/behavior", {
 			return 0;
 		}
 
-		// First evaluation this turn: defer to engage if a distant target exists
-		if (!this.m.HasDeferred)
-		{
-			this.m.HasDeferred = true;
-
-			if (!_entity.getCurrentProperties().IsRooted)
-			{
-				local targets = this.getAgent().getKnownOpponents();
-				foreach (t in targets)
-				{
-					if (t.Actor.isNull()) continue;
-					if (!t.Actor.isAlive()) continue;
-					if (t.Actor.getGender() != 1) continue;
-					if (t.Actor.getPleasureMax() <= 0) continue;
-
-					local targetTile = t.Actor.getTile();
-					local distance = myTile.getDistanceTo(targetTile);
-					if (distance <= 1) continue;
-
-					local allure = t.Actor.allure();
-					local adjustedAllure = allure - distance * ::Lewd.Const.HornyAIEngageAllurePerTile;
-					if (adjustedAllure <= 0) continue;
-
-					local hasEmptyTile = false;
-					for (local i = 0; i < 6; i++)
-					{
-						if (!targetTile.hasNextTile(i)) continue;
-						local tile = targetTile.getNextTile(i);
-						if (!tile.IsEmpty) continue;
-						hasEmptyTile = true;
-						break;
-					}
-
-					if (hasEmptyTile)
-					{
-						::logInfo("[ai_horny_idle] " + _entity.getName() + " deferring to engage (first eval)");
-						return 0;
-					}
-				}
-			}
-		}
-
-		// Subsequent evaluation OR no viable engage target -- chance to idle
+		// Not adjacent to any sex target -- 70% chance to idle, 30% to fight
 		if (this.Math.rand(1, 100) > ::Lewd.Const.HornyIdleChance)
 		{
 			::logInfo("[ai_horny_idle] " + _entity.getName() + " shakes it off and fights (AP:" + _entity.getActionPoints() + ")");
