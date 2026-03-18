@@ -67,6 +67,16 @@ this.ai_goblin_horny <- this.inherit("scripts/ai/tactical/behavior", {
 				continue;
 			}
 
+			// Defer to ai_goblin_restrain if target is climaxing and not yet restrained
+			if (target.getSkills().hasSkill("effects.climax")
+				&& !target.getSkills().hasSkill("effects.lewd_restrained")
+				&& !target.getCurrentProperties().IsImmuneToRoot
+				&& _entity.getActionPoints() >= ::Lewd.Const.GoblinRestrainMinAP)
+			{
+				::logInfo("[ai_goblin_horny]   target " + target.getName() + " is climaxing -- deferring to restrain");
+				return 0;
+			}
+
 			local targetScore = 1.0;
 			local isRooted = target.getCurrentProperties().IsRooted;
 
