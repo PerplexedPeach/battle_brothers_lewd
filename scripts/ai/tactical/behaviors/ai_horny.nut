@@ -109,8 +109,7 @@ this.ai_horny <- this.inherit("scripts/ai/tactical/behavior", {
 
 		if (bestTile == null || bestSkill == null)
 		{
-			::logInfo("[ai_horny] " + _entity.getName() + " — no valid target found, giving up this turn");
-			this.m.GaveUp = true;
+			::logInfo("[ai_horny] " + _entity.getName() + " — no valid target this eval");
 			return 0;
 		}
 

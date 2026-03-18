@@ -96,10 +96,7 @@ this.ai_horny_engage <- this.inherit("scripts/ai/tactical/behavior", {
 		}
 
 		if (bestTarget == null)
-		{
-			this.m.GaveUp = true;
 			return 0;
-		}
 
 		// Find an empty tile adjacent to the target to move toward
 		local destinationTile = null;
@@ -122,10 +119,7 @@ this.ai_horny_engage <- this.inherit("scripts/ai/tactical/behavior", {
 		}
 
 		if (destinationTile == null)
-		{
-			this.m.GaveUp = true;
 			return 0;
-		}
 
 		this.m.TargetTile = destinationTile;
 		this.m.TargetActor = bestTarget;

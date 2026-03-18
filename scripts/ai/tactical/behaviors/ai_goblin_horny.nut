@@ -109,8 +109,7 @@ this.ai_goblin_horny <- this.inherit("scripts/ai/tactical/behavior", {
 
 		if (bestTile == null || bestSkill == null)
 		{
-			::logInfo("[ai_goblin_horny] " + _entity.getName() + " -- no valid target, giving up");
-			this.m.GaveUp = true;
+			::logInfo("[ai_goblin_horny] " + _entity.getName() + " -- no valid target this eval");
 			return 0;
 		}
 
