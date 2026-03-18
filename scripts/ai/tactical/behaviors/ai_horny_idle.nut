@@ -1,15 +1,22 @@
 // AI behavior for horny entities that can't reach a target
-// Only activates as a true last resort: when sex skills have no adjacent target
-// AND engage can't find a reachable distant target. Returns a very high score
-// to suppress normal combat AI (weapon attacks while horny).
+// On first evaluation each turn, defers to engage if a distant target exists.
+// On subsequent evaluations (after engage had its chance), fires to suppress
+// normal combat AI (weapon attacks / footwork while horny).
 // Shared by all species (not goblin-specific)
 this.ai_horny_idle <- this.inherit("scripts/ai/tactical/behavior", {
-	m = {},
+	m = {
+		HasDeferred = false
+	},
 	function create()
 	{
 		this.m.ID = ::Lewd.Const.AIBehaviorIDHornyIdle;
 		this.m.Order = this.Const.AI.Behavior.Order.AttackDefault;
 		this.behavior.create();
+	}
+
+	function onTurnStarted()
+	{
+		this.m.HasDeferred = false;
 	}
 
 	function onEvaluate( _entity )
@@ -35,54 +42,59 @@ this.ai_horny_idle <- this.inherit("scripts/ai/tactical/behavior", {
 			if (_entity.isAlliedWith(adj)) continue;
 			if (adj.getGender() != 1) continue;
 			if (adj.getPleasureMax() <= 0) continue;
-			// Adjacent valid target exists -- let sex skills handle it
 			return 0;
 		}
 
-		// Check if engage would find a viable target (same allure-distance filter)
-		if (!_entity.getCurrentProperties().IsRooted)
+		// First evaluation this turn: defer to engage if a distant target exists
+		if (!this.m.HasDeferred)
 		{
-			local targets = this.getAgent().getKnownOpponents();
-			foreach (t in targets)
+			this.m.HasDeferred = true;
+
+			if (!_entity.getCurrentProperties().IsRooted)
 			{
-				if (t.Actor.isNull()) continue;
-				if (!t.Actor.isAlive()) continue;
-				if (t.Actor.getGender() != 1) continue;
-				if (t.Actor.getPleasureMax() <= 0) continue;
-
-				local targetTile = t.Actor.getTile();
-				local distance = myTile.getDistanceTo(targetTile);
-				if (distance <= 1) continue;
-
-				// Same allure-distance check as ai_horny_engage
-				local allure = t.Actor.allure();
-				local adjustedAllure = allure - distance * ::Lewd.Const.HornyAIEngageAllurePerTile;
-				if (adjustedAllure <= 0) continue;
-
-				// Check if any tile adjacent to the target is empty
-				local hasEmptyTile = false;
-				for (local i = 0; i < 6; i++)
+				local targets = this.getAgent().getKnownOpponents();
+				foreach (t in targets)
 				{
-					if (!targetTile.hasNextTile(i)) continue;
-					local tile = targetTile.getNextTile(i);
-					if (!tile.IsEmpty) continue;
-					hasEmptyTile = true;
-					break;
-				}
+					if (t.Actor.isNull()) continue;
+					if (!t.Actor.isAlive()) continue;
+					if (t.Actor.getGender() != 1) continue;
+					if (t.Actor.getPleasureMax() <= 0) continue;
 
-				if (hasEmptyTile)
-					return 0; // Engage should handle this
+					local targetTile = t.Actor.getTile();
+					local distance = myTile.getDistanceTo(targetTile);
+					if (distance <= 1) continue;
+
+					local allure = t.Actor.allure();
+					local adjustedAllure = allure - distance * ::Lewd.Const.HornyAIEngageAllurePerTile;
+					if (adjustedAllure <= 0) continue;
+
+					local hasEmptyTile = false;
+					for (local i = 0; i < 6; i++)
+					{
+						if (!targetTile.hasNextTile(i)) continue;
+						local tile = targetTile.getNextTile(i);
+						if (!tile.IsEmpty) continue;
+						hasEmptyTile = true;
+						break;
+					}
+
+					if (hasEmptyTile)
+					{
+						::logInfo("[ai_horny_idle] " + _entity.getName() + " deferring to engage (first eval)");
+						return 0;
+					}
+				}
 			}
 		}
 
-		// No adjacent target AND no reachable distant target -- chance to idle
+		// Subsequent evaluation OR no viable engage target -- chance to idle
 		if (this.Math.rand(1, 100) > ::Lewd.Const.HornyIdleChance)
 		{
 			::logInfo("[ai_horny_idle] " + _entity.getName() + " shakes it off and fights (AP:" + _entity.getActionPoints() + ")");
 			return 0;
 		}
 
-		::logInfo("[ai_horny_idle] " + _entity.getName() + " evaluating: no sex target reachable, will idle (AP:" + _entity.getActionPoints() + ")");
+		::logInfo("[ai_horny_idle] " + _entity.getName() + " too aroused to fight, idling (AP:" + _entity.getActionPoints() + ")");
 		return ::Lewd.Const.HornyIdleAIScore * this.getProperties().BehaviorMult[this.m.ID];
 	}
 
