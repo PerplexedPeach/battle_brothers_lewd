@@ -956,8 +956,6 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC", function()
 			// --- Hexen curse trigger ---
 			if (this.World.Statistics.getFlags().get("lewdFoughtHexen"))
 			{
-				this.World.Statistics.getFlags().set("lewdFoughtHexen", false);
-
 				if (this.World.Statistics.getFlags().getAsInt("LastCombatResult") == 1)
 				{
 					local brothers = this.World.getPlayerRoster().getAll();
@@ -967,11 +965,19 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC", function()
 							&& !bro.getFlags().has("lewdHexenCursed") && ::Lewd.Mastery.getLewdTier(bro) == 0)
 						{
 							::logInfo("[mod_lewd] Firing hexen curse event for " + bro.getName());
-							this.World.Events.fire("event.lewd_hexen_curse");
+							local evt = this.World.Events.getEvent("event.lewd_hexen_curse");
+							if (evt != null)
+							{
+								evt.m.Man = bro;
+								this.World.Events.fire("event.lewd_hexen_curse", false);
+							}
 							break;
 						}
 					}
 				}
+
+				// Clear after fire() so onUpdateScore can still see the flag
+				this.World.Statistics.getFlags().set("lewdFoughtHexen", false);
 			}
 
 			// --- Restore world map figure based on current trait ---

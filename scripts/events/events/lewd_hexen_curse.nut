@@ -24,7 +24,8 @@ this.lewd_hexen_curse <- this.inherit("scripts/events/event", {
 			],
 			function start( _event )
 			{
-				this.Characters.push(_event.m.Man.getImagePath());
+				if (_event.m.Man != null)
+					this.Characters.push(_event.m.Man.getImagePath());
 			}
 		});
 
@@ -46,6 +47,7 @@ this.lewd_hexen_curse <- this.inherit("scripts/events/event", {
 			function start( _event )
 			{
 				local man = _event.m.Man;
+				if (man == null) return;
 				man.getFlags().set("lewdHexenCursed", true);
 
 				this.List.push({
@@ -100,10 +102,13 @@ this.lewd_hexen_curse <- this.inherit("scripts/events/event", {
 
 	function onPrepareVariables( _vars )
 	{
-		_vars.push([
-			"man",
-			this.m.Man.getName()
-		]);
+		if (this.m.Man != null)
+		{
+			_vars.push([
+				"man",
+				this.m.Man.getName()
+			]);
+		}
 	}
 
 	function onClear()
