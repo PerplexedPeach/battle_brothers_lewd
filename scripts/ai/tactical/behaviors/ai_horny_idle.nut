@@ -39,7 +39,7 @@ this.ai_horny_idle <- this.inherit("scripts/ai/tactical/behavior", {
 			return 0;
 		}
 
-		// Check if there's a reachable distant target -- engage would handle this
+		// Check if engage would find a viable target (same allure-distance filter)
 		if (!_entity.getCurrentProperties().IsRooted)
 		{
 			local targets = this.getAgent().getKnownOpponents();
@@ -51,15 +51,27 @@ this.ai_horny_idle <- this.inherit("scripts/ai/tactical/behavior", {
 				if (t.Actor.getPleasureMax() <= 0) continue;
 
 				local targetTile = t.Actor.getTile();
-				// Check if any tile adjacent to the target is empty and reachable
+				local distance = myTile.getDistanceTo(targetTile);
+				if (distance <= 1) continue;
+
+				// Same allure-distance check as ai_horny_engage
+				local allure = t.Actor.allure();
+				local adjustedAllure = allure - distance * ::Lewd.Const.HornyAIEngageAllurePerTile;
+				if (adjustedAllure <= 0) continue;
+
+				// Check if any tile adjacent to the target is empty
+				local hasEmptyTile = false;
 				for (local i = 0; i < 6; i++)
 				{
 					if (!targetTile.hasNextTile(i)) continue;
 					local tile = targetTile.getNextTile(i);
 					if (!tile.IsEmpty) continue;
-					// There's a potentially reachable empty tile -- let engage try first
-					return 0;
+					hasEmptyTile = true;
+					break;
 				}
+
+				if (hasEmptyTile)
+					return 0; // Engage should handle this
 			}
 		}
 
