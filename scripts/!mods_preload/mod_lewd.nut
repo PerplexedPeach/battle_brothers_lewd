@@ -127,6 +127,13 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC", function()
 					pb.Visible = false;
 				}
 
+				// Add restrained overlay after shaft (above armor, below head)
+				if (_layerID == "shaft")
+				{
+					local restrained = old_addSprite("lewd_restrained");
+					restrained.Visible = false;
+				}
+
 				if (_layerID == "socket")
 				{
 					old_addSprite("lewd_glow");

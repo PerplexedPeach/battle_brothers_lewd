@@ -79,10 +79,11 @@ this.lewd_restrained_effect <- this.inherit("scripts/skills/skill", {
 			actor.getSkills().add(breakFree);
 		}
 
-		if (actor.hasSprite("status_rooted"))
+		if (actor.hasSprite("lewd_restrained"))
 		{
-			actor.getSprite("status_rooted").setBrush("status_restrained");
-			actor.getSprite("status_rooted").Visible = true;
+			local sprite = actor.getSprite("lewd_restrained");
+			sprite.setBrush("status_restrained");
+			sprite.Visible = true;
 		}
 
 		actor.setDirty(true);
@@ -93,9 +94,9 @@ this.lewd_restrained_effect <- this.inherit("scripts/skills/skill", {
 		local actor = this.getContainer().getActor();
 		::logInfo("[restrained] removed from " + actor.getName());
 
-		if (actor.hasSprite("status_rooted"))
+		if (actor.hasSprite("lewd_restrained"))
 		{
-			actor.getSprite("status_rooted").Visible = false;
+			actor.getSprite("lewd_restrained").Visible = false;
 		}
 
 		actor.setDirty(true);
