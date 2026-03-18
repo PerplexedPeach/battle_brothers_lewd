@@ -5,7 +5,8 @@
 this.lewd_horny_effect <- this.inherit("scripts/skills/skill", {
 	m = {
 		TurnsLeft = 2,
-		HasAIBehavior = false
+		HasAIBehavior = false,
+		SuppressedBehaviorMults = null // saved original BehaviorMult values, restored on removal
 	},
 	function create()
 	{
@@ -118,6 +119,9 @@ this.lewd_horny_effect <- this.inherit("scripts/skills/skill", {
 					agent.addBehavior(this.new("scripts/ai/tactical/behaviors/ai_horny_idle"));
 					this.m.HasAIBehavior = true;
 				}
+
+				// Suppress combat behaviors so sex/engage/idle take priority
+				this.suppressCombatBehaviors(agent);
 			}
 		}
 		else
@@ -145,14 +149,77 @@ this.lewd_horny_effect <- this.inherit("scripts/skills/skill", {
 		}
 	}
 
+	// Behaviors to suppress when horny -- offensive attacks, defensive stances, weapon switches
+	function getSuppressedBehaviorIDs()
+	{
+		return [
+			this.Const.AI.Behavior.ID.AttackDefault,
+			this.Const.AI.Behavior.ID.AttackBow,
+			this.Const.AI.Behavior.ID.SplitShield,
+			this.Const.AI.Behavior.ID.Split,
+			this.Const.AI.Behavior.ID.Swing,
+			this.Const.AI.Behavior.ID.Decapitate,
+			this.Const.AI.Behavior.ID.Hook,
+			this.Const.AI.Behavior.ID.KnockBack,
+			this.Const.AI.Behavior.ID.Reload,
+			this.Const.AI.Behavior.ID.Shieldwall,
+			this.Const.AI.Behavior.ID.Spearwall,
+			this.Const.AI.Behavior.ID.Defend,
+			this.Const.AI.Behavior.ID.Riposte,
+			this.Const.AI.Behavior.ID.SwitchToMelee,
+			this.Const.AI.Behavior.ID.SwitchToRanged,
+			this.Const.AI.Behavior.ID.SwitchToShield
+		];
+	}
+
+	function suppressCombatBehaviors( _agent )
+	{
+		local props = _agent.getProperties();
+		local ids = this.getSuppressedBehaviorIDs();
+		this.m.SuppressedBehaviorMults = {};
+
+		foreach (id in ids)
+		{
+			if (id < props.BehaviorMult.len())
+			{
+				this.m.SuppressedBehaviorMults[id] <- props.BehaviorMult[id];
+				props.BehaviorMult[id] = 0.0;
+			}
+		}
+
+		::logInfo("[horny] suppressed " + ids.len() + " combat behaviors for " + _agent.getActor().getName());
+	}
+
+	function restoreCombatBehaviors( _agent )
+	{
+		if (this.m.SuppressedBehaviorMults == null) return;
+
+		local props = _agent.getProperties();
+		foreach (id, mult in this.m.SuppressedBehaviorMults)
+		{
+			if (id < props.BehaviorMult.len())
+				props.BehaviorMult[id] = mult;
+		}
+
+		::logInfo("[horny] restored combat behaviors for " + _agent.getActor().getName());
+		this.m.SuppressedBehaviorMults = null;
+	}
+
 	function onRemoved()
 	{
 		local actor = this.getContainer().getActor();
 
+		// Restore suppressed combat behaviors
+		if (!actor.isPlayerControlled())
+		{
+			local agent = actor.getAIAgent();
+			if (agent != null)
+				this.restoreCombatBehaviors(agent);
+		}
+
 		// Don't remove AI behaviors here — doing so mid-execution (e.g. opportunity
 		// attack during movement) hangs the AI. The behaviors already return 0 from
 		// onEvaluate when the horny effect is gone, so they safely self-deactivate.
-		// They'll be cleaned up on combat end or when horny is re-applied.
 
 		if (actor.hasSprite("status_horny"))
 		{
