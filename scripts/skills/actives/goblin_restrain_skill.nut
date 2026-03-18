@@ -34,9 +34,11 @@ this.goblin_restrain_skill <- this.inherit("scripts/skills/skill", {
 
 	function isUsable()
 	{
-		if (!this.skill.isUsable()) return false;
-
+		// Can't use this.skill.isUsable() because it checks !isHidden()
+		// and this skill is hidden from the player UI
+		if (!this.m.IsUsable) return false;
 		local actor = this.getContainer().getActor();
+		if (!actor.getCurrentProperties().IsAbleToUseSkills) return false;
 		if (actor.getActionPoints() < ::Lewd.Const.GoblinRestrainMinAP) return false;
 
 		return true;
