@@ -458,7 +458,7 @@
 
 // --- Horny AI ---
 ::Lewd.Const.HornyAIScore <- 400;
-::Lewd.Const.HornyAIEngageScore <- 120;
+::Lewd.Const.HornyAIEngageScore <- 500;
 ::Lewd.Const.HornyAIEngageAllurePerTile <- 10; // allure penalty per tile of distance when scoring targets
 ::Lewd.Const.HornyAIEngageAllureNorm <- 30.0; // normalizer — 30 adjusted allure = 1.0x score
 ::Lewd.Const.AIBehaviorIDHorny <- 0; // set dynamically in mod_lewd.nut via Const.AI.Behavior.ID.COUNT
