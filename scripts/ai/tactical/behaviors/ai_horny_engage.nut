@@ -42,6 +42,24 @@ this.ai_horny_engage <- this.inherit("scripts/ai/tactical/behavior", {
 		if (_entity.getMoraleState() == this.Const.MoraleState.Fleeing)
 			return 0;
 
+		// Check if this orc has an active claim -- if so, move exclusively toward claimed target
+		local isOrc = ::Lewd.Mastery.isOrc(_entity);
+		local orcClaimedTargetID = -1;
+		local orcHasActiveClaim = false;
+		if (isOrc && _entity.getFlags().has("lewdOrcClaimTarget"))
+		{
+			orcClaimedTargetID = _entity.getFlags().getAsInt("lewdOrcClaimTarget");
+			if (orcClaimedTargetID >= 0)
+			{
+				local ct = this.Tactical.getEntityByID(orcClaimedTargetID);
+				if (ct != null && ct.isAlive())
+					orcHasActiveClaim = true;
+			}
+		}
+
+		if (isOrc)
+			::logInfo("[ai_horny_engage] " + _entity.getName() + " evaluating (orc, claim:" + orcHasActiveClaim + " claimID:" + orcClaimedTargetID + " AP:" + _entity.getActionPoints() + ")");
+
 		// Skip if already adjacent to a valid female target (ai_horny handles that)
 		local myTile = _entity.getTile();
 
@@ -55,6 +73,19 @@ this.ai_horny_engage <- this.inherit("scripts/ai/tactical/behavior", {
 			if (_entity.isAlliedWith(adj)) continue;
 			if (adj.getGender() != 1) continue;
 			if (adj.getPleasureMax() <= 0) continue;
+
+			// Orc with claim: only count our claimed target as "adjacent valid"
+			if (orcHasActiveClaim && adj.getID() != orcClaimedTargetID)
+				continue;
+
+			// Orc without claim: skip targets claimed by other orcs
+			if (isOrc && adj.getSkills().hasSkill("effects.orc_claimed"))
+			{
+				local ce = adj.getSkills().getSkillByID("effects.orc_claimed");
+				if (ce.getClaimerID() != _entity.getID())
+					continue;
+			}
+
 			// Already adjacent to a valid target — let ai_horny handle it
 			return 0;
 		}
@@ -71,6 +102,18 @@ this.ai_horny_engage <- this.inherit("scripts/ai/tactical/behavior", {
 			if (!t.Actor.isAlive()) continue;
 			if (t.Actor.getGender() != 1) continue;
 			if (t.Actor.getPleasureMax() <= 0) continue;
+
+			// Orc with active claim: only move toward claimed target
+			if (orcHasActiveClaim && t.Actor.getID() != orcClaimedTargetID)
+				continue;
+
+			// Orc without claim: skip targets claimed by other orcs
+			if (isOrc && !orcHasActiveClaim && t.Actor.getSkills().hasSkill("effects.orc_claimed"))
+			{
+				local ce = t.Actor.getSkills().getSkillByID("effects.orc_claimed");
+				if (ce.getClaimerID() != _entity.getID())
+					continue;
+			}
 
 			local targetTile = t.Actor.getTile();
 			local distance = myTile.getDistanceTo(targetTile);

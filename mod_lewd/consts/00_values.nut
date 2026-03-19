@@ -718,6 +718,23 @@
 ::Lewd.Const.HornyIdleAIScore <- 9999;                   // very high -- behavior self-gates to only fire when sex skills AND engage both fail
 ::Lewd.Const.HornyIdleChance <- 70;                     // % chance to idle instead of fighting when no sex target reachable
 
+// --- Orc Claim System ---
+::Lewd.Const.OrcClaimAP <- 4;
+::Lewd.Const.OrcClaimFatigue <- 10;
+::Lewd.Const.OrcHornyAllureThreshold <- 15;              // min allure to trigger orc horny from adjacent female
+::Lewd.Const.OrcClaimAIScore <- 3000;                     // highest priority -- claim unclaimed targets
+::Lewd.Const.OrcHornyAIScore <- 2000;                     // sex skill selection on claimed target
+::Lewd.Const.OrcClaimedPleasurePerTurn <- 3;              // orc musk: passive pleasure DoT on claimed target
+::Lewd.Const.OrcClaimedHornyChance <- 30;                 // % chance per turn for claimed target to become horny
+::Lewd.Const.OrcClaimedInitPenalty <- -15;
+::Lewd.Const.OrcClaimedMeleeSkillPenalty <- -5;
+::Lewd.Const.OrcClaimedMeleeDefPenalty <- -5;
+::Lewd.Const.OrcClaimedRangedDefPenalty <- -5;
+::Lewd.Const.OrcClaimedReceivedPleasureMult <- 1.20;      // +20% pleasure received while claimed
+::Lewd.Const.OrcClaimedTargetAttractionMult <- 0.25;      // 75% less attractive to enemy AI while claimed
+::Lewd.Const.AIBehaviorIDOrcClaim <- 0;                   // set dynamically in mod_lewd.nut via Const.AI.Behavior.ID.COUNT
+::Lewd.Const.AIBehaviorIDOrcHorny <- 0;                   // set dynamically in mod_lewd.nut via Const.AI.Behavior.ID.COUNT
+
 // --- Species Entity Type Lists (base game + Legends) ---
 
 ::Lewd.Const.GoblinEntityTypes <- [

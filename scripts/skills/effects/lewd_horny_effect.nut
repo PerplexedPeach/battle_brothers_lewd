@@ -111,9 +111,18 @@ this.lewd_horny_effect <- this.inherit("scripts/skills/skill", {
 				{
 					if (isGoblin)
 					{
-						// Goblins use species-specific horny behavior + shared engage
+						// Goblins use species-specific horny behavior + shared engage + idle
 						::logInfo("[horny]   injecting GOBLIN AI behaviors for " + actor.getName());
 						agent.addBehavior(this.new("scripts/ai/tactical/behaviors/ai_goblin_horny"));
+						agent.addBehavior(this.new("scripts/ai/tactical/behaviors/ai_horny_engage"));
+						agent.addBehavior(this.new("scripts/ai/tactical/behaviors/ai_horny_idle"));
+					}
+					else if (::Lewd.Mastery.isOrc(actor))
+					{
+						// Orcs use species-specific horny behavior (claim-aware) + shared engage
+						// No idle -- orcs fight normally when they can't find a sex target
+						::logInfo("[horny]   injecting ORC AI behaviors for " + actor.getName());
+						agent.addBehavior(this.new("scripts/ai/tactical/behaviors/ai_orc_horny"));
 						agent.addBehavior(this.new("scripts/ai/tactical/behaviors/ai_horny_engage"));
 					}
 					else
@@ -122,8 +131,6 @@ this.lewd_horny_effect <- this.inherit("scripts/skills/skill", {
 						agent.addBehavior(this.new("scripts/ai/tactical/behaviors/ai_horny"));
 						agent.addBehavior(this.new("scripts/ai/tactical/behaviors/ai_horny_engage"));
 					}
-					// Shared idle fallback: do nothing instead of weapon attacks while horny
-					agent.addBehavior(this.new("scripts/ai/tactical/behaviors/ai_horny_idle"));
 					this.m.HasAIBehavior = true;
 				}
 

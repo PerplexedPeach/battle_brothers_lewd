@@ -63,12 +63,16 @@ this.lewd_info_effect <- this.inherit("scripts/skills/skill", {
 		if (actor.getFlags().has("lewdOrgasmDefeat"))
 			actor.getFlags().remove("lewdOrgasmDefeat");
 
-		// Reset cum facial sprite from previous combat
+		// Reset cum sprites from previous combat
 		if (actor.hasSprite("cum_facial"))
 		{
 			actor.getSprite("cum_facial").Visible = false;
-			actor.setDirty(true);
 		}
+		if (actor.hasSprite("cum_body"))
+		{
+			actor.getSprite("cum_body").Visible = false;
+		}
+		actor.setDirty(true);
 
 		// Clear stale continuation flags from previous combats
 		local flags = actor.getFlags();

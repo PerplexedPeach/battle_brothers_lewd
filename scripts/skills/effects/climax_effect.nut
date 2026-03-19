@@ -170,6 +170,7 @@ this.climax_effect <- this.inherit("scripts/skills/skill", {
 					{
 						insatiable.recordTrigger();
 						source.setActionPoints(this.Math.min(source.getActionPointsMax(), source.getActionPoints() + ::Lewd.Const.InsatiableAPGain));
+						source.setDirty(true);
 						this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(source) + " gains +" + ::Lewd.Const.InsatiableAPGain + " AP from Insatiable!");
 					}
 				}

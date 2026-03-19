@@ -40,6 +40,8 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC", function()
 	::Const.AI.Behavior.ID.LewdGoblinHorny <- count++;
 	::Const.AI.Behavior.ID.LewdGoblinRestrain <- count++;
 	::Const.AI.Behavior.ID.LewdHornyIdle <- count++;
+	::Const.AI.Behavior.ID.LewdOrcClaim <- count++;
+	::Const.AI.Behavior.ID.LewdOrcHorny <- count++;
 	::Const.AI.Behavior.ID.COUNT = count;
 	::Const.AI.Behavior.Name.push("LewdHorny");
 	::Const.AI.Behavior.Name.push("LewdHornyEngage");
@@ -47,12 +49,16 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC", function()
 	::Const.AI.Behavior.Name.push("LewdGoblinHorny");
 	::Const.AI.Behavior.Name.push("LewdGoblinRestrain");
 	::Const.AI.Behavior.Name.push("LewdHornyIdle");
+	::Const.AI.Behavior.Name.push("LewdOrcClaim");
+	::Const.AI.Behavior.Name.push("LewdOrcHorny");
 	::Lewd.Const.AIBehaviorIDHorny = ::Const.AI.Behavior.ID.LewdHorny;
 	::Lewd.Const.AIBehaviorIDHornyEngage = ::Const.AI.Behavior.ID.LewdHornyEngage;
 	::Lewd.Const.AIBehaviorIDPiledriver = ::Const.AI.Behavior.ID.LewdPiledriver;
 	::Lewd.Const.AIBehaviorIDGoblinHorny = ::Const.AI.Behavior.ID.LewdGoblinHorny;
 	::Lewd.Const.AIBehaviorIDGoblinRestrain = ::Const.AI.Behavior.ID.LewdGoblinRestrain;
 	::Lewd.Const.AIBehaviorIDHornyIdle = ::Const.AI.Behavior.ID.LewdHornyIdle;
+	::Lewd.Const.AIBehaviorIDOrcClaim = ::Const.AI.Behavior.ID.LewdOrcClaim;
+	::Lewd.Const.AIBehaviorIDOrcHorny = ::Const.AI.Behavior.ID.LewdOrcHorny;
 
 	// --- Mod Settings ---
 	local page = ::Lewd.Mod.ModSettings.addPage("General");
@@ -132,6 +138,8 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC", function()
 				{
 					local restrained = old_addSprite("lewd_restrained");
 					restrained.Visible = false;
+					local cumBody = old_addSprite("cum_body");
+					cumBody.Visible = false;
 				}
 
 				if (_layerID == "socket")
@@ -159,6 +167,10 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC", function()
 			// Goblin lewd racial — grants restrain behavior and horny trigger
 			if (::Lewd.Mastery.isGoblin(this))
 				this.getSkills().add(this.new("scripts/skills/racial/goblin_lewd_racial"));
+
+			// Orc lewd racial — grants claim behavior and horny trigger
+			if (::Lewd.Mastery.isOrc(this))
+				this.getSkills().add(this.new("scripts/skills/racial/orc_lewd_racial"));
 		}
 
 		// Render callback for animated effects
@@ -979,15 +991,19 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC", function()
 		{
 			__original();
 
-			// Clear cum facial sprites from combat
+			// Clear cum sprites from combat
 			local roster = this.World.getPlayerRoster().getAll();
 			foreach (bro in roster)
 			{
 				if (bro.hasSprite("cum_facial"))
 				{
 					bro.getSprite("cum_facial").Visible = false;
-					bro.setDirty(true);
 				}
+				if (bro.hasSprite("cum_body"))
+				{
+					bro.getSprite("cum_body").Visible = false;
+				}
+				bro.setDirty(true);
 			}
 
 			// --- Hexen curse trigger ---
