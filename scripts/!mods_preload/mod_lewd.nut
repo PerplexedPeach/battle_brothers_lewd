@@ -474,6 +474,17 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC", function()
 			local bg = this.getBackground();
 			if (bg == null) return;
 
+			// Inject Seduction Arts for innate backgrounds on existing saves
+			local bgID = bg.getID();
+			if (bgID == "background.legend_qiyan" || bgID == "background.belly_dancer")
+			{
+				if (!bg.hasPerkGroup(::Const.Perks.SeductionArtsTree))
+				{
+					bg.addPerkGroup(::Const.Perks.SeductionArtsTree.Tree);
+					::logInfo("[mod_lewd] Injected Seduction Arts on load for " + this.getName() + " (bg: " + bg.getName() + ")");
+				}
+			}
+
 			local skills = this.getSkills();
 			local isFemale = this.getGender() == 1;
 			local hasDainty = skills.hasSkill("trait.dainty");
@@ -486,8 +497,10 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC", function()
 			// Build list of perk consts that should be removed from this character
 			local toRemove = [];
 
-			// SeductionArts: requires Dainty, Delicate, or Ethereal
-			if (!hasDainty && !hasDelicate && !hasEthereal)
+			// SeductionArts: requires Dainty/Delicate/Ethereal, or innate background
+			local bgID = bg.getID();
+			local hasInnateSA = bgID == "background.legend_qiyan" || bgID == "background.belly_dancer";
+			if (!hasDainty && !hasDelicate && !hasEthereal && !hasInnateSA)
 			{
 				toRemove.extend([
 					::Const.Perks.PerkDefs.LewdNimbleFingers,
@@ -610,7 +623,7 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC", function()
 			::logInfo("[mod_lewd] Cleaned up " + removed + " phantom lewd perks from " + this.getName() + " (refunded " + refunded + ")");
 		};
 
-		// Debauchery perk tree injection — must happen after setStartValuesEx
+		// Perk tree injection — must happen after setStartValuesEx
 		// because background is null during onInit (assigned in setStartValuesEx)
 		q.setStartValuesEx = @(__original) function( _backgrounds, _addTraits = true, _gender = -1, _addEquipment = true )
 		{
@@ -619,12 +632,26 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC", function()
 			local bg = this.getBackground();
 			if (bg == null) return;
 
-			if (this.getGender() == 1) return;
-			if (bg.isBackgroundType(::Const.BackgroundType.Female)) return;
-			if (!bg.isBackgroundType(::Const.BackgroundType.Outlaw)) return;
-			if (bg.hasPerkGroup(::Const.Perks.DebaucheryTree)) return;
-			bg.addPerkGroup(::Const.Perks.DebaucheryTree.Tree);
-			::logInfo("[mod_lewd] Injected Debauchery perk tree for " + this.getName() + " (bg: " + bg.getName() + ")");
+			// Debauchery: male Outlaws
+			if (this.getGender() != 1 && !bg.isBackgroundType(::Const.BackgroundType.Female) && bg.isBackgroundType(::Const.BackgroundType.Outlaw))
+			{
+				if (!bg.hasPerkGroup(::Const.Perks.DebaucheryTree))
+				{
+					bg.addPerkGroup(::Const.Perks.DebaucheryTree.Tree);
+					::logInfo("[mod_lewd] Injected Debauchery perk tree for " + this.getName() + " (bg: " + bg.getName() + ")");
+				}
+			}
+
+			// Seduction Arts: female backgrounds with innate seductive talent
+			local bgID = bg.getID();
+			if (bgID == "background.legend_qiyan" || bgID == "background.belly_dancer")
+			{
+				if (!bg.hasPerkGroup(::Const.Perks.SeductionArtsTree))
+				{
+					bg.addPerkGroup(::Const.Perks.SeductionArtsTree.Tree);
+					::logInfo("[mod_lewd] Injected Seduction Arts perk tree for " + this.getName() + " (bg: " + bg.getName() + ")");
+				}
+			}
 		};
 
 		// Player orgasm defeat: go unconscious instead of dying
