@@ -455,6 +455,7 @@
 ::Lewd.Const.MalePenetrateAnalMountedPleasureBonus <- 4;
 ::Lewd.Const.MalePenetrateAnalSelfPleasure <- 2;
 ::Lewd.Const.MalePenetrateAnalMasoTierBonus <- 3;
+::Lewd.Const.MaleSexDomScale <- 0.20;               // bonus pleasure per dom point for male sex skills
 
 // --- Horny AI ---
 ::Lewd.Const.HornyAIScore <- 2000; // must be >1600 so attacks (max ~400) fall below pickBehavior 25% cutoff

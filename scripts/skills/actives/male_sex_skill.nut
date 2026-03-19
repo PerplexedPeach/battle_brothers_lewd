@@ -114,6 +114,11 @@ this.male_sex_skill <- this.inherit("scripts/skills/actives/sex_skill_base", {
 		local pleasure = this.m.BasePleasure;
 		pleasure += this.Math.floor(user.getCurrentProperties().getMeleeSkill() * this.m.MeleeSkillScale);
 
+		// dom score bonus
+		local domScore = ::Lewd.Mastery.getDomScore(user);
+		if (domScore > 0)
+			pleasure += this.Math.floor(domScore * ::Lewd.Const.MaleSexDomScale);
+
 		// mount bonus
 		if (_target.getSkills().hasSkill("effects.lewd_mounted"))
 			pleasure += this.calculateMountBonus(_target);

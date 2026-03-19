@@ -51,7 +51,10 @@ this.lewd_subdom_effect <- this.inherit("scripts/skills/skill", {
 				case 1: name = "Assertive"; break;
 				case 2: name = "Commanding"; break;
 				case 3: name = "Dominant"; break;
-				case 4: name = "Mistress"; break;
+				case 4:
+					local actor = this.getContainer().getActor();
+					name = actor.getGender() == 1 ? "Mistress" : "Master";
+					break;
 			}
 			return name + " (+" + score + ")";
 		}
@@ -74,24 +77,53 @@ this.lewd_subdom_effect <- this.inherit("scripts/skills/skill", {
 		local tier = this.getDomSubTier();
 		if (tier == 0) return "";
 
+		local actor = this.getContainer().getActor();
+		local isMale = actor.getGender() != 1;
+
 		if (score > 0)
 		{
-			switch (tier)
+			if (isMale)
 			{
-				case 1: return "Beginning to take charge in intimate encounters.";
-				case 2: return "Taking command of intimate encounters with growing confidence.";
-				case 3: return "Total dominance comes naturally. Few can resist your control.";
-				case 4: return "Complete authority over others. Your touch commands absolute obedience.";
+				switch (tier)
+				{
+					case 1: return "Growing bolder in how you handle your conquests.";
+					case 2: return "Taking what you want with practiced confidence.";
+					case 3: return "Overwhelming force comes naturally. Few can hold out against you.";
+					case 4: return "Absolute physical dominance. You break them as easily as breathing.";
+				}
+			}
+			else
+			{
+				switch (tier)
+				{
+					case 1: return "Beginning to take charge in intimate encounters.";
+					case 2: return "Taking command of intimate encounters with growing confidence.";
+					case 3: return "Total dominance comes naturally. Few can resist your control.";
+					case 4: return "Complete authority over others. Your touch commands absolute obedience.";
+				}
 			}
 		}
 		else
 		{
-			switch (tier)
+			if (isMale)
 			{
-				case 1: return "Finding pleasure in yielding to others.";
-				case 2: return "Craving submission, deriving deep satisfaction from being used.";
-				case 3: return "Obediently following every command. Resistance feels unnatural.";
-				case 4: return "Fully tamed. Submission comes as naturally as breathing.";
+				switch (tier)
+				{
+					case 1: return "Something about the warmth of conquest has started to linger.";
+					case 2: return "The thrill of victory fades faster each time, replaced by a different hunger.";
+					case 3: return "The body responds before the mind can object. Resistance feels hollow.";
+					case 4: return "Fully broken. The need runs deeper than pride.";
+				}
+			}
+			else
+			{
+				switch (tier)
+				{
+					case 1: return "Finding pleasure in yielding to others.";
+					case 2: return "Craving submission, deriving deep satisfaction from being used.";
+					case 3: return "Obediently following every command. Resistance feels unnatural.";
+					case 4: return "Fully tamed. Submission comes as naturally as breathing.";
+				}
 			}
 		}
 		return "";
@@ -163,26 +195,34 @@ this.lewd_subdom_effect <- this.inherit("scripts/skills/skill", {
 		});
 
 		// Scaling info
+		local actor = this.getContainer().getActor();
+		local isMale = actor.getGender() != 1;
 		if (score > 0)
 		{
-			local domScore = ::Lewd.Mastery.getDomScore(this.getContainer().getActor());
+			local domScore = ::Lewd.Mastery.getDomScore(actor);
+			local domLabel = isMale
+				? "Sex abilities deal [color=" + this.Const.UI.Color.PositiveValue + "]bonus pleasure[/color] from dominance"
+				: "Hands abilities deal [color=" + this.Const.UI.Color.PositiveValue + "]bonus pleasure[/color] from dominance";
 			result.push({
 				id = 11,
 				type = "text",
 				icon = "ui/icons/special.png",
-				text = "Hands abilities deal [color=" + this.Const.UI.Color.PositiveValue + "]bonus pleasure[/color] from dominance"
+				text = domLabel
 			});
 		}
 		else if (score < 0)
 		{
-			local subScore = ::Lewd.Mastery.getSubScore(this.getContainer().getActor());
+			local subScore = ::Lewd.Mastery.getSubScore(actor);
 			local pleasureBonus = this.Math.floor(subScore * ::Lewd.Const.SubScorePleasureMaxScale);
-			result.push({
-				id = 11,
-				type = "text",
-				icon = "ui/icons/special.png",
-				text = "Anal abilities deal [color=" + this.Const.UI.Color.PositiveValue + "]bonus pleasure[/color] from submission"
-			});
+			if (!isMale)
+			{
+				result.push({
+					id = 11,
+					type = "text",
+					icon = "ui/icons/special.png",
+					text = "Anal abilities deal [color=" + this.Const.UI.Color.PositiveValue + "]bonus pleasure[/color] from submission"
+				});
+			}
 			if (pleasureBonus > 0)
 			{
 				result.push({
