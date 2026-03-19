@@ -75,6 +75,14 @@ this.lewd_horny_effect <- this.inherit("scripts/skills/skill", {
 
 		this.m.TurnsLeft = ::Lewd.Const.HornyDuration;
 
+		// Show horny sprite overlay
+		if (actor.hasSprite("status_horny"))
+		{
+			actor.getSprite("status_horny").setBrush("bust_horny");
+			actor.getSprite("status_horny").Visible = true;
+			actor.setDirty(true);
+		}
+
 		// Grant male sex skills to ALL male humanoids (player + enemy)
 		local isMaleHumanoid = actor.getGender() != 1
 			&& actor.getMoraleState() != this.Const.MoraleState.Ignore
@@ -136,14 +144,6 @@ this.lewd_horny_effect <- this.inherit("scripts/skills/skill", {
 	{
 		_properties.InitiativeMult *= ::Lewd.Const.HornyInitiativeMult;
 		_properties.MeleeDefense += ::Lewd.Const.HornyMeleeDefPenalty;
-
-		local actor = this.getContainer().getActor();
-		if (actor.hasSprite("status_horny"))
-		{
-			actor.getSprite("status_horny").setBrush("bust_horny");
-			actor.getSprite("status_horny").Visible = true;
-			actor.setDirty(true);
-		}
 	}
 
 	function onRemoved()

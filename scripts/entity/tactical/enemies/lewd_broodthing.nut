@@ -251,7 +251,21 @@ this.lewd_broodthing <- this.inherit("scripts/entity/tactical/actor", {
 			this.spawnTerrainDropdownEffect(_tile);
 			this.spawnFlies(_tile);
 
-			// Kill all remaining tentacles
+			// Release all ensnared victims first -- off-map tentacles (underground,
+			// holding someone) survive the isPlacedOnMap() check below. Removing the
+			// ensnare effect triggers the OnRemoveCallback which resurfaces the tentacle
+			// onto the map, so it can then be killed normally.
+			local allActors = this.Tactical.Entities.getAllInstances();
+			foreach (group in allActors)
+			{
+				foreach (a in group)
+				{
+					if (a.isAlive() && a.getSkills().hasSkill("effects.kraken_ensnare"))
+						a.getSkills().removeByID("effects.kraken_ensnare");
+				}
+			}
+
+			// Kill all remaining tentacles (on-map and newly resurfaced)
 			foreach (t in this.m.Tentacles)
 			{
 				if (t.isNull())
@@ -264,6 +278,12 @@ this.lewd_broodthing <- this.inherit("scripts/entity/tactical/actor", {
 			}
 
 			this.m.Tentacles = [];
+
+			// Force combat to end -- killing the body means the fight is won,
+			// just like base game kraken. Prevents orphaned off-map tentacles
+			// from keeping combat alive and corrupting the turn sequence bar.
+			this.Tactical.Entities.setLastCombatResult(this.Const.Tactical.CombatResult.EnemyDestroyed);
+			this.Tactical.Entities.checkCombatFinished(true);
 		}
 
 		// Drop loot on tile
