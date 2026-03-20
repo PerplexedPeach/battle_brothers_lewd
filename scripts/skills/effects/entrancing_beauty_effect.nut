@@ -67,15 +67,11 @@ this.entrancing_beauty_effect <- this.inherit("scripts/skills/skill", {
 	function applyToNeighbors()
 	{
 		if (this.m.TriggersThisTurn >= this.m.MaxTriggersPerTurn)
-		{
 			return;
-		}
 
 		local actor = this.getContainer().getActor();
 		if (actor == null || !actor.isPlacedOnMap())
-		{
 			return;
-		}
 
 		this.m.TriggersThisTurn++;
 
@@ -88,7 +84,8 @@ this.entrancing_beauty_effect <- this.inherit("scripts/skills/skill", {
 		local enemies = this.Tactical.Entities.getAllHostilesAsArray();
 		foreach (e in enemies)
 		{
-			if (e.getGender() == 1) continue; // skip females; use Playful Slap instead
+			if (e.getGender() == 1) continue; // skip females
+			if (e.getMoraleState() == this.Const.MoraleState.Ignore) continue; // mindless
 			targets.push({ entity = e, resolveBonus = 0 });
 		}
 
@@ -100,11 +97,16 @@ this.entrancing_beauty_effect <- this.inherit("scripts/skills/skill", {
 			foreach (a in allies)
 			{
 				if (a.getID() == actor.getID()) continue;
-				if (a.getGender() == 1) continue; // skip females
+				if (a.getGender() == 1) continue;
 				targets.push({ entity = a, resolveBonus = ::Lewd.Const.BeautyAllyResolveBonus });
 			}
 		}
 
+		local charmParams = {
+			BaseChance = ::Lewd.Const.AllureToDazeBaseChance,
+			Scale = ::Lewd.Const.AllureToDazeChanceMultiplier,
+			DistancePenalty = ::Lewd.Const.AllureToDazeDistancePenalty
+		};
 
 		local dazedEntities = [];
 
@@ -112,42 +114,21 @@ this.entrancing_beauty_effect <- this.inherit("scripts/skills/skill", {
 		{
 			local entity = t.entity;
 			local resolve = entity.getBravery() + t.resolveBonus;
+			local racialResist = ::Lewd.Charm.getRacialResistance(entity);
 			local distance = entity.getTile().getDistanceTo(tile);
-			local chance = ::Lewd.Const.AllureToDazeBaseChance + (allure - resolve) * ::Lewd.Const.AllureToDazeChanceMultiplier - (distance - 1) * ::Lewd.Const.AllureToDazeDistancePenalty;
+			local chance = ::Lewd.Charm.calcChance(allure, resolve, racialResist, distance, charmParams);
 			if (hasPheromones)
-			{
 				chance += ::Lewd.Const.PheromonesAllureBonus;
-			}
-
 
 			if (chance > 0)
 			{
-				local roll = this.Math.rand(0, 100);
-
-				if (roll < chance)
+				local result = ::Lewd.Charm.applyCharm(entity, chance);
+				if (result)
 				{
-					this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(entity) + " beholds " + this.Const.UI.getColorizedEntityName(actor) + "'s beauty (roll:" + roll + " chance:" + chance + ")");
-
-					if (!entity.getSkills().hasSkill("effects.lewd_horny"))
-					{
-						local horny = this.new("scripts/skills/effects/lewd_horny_effect");
-						entity.getSkills().add(horny);
-					}
+					if (result == 2)
+						this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(entity) + " beholds " + this.Const.UI.getColorizedEntityName(actor) + "'s beauty and is stunned!");
 					else
-					{
-						entity.getSkills().getSkillByID("effects.lewd_horny").onRefresh();
-					}
-
-					if (roll < chance - ::Lewd.Const.CritChanceThreshold)
-					{
-						local stunned = this.new("scripts/skills/effects/stunned_effect");
-						entity.getSkills().add(stunned);
-						this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(entity) + " becomes horny and is stunned!");
-					}
-					else
-					{
-						this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(entity) + " becomes horny!");
-					}
+						this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(entity) + " beholds " + this.Const.UI.getColorizedEntityName(actor) + "'s beauty and becomes horny!");
 
 					dazedEntities.push(entity);
 				}
@@ -155,9 +136,7 @@ this.entrancing_beauty_effect <- this.inherit("scripts/skills/skill", {
 		}
 
 		if (dazedEntities.len() > 0)
-		{
 			this.displayDazedEffectsOnSelf();
-		}
 	}
 
 	function displayDazedEffectsOnSelf()

@@ -84,52 +84,13 @@ this.orc_claim_skill <- this.inherit("scripts/skills/skill", {
 		local target = _targetTile.getEntity();
 		if (target == null) return false;
 
-		::logInfo("[orc_claim] " + _user.getName() + " claims " + target.getName());
-
-		// Apply claimed effect to target
-		local effect = this.new("scripts/skills/effects/orc_claimed_effect");
-		target.getSkills().add(effect);
-		effect.setClaimerID(_user.getID());
-
-		// Store claim on the orc
-		_user.getFlags().set("lewdOrcClaimTarget", target.getID());
-
-		// Add visible claiming effect on the orc so players can identify them
-		local claimingEffect = this.new("scripts/skills/effects/orc_claiming_effect");
-		_user.getSkills().add(claimingEffect);
-		claimingEffect.setTarget(target.getID(), target.getName());
-
-		// Spawn cum projectile from orc to target (100% chance, guaranteed)
-		if (target.hasSprite("cum_facial"))
-		{
-			local time = this.Tactical.spawnProjectileEffect(
-				"effect_cum_01", _user.getTile(), _targetTile,
-				0.5, 1.5, false, false);
-
-			local Tactical = this.Tactical;
-			this.Time.scheduleEvent(this.TimeUnit.Virtual, time, function(_d) {
-				if (!_d.Target.isAlive()) return;
-				_d.Target.getSprite("cum_facial").setBrush("cum_head");
-				_d.Target.getSprite("cum_facial").Visible = true;
-				if (_d.Target.hasSprite("cum_body"))
-				{
-					_d.Target.getSprite("cum_body").setBrush("cum_body");
-					_d.Target.getSprite("cum_body").Visible = true;
-				}
-				_d.Target.setDirty(true);
-				::logInfo("[orc_claim] Applied cum to " + _d.Target.getName());
-				if (_d.Source.isAlive())
-					_d.Tactical.getCamera().quake(_d.Source, _d.Target, 3.0, 0.12, 0.25);
-			}, { Target = target, Source = _user, Tactical = Tactical });
-		}
-
 		this.Tactical.EventLog.log(
-			this.Const.UI.getColorizedEntityName(_user) + " claims " +
+			this.Const.UI.getColorizedEntityName(_user) + " masturbates furiously at " +
 			this.Const.UI.getColorizedEntityName(target) + "!");
 
-		// Orc climaxes from the act -- clear LastPleasureSourceID to prevent
-		// climax_effect's cum facial from double-firing (we already handled it above)
-		_user.m.LastPleasureSourceID = -1;
+		// Point LastPleasureSourceID at the target so climax_effect handles
+		// both the claim (via applyOrcClaim) and cum visuals (via cum facial logic)
+		_user.m.LastPleasureSourceID = target.getID();
 		_user.onClimax();
 
 		return true;

@@ -85,6 +85,16 @@
 ::Lewd.Const.MasochismDamageTakenMultScore <- 3;
 ::Lewd.Const.MasochismSouthernDistanceRequirement <- 10; // how many tiles within a southern city you need to be within for event to trigger
 
+// Charm racial resistance (flat bonus to effective resolve vs tease/entrancing beauty)
+// Higher = harder to charm. Mindless creatures (MoraleState.Ignore) are already immune.
+::Lewd.Const.CharmResistOrc <- 15;
+::Lewd.Const.CharmResistGoblin <- 5;
+::Lewd.Const.CharmResistUnhold <- 20;
+::Lewd.Const.CharmResistWolf <- 20;
+::Lewd.Const.CharmResistSpider <- 25;
+::Lewd.Const.CharmResistAlp <- 30;
+::Lewd.Const.CharmResistLindwurm <- 25;
+
 // pheromones ability
 ::Lewd.Const.PheromonesAllureBonus <- 25; // flat bonus to entrancing beauty chance while pheromones active
 ::Lewd.Const.PheromonesDuration <- 3; // turns (includes cast turn's onTurnEnd)
@@ -732,6 +742,7 @@
 ::Lewd.Const.OrcClaimedRangedDefPenalty <- -5;
 ::Lewd.Const.OrcClaimedReceivedPleasureMult <- 1.20;      // +20% pleasure received while claimed
 ::Lewd.Const.OrcClaimedTargetAttractionMult <- 0.25;      // 75% less attractive to enemy AI while claimed
+::Lewd.Const.OrcClaimMaxDistance <- 4;                     // claim expires if claimer is further than this
 ::Lewd.Const.AIBehaviorIDOrcClaim <- 0;                   // set dynamically in mod_lewd.nut via Const.AI.Behavior.ID.COUNT
 ::Lewd.Const.AIBehaviorIDOrcHorny <- 0;                   // set dynamically in mod_lewd.nut via Const.AI.Behavior.ID.COUNT
 

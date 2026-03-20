@@ -119,6 +119,18 @@ this.orc_claimed_effect <- this.inherit("scripts/skills/skill", {
 			return;
 		}
 
+		// Distance check: claim expires if claimer is too far away
+		if (actor.isPlacedOnMap() && claimer.isPlacedOnMap())
+		{
+			local dist = actor.getTile().getDistanceTo(claimer.getTile());
+			if (dist > ::Lewd.Const.OrcClaimMaxDistance)
+			{
+				::logInfo("[orc_claimed] " + actor.getName() + " claim released -- " + claimer.getName() + " too far (" + dist + " > " + ::Lewd.Const.OrcClaimMaxDistance + ")");
+				this.removeSelf();
+				return;
+			}
+		}
+
 		// Orc musk: passive pleasure per turn
 		actor.addPleasure(::Lewd.Const.OrcClaimedPleasurePerTurn, claimer);
 		::logInfo("[orc_claimed] " + actor.getName() + " receives " + ::Lewd.Const.OrcClaimedPleasurePerTurn + " musk pleasure from " + claimer.getName());

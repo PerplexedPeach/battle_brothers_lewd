@@ -252,6 +252,31 @@ this.climax_effect <- this.inherit("scripts/skills/skill", {
 				}
 			}
 
+			// Orc climax claiming: when an orc climaxes, claim the pleasure source
+			// Also applies cum_body sprite (guaranteed for claims; cum_facial is
+			// handled separately by the chance-based cum facial logic above)
+			if (::Lewd.Mastery.isOrc(actor) && actor.m.LastPleasureSourceID >= 0)
+			{
+				local claimTarget = this.Tactical.getEntityByID(actor.m.LastPleasureSourceID);
+				if (claimTarget != null && claimTarget.isAlive()
+					&& claimTarget.getGender() == 1 && claimTarget.getPleasureMax() > 0
+					&& !actor.isAlliedWith(claimTarget))
+				{
+					if (::Lewd.Charm.applyOrcClaim(actor, claimTarget))
+					{
+						if (claimTarget.hasSprite("cum_body"))
+						{
+							claimTarget.getSprite("cum_body").setBrush("cum_body");
+							claimTarget.getSprite("cum_body").Visible = true;
+							claimTarget.setDirty(true);
+						}
+						this.Tactical.EventLog.log(
+							this.Const.UI.getColorizedEntityName(actor) + " claims " +
+							this.Const.UI.getColorizedEntityName(claimTarget) + "!");
+					}
+				}
+			}
+
 			// Dom/Sub tracking: award points on climax
 			local sourceID = actor.m.LastPleasureSourceID;
 			if (sourceID >= 0 && sourceID != actor.getID())

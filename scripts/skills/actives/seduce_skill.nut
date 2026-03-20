@@ -48,8 +48,13 @@ this.seduce_skill <- this.inherit("scripts/skills/skill", {
 		local actor = this.getContainer().getActor();
 		local allure = actor.allure() + ::Lewd.Const.TeaseAllureBonus;
 		local resolve = _target.getBravery();
+		local racialResist = ::Lewd.Charm.getRacialResistance(_target);
 		local distance = _target.getTile().getDistanceTo(actor.getTile());
-		local chance = ::Lewd.Const.TeaseBaseChance + (allure - resolve) * ::Lewd.Const.TeaseAllureScale - (distance - 1) * ::Lewd.Const.TeaseDistancePenalty;
+		local chance = ::Lewd.Charm.calcChance(allure, resolve, racialResist, distance, {
+			BaseChance = ::Lewd.Const.TeaseBaseChance,
+			Scale = ::Lewd.Const.TeaseAllureScale,
+			DistancePenalty = ::Lewd.Const.TeaseDistancePenalty
+		});
 
 		// Melee bonus: Grind mode
 		if (distance <= 1)
@@ -74,8 +79,9 @@ this.seduce_skill <- this.inherit("scripts/skills/skill", {
 		local baseAllure = actor.allure();
 		local allure = baseAllure + ::Lewd.Const.TeaseAllureBonus;
 		local resolve = target.getBravery();
+		local racialResist = ::Lewd.Charm.getRacialResistance(target);
 		local distance = target.getTile().getDistanceTo(actor.getTile());
-		local diff = allure - resolve;
+		local diff = allure - (resolve + racialResist);
 		local pos = this.Const.UI.Color.PositiveValue;
 		local neg = this.Const.UI.Color.NegativeValue;
 
@@ -91,6 +97,14 @@ this.seduce_skill <- this.inherit("scripts/skills/skill", {
 			icon = "ui/icons/bravery.png",
 			text = "Target Resolve: [color=" + neg + "]" + resolve + "[/color]"
 		});
+
+		if (racialResist > 0)
+		{
+			ret.push({
+				icon = "ui/tooltips/negative.png",
+				text = "[color=" + neg + "]+" + racialResist + "[/color] racial charm resistance"
+			});
+		}
 
 		local scaled = this.Math.floor(diff * ::Lewd.Const.TeaseAllureScale);
 		if (scaled >= 0)
@@ -251,41 +265,25 @@ this.seduce_skill <- this.inherit("scripts/skills/skill", {
 	function resolveTeaseHit( _user, _target )
 	{
 		local chance = this.getTeaseChance(_target);
-		local roll = this.Math.rand(1, 100);
 		local isMelee = _target.getTile().getDistanceTo(_user.getTile()) <= 1;
 		local modeName = isMelee ? "grinds against" : "teases";
 
-		::logInfo("[tease] " + _user.getName() + " " + modeName + " " + _target.getName() + " (roll:" + roll + " chance:" + chance + ")");
+		local result = ::Lewd.Charm.applyCharm(_target, chance);
+		::logInfo("[tease] " + _user.getName() + " " + modeName + " " + _target.getName() + " (chance:" + chance + " result:" + result + ")");
 
-		if (roll > chance)
+		if (!result)
 		{
-			this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(_user) + " " + modeName + " " + this.Const.UI.getColorizedEntityName(_target) + " but fails (roll:" + roll + " chance:" + chance + ")");
+			this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(_user) + " " + modeName + " " + this.Const.UI.getColorizedEntityName(_target) + " but fails");
 			return;
 		}
 
-		// Apply or refresh Horny
-		if (!_target.getSkills().hasSkill("effects.lewd_horny"))
-		{
-			local horny = this.new("scripts/skills/effects/lewd_horny_effect");
-			_target.getSkills().add(horny);
-		}
-		else
-		{
-			_target.getSkills().getSkillByID("effects.lewd_horny").onRefresh();
-		}
-
-		// Crit: if roll is far enough below chance, also stun
-		if (roll < chance - ::Lewd.Const.CritChanceThreshold)
-		{
-			local stunned = this.new("scripts/skills/effects/stunned_effect");
-			_target.getSkills().add(stunned);
+		if (result == 2)
 			this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(_target) + " is stunned by the display!");
-		}
 
 		if (this.m.SoundOnHit.len() > 0)
 			this.Sound.play(this.m.SoundOnHit[this.Math.rand(0, this.m.SoundOnHit.len() - 1)], this.Const.Sound.Volume.Skill * ::Lewd.Const.SexSoundVolume, _target.getPos());
 
-		this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(_user) + " " + modeName + " " + this.Const.UI.getColorizedEntityName(_target) + " and makes them Horny! (roll:" + roll + " chance:" + chance + ")");
+		this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(_user) + " " + modeName + " " + this.Const.UI.getColorizedEntityName(_target) + " and makes them Horny!");
 	}
 
 	function addResources()
