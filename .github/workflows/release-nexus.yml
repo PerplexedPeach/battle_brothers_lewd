@@ -25,13 +25,7 @@ jobs:
             --repo "${{ github.repository }}" \
             --pattern "*.zip"
 
-          # Nexus appends .zip to the filename metadata, causing double extension.
-          # Rename to strip .zip so the final Nexus download name is correct.
-          UPLOAD_NAME="${ASSET_NAME%.zip}"
-          mv "$ASSET_NAME" "$UPLOAD_NAME"
-          echo "UPLOAD_NAME=$UPLOAD_NAME" >> "$GITHUB_ENV"
-          echo "Renamed $ASSET_NAME -> $UPLOAD_NAME"
-          ls -la "$UPLOAD_NAME"
+          echo "ASSET_NAME=$ASSET_NAME" >> "$GITHUB_ENV"
 
       - name: Extract version from tag
         run: |
@@ -44,6 +38,7 @@ jobs:
         with:
           api_key: ${{ secrets.NEXUSMODS_API_KEY }}
           file_group_id: ${{ secrets.NEXUSMODS_FILE_GROUP_ID }}
-          filename: ${{ env.UPLOAD_NAME }}
+          filename: ${{ env.ASSET_NAME }}
           version: ${{ env.VERSION }}
+          display_name: ${{ env.ASSET_NAME }}
           file_category: main
