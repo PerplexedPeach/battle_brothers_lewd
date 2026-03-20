@@ -125,7 +125,7 @@ jobs:
             -H "Content-Type: application/json" \
             -H "apikey: $NEXUS_API_KEY" \
             -H "User-Agent: mod_lewd/release" \
-            -d "{\"upload_id\": \"$UPLOAD_ID\", \"name\": \"$UPLOAD_NAME\", \"version\": \"$VERSION\", \"file_category\": \"main\"}")
+            -d "{\"upload_id\": \"$UPLOAD_ID\", \"name\": \"mod_lewd\", \"version\": \"$VERSION\", \"file_category\": \"main\"}")
 
           FILE_UID=$(echo "$UPDATE_RESP" | jq -r '.id')
           echo "Done! File UID: $FILE_UID"
