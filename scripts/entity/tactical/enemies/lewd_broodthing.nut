@@ -279,6 +279,22 @@ this.lewd_broodthing <- this.inherit("scripts/entity/tactical/actor", {
 
 			this.m.Tentacles = [];
 
+			// Kill any entities with pending orgasm defeat before ending combat.
+			// These are alive but flagged to die at onTurnEnd -- if combat ends
+			// first, they become zombies that corrupt the turn sequence bar.
+			foreach (group in allActors)
+			{
+				foreach (a in group)
+				{
+					if (a.isAlive() && a.getFlags().has("lewdOrgasmDefeat"))
+					{
+						::logInfo("[broodthing] killing orgasm-defeat zombie " + a.getName() + " before combat end");
+						a.getFlags().set("lewdPleasureDeath", true);
+						a.kill(null, null, this.Const.FatalityType.None, true);
+					}
+				}
+			}
+
 			// Force combat to end -- killing the body means the fight is won,
 			// just like base game kraken. Prevents orphaned off-map tentacles
 			// from keeping combat alive and corrupting the turn sequence bar.

@@ -169,6 +169,7 @@ this.broodthing_ensnare_skill <- this.inherit("scripts/skills/skill", {
 		_data.TargetEntity.raiseRootsFromGround(_data.User.getHitpointsPct() > 0.5 ? "broodthing_ensnare_front" : "broodthing_ensnare_front_injured", _data.User.getMode() == 0 ? "broodthing_ensnare_back" : "broodthing_ensnare_back_2");
 		_data.User.getSkills().setBusy(false);
 		_data.User.removeFromMap();
+		_data.User.setActionPoints(0);
 	}
 
 });

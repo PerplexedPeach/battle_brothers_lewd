@@ -280,7 +280,29 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC", function()
 				this.getSkills().getSkillByID("effects.lewd_horny").onRefresh();
 			else
 				this.getSkills().add(this.new("scripts/skills/effects/lewd_horny_effect"));
-			// Actual kill happens in climax_effect.onTurnEnd
+
+			// Normal kill: climax_effect.onTurnEnd fires at end of this entity's turn.
+			// But if the entity's turn already passed this round (e.g. AoE hit them
+			// during a later entity's turn), onTurnEnd won't fire until next round.
+			// Combat can end before then, leaving a zombie that corrupts the turn bar.
+			// Schedule a deferred kill as safety net.
+			if (this.m.IsTurnDone)
+			{
+				local actor = this;
+				local Tactical = this.Tactical;
+				local FatalityNone = this.Const.FatalityType.None;
+				this.Time.scheduleEvent(this.TimeUnit.Virtual, 500, function(_d) {
+					if (!_d.Actor.isAlive()) return;
+					if (!_d.Actor.getFlags().has("lewdOrgasmDefeat")) return;
+					::logInfo("[climax] deferred kill for " + _d.Actor.getName() + " (turn already done when defeated)");
+					_d.Actor.getFlags().set("lewdPleasureDeath", true);
+					local killer = null;
+					if (_d.Actor.m.LastPleasureSourceID >= 0)
+						killer = _d.Tactical.getEntityByID(_d.Actor.m.LastPleasureSourceID);
+					if (killer != null && !killer.isAlive()) killer = null;
+					_d.Actor.kill(killer, null, _d.FatalityNone, true);
+				}, { Actor = actor, Tactical = Tactical, FatalityNone = FatalityNone });
+			}
 		}
 
 		// Add pleasure bar + orgasm count to tactical tooltip (enemies/NPCs)
