@@ -30,7 +30,10 @@ jobs:
             --repo "${{ github.repository }}" \
             --pattern "*.zip"
 
-          echo "ASSET_NAME=$ASSET_NAME" >> "$GITHUB_ENV"
+          # Rename to strip .zip -- Nexus upload action appends .zip automatically
+          ASSET_STEM="${ASSET_NAME%.zip}"
+          mv "$ASSET_NAME" "$ASSET_STEM"
+          echo "ASSET_STEM=$ASSET_STEM" >> "$GITHUB_ENV"
 
       - name: Extract version from tag
         run: |
@@ -44,6 +47,6 @@ jobs:
         with:
           api_key: ${{ secrets.NEXUSMODS_API_KEY }}
           file_group_id: ${{ secrets.NEXUSMODS_FILE_GROUP_ID }}
-          filename: ${{ env.ASSET_NAME }}
+          filename: ${{ env.ASSET_STEM }}
           version: ${{ env.VERSION }}
           file_category: main
