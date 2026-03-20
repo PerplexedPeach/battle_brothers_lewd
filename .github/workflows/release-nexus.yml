@@ -25,9 +25,10 @@ jobs:
             --repo "${{ github.repository }}" \
             --pattern "*.zip"
 
-          # Rename to mod_lewd.zip so Nexus uses a clean download name.
-          # Version is tracked separately via the version field.
-          mv "$ASSET_NAME" mod_lewd.zip
+          # Nexus appends .zip to the filename automatically.
+          # Rename to strip .zip so download becomes mod_lewd.zip (not mod_lewd.zip.zip).
+          # display_name must match filename to avoid UUID filenames on Nexus.
+          mv "$ASSET_NAME" mod_lewd
 
       - name: Extract version from tag
         run: |
@@ -40,6 +41,7 @@ jobs:
         with:
           api_key: ${{ secrets.NEXUSMODS_API_KEY }}
           file_group_id: ${{ secrets.NEXUSMODS_FILE_GROUP_ID }}
-          filename: mod_lewd.zip
+          filename: mod_lewd
           version: ${{ env.VERSION }}
+          display_name: mod_lewd
           file_category: main
