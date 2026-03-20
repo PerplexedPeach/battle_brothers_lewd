@@ -13,27 +13,20 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           # Find the .zip asset from the release
-          ASSET_URL=$(gh release view "${{ github.event.release.tag_name }}" \
-            --repo "${{ github.repository }}" \
-            --json assets --jq '.assets[] | select(.name | endswith(".zip")) | .url')
-
-          if [ -z "$ASSET_URL" ]; then
-            echo "::error::No .zip asset found in release ${{ github.event.release.tag_name }}"
-            exit 1
-          fi
-
           ASSET_NAME=$(gh release view "${{ github.event.release.tag_name }}" \
             --repo "${{ github.repository }}" \
             --json assets --jq '.assets[] | select(.name | endswith(".zip")) | .name')
+
+          if [ -z "$ASSET_NAME" ]; then
+            echo "::error::No .zip asset found in release ${{ github.event.release.tag_name }}"
+            exit 1
+          fi
 
           gh release download "${{ github.event.release.tag_name }}" \
             --repo "${{ github.repository }}" \
             --pattern "*.zip"
 
-          # Rename to strip .zip -- Nexus upload action appends .zip automatically
-          ASSET_STEM="${ASSET_NAME%.zip}"
-          mv "$ASSET_NAME" "$ASSET_STEM"
-          echo "ASSET_STEM=$ASSET_STEM" >> "$GITHUB_ENV"
+          echo "ASSET_NAME=$ASSET_NAME" >> "$GITHUB_ENV"
 
       - name: Extract version from tag
         run: |
@@ -47,6 +40,6 @@ jobs:
         with:
           api_key: ${{ secrets.NEXUSMODS_API_KEY }}
           file_group_id: ${{ secrets.NEXUSMODS_FILE_GROUP_ID }}
-          filename: ${{ env.ASSET_STEM }}
+          filename: ${{ env.ASSET_NAME }}
           version: ${{ env.VERSION }}
           file_category: main
