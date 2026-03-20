@@ -38,6 +38,46 @@ this.orc_lewd_racial <- this.inherit("scripts/skills/skill", {
 				this.m.HasAIBehavior = true;
 			}
 		}
+
+		// Grant debauchery perks by orc type
+		local t = actor.getType();
+		local skills = actor.getSkills();
+
+		// Berserker: Brutal Force (+25% pleasure, +1 orgasm threshold)
+		if (t == this.Const.EntityType.OrcBerserker)
+		{
+			if (!skills.hasSkill("perk.lewd_brutal_force"))
+				skills.add(this.new("scripts/skills/perks/perk_lewd_brutal_force"));
+		}
+		// Warrior: Exploit Weakness (+25% armor damage vs females)
+		else if (t == this.Const.EntityType.OrcWarrior)
+		{
+			if (!skills.hasSkill("perk.lewd_exploit_weakness"))
+				skills.add(this.new("scripts/skills/perks/perk_lewd_exploit_weakness"));
+		}
+		// Warlord: Brutal Force + Conqueror (fatigue restore + morale on causing climax)
+		else if (t == this.Const.EntityType.OrcWarlord)
+		{
+			if (!skills.hasSkill("perk.lewd_brutal_force"))
+				skills.add(this.new("scripts/skills/perks/perk_lewd_brutal_force"));
+			if (!skills.hasSkill("perk.lewd_conqueror"))
+				skills.add(this.new("scripts/skills/perks/perk_lewd_conqueror"));
+		}
+		// Legend Orc Elite: Brutal Force + Iron Grip (restrain)
+		else if (t == this.Const.EntityType.LegendOrcElite)
+		{
+			if (!skills.hasSkill("perk.lewd_brutal_force"))
+				skills.add(this.new("scripts/skills/perks/perk_lewd_brutal_force"));
+			if (!skills.hasSkill("perk.lewd_iron_grip"))
+				skills.add(this.new("scripts/skills/perks/perk_lewd_iron_grip"));
+		}
+		// Legend Orc Behemoth: Brutal Force
+		else if (t == this.Const.EntityType.LegendOrcBehemoth)
+		{
+			if (!skills.hasSkill("perk.lewd_brutal_force"))
+				skills.add(this.new("scripts/skills/perks/perk_lewd_brutal_force"));
+		}
+		// Orc Young: no perks
 	}
 
 	function onTurnStart()
