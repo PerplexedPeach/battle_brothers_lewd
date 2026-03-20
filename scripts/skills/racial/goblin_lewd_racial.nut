@@ -37,6 +37,29 @@ this.goblin_lewd_racial <- this.inherit("scripts/skills/skill", {
 				this.m.HasAIBehavior = true;
 			}
 		}
+
+		// Grant debauchery perks by goblin type
+		local t = actor.getType();
+		local skills = actor.getSkills();
+
+		// Goblin Leader: Conqueror (benefits from swarm causing climaxes)
+		if (t == this.Const.EntityType.GoblinLeader)
+		{
+			if (!skills.hasSkill("perk.lewd_conqueror"))
+				skills.add(this.new("scripts/skills/perks/perk_lewd_conqueror"));
+		}
+		// Legend Goblin Berserker: Brutal Force (+25% pleasure, +1 orgasm threshold)
+		else if (t == this.Const.EntityType.LegendGoblinBerserker)
+		{
+			if (!skills.hasSkill("perk.lewd_brutal_force"))
+				skills.add(this.new("scripts/skills/perks/perk_lewd_brutal_force"));
+		}
+		// Legend Goblin Tribe Defender: Exploit Weakness (+25% armor damage vs females)
+		else if (t == this.Const.EntityType.LegendGoblinTribeDefender)
+		{
+			if (!skills.hasSkill("perk.lewd_exploit_weakness"))
+				skills.add(this.new("scripts/skills/perks/perk_lewd_exploit_weakness"));
+		}
 	}
 
 	function onTurnStart()
