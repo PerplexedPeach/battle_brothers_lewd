@@ -7,6 +7,10 @@ on:
 jobs:
   upload-nexus:
     runs-on: ubuntu-latest
+    env:
+      NEXUS_API: https://api.nexusmods.com/v3
+      NEXUS_API_KEY: ${{ secrets.NEXUSMODS_API_KEY }}
+      FILE_GROUP_ID: ${{ secrets.NEXUSMODS_FILE_GROUP_ID }}
     steps:
       - name: Download release zip
         env:
@@ -25,23 +29,103 @@ jobs:
             --repo "${{ github.repository }}" \
             --pattern "*.zip"
 
-          # Nexus appends .zip to the filename automatically.
-          # Rename to strip .zip so download becomes mod_lewd.zip (not mod_lewd.zip.zip).
-          # display_name must match filename to avoid UUID filenames on Nexus.
-          mv "$ASSET_NAME" mod_lewd
-
-      - name: Extract version from tag
-        run: |
           VERSION="${{ github.event.release.tag_name }}"
           VERSION="${VERSION#v}"
+
+          # Upload filename sent to Nexus API (no .zip -- Nexus appends it)
+          UPLOAD_NAME="${ASSET_NAME%.zip}"
+
+          echo "ASSET_NAME=$ASSET_NAME" >> "$GITHUB_ENV"
+          echo "UPLOAD_NAME=$UPLOAD_NAME" >> "$GITHUB_ENV"
           echo "VERSION=$VERSION" >> "$GITHUB_ENV"
+          echo "File: $ASSET_NAME ($(stat -c%s "$ASSET_NAME") bytes)"
+          echo "Upload name: $UPLOAD_NAME"
 
       - name: Upload to Nexus Mods
-        uses: Nexus-Mods/upload-action@v1.0.0-beta.2
-        with:
-          api_key: ${{ secrets.NEXUSMODS_API_KEY }}
-          file_group_id: ${{ secrets.NEXUSMODS_FILE_GROUP_ID }}
-          filename: mod_lewd
-          version: ${{ env.VERSION }}
-          display_name: mod_lewd
-          file_category: main
+        run: |
+          FILE_SIZE=$(stat -c%s "$ASSET_NAME")
+
+          # Step 1: Create multipart upload (send filename WITHOUT .zip)
+          echo "Creating multipart upload..."
+          UPLOAD_RESP=$(curl -sf "$NEXUS_API/uploads/multipart" \
+            -H "Content-Type: application/json" \
+            -H "apikey: $NEXUS_API_KEY" \
+            -H "User-Agent: mod_lewd/release" \
+            -d "{\"filename\": \"$UPLOAD_NAME\", \"size_bytes\": \"$FILE_SIZE\"}")
+
+          UPLOAD_ID=$(echo "$UPLOAD_RESP" | jq -r '.id')
+          PART_SIZE=$(echo "$UPLOAD_RESP" | jq -r '.parts_size')
+          COMPLETE_URL=$(echo "$UPLOAD_RESP" | jq -r '.complete_presigned_url')
+          NUM_PARTS=$(echo "$UPLOAD_RESP" | jq '.parts_presigned_url | length')
+          echo "Upload ID: $UPLOAD_ID ($NUM_PARTS parts, $PART_SIZE bytes each)"
+
+          # Step 2: Upload parts
+          for i in $(seq 0 $((NUM_PARTS - 1))); do
+            PART_URL=$(echo "$UPLOAD_RESP" | jq -r ".parts_presigned_url[$i]")
+            OFFSET=$((i * PART_SIZE))
+            REMAINING=$((FILE_SIZE - OFFSET))
+            CHUNK_SIZE=$((REMAINING < PART_SIZE ? REMAINING : PART_SIZE))
+            PART_NUM=$((i + 1))
+
+            echo "Uploading part $PART_NUM/$NUM_PARTS ($CHUNK_SIZE bytes)..."
+            ETAG=$(dd if="$ASSET_NAME" bs=1 skip=$OFFSET count=$CHUNK_SIZE 2>/dev/null | \
+              curl -sf -X PUT "$PART_URL" \
+                -H "Content-Type: application/octet-stream" \
+                -H "Content-Length: $CHUNK_SIZE" \
+                --data-binary @- \
+                -D - -o /dev/null | grep -i etag | tr -d '\r"' | awk '{print $2}')
+
+            if [ -z "$ETAG" ]; then
+              echo "::error::Failed to get ETag for part $PART_NUM"
+              exit 1
+            fi
+            eval "ETAG_$i=\"$ETAG\""
+            echo "  Part $PART_NUM ETag: $ETAG"
+          done
+
+          # Step 3: Complete multipart upload
+          echo "Completing multipart upload..."
+          XML="<CompleteMultipartUpload>"
+          for i in $(seq 0 $((NUM_PARTS - 1))); do
+            eval "ETAG=\$ETAG_$i"
+            XML="$XML<Part><PartNumber>$((i + 1))</PartNumber><ETag>$ETAG</ETag></Part>"
+          done
+          XML="$XML</CompleteMultipartUpload>"
+
+          curl -sf -X POST "$COMPLETE_URL" \
+            -H "Content-Type: application/xml" \
+            -d "$XML" > /dev/null
+
+          # Step 4: Finalise upload
+          echo "Finalising upload..."
+          curl -sf -X POST "$NEXUS_API/uploads/$UPLOAD_ID/finalise" \
+            -H "Content-Type: application/json" \
+            -H "apikey: $NEXUS_API_KEY" \
+            -H "User-Agent: mod_lewd/release" > /dev/null
+
+          # Step 5: Poll until available
+          echo "Waiting for processing..."
+          for attempt in $(seq 1 30); do
+            STATE=$(curl -sf "$NEXUS_API/uploads/$UPLOAD_ID" \
+              -H "apikey: $NEXUS_API_KEY" \
+              -H "User-Agent: mod_lewd/release" | jq -r '.state')
+            echo "  Poll $attempt: state=$STATE"
+            if [ "$STATE" = "available" ]; then break; fi
+            sleep 3
+          done
+
+          if [ "$STATE" != "available" ]; then
+            echo "::error::Upload processing timed out"
+            exit 1
+          fi
+
+          # Step 6: Associate with mod (display_name also without .zip)
+          echo "Updating mod file..."
+          UPDATE_RESP=$(curl -sf -X POST "$NEXUS_API/mod-file-update-groups/$FILE_GROUP_ID/versions" \
+            -H "Content-Type: application/json" \
+            -H "apikey: $NEXUS_API_KEY" \
+            -H "User-Agent: mod_lewd/release" \
+            -d "{\"upload_id\": \"$UPLOAD_ID\", \"name\": \"$UPLOAD_NAME\", \"version\": \"$VERSION\", \"file_category\": \"main\"}")
+
+          FILE_UID=$(echo "$UPDATE_RESP" | jq -r '.id')
+          echo "Done! File UID: $FILE_UID"
