@@ -79,6 +79,93 @@
 	_actor.getFlags().set("lewdDomSub", next);
 };
 
+// Roll a domination check for allure events. Returns true on success.
+// Higher dom score = better odds, deep sub = very unlikely to dominate.
+::Lewd.Mastery.rollDomCheck <- function( _actor )
+{
+	local domSub = ::Lewd.Mastery.getDomSub(_actor);
+	local chance = ::Lewd.Const.AllureEventDomBaseChance + domSub * ::Lewd.Const.AllureEventDomScoreScale;
+	chance = this.Math.max(::Lewd.Const.AllureEventDomMinChance, this.Math.min(::Lewd.Const.AllureEventDomMaxChance, chance));
+	return this.Math.rand(1, 100) <= chance;
+};
+
+// Returns a mood value based on whether an outcome aligns with the actor's dom/sub nature.
+// _isDomAligned = true for dom-aligned outcomes (dom success), false for sub-aligned (sub choice, dom fail).
+// Positive = outcome matches nature (feels right), negative = against nature (feels wrong).
+// Range: -2.0 to +2.0, rounded to nearest 0.5. Returns 0.0 for neutral actors.
+::Lewd.Mastery.getAlignedMood <- function( _actor, _isDomAligned )
+{
+	local domSub = ::Lewd.Mastery.getDomSub(_actor).tofloat();
+	local mood = domSub / 15.0;
+	if (!_isDomAligned) mood = -mood;
+	mood = this.Math.max(-2.0, this.Math.min(2.0, mood));
+	mood = this.Math.floor(mood * 2.0 + 0.5) / 2.0;
+	return mood;
+};
+
+// Find all eligible male non-PC brothers in the roster.
+::Lewd.Mastery.findMaleCandidates <- function()
+{
+	local brothers = this.World.getPlayerRoster().getAll();
+	local candidates = [];
+	foreach (bro in brothers)
+	{
+		if (bro.getGender() == 0 && !bro.getFlags().get("IsPlayerCharacter"))
+			candidates.push(bro);
+	}
+	return candidates;
+};
+
+// Pick a brother from _candidates using weighted random selection.
+// _config table supports:
+//   domScale       - weight per dom point (e.g. 0.1 = +1.0 weight at 10 dom)
+//   subScale       - weight per sub point (e.g. 0.1 = +1.0 weight at 10 sub)
+//   debaucheryBonus - flat weight bonus for having the Debauchery perk tree
+// Base weight is always 1.0, so every candidate has at least some chance.
+::Lewd.Mastery.pickWeightedBrother <- function( _candidates, _config )
+{
+	if (_candidates.len() == 0) return null;
+	if (_candidates.len() == 1) return _candidates[0];
+
+	local P = 100; // precision multiplier (1.0 = 100)
+	local weights = [];
+	local totalWeight = 0;
+
+	foreach (bro in _candidates)
+	{
+		local w = P;
+
+		if ("domScale" in _config)
+			w += this.Math.floor(::Lewd.Mastery.getDomScore(bro) * _config.domScale * P);
+
+		if ("subScale" in _config)
+			w += this.Math.floor(::Lewd.Mastery.getSubScore(bro) * _config.subScale * P);
+
+		if ("debaucheryBonus" in _config)
+		{
+			local bg = bro.getBackground();
+			if (bg != null && bg.hasPerkGroup(::Const.Perks.DebaucheryTree))
+				w += this.Math.floor(_config.debaucheryBonus * P);
+		}
+
+		if (w < 1) w = 1;
+		weights.push(w);
+		totalWeight += w;
+	}
+
+	local roll = this.Math.rand(1, totalWeight);
+	local cumulative = 0;
+
+	foreach (i, w in weights)
+	{
+		cumulative += w;
+		if (roll <= cumulative)
+			return _candidates[i];
+	}
+
+	return _candidates[_candidates.len() - 1];
+};
+
 // Check if two actors are in a mount relationship (either direction)
 // Returns true if _user is mounting _target OR _target is mounting _user
 ::Lewd.Mastery.isMountedWith <- function( _user, _target )
