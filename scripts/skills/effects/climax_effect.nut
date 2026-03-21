@@ -310,6 +310,20 @@ this.climax_effect <- this.inherit("scripts/skills/skill", {
 						domSource.getFlags().set("lewdPartnerClimaxes", cur + 1);
 					}
 
+					// Ethereal stat absorption: source learns from enemies they make climax
+					if (::Lewd.Const.EtherealStatAbsorptionMode == "On Climax"
+						&& domSource.isPlayerControlled()
+						&& ::Lewd.Mastery.getLewdTier(domSource) >= ::Lewd.Const.EtherealStatAbsorptionMinTier
+						&& !domSource.isAlliedWith(actor))
+					{
+						local absorbed = ::Lewd.Mastery.absorbStat(domSource, actor, false);
+						if (absorbed != null)
+						{
+							this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(domSource) + " absorbs +1 " + absorbed.label + " from " + this.Const.UI.getColorizedEntityName(actor));
+							::Lewd.Mastery.playAbsorbEffect(domSource, this.Tactical, this.Const, this.Sound, this.Time);
+						}
+					}
+
 					// Ethereal draining: when an Ethereal+ succubus makes an ally climax, drain them
 					if (::Lewd.Mastery.getLewdTier(domSource) >= 3
 						&& domSource.isAlliedWith(actor))
@@ -357,7 +371,7 @@ this.climax_effect <- this.inherit("scripts/skills/skill", {
 				killer = null;
 
 			// Ethereal stat absorption: source learns from enemies that die from climax
-			if (killer != null && ::Lewd.Const.EtherealStatAbsorptionEnabled
+			if (killer != null && ::Lewd.Const.EtherealStatAbsorptionMode == "On Death"
 				&& killer.isPlayerControlled()
 				&& ::Lewd.Mastery.getLewdTier(killer) >= ::Lewd.Const.EtherealStatAbsorptionMinTier)
 			{

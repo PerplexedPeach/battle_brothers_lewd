@@ -62,14 +62,35 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC", function()
 
 	// --- Mod Settings ---
 	local page = ::Lewd.Mod.ModSettings.addPage("General");
-	local settingStatAbsorption = page.addBooleanSetting(
+	local settingStatAbsorption = page.addElement(::MSU.Class.EnumSetting(
 		"EtherealStatAbsorption",
-		true,
+		"On Death",
+		["Disabled", "On Climax", "On Death"],
 		"Succubus Stat Absorption",
-		"When enabled, Ethereal-tier characters absorb +1 to any stat lower than the enemy's when causing climax."
-	);
+		"Ethereal-tier characters absorb +1 to a stat lower than the enemy's. [Disabled] turns this off. [On Climax] triggers whenever you cause an enemy to climax. [On Death] triggers only when an enemy dies from climax."
+	));
 	settingStatAbsorption.addAfterChangeCallback(function(_oldValue) {
-		::Lewd.Const.EtherealStatAbsorptionEnabled = this.getValue();
+		::Lewd.Const.EtherealStatAbsorptionMode = this.getValue();
+	});
+
+	local settingOrgasmDefeat = page.addBooleanSetting(
+		"OrgasmDefeat",
+		true,
+		"Orgasm Defeat",
+		"When enabled, characters that climax too many times in a battle are defeated. The threshold scales with Resolve and HP."
+	);
+	settingOrgasmDefeat.addAfterChangeCallback(function(_oldValue) {
+		::Lewd.Const.OrgasmDefeatEnabled = this.getValue();
+	});
+
+	local settingHarassment = page.addBooleanSetting(
+		"AlliedHarassment",
+		true,
+		"Allied Harassment",
+		"When enabled, horny male allies may grope or use sex abilities on adjacent high-allure female characters during combat."
+	);
+	settingHarassment.addAfterChangeCallback(function(_oldValue) {
+		::Lewd.Const.HarassmentEnabled = this.getValue();
 	});
 
 	local settingInsatiableLimit = page.addRangeSetting(
@@ -880,6 +901,7 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC", function()
 			}
 
 			// --- Allied harassment (male brother perspective, requires Horny) ---
+			if (!::Lewd.Const.HarassmentEnabled) return;
 			if (!actor.isPlayerControlled()) return;
 			if (actor.getGender() == 1) return; // only males harass
 			if (!actor.getSkills().hasSkill("effects.lewd_horny")) return; // must be horny

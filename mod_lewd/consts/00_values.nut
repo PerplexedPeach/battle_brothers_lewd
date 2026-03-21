@@ -205,6 +205,7 @@
 ::Lewd.Const.MountingDamageBreakThreshold <- 15; // HP damage to mounter that breaks the mount
 
 // --- Allied Harassment ---
+::Lewd.Const.HarassmentEnabled <- true;
 ::Lewd.Const.HarassmentAllureThreshold <- 20; // minimum allure on female to be eligible
 ::Lewd.Const.HarassmentChancePerAllure <- 2; // % chance per point of allure above threshold
 ::Lewd.Const.HarassmentResolveScale <- 1.0; // brother resolve reduces chance (subtracted)
@@ -553,8 +554,9 @@
 ::Lewd.Const.DrainedThirdBravery <- 30;
 ::Lewd.Const.DrainedThirdDailyWageMult <- 0.0;   // -100% salary
 
-// Ethereal Stat Absorption: gain +1 stat when causing enemy climax (if enemy's base > yours)
-::Lewd.Const.EtherealStatAbsorptionEnabled <- true;
+// Ethereal Stat Absorption: gain +1 stat from enemies (if enemy's base > yours)
+// Mode: "Disabled", "On Climax", "On Death" (from climax)
+::Lewd.Const.EtherealStatAbsorptionMode <- "On Death";
 ::Lewd.Const.EtherealStatAbsorptionMinTier <- 3; // minimum lewd tier required (3 = Ethereal)
 
 // Drain Hunger Event (world event: succubus drains an ally)
