@@ -1,6 +1,6 @@
 ::Lewd <- {
 	ID = "mod_lewd",
-	Version = "1.8.0",
+	Version = "1.8.1",
 	Name = "Lewdness",
 	IsStartingNewCampaign = false
 };

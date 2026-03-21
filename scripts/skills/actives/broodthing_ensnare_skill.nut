@@ -74,6 +74,9 @@ this.broodthing_ensnare_skill <- this.inherit("scripts/skills/skill", {
 		_user.sinkIntoGround(0.35);
 		_user.getSkills().setBusy(true);
 		_user.m.IsAbleToDie = false;
+		// Drain AP immediately so the AI can't pick another skill before
+		// the deferred onNetSpawn callback fires and removes the entity.
+		_user.setActionPoints(0);
 		this.Time.scheduleEvent(this.TimeUnit.Real, 400, this.onNetSpawn.bindenv(this), {
 			User = _user,
 			Skill = this,
@@ -167,9 +170,9 @@ this.broodthing_ensnare_skill <- this.inherit("scripts/skills/skill", {
 		breakFree.setChanceBonus(0);
 		_data.TargetEntity.getSkills().add(breakFree);
 		_data.TargetEntity.raiseRootsFromGround(_data.User.getHitpointsPct() > 0.5 ? "broodthing_ensnare_front" : "broodthing_ensnare_front_injured", _data.User.getMode() == 0 ? "broodthing_ensnare_back" : "broodthing_ensnare_back_2");
-		_data.User.getSkills().setBusy(false);
 		_data.User.removeFromMap();
 		_data.User.setActionPoints(0);
+		_data.User.getSkills().setBusy(false);
 	}
 
 });

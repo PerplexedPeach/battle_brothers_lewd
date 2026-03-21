@@ -153,6 +153,17 @@ this.lewd_broodthing_tentacle <- this.inherit("scripts/entity/tactical/actor", {
 		this.onUpdateInjuryLayer();
 	}
 
+	function onTurnStart()
+	{
+		this.actor.onTurnStart();
+
+		// Underground tentacles (off-map from ensnare) get AP reset each turn.
+		// ai_move_tentacle has no isPlacedOnMap guard and will try to teleport,
+		// crashing the native navigator. Drain AP so no behavior can execute.
+		if (!this.isPlacedOnMap())
+			this.setActionPoints(0);
+	}
+
 	function onDeath( _killer, _skill, _tile, _fatalityType )
 	{
 		if (_tile != null)
