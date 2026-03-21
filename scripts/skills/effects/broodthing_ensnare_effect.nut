@@ -143,7 +143,7 @@ this.broodthing_ensnare_effect <- this.inherit("scripts/skills/skill", {
 		this.m.SpriteScaleBackup = sprite1.Scale;
 		sprite1.Scale = 1.0;
 		sprite2.Scale = 1.0;
-		actor.getAIAgent().addBehavior(this.new("scripts/ai/tactical/behaviors/ai_drag"));
+		actor.getAIAgent().addBehavior(this.new("scripts/ai/tactical/behaviors/broodthing_ai_drag"));
 		this.getContainer().add(this.new("scripts/skills/actives/kraken_move_ensnared_skill"));
 		this.Tactical.TurnSequenceBar.pushEntityBack(this.getContainer().getActor().getID());
 
