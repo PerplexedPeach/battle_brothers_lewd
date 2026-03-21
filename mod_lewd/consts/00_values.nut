@@ -570,6 +570,10 @@
 ::Lewd.Const.EtherealFirstEventBaseScore <- 10;
 ::Lewd.Const.EtherealSecondEventBaseScore <- 15;
 
+// Ethereal Readiness Event (signals gheist encounter is approaching)
+::Lewd.Const.EtherealReadyEventThreshold <- 60;
+::Lewd.Const.EtherealReadyEventBaseScore <- 20;
+
 // Ethereal Quest Chain
 ::Lewd.Const.EtherealQuestClimaxThreshold <- 80;  // combined climaxes to trigger gheist encounter
 ::Lewd.Const.EtherealQuestSpawnMinDist <- 5;       // min tile distance for quest locations
@@ -748,6 +752,23 @@
 ::Lewd.Const.AIBehaviorIDOrcClaim <- 0;                   // set dynamically in mod_lewd.nut via Const.AI.Behavior.ID.COUNT
 ::Lewd.Const.AIBehaviorIDOrcHorny <- 0;                   // set dynamically in mod_lewd.nut via Const.AI.Behavior.ID.COUNT
 
+// --- Stub missing Legend entity types for older Legends versions ---
+foreach (name in [
+	"LegendGoblinHarrier", "LegendGoblinBerserker", "LegendGoblinTribeDefender",
+	"LegendGoblinDirewolfRider", "LegendGoblinWhiteDirewolfRider",
+	"LegendGoblinWitchDoctor", "LegendGoblinPlunderer",
+	"LegendOrcElite", "LegendOrcBehemoth",
+	"LegendRockUnhold",
+	"LegendWhiteDirewolf", "LegendWhiteWarwolf",
+	"LegendRedbackSpider", "LegendSpiderCluster",
+	"LegendDemonAlp",
+	"LegendStollwurm"
+])
+{
+	if (!(name in ::Const.EntityType))
+		::Const.EntityType[name] <- -1;
+}
+
 // --- Species Entity Type Lists (base game + Legends) ---
 
 ::Lewd.Const.GoblinEntityTypes <- [
@@ -806,3 +827,29 @@
 	::Const.EntityType.Lindwurm,
 	::Const.EntityType.LegendStollwurm
 ];
+
+// --- Allure Events (camp encounters with male brothers) ---
+::Lewd.Const.AllureEventCooldownDays <- 5;        // individual event cooldown
+::Lewd.Const.AllureEventSharedCooldownDays <- 3;  // min days between ANY allure event
+::Lewd.Const.AllureEventDomBaseChance <- 50;       // base % for dom success at 0 dom/sub
+::Lewd.Const.AllureEventDomScoreScale <- 1.5;     // + domSub * this (negative domSub = harder)
+::Lewd.Const.AllureEventDomMinChance <- 5;        // floor
+::Lewd.Const.AllureEventDomMaxChance <- 95;       // ceiling
+
+// Lingering Gaze (mild, low threshold)
+::Lewd.Const.AllureGazeMinAllure <- 15;
+::Lewd.Const.AllureGazeBaseScore <- 50;
+::Lewd.Const.AllureGazeAllureScale <- 3.0;
+::Lewd.Const.AllureGazeDomSubShift <- 1;          // dom/sub points gained/lost
+
+// Uninvited Touch (medium, no reject option)
+::Lewd.Const.AllureTouchMinAllure <- 25;
+::Lewd.Const.AllureTouchBaseScore <- 40;
+::Lewd.Const.AllureTouchAllureScale <- 2.5;
+::Lewd.Const.AllureTouchDomSubShift <- 1;
+
+// Night Visitor (intense, high threshold)
+::Lewd.Const.AllureNightMinAllure <- 35;
+::Lewd.Const.AllureNightBaseScore <- 30;
+::Lewd.Const.AllureNightAllureScale <- 2.0;
+::Lewd.Const.AllureNightDomSubShift <- 1;
