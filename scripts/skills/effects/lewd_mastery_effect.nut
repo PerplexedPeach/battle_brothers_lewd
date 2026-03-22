@@ -102,7 +102,7 @@ this.lewd_mastery_effect <- this.inherit("scripts/skills/skill", {
 	function onCombatStarted()
 	{
 		if (this.hasPerk())
-			this.m.CombatBonus = true;
+			this.m.CombatBonus = false;
 	}
 
 	function onCombatFinished()
