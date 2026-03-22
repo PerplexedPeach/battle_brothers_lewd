@@ -52,7 +52,7 @@ this.vaginal_skill <- this.inherit("scripts/skills/actives/female_sex_skill", {
 			},
 			{
 				Name = "Cowgirl",
-				Description = "Ride with expert skill, automatically succeeding and draining the target's action points.",
+				Description = "Ride with expert skill, draining the target's action points.",
 				Icon = "skills/lewd_vaginal_t3.png",
 				IconDisabled = "skills/lewd_vaginal_t3_bw.png",
 				Overlay = "lewd_vaginal_t3",
@@ -88,8 +88,6 @@ this.vaginal_skill <- this.inherit("scripts/skills/actives/female_sex_skill", {
 
 	function getHitChanceAgainst( _target )
 	{
-		// T3 Cowgirl: auto-success
-		if (this.getTier() >= 3) return 100;
 		return this.female_sex_skill.getHitChanceAgainst(_target);
 	}
 
@@ -212,24 +210,12 @@ this.vaginal_skill <- this.inherit("scripts/skills/actives/female_sex_skill", {
 
 		// Hit chance
 		local tier = this.getTier();
-		if (tier >= 3)
-		{
-			result.push({
-				id = 6,
-				type = "text",
-				icon = "ui/icons/hitchance.png",
-				text = "[color=" + pos + "]Always hits[/color]"
-			});
-		}
-		else
-		{
-			result.push({
-				id = 6,
-				type = "text",
-				icon = "ui/icons/hitchance.png",
-				text = "Hit chance: [color=" + pos + "]" + this.getBaseHitChance() + "%[/color] base, modified by Allure vs target Resolve"
-			});
-		}
+		result.push({
+			id = 6,
+			type = "text",
+			icon = "ui/icons/hitchance.png",
+			text = "Hit chance: [color=" + pos + "]" + this.getBaseHitChance() + "%[/color] base, modified by Allure vs target Resolve"
+		});
 
 		// Mount mechanic
 		result.push({
