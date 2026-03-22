@@ -1,5 +1,7 @@
 this.lewd_broodthing_lair_location <- this.inherit("scripts/entity/world/location", {
-	m = {},
+	m = {
+		BroodthingDefeated = false
+	},
 	function getDescription()
 	{
 		return "A foreboding cavern choked with fleshy growths. The spirit's voice trembles with ancient fury.";
@@ -46,6 +48,50 @@ this.lewd_broodthing_lair_location <- this.inherit("scripts/entity/world/locatio
 		this.location.onInit();
 		local body = this.addSprite("body");
 		body.setBrush("world_lewd_broodthing_lair");
+	}
+
+	function onBeforeCombatStarted()
+	{
+		// Re-add defender if troops were lost (e.g. after a previous retreat)
+		if (this.m.Troops.len() == 0)
+		{
+			this.Const.World.Common.addTroop(this, {
+				Type = {
+					ID = this.Const.EntityType.Kraken,
+					Variant = 0,
+					Strength = 500,
+					Cost = 500,
+					Row = -1,
+					Script = "scripts/entity/tactical/enemies/lewd_broodthing"
+				}
+			}, false);
+		}
+
+		this.location.onBeforeCombatStarted();
+	}
+
+	function onCombatLost()
+	{
+		if (this.m.BroodthingDefeated)
+		{
+			this.location.onCombatLost();
+			return;
+		}
+
+		// Player retreated -- restore troops so the location can be fought again
+		if (this.m.Troops.len() == 0)
+		{
+			this.Const.World.Common.addTroop(this, {
+				Type = {
+					ID = this.Const.EntityType.Kraken,
+					Variant = 0,
+					Strength = 500,
+					Cost = 500,
+					Row = -1,
+					Script = "scripts/entity/tactical/enemies/lewd_broodthing"
+				}
+			}, false);
+		}
 	}
 
 	function onDeserialize( _in )

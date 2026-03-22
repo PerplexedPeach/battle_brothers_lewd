@@ -316,6 +316,12 @@ this.lewd_broodthing <- this.inherit("scripts/entity/tactical/actor", {
 			this.Tactical.Entities.addCorpse(_tile);
 		}
 
+		// Mark the world location as defeated so onCombatLost fires the quest event
+		if (this.m.WorldTroop != null && "Party" in this.m.WorldTroop && this.m.WorldTroop.Party != null && !this.m.WorldTroop.Party.isNull())
+		{
+			this.m.WorldTroop.Party.m.BroodthingDefeated = true;
+		}
+
 		this.actor.onDeath(_killer, _skill, _tile, _fatalityType);
 	}
 
