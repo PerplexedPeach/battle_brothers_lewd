@@ -112,6 +112,8 @@
 		// change sprite
 		w.getSprite("head").setBrush("bust_head_lewd_01");
 		w.getSprite("body").setBrush("bust_body_lewd_01");
+		// replace body entry so corpse sprites use lewd variant
+		w.m.Bodies[w.m.Body] = "bust_body_lewd_01";
 		// clear scars and tattoos
 		this.clearScarsAndTattoos(w);
 		// clear bust so accessories are visible
@@ -125,6 +127,7 @@
 		// change sprite
 		w.getSprite("head").setBrush("bust_head_lewd_02");
 		w.getSprite("body").setBrush("bust_body_lewd_02");
+		w.m.Bodies[w.m.Body] = "bust_body_lewd_02";
 		// clear scars and tattoos
 		this.clearScarsAndTattoos(w);
 		w.getSprite("miniboss").setBrush("");
@@ -138,6 +141,7 @@
 		w.getSprite("hair").setBrush("hair_black_lewd_06");
 		w.getSprite("beard").setBrush("");
 		w.getSprite("body").setBrush("bust_body_lewd_05");
+		w.m.Bodies[w.m.Body] = "bust_body_lewd_05";
 		// clear scars and tattoos
 		this.clearScarsAndTattoos(w);
 		w.getSprite("miniboss").setBrush("");
