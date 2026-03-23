@@ -70,7 +70,14 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC", function()
 		"Ethereal-tier characters absorb +1 to a stat lower than the enemy's. [Disabled] turns this off. [On Climax] triggers whenever you cause an enemy to climax. [On Death] triggers only when an enemy dies from climax."
 	));
 	settingStatAbsorption.addAfterChangeCallback(function(_oldValue) {
-		::Lewd.Const.EtherealStatAbsorptionMode = this.getValue();
+		local val = this.getValue();
+		// Migration: old saves may have boolean 'true'/'false' from when this was a bool setting
+		if (typeof val == "bool" || (typeof val == "string" && (val == "true" || val == "false")))
+		{
+			val = val == true || val == "true" ? "On Death" : "Disabled";
+			this.set(val);
+		}
+		::Lewd.Const.EtherealStatAbsorptionMode = val;
 	});
 
 	local settingOrgasmDefeat = page.addBooleanSetting(
@@ -402,7 +409,21 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC", function()
 				_hitInfo.DamageRegular = this.Math.floor(_hitInfo.DamageRegular * ::Lewd.Const.PredatoryInstinctDamageMult);
 			}
 
-			return __original(_attacker, _skill, _hitInfo);
+			local hpDamage = __original(_attacker, _skill, _hitInfo);
+
+			// Pain-to-pleasure: convert fraction of HP damage to pleasure
+			if (hpDamage > 0 && this.isAlive())
+			{
+				local rate = this.getCurrentProperties().PainToPleasureRate;
+				if (rate > 0.0 && this.getPleasureMax() > 0)
+				{
+					local gain = this.Math.max(1, this.Math.floor(hpDamage * rate));
+					this.addPleasure(gain);
+					this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(this) + " converts pain to pleasure (+" + gain + ")");
+				}
+			}
+
+			return hpDamage;
 		};
 
 		// Embrace Pain: auto-pass morale loss checks

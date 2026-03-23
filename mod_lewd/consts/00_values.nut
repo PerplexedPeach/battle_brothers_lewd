@@ -6,6 +6,7 @@
 ::Const.CharacterProperties.DealtPleasureMult <- 1.0;
 ::Const.CharacterProperties.SelfPleasureMult <- 1.0;
 ::Const.CharacterProperties.SexFatigueMult <- 1.0;
+::Const.CharacterProperties.PainToPleasureRate <- 0.0; // fraction of HP damage converted to pleasure (0.0 = none)
 ::Const.CharacterProperties.getAllure <- function() { return this.Math.floor(this.Allure); };
 ::Const.CharacterProperties.getPleasureMax <- function() { return this.Math.floor(this.PleasureMax); };
 
@@ -853,3 +854,33 @@ foreach (name in [
 ::Lewd.Const.AllureNightBaseScore <- 30;
 ::Lewd.Const.AllureNightAllureScale <- 2.0;
 ::Lewd.Const.AllureNightDomSubShift <- 1;
+
+// --- Lewd Clothing ---
+// Allure bonuses per item (0 = no bonus)
+// Latex Harness: dom-scaling bonuses (base + floor(domScore * scale / 30))
+::Lewd.Const.ClothingLatexHarnessAllureBase <- 5;
+::Lewd.Const.ClothingLatexHarnessAllureScale <- 5;         // 5 at dom 0, 10 at dom 30
+::Lewd.Const.ClothingLatexHarnessResolveBase <- 0;
+::Lewd.Const.ClothingLatexHarnessResolveScale <- 5;        // 0 at dom 0, 5 at dom 30
+::Lewd.Const.ClothingLatexHarnessMeleeDefBase <- 0;
+::Lewd.Const.ClothingLatexHarnessMeleeDefScale <- 5;       // 0 at dom 0, 5 at dom 30
+::Lewd.Const.ClothingLatexHarnessHornyChanceBase <- 10;    // % chance on hitting enemy
+::Lewd.Const.ClothingLatexHarnessHornyChanceScale <- 10;   // 10% at dom 0, 20% at dom 30
+::Lewd.Const.ClothingAllureCorset <- 8;
+::Lewd.Const.ClothingCorsetInitiative <- 10;
+::Lewd.Const.ClothingCorsetFatigueRecoveryPenalty <- -1;
+::Lewd.Const.ClothingAllureSheerBodysuit <- 5;
+::Lewd.Const.ClothingSheerBodysuitRangedDef <- 5;
+::Lewd.Const.ClothingSheerBodysuitReceivedPleasureMult <- 1.10; // +10% pleasure received
+::Lewd.Const.ClothingAllureFishnets <- 3;
+::Lewd.Const.ClothingPiercingChainsSelfPleasure <- 5;
+::Lewd.Const.ClothingPiercingChainsPainToPleasure <- 0.2;
+// Sub-scaling bonuses: base + floor(subScore * scale / 30)
+::Lewd.Const.ClothingPiercingChainsAllureBase <- 5;
+::Lewd.Const.ClothingPiercingChainsAllureScale <- 5;       // 5 at sub 0, 10 at sub 30
+::Lewd.Const.ClothingPiercingChainsResolveBase <- 5;
+::Lewd.Const.ClothingPiercingChainsResolveScale <- 5;
+::Lewd.Const.ClothingPiercingChainsInitiativeBase <- 5;
+::Lewd.Const.ClothingPiercingChainsInitiativeScale <- 5;
+::Lewd.Const.ClothingPiercingChainsHornyChanceBase <- 10;  // % chance on being hit
+::Lewd.Const.ClothingPiercingChainsHornyChanceScale <- 10; // 10% at sub 0, 20% at sub 30

@@ -170,4 +170,24 @@
     <sprite id="broodthing_ensnare_front_injured" offsetY="30" ic="FF402040" width="340" height="558" img="entity\broodthing_ensnare_front_injured.png" left="-52" right="64" top="-71" bottom="15"/>
     <sprite id="broodthing_ensnare_back" offsetY="30" ic="FF402040" width="340" height="558" img="entity\broodthing_ensnare_back.png" left="-52" right="86" top="-42" bottom="64"/>
     <sprite id="broodthing_ensnare_back_2" offsetY="30" ic="FF402040" width="340" height="558" img="entity\broodthing_ensnare_back_2.png" left="-47" right="105" top="-42" bottom="54"/>
+
+    <!-- Lewd Clothing: Black Corset (Plate layer) — uses body canvas 140x248 -->
+    <sprite id="bust_lewd_corset_01" offsetY="35" ic="FF242D3B" width="140" height="248" img="armor\bust_lewd_corset_01.png" left="-43" right="59" top="-56" bottom="24"/>
+    <sprite id="bust_lewd_corset_01_damaged" offsetY="35" ic="FF242D3F" width="140" height="248" img="armor\bust_lewd_corset_01.png" left="-43" right="59" top="-56" bottom="24"/>
+    <sprite id="bust_lewd_corset_01_dead" offsetX="6" offsetY="10" f="64FD" ic="FF242D43" width="131" height="125" img="armor\bust_lewd_corset_01_dead.png" left="-57" right="59" top="-53" bottom="55"/>
+
+    <!-- Lewd Clothing: Latex Harness (Chain layer) -->
+    <sprite id="bust_lewd_latex_harness_01" offsetY="35" ic="FF2A1E2E" width="140" height="248" img="armor\bust_lewd_latex_harness_01.png" left="-43" right="59" top="-56" bottom="24"/>
+    <sprite id="bust_lewd_latex_harness_01_damaged" offsetY="35" ic="FF2A1E32" width="140" height="248" img="armor\bust_lewd_latex_harness_01.png" left="-43" right="59" top="-56" bottom="24"/>
+    <sprite id="bust_lewd_latex_harness_01_dead" offsetX="6" offsetY="10" f="64FD" ic="FF2A1E36" width="131" height="125" img="armor\bust_lewd_latex_harness_01_dead.png" left="-57" right="59" top="-53" bottom="55"/>
+
+    <!-- Lewd Clothing: Sheer Bodysuit (base armor) -->
+    <sprite id="bust_lewd_sheer_bodysuit_01" offsetY="35" ic="FF3E2840" width="140" height="248" img="armor\bust_lewd_sheer_bodysuit_01.png" left="-43" right="59" top="-56" bottom="24"/>
+    <sprite id="bust_lewd_sheer_bodysuit_01_damaged" offsetY="35" ic="FF3E2844" width="140" height="248" img="armor\bust_lewd_sheer_bodysuit_01.png" left="-43" right="59" top="-56" bottom="24"/>
+    <sprite id="bust_lewd_sheer_bodysuit_01_dead" offsetX="6" offsetY="10" f="64FE" ic="FF3E2848" width="131" height="125" img="armor\bust_lewd_sheer_bodysuit_01_dead.png" left="-57" right="59" top="-53" bottom="55"/>
+
+    <!-- Lewd Clothing: Piercing Chains (Attachment layer, front+back) -->
+    <sprite id="bust_lewd_piercing_chains_01_front" offsetY="35" ic="FFC8A020" width="140" height="248" img="armor\bust_lewd_piercing_chains_01.png" left="-43" right="59" top="-56" bottom="24"/>
+    <sprite id="bust_lewd_piercing_chains_01_back" offsetY="35" ic="FFC8A024" width="140" height="248" img="armor\bust_lewd_piercing_chains_01.png" left="-43" right="59" top="-56" bottom="24"/>
+    <sprite id="bust_lewd_piercing_chains_01_dead" offsetX="6" offsetY="10" f="64FD" ic="FFC8A028" width="131" height="125" img="armor\bust_lewd_piercing_chains_01_dead.png" left="-57" right="59" top="-53" bottom="55"/>
 </brush>

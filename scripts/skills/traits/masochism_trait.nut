@@ -180,22 +180,6 @@ this.masochism_trait <- this.inherit("scripts/skills/traits/character_trait", {
 
 		_properties.Allure += this.m.AllureBonus;
 		_properties.PleasureMax += this.m.PleasureMaxBonus;
-	}
-
-	function onDamageReceived( _attacker, _damageHitpoints, _damageArmor )
-	{
-		if (_damageHitpoints > 0)
-		{
-			local actor = this.getContainer().getActor();
-			if (actor.getPleasureMax() > 0)
-			{
-				local rate = this.m.PleasureFromDamageRate;
-				if (actor.getSkills().hasSkill("perk.lewd_pain_feeds_pleasure"))
-					rate *= ::Lewd.Const.PainFeedsPleasureMult;
-				local gain = this.Math.max(1, this.Math.floor(_damageHitpoints * rate));
-				actor.addPleasure(gain);
-				this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(actor) + " " + this.m.DamageLogText + " (+" + gain + " pleasure)");
-			}
-		}
+		_properties.PainToPleasureRate += this.m.PleasureFromDamageRate;
 	}
 });
