@@ -135,13 +135,43 @@ this.lewd_hexen_transform_second <- this.inherit("scripts/events/event", {
 				::Lewd.Transform.sexy_stage_0(man);
 				::Lewd.Transform.adaptROTUAppearance(man);
 
+				// Pick a female name matching the old name's prefix
+				local oldName = man.getNameOnly();
+				local femaleNames = this.Const.Strings.CharacterNamesFemale;
+				if (bg != null)
+				{
+					if (bg.m.Ethnicity == 1)
+						femaleNames = this.Const.Strings.SouthernFemaleNames;
+					else if (bg.m.Ethnicity == 2)
+						femaleNames = this.Const.Strings.CharacterNamesFemaleNorse;
+				}
+				local newName = null;
+				for (local prefixLen = oldName.len(); prefixLen >= 1; prefixLen--)
+				{
+					local prefix = oldName.slice(0, prefixLen).tolower();
+					local candidates = [];
+					foreach (n in femaleNames)
+					{
+						if (n.len() >= prefixLen && n.slice(0, prefixLen).tolower() == prefix)
+							candidates.push(n);
+					}
+					if (candidates.len() > 0)
+					{
+						newName = candidates[this.Math.rand(0, candidates.len() - 1)];
+						break;
+					}
+				}
+				if (newName == null)
+					newName = femaleNames[this.Math.rand(0, femaleNames.len() - 1)];
+				man.setName(newName);
+
 				// Mark transformation complete
 				man.getFlags().set("lewdHexenTransformStage", 2);
 
 				this.List.push({
 					id = 11,
 					icon = "ui/icons/special.png",
-					text = man.getName() + " has been transformed into a woman by the Hexen's curse."
+					text = oldName + " is now known as " + man.getName() + ", transformed by the Hexen's curse."
 				});
 
 				// Company reactions

@@ -65,12 +65,11 @@
 	function sexy_stage_0 ( _actor ) {
 		// Ensure character is marked as female
 		if (_actor.getGender() != 1)
-		{
 			_actor.setGender(1);
-			local bg = _actor.getBackground();
-			if (bg != null && !bg.isBackgroundType(::Const.BackgroundType.Female))
-				bg.addBackgroundType(::Const.BackgroundType.Female);
-		}
+
+		local bg = _actor.getBackground();
+		if (bg != null && !bg.isBackgroundType(::Const.BackgroundType.Female))
+			bg.addBackgroundType(::Const.BackgroundType.Female);
 
 		local faces = this.Const.Faces.PrettyFemale;
 		local bodies = this.Const.Bodies.AllFemale;
