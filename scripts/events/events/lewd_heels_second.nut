@@ -130,8 +130,25 @@ this.lewd_heels_second <- this.inherit("scripts/events/event", {
 				local previousHeels = items.getItemAtSlot(this.Const.ItemSlot.Accessory);
 				if (previousHeels)
 				{
-					// items.unequip(previousHeels);
 					previousHeels.removeSelf();
+				}
+
+				// also remove old heels from bag/stash in case they were unequipped
+				local oldHeelsIDs = ["accessory.heels_black_short"];
+				foreach (bagItem in items.getAllItemsAtSlot(this.Const.ItemSlot.Bag))
+				{
+					if (bagItem != null && oldHeelsIDs.find(bagItem.getID()) != null)
+					{
+						bagItem.removeSelf();
+					}
+				}
+				local stash = this.World.Assets.getStash();
+				foreach (stashItem in stash.getItems())
+				{
+					if (stashItem != null && oldHeelsIDs.find(stashItem.getID()) != null)
+					{
+						stash.remove(stashItem);
+					}
 				}
 
 
@@ -242,7 +259,7 @@ this.lewd_heels_second <- this.inherit("scripts/events/event", {
 		this.m.Woman = ::Lewd.Transform.target();
 
 		// check if they have the sufficient heel skill and don't have this trait yet
-		if (this.m.Woman == null || this.m.Woman.getFlags().getAsInt("heelSkill") < 1 || ::Lewd.Mastery.getLewdTier(this.m.Woman) >= 1)
+		if (this.m.Woman == null || this.m.Woman.getFlags().getAsInt("heelHeight") <= 0 || this.m.Woman.getFlags().getAsInt("heelSkill") < 1 || ::Lewd.Mastery.getLewdTier(this.m.Woman) >= 1)
 		{
 			this.m.Score = 0;
 		} else {

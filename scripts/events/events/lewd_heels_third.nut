@@ -109,6 +109,24 @@ this.lewd_heels_third <- this.inherit("scripts/events/event", {
 					previousHeels.removeSelf();
 				}
 
+				// also remove old heels from bag/stash in case they were unequipped
+				local oldHeelsIDs = ["accessory.heels_black_short", "accessory.heels_black"];
+				foreach (bagItem in items.getAllItemsAtSlot(this.Const.ItemSlot.Bag))
+				{
+					if (bagItem != null && oldHeelsIDs.find(bagItem.getID()) != null)
+					{
+						bagItem.removeSelf();
+					}
+				}
+				local stash = this.World.Assets.getStash();
+				foreach (stashItem in stash.getItems())
+				{
+					if (stashItem != null && oldHeelsIDs.find(stashItem.getID()) != null)
+					{
+						stash.remove(stashItem);
+					}
+				}
+
 				local item = this.new("scripts/items/heels_ballet");
 				item.getFlags().set("cursed", true);
 				items.equip(item);
@@ -317,7 +335,7 @@ this.lewd_heels_third <- this.inherit("scripts/events/event", {
 	{
 		this.m.Woman = ::Lewd.Transform.target();
 
-		if (this.m.Woman == null || this.m.Woman.getFlags().getAsInt("heelSkill") < 3 || ::Lewd.Mastery.getLewdTier(this.m.Woman) != 1)
+		if (this.m.Woman == null || this.m.Woman.getFlags().getAsInt("heelHeight") <= 0 || this.m.Woman.getFlags().getAsInt("heelSkill") < 3 || ::Lewd.Mastery.getLewdTier(this.m.Woman) != 1)
 		{
 			this.m.Score = 0;
 		} else {
