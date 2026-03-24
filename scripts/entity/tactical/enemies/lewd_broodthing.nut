@@ -251,21 +251,26 @@ this.lewd_broodthing <- this.inherit("scripts/entity/tactical/actor", {
 			this.spawnTerrainDropdownEffect(_tile);
 			this.spawnFlies(_tile);
 
-			// Release all ensnared victims first -- off-map tentacles (underground,
-			// holding someone) survive the isPlacedOnMap() check below. Removing the
-			// ensnare effect triggers the OnRemoveCallback which resurfaces the tentacle
-			// onto the map, so it can then be killed normally.
+			// Release all ensnared victims. Null out resurface callbacks first
+			// so underground tentacles don't get addEntityToMap'd then immediately
+			// killed -- that rapid add/remove corrupts the turn sequence bar UI.
 			local allActors = this.Tactical.Entities.getAllInstances();
 			foreach (group in allActors)
 			{
 				foreach (a in group)
 				{
 					if (a.isAlive() && a.getSkills().hasSkill("effects.kraken_ensnare"))
+					{
+						local ensnare = a.getSkills().getSkillByID("effects.kraken_ensnare");
+						ensnare.setOnRemoveCallback(null, null);
 						a.getSkills().removeByID("effects.kraken_ensnare");
+					}
 				}
 			}
 
-			// Kill all remaining tentacles (on-map and newly resurfaced)
+			// Kill on-map tentacles. Underground tentacles are already off-map
+			// (removed from Instances by removeFromMap) so they won't block
+			// combat end and don't need resurfacing.
 			foreach (t in this.m.Tentacles)
 			{
 				if (t.isNull())
@@ -279,7 +284,7 @@ this.lewd_broodthing <- this.inherit("scripts/entity/tactical/actor", {
 
 			this.m.Tentacles = [];
 
-			// Kill any entities with pending orgasm defeat before ending combat.
+			// Kill any entities with pending orgasm defeat before combat ends.
 			// These are alive but flagged to die at onTurnEnd -- if combat ends
 			// first, they become zombies that corrupt the turn sequence bar.
 			foreach (group in allActors)
@@ -295,11 +300,9 @@ this.lewd_broodthing <- this.inherit("scripts/entity/tactical/actor", {
 				}
 			}
 
-			// Force combat to end -- killing the body means the fight is won,
-			// just like base game kraken. Prevents orphaned off-map tentacles
-			// from keeping combat alive and corrupting the turn sequence bar.
-			this.Tactical.Entities.setLastCombatResult(this.Const.Tactical.CombatResult.EnemyDestroyed);
-			this.Tactical.Entities.checkCombatFinished(true);
+			// Don't force checkCombatFinished -- follow the base game kraken
+			// pattern and let the engine's update loop end combat naturally
+			// once all on-map hostiles are dead.
 		}
 
 		// Drop loot on tile
