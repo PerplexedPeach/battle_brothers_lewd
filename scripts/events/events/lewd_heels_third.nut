@@ -102,15 +102,25 @@ this.lewd_heels_third <- this.inherit("scripts/events/event", {
 				local w = _event.m.Woman;
 
 				local items = w.getItems();
+				local stash = this.World.Assets.getStash();
+				local oldHeelsIDs = ["accessory.heels_black_short", "accessory.heels_black"];
 
-				local previousHeels = items.getItemAtSlot(this.Const.ItemSlot.Accessory);
-				if (previousHeels)
+				// clear the accessory slot: destroy old heels, move anything else to stash
+				local accessory = items.getItemAtSlot(this.Const.ItemSlot.Accessory);
+				if (accessory)
 				{
-					previousHeels.removeSelf();
+					if (oldHeelsIDs.find(accessory.getID()) != null)
+					{
+						accessory.removeSelf();
+					}
+					else
+					{
+						items.unequip(accessory);
+						stash.add(accessory);
+					}
 				}
 
 				// also remove old heels from bag/stash in case they were unequipped
-				local oldHeelsIDs = ["accessory.heels_black_short", "accessory.heels_black"];
 				foreach (bagItem in items.getAllItemsAtSlot(this.Const.ItemSlot.Bag))
 				{
 					if (bagItem != null && oldHeelsIDs.find(bagItem.getID()) != null)
@@ -118,7 +128,6 @@ this.lewd_heels_third <- this.inherit("scripts/events/event", {
 						bagItem.removeSelf();
 					}
 				}
-				local stash = this.World.Assets.getStash();
 				foreach (stashItem in stash.getItems())
 				{
 					if (stashItem != null && oldHeelsIDs.find(stashItem.getID()) != null)
