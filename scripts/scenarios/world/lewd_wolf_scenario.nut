@@ -120,14 +120,13 @@ this.lewd_wolf_scenario <- this.inherit("scripts/scenarios/world/starting_scenar
 		this.World.State.m.Player = this.World.spawnEntity("scripts/entity/world/player_party", randomVillageTile.Coords.X, randomVillageTile.Coords.Y);
 		this.World.Assets.updateLook(6);
 		this.World.getCamera().setPos(this.World.State.m.Player.getPos());
-		// this.Time.scheduleEvent(this.TimeUnit.Real, 1000, function ( _tag )
-		// {
-		// 	this.Music.setTrackList([
-		// 		"music/noble_02.ogg"
-		// 	], this.Const.Music.CrossFadeTime);
-		// 	// TODO add custom event for this scenario
-		// 	this.World.Events.fire("event.lone_wolf_scenario_intro");
-		// }, null);
+		this.Time.scheduleEvent(this.TimeUnit.Real, 1000, function ( _tag )
+		{
+			this.Music.setTrackList([
+				"music/noble_02.ogg"
+			], this.Const.Music.CrossFadeTime);
+			this.World.Events.fire("event.lewd_courtesan_intro");
+		}, null);
 
 	}
 
