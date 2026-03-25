@@ -884,3 +884,22 @@ foreach (name in [
 ::Lewd.Const.ClothingPiercingChainsInitiativeScale <- 5;
 ::Lewd.Const.ClothingPiercingChainsHornyChanceBase <- 10;  // % chance on being hit
 ::Lewd.Const.ClothingPiercingChainsHornyChanceScale <- 10; // 10% at sub 0, 20% at sub 30
+
+// --- Clothing Unlock Events ---
+// Daji Corset Dream: requires Ethereal
+::Lewd.Const.DajiCorsetBaseScore <- 30;
+::Lewd.Const.DajiCorsetAllureScale <- 2.0;
+
+// Daji Harness Dream: requires Ethereal + corset recipe already unlocked
+::Lewd.Const.DajiHarnessBaseScore <- 25;
+::Lewd.Const.DajiHarnessAllureScale <- 2.0;
+::Lewd.Const.DajiHarnessDomScale <- 1.5;
+
+// Silk Reflection: requires heels + heelSkill
+::Lewd.Const.SilkReflectionBaseScore <- 40;
+::Lewd.Const.SilkReflectionAllureScale <- 2.0;
+
+// Hazeem Chains: requires sub tier 2+, masochism tier 1+, close to southern town
+::Lewd.Const.HazeemChainsBaseScore <- 20;
+::Lewd.Const.HazeemChainsSubScale <- 2.0;
+::Lewd.Const.HazeemChainsMasochismTierScale <- 15;
