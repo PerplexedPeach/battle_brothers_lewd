@@ -11,7 +11,11 @@ this.lewd_nude_frame_blueprint <- this.inherit("scripts/crafting/blueprint", {
 
 	function isQualified()
 	{
-		if (!this.World.Flags.has("lewdClothingRecipesUnlocked"))
+		if (!this.World.Flags.has("lewdRecipeCorset")
+			&& !this.World.Flags.has("lewdRecipeLatexHarness")
+			&& !this.World.Flags.has("lewdRecipeSheerBodysuit")
+			&& !this.World.Flags.has("lewdRecipeFishnets")
+			&& !this.World.Flags.has("lewdRecipePiercingChains"))
 			return false;
 		return this.blueprint.isQualified();
 	}

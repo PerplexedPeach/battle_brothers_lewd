@@ -31,7 +31,7 @@ this.lewd_fishnets_blueprint <- this.inherit("scripts/crafting/blueprint", {
 
 	function isQualified()
 	{
-		if (!this.World.Flags.has("lewdClothingRecipesUnlocked"))
+		if (!this.World.Flags.has("lewdRecipeFishnets"))
 			return false;
 		return this.blueprint.isQualified();
 	}
