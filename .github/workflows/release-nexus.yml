@@ -34,7 +34,7 @@ jobs:
           echo "VERSION=$VERSION" >> "$GITHUB_ENV"
 
       - name: Upload to Nexus Mods
-        uses: Nexus-Mods/upload-action@v1.0.0-beta.2
+        uses: Nexus-Mods/upload-action@v1.0.0-beta.3
         with:
           api_key: ${{ secrets.NEXUSMODS_API_KEY }}
           file_group_id: ${{ secrets.NEXUSMODS_FILE_GROUP_ID }}
