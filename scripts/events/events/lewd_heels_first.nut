@@ -93,10 +93,12 @@ this.lewd_heels_first <- this.inherit("scripts/events/event", {
 				local w = _event.m.Woman;
 
 				local items = w.getItems();
-				// remove any existing item
+				local stash = this.World.Assets.getStash();
+				// move any existing accessory to company stash
 				local prevItem = items.getItemAtSlot(this.Const.ItemSlot.Accessory);
 				if (prevItem != null) {
 					items.unequip(prevItem);
+					stash.add(prevItem);
 				}
 				local item = this.new("scripts/items/heels_black_short");
 				items.equip(item);
