@@ -17,7 +17,7 @@ this.lewd_nude_frame_blueprint <- this.inherit("scripts/crafting/blueprint", {
 			&& !this.World.Flags.has("lewdRecipeFishnets")
 			&& !this.World.Flags.has("lewdRecipePiercingChains"))
 			return false;
-		return this.blueprint.isQualified();
+		return true;
 	}
 
 	function onCraft( _stash )

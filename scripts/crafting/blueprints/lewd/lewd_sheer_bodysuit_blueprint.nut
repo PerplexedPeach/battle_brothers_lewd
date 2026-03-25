@@ -33,7 +33,7 @@ this.lewd_sheer_bodysuit_blueprint <- this.inherit("scripts/crafting/blueprint",
 	{
 		if (!this.World.Flags.has("lewdRecipeSheerBodysuit"))
 			return false;
-		return this.blueprint.isQualified();
+		return true;
 	}
 
 	function onCraft( _stash )

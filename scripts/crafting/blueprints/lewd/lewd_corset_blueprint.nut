@@ -37,7 +37,7 @@ this.lewd_corset_blueprint <- this.inherit("scripts/crafting/blueprint", {
 	{
 		if (!this.World.Flags.has("lewdRecipeCorset"))
 			return false;
-		return this.blueprint.isQualified();
+		return true;
 	}
 
 	function onCraft( _stash )

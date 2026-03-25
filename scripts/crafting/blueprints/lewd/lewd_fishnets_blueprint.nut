@@ -33,7 +33,7 @@ this.lewd_fishnets_blueprint <- this.inherit("scripts/crafting/blueprint", {
 	{
 		if (!this.World.Flags.has("lewdRecipeFishnets"))
 			return false;
-		return this.blueprint.isQualified();
+		return true;
 	}
 
 	function onCraft( _stash )

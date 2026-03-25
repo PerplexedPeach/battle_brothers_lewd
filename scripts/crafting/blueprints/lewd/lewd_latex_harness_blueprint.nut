@@ -33,7 +33,7 @@ this.lewd_latex_harness_blueprint <- this.inherit("scripts/crafting/blueprint", 
 	{
 		if (!this.World.Flags.has("lewdRecipeLatexHarness"))
 			return false;
-		return this.blueprint.isQualified();
+		return true;
 	}
 
 	function onCraft( _stash )

@@ -33,7 +33,7 @@ this.lewd_piercing_chains_blueprint <- this.inherit("scripts/crafting/blueprint"
 	{
 		if (!this.World.Flags.has("lewdRecipePiercingChains"))
 			return false;
-		return this.blueprint.isQualified();
+		return true;
 	}
 
 	function onCraft( _stash )
