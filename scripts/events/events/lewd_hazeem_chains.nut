@@ -1,12 +1,11 @@
 this.lewd_hazeem_chains <- this.inherit("scripts/events/event", {
 	m = {
-		Woman = null,
-		Hazeem = null
+		Woman = null
 	},
 	function create()
 	{
 		this.m.ID = "event.lewd_hazeem_chains";
-		this.m.Title = "The Jeweler's Description";
+		this.m.Title = "The Jeweler's Letter";
 		this.m.Cooldown = 999999 * this.World.getTime().SecondsPerDay;
 		this.m.IsSpecial = true;
 		this.m.Screens.push({
@@ -17,7 +16,7 @@ this.lewd_hazeem_chains <- this.inherit("scripts/events/event", {
 			Characters = [],
 			Options = [
 				{
-					Text = "Listen.",
+					Text = "Read on.",
 					function getResult( _event )
 					{
 						return "B";
@@ -27,7 +26,6 @@ this.lewd_hazeem_chains <- this.inherit("scripts/events/event", {
 			function start( _event )
 			{
 				this.Characters.push(_event.m.Woman.getImagePath());
-				this.Characters.push(_event.m.Hazeem.getImagePath());
 			}
 		});
 		this.m.Screens.push({
@@ -38,7 +36,7 @@ this.lewd_hazeem_chains <- this.inherit("scripts/events/event", {
 			Characters = [],
 			Options = [
 				{
-					Text = "He is right.",
+					Text = "He is right about all of it.",
 					function getResult( _event )
 					{
 						return "C";
@@ -48,7 +46,6 @@ this.lewd_hazeem_chains <- this.inherit("scripts/events/event", {
 			function start( _event )
 			{
 				this.Characters.push(_event.m.Woman.getImagePath());
-				this.Characters.push(_event.m.Hazeem.getImagePath());
 			}
 		});
 		this.m.Screens.push({
@@ -85,7 +82,6 @@ this.lewd_hazeem_chains <- this.inherit("scripts/events/event", {
 		this.m.Woman = ::Lewd.Transform.target();
 
 		if (this.m.Woman == null
-			|| !::Lewd.Location.closeToSouthernTown()
 			|| this.World.Flags.has("lewdRecipePiercingChains"))
 		{
 			this.m.Score = 0;
@@ -120,7 +116,6 @@ this.lewd_hazeem_chains <- this.inherit("scripts/events/event", {
 
 	function onPrepare()
 	{
-		this.m.Hazeem = this.World.getGuestRoster().create("scripts/entity/tactical/humans/hazeem");
 	}
 
 	function onPrepareVariables( _vars )
@@ -134,7 +129,5 @@ this.lewd_hazeem_chains <- this.inherit("scripts/events/event", {
 	function onClear()
 	{
 		this.m.Woman = null;
-		this.m.Hazeem = null;
-		this.World.getGuestRoster().clear();
 	}
 });
