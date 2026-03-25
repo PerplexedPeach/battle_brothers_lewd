@@ -31,7 +31,7 @@ this.lewd_piercing_chains_blueprint <- this.inherit("scripts/crafting/blueprint"
 
 	function isQualified()
 	{
-		if (!this.World.Flags.has("lewdClothingRecipesUnlocked"))
+		if (!this.World.Flags.has("lewdRecipePiercingChains"))
 			return false;
 		return this.blueprint.isQualified();
 	}
