@@ -1,6 +1,7 @@
 this.lewd_hazeem_chains <- this.inherit("scripts/events/event", {
 	m = {
-		Woman = null
+		Woman = null,
+		MasoTier = 0
 	},
 	function create()
 	{
@@ -30,7 +31,7 @@ this.lewd_hazeem_chains <- this.inherit("scripts/events/event", {
 		});
 		this.m.Screens.push({
 			ID = "B",
-			Text = ::Lewd.Strings.HazeemChains.Screen_B,
+			Text = "",
 			Image = "",
 			List = [],
 			Characters = [],
@@ -45,6 +46,11 @@ this.lewd_hazeem_chains <- this.inherit("scripts/events/event", {
 			],
 			function start( _event )
 			{
+				if (_event.m.MasoTier >= 3)
+					this.Text = ::Lewd.Strings.HazeemChains.Screen_B_T3;
+				else
+					this.Text = ::Lewd.Strings.HazeemChains.Screen_B_T2;
+
 				this.Characters.push(_event.m.Woman.getImagePath());
 			}
 		});
@@ -96,19 +102,20 @@ this.lewd_hazeem_chains <- this.inherit("scripts/events/event", {
 			return;
 		}
 
-		// Requires masochism tier 1+
+		// Requires masochism tier 2+
 		local skills = this.m.Woman.getSkills();
 		local masoTier = 0;
 		if (skills.hasSkill("trait.masochism_third")) masoTier = 3;
 		else if (skills.hasSkill("trait.masochism_second")) masoTier = 2;
 		else if (skills.hasSkill("trait.masochism_first")) masoTier = 1;
 
-		if (masoTier == 0)
+		if (masoTier < 2)
 		{
 			this.m.Score = 0;
 			return;
 		}
 
+		this.m.MasoTier = masoTier;
 		this.m.Score = ::Lewd.Const.HazeemChainsBaseScore
 			+ subScore * ::Lewd.Const.HazeemChainsSubScale
 			+ masoTier * ::Lewd.Const.HazeemChainsMasochismTierScale;
@@ -129,5 +136,6 @@ this.lewd_hazeem_chains <- this.inherit("scripts/events/event", {
 	function onClear()
 	{
 		this.m.Woman = null;
+		this.m.MasoTier = 0;
 	}
 });
