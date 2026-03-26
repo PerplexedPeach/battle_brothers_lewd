@@ -96,57 +96,58 @@ this.lewd_spider_egg_sac_item <- this.inherit("scripts/items/item", {
 
 	function openOneEgg( _stash )
 	{
-		local roll = this.Math.rand(1, 100);
+		local totalWeight = ::Lewd.Const.SpiderEggWeightRarePet
+			+ ::Lewd.Const.SpiderEggWeightPet
+			+ ::Lewd.Const.SpiderEggWeightSilk2
+			+ ::Lewd.Const.SpiderEggWeightSilk1
+			+ ::Lewd.Const.SpiderEggWeightDyes
+			+ ::Lewd.Const.SpiderEggWeightNothing;
+
+		local roll = this.Math.rand(1, totalWeight);
 		local threshold = 0;
 
-		// 1% rare spider pet
-		threshold += ::Lewd.Const.SpiderEggLootRarePet;
+		threshold += ::Lewd.Const.SpiderEggWeightRarePet;
 		if (roll <= threshold)
 		{
-			::logInfo("[egg_sac] RARE PET (roll=" + roll + ")");
+			::logInfo("[egg_sac] RARE PET (roll=" + roll + "/" + totalWeight + ")");
 			_stash.add(this.new("scripts/items/misc/lewd_rare_spider_pet_item"));
 			return;
 		}
 
-		// 4% normal spider pet
-		threshold += ::Lewd.Const.SpiderEggLootPet;
+		threshold += ::Lewd.Const.SpiderEggWeightPet;
 		if (roll <= threshold)
 		{
-			::logInfo("[egg_sac] PET (roll=" + roll + ")");
+			::logInfo("[egg_sac] PET (roll=" + roll + "/" + totalWeight + ")");
 			_stash.add(this.new("scripts/items/misc/lewd_spider_pet_item"));
 			return;
 		}
 
-		// 10% two gossamer
-		threshold += ::Lewd.Const.SpiderEggLootSilk2;
+		threshold += ::Lewd.Const.SpiderEggWeightSilk2;
 		if (roll <= threshold)
 		{
-			::logInfo("[egg_sac] 2x SILK (roll=" + roll + ")");
+			::logInfo("[egg_sac] 2x SILK (roll=" + roll + "/" + totalWeight + ")");
 			_stash.add(this.new("scripts/items/misc/spider_silk_item"));
 			_stash.add(this.new("scripts/items/misc/spider_silk_item"));
 			return;
 		}
 
-		// 25% one gossamer
-		threshold += ::Lewd.Const.SpiderEggLootSilk1;
+		threshold += ::Lewd.Const.SpiderEggWeightSilk1;
 		if (roll <= threshold)
 		{
-			::logInfo("[egg_sac] 1x SILK (roll=" + roll + ")");
+			::logInfo("[egg_sac] 1x SILK (roll=" + roll + "/" + totalWeight + ")");
 			_stash.add(this.new("scripts/items/misc/spider_silk_item"));
 			return;
 		}
 
-		// 8% dyes
-		threshold += ::Lewd.Const.SpiderEggLootDyes;
+		threshold += ::Lewd.Const.SpiderEggWeightDyes;
 		if (roll <= threshold)
 		{
-			::logInfo("[egg_sac] DYES (roll=" + roll + ")");
+			::logInfo("[egg_sac] DYES (roll=" + roll + "/" + totalWeight + ")");
 			_stash.add(this.new("scripts/items/trade/dies_item"));
 			return;
 		}
 
-		// 52% nothing
-		::logInfo("[egg_sac] Nothing (roll=" + roll + ")");
+		::logInfo("[egg_sac] Nothing (roll=" + roll + "/" + totalWeight + ")");
 	}
 
 	function playInventorySound( _eventType )

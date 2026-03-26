@@ -772,12 +772,12 @@
 ::Lewd.Const.SpiderEggRangedSkillPenalty <- -2;             // per egg stack
 ::Lewd.Const.SpiderEggMaxFatiguePenalty <- -4;              // per egg stack
 ::Lewd.Const.SpiderEggDuration <- 4;                        // days the "Holding Eggs" injury persists before producing loot
-::Lewd.Const.SpiderEggLootNothing <- 52;                    // % nothing
-::Lewd.Const.SpiderEggLootDyes <- 8;                        // % dyes (trade good, 400g)
-::Lewd.Const.SpiderEggLootSilk1 <- 25;                     // % 1 gossamer
-::Lewd.Const.SpiderEggLootSilk2 <- 10;                     // % 2 gossamer
-::Lewd.Const.SpiderEggLootPet <- 4;                         // % spider companion
-::Lewd.Const.SpiderEggLootRarePet <- 1;                     // % rare spider companion
+::Lewd.Const.SpiderEggWeightNothing <- 52;                   // weight: nothing
+::Lewd.Const.SpiderEggWeightDyes <- 8;                      // weight: dyes (trade good, 400g)
+::Lewd.Const.SpiderEggWeightSilk1 <- 25;                    // weight: 1 gossamer
+::Lewd.Const.SpiderEggWeightSilk2 <- 10;                    // weight: 2 gossamer
+::Lewd.Const.SpiderEggWeightPet <- 4;                       // weight: spider companion
+::Lewd.Const.SpiderEggWeightRarePet <- 1;                   // weight: rare spider companion
 ::Lewd.Const.AIBehaviorIDSpiderHorny <- 0;                  // set dynamically in mod_lewd.nut
 
 // --- Stub missing Legend entity types for older Legends versions ---
