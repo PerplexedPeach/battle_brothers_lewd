@@ -21,8 +21,8 @@ this.lewd_piercing_chains_blueprint <- this.inherit("scripts/crafting/blueprint"
 		local skills = [
 			{
 				Scripts = [
-					"scripts/skills/backgrounds/tailor_background",
-					"scripts/skills/backgrounds/tailor_southern_background"
+					"scripts/skills/backgrounds/legend_blacksmith_background",
+					"scripts/skills/backgrounds/legend_runesmith_background"
 				]
 			}
 		];
