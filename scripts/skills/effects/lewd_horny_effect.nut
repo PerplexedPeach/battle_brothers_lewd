@@ -125,6 +125,13 @@ this.lewd_horny_effect <- this.inherit("scripts/skills/skill", {
 						agent.addBehavior(this.new("scripts/ai/tactical/behaviors/ai_orc_horny"));
 						agent.addBehavior(this.new("scripts/ai/tactical/behaviors/ai_horny_engage"));
 					}
+					else if (::Lewd.Mastery.isUnhold(actor))
+					{
+						// Unholds use piledriver when horny + shared engage for long-range movement
+						::logInfo("[horny]   injecting UNHOLD AI behaviors for " + actor.getName());
+						agent.addBehavior(this.new("scripts/ai/tactical/behaviors/ai_unhold_horny"));
+						agent.addBehavior(this.new("scripts/ai/tactical/behaviors/ai_horny_engage"));
+					}
 					else
 					{
 						::logInfo("[horny]   injecting AI behaviors for " + actor.getName());

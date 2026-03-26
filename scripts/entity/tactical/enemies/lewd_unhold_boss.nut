@@ -75,7 +75,8 @@ this.lewd_unhold_boss <- this.inherit("scripts/entity/tactical/enemies/unhold", 
 		this.m.Skills.add(this.new("scripts/skills/actives/sweep_zoc_skill"));
 		this.m.Skills.add(this.new("scripts/skills/actives/fling_back_skill"));
 		this.m.Skills.add(this.new("scripts/skills/actives/unstoppable_charge_skill"));
-		this.m.Skills.add(this.new("scripts/skills/actives/lewd_piledriver_skill"));
+		if (!this.getSkills().hasSkill("actives.lewd_piledriver"))
+			this.m.Skills.add(this.new("scripts/skills/actives/lewd_piledriver_skill"));
 		this.m.Skills.add(this.new("scripts/skills/effects/lewd_overwhelming_presence_effect"));
 
 		// Inject piledriver AI behavior

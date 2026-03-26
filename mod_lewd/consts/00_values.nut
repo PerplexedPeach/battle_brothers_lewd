@@ -753,6 +753,11 @@
 ::Lewd.Const.AIBehaviorIDOrcClaim <- 0;                   // set dynamically in mod_lewd.nut via Const.AI.Behavior.ID.COUNT
 ::Lewd.Const.AIBehaviorIDOrcHorny <- 0;                   // set dynamically in mod_lewd.nut via Const.AI.Behavior.ID.COUNT
 
+// --- Unhold Horny System ---
+::Lewd.Const.UnholdHornyAllureThreshold <- 20;              // min allure to trigger unhold horny from adjacent female
+::Lewd.Const.UnholdHornyAIScorePerAllure <- 20;               // score = allure * this; at threshold (20) ~= attack scores (~400)
+::Lewd.Const.AIBehaviorIDUnholdHorny <- 0;                   // set dynamically in mod_lewd.nut via Const.AI.Behavior.ID.COUNT
+
 // --- Stub missing Legend entity types for older Legends versions ---
 foreach (name in [
 	"LegendGoblinHarrier", "LegendGoblinBerserker", "LegendGoblinTribeDefender",
