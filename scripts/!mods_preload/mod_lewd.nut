@@ -43,6 +43,7 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC", function()
 	::Const.AI.Behavior.ID.LewdOrcClaim <- count++;
 	::Const.AI.Behavior.ID.LewdOrcHorny <- count++;
 	::Const.AI.Behavior.ID.LewdUnholdHorny <- count++;
+	::Const.AI.Behavior.ID.LewdSpiderHorny <- count++;
 	::Const.AI.Behavior.ID.COUNT = count;
 	::Const.AI.Behavior.Name.push("LewdHorny");
 	::Const.AI.Behavior.Name.push("LewdHornyEngage");
@@ -53,6 +54,7 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC", function()
 	::Const.AI.Behavior.Name.push("LewdOrcClaim");
 	::Const.AI.Behavior.Name.push("LewdOrcHorny");
 	::Const.AI.Behavior.Name.push("LewdUnholdHorny");
+	::Const.AI.Behavior.Name.push("LewdSpiderHorny");
 	::Lewd.Const.AIBehaviorIDHorny = ::Const.AI.Behavior.ID.LewdHorny;
 	::Lewd.Const.AIBehaviorIDHornyEngage = ::Const.AI.Behavior.ID.LewdHornyEngage;
 	::Lewd.Const.AIBehaviorIDPiledriver = ::Const.AI.Behavior.ID.LewdPiledriver;
@@ -62,6 +64,7 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC", function()
 	::Lewd.Const.AIBehaviorIDOrcClaim = ::Const.AI.Behavior.ID.LewdOrcClaim;
 	::Lewd.Const.AIBehaviorIDOrcHorny = ::Const.AI.Behavior.ID.LewdOrcHorny;
 	::Lewd.Const.AIBehaviorIDUnholdHorny = ::Const.AI.Behavior.ID.LewdUnholdHorny;
+	::Lewd.Const.AIBehaviorIDSpiderHorny = ::Const.AI.Behavior.ID.LewdSpiderHorny;
 
 	// --- Mod Settings ---
 	local page = ::Lewd.Mod.ModSettings.addPage("General");
@@ -213,6 +216,10 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC", function()
 			// Unhold lewd racial — grants piledriver and horny trigger
 			if (::Lewd.Mastery.isUnhold(this))
 				this.getSkills().add(this.new("scripts/skills/racial/unhold_lewd_racial"));
+
+			// Spider lewd racial — grants inject skill and horny trigger
+			if (::Lewd.Mastery.isSpider(this))
+				this.getSkills().add(this.new("scripts/skills/racial/spider_lewd_racial"));
 		}
 
 		// Render callback for animated effects

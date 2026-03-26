@@ -758,6 +758,27 @@
 ::Lewd.Const.UnholdHornyAIScorePerAllure <- 20;               // score = allure * this; at threshold (20) ~= attack scores (~400)
 ::Lewd.Const.AIBehaviorIDUnholdHorny <- 0;                   // set dynamically in mod_lewd.nut via Const.AI.Behavior.ID.COUNT
 
+// --- Spider Egg System ---
+::Lewd.Const.SpiderHornyAllureThreshold <- 30;              // spiders are picky -- only the most alluring targets
+::Lewd.Const.SpiderHornyAIScorePerAllure <- 15;             // score = allure * this; at threshold (30) ~450, competitive with attacks (~400)
+::Lewd.Const.SpiderWebAIScorePerAllure <- 12;               // web scoring slightly below inject so inject wins on re-eval
+::Lewd.Const.SpiderInjectAP <- 5;                           // AP cost to inject (web=6 + inject=5 = 11, exactly spider's AP pool)
+::Lewd.Const.SpiderInjectFatigue <- 15;
+::Lewd.Const.SpiderInjectPleasure <- 40;                    // significant pleasure -- designed to push target toward climax
+::Lewd.Const.SpiderEggInitPenalty <- -5;                    // per egg stack
+::Lewd.Const.SpiderEggMeleeDefPenalty <- -2;                // per egg stack
+::Lewd.Const.SpiderEggRangedDefPenalty <- -2;               // per egg stack
+::Lewd.Const.SpiderEggMeleeSkillPenalty <- -2;              // per egg stack
+::Lewd.Const.SpiderEggRangedSkillPenalty <- -2;             // per egg stack
+::Lewd.Const.SpiderEggMaxFatiguePenalty <- -4;              // per egg stack
+::Lewd.Const.SpiderEggDuration <- 4;                        // days the "Holding Eggs" injury persists before producing loot
+::Lewd.Const.SpiderEggLootNothing <- 60;                    // % nothing
+::Lewd.Const.SpiderEggLootSilk1 <- 25;                     // % 1 gossamer
+::Lewd.Const.SpiderEggLootSilk2 <- 10;                     // % 2 gossamer
+::Lewd.Const.SpiderEggLootPet <- 4;                         // % spider companion
+::Lewd.Const.SpiderEggLootRarePet <- 1;                     // % rare spider companion
+::Lewd.Const.AIBehaviorIDSpiderHorny <- 0;                  // set dynamically in mod_lewd.nut
+
 // --- Stub missing Legend entity types for older Legends versions ---
 foreach (name in [
 	"LegendGoblinHarrier", "LegendGoblinBerserker", "LegendGoblinTribeDefender",

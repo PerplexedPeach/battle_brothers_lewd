@@ -277,6 +277,23 @@ this.climax_effect <- this.inherit("scripts/skills/skill", {
 				}
 			}
 
+			// Spider egg deposit: if character was injected by a spider, deposit egg on climax
+			if (actor.getFlags().has("lewdSpiderInjected") && actor.getFlags().get("lewdSpiderInjected"))
+			{
+				actor.getFlags().set("lewdSpiderInjected", false);
+				local eggEffect = actor.getSkills().getSkillByID("effects.spider_eggs");
+				if (eggEffect != null)
+				{
+					eggEffect.addEgg();
+				}
+				else
+				{
+					actor.getSkills().add(this.new("scripts/skills/effects/spider_eggs_effect"));
+				}
+				this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(actor) + " feels something implanted deep inside...");
+				::logInfo("[climax] " + actor.getName() + " deposited spider egg on climax");
+			}
+
 			// Dom/Sub tracking: award points on climax
 			local sourceID = actor.m.LastPleasureSourceID;
 			if (sourceID >= 0 && sourceID != actor.getID())
