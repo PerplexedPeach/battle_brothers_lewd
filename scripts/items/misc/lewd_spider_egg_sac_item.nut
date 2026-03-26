@@ -136,7 +136,16 @@ this.lewd_spider_egg_sac_item <- this.inherit("scripts/items/item", {
 			return;
 		}
 
-		// 60% nothing
+		// 8% dyes
+		threshold += ::Lewd.Const.SpiderEggLootDyes;
+		if (roll <= threshold)
+		{
+			::logInfo("[egg_sac] DYES (roll=" + roll + ")");
+			_stash.add(this.new("scripts/items/trade/dies_item"));
+			return;
+		}
+
+		// 52% nothing
 		::logInfo("[egg_sac] Nothing (roll=" + roll + ")");
 	}
 

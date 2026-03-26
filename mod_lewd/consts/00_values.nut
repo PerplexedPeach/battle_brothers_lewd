@@ -772,7 +772,8 @@
 ::Lewd.Const.SpiderEggRangedSkillPenalty <- -2;             // per egg stack
 ::Lewd.Const.SpiderEggMaxFatiguePenalty <- -4;              // per egg stack
 ::Lewd.Const.SpiderEggDuration <- 4;                        // days the "Holding Eggs" injury persists before producing loot
-::Lewd.Const.SpiderEggLootNothing <- 60;                    // % nothing
+::Lewd.Const.SpiderEggLootNothing <- 52;                    // % nothing
+::Lewd.Const.SpiderEggLootDyes <- 8;                        // % dyes (trade good, 400g)
 ::Lewd.Const.SpiderEggLootSilk1 <- 25;                     // % 1 gossamer
 ::Lewd.Const.SpiderEggLootSilk2 <- 10;                     // % 2 gossamer
 ::Lewd.Const.SpiderEggLootPet <- 4;                         // % spider companion
