@@ -96,58 +96,44 @@ this.lewd_spider_egg_sac_item <- this.inherit("scripts/items/item", {
 
 	function openOneEgg( _stash )
 	{
-		local totalWeight = ::Lewd.Const.SpiderEggWeightRarePet
-			+ ::Lewd.Const.SpiderEggWeightPet
-			+ ::Lewd.Const.SpiderEggWeightSilk2
-			+ ::Lewd.Const.SpiderEggWeightSilk1
-			+ ::Lewd.Const.SpiderEggWeightDyes
-			+ ::Lewd.Const.SpiderEggWeightNothing;
+		// [weight, scriptPath (null = nothing), quantity]
+		local lootTable = [
+			[::Lewd.Const.SpiderEggWeightRarePet,  "scripts/items/misc/lewd_rare_spider_pet_item", 1],
+			[::Lewd.Const.SpiderEggWeightPet,      "scripts/items/misc/lewd_spider_pet_item",      1],
+			[::Lewd.Const.SpiderEggWeightSilk2,    "scripts/items/misc/spider_silk_item",          2],
+			[::Lewd.Const.SpiderEggWeightSilk1,    "scripts/items/misc/spider_silk_item",          1],
+			[::Lewd.Const.SpiderEggWeightDyes,     "scripts/items/trade/dies_item",                1],
+			[::Lewd.Const.SpiderEggWeightNothing,   null,                                          0]
+		];
+
+		local totalWeight = 0;
+		foreach (entry in lootTable)
+			totalWeight += entry[0];
 
 		local roll = this.Math.rand(1, totalWeight);
 		local threshold = 0;
 
-		threshold += ::Lewd.Const.SpiderEggWeightRarePet;
-		if (roll <= threshold)
+		foreach (entry in lootTable)
 		{
-			::logInfo("[egg_sac] RARE PET (roll=" + roll + "/" + totalWeight + ")");
-			_stash.add(this.new("scripts/items/misc/lewd_rare_spider_pet_item"));
-			return;
-		}
+			threshold += entry[0];
+			if (roll <= threshold)
+			{
+				local script = entry[1];
+				local qty = entry[2];
 
-		threshold += ::Lewd.Const.SpiderEggWeightPet;
-		if (roll <= threshold)
-		{
-			::logInfo("[egg_sac] PET (roll=" + roll + "/" + totalWeight + ")");
-			_stash.add(this.new("scripts/items/misc/lewd_spider_pet_item"));
-			return;
+				if (script != null)
+				{
+					for (local i = 0; i < qty; i++)
+						_stash.add(this.new(script));
+					::logInfo("[egg_sac] " + script + " x" + qty + " (roll=" + roll + "/" + totalWeight + ")");
+				}
+				else
+				{
+					::logInfo("[egg_sac] Nothing (roll=" + roll + "/" + totalWeight + ")");
+				}
+				return;
+			}
 		}
-
-		threshold += ::Lewd.Const.SpiderEggWeightSilk2;
-		if (roll <= threshold)
-		{
-			::logInfo("[egg_sac] 2x SILK (roll=" + roll + "/" + totalWeight + ")");
-			_stash.add(this.new("scripts/items/misc/spider_silk_item"));
-			_stash.add(this.new("scripts/items/misc/spider_silk_item"));
-			return;
-		}
-
-		threshold += ::Lewd.Const.SpiderEggWeightSilk1;
-		if (roll <= threshold)
-		{
-			::logInfo("[egg_sac] 1x SILK (roll=" + roll + "/" + totalWeight + ")");
-			_stash.add(this.new("scripts/items/misc/spider_silk_item"));
-			return;
-		}
-
-		threshold += ::Lewd.Const.SpiderEggWeightDyes;
-		if (roll <= threshold)
-		{
-			::logInfo("[egg_sac] DYES (roll=" + roll + "/" + totalWeight + ")");
-			_stash.add(this.new("scripts/items/trade/dies_item"));
-			return;
-		}
-
-		::logInfo("[egg_sac] Nothing (roll=" + roll + "/" + totalWeight + ")");
 	}
 
 	function playInventorySound( _eventType )
