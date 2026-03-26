@@ -772,7 +772,7 @@
 ::Lewd.Const.SpiderEggRangedSkillPenalty <- -2;             // per egg stack
 ::Lewd.Const.SpiderEggMaxFatiguePenalty <- -4;              // per egg stack
 ::Lewd.Const.SpiderEggDuration <- 4;                        // days the "Holding Eggs" injury persists before producing loot
-::Lewd.Const.SpiderEggWeightNothing <- 44;                   // weight: nothing
+::Lewd.Const.SpiderEggWeightNothing <- 52;                   // weight: nothing
 ::Lewd.Const.SpiderEggWeightDyes <- 8;                      // weight: dyes (trade good, 400g)
 ::Lewd.Const.SpiderEggWeightCoins <- 8;                     // weight: ancient gold coins
 ::Lewd.Const.SpiderEggWeightSilk1 <- 25;                    // weight: 1 gossamer
