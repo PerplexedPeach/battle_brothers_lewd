@@ -170,6 +170,13 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC", function()
 					cumBody.Visible = false;
 				}
 
+				// Add piercing_head right before helmet (renders under helmet)
+				if (_layerID == "helmet")
+				{
+					local ph = old_addSprite("piercing_head");
+					ph.Visible = false;
+				}
+
 				if (_layerID == "socket")
 				{
 					old_addSprite("lewd_glow");

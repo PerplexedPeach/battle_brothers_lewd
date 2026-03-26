@@ -131,7 +131,7 @@ this.masochism_trait <- this.inherit("scripts/skills/traits/character_trait", {
 	{
 		local actor = this.getContainer().getActor();
 
-		local piercing_head = actor.addSprite("piercing_head");
+		local piercing_head = actor.getSprite("piercing_head");
 		piercing_head.setBrush(this.m.HeadBrush);
 		piercing_head.Visible = true;
 
