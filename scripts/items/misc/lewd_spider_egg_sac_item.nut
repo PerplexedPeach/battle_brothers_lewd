@@ -103,6 +103,7 @@ this.lewd_spider_egg_sac_item <- this.inherit("scripts/items/item", {
 			[::Lewd.Const.SpiderEggWeightSilk2,    "scripts/items/misc/spider_silk_item",          2],
 			[::Lewd.Const.SpiderEggWeightSilk1,    "scripts/items/misc/spider_silk_item",          1],
 			[::Lewd.Const.SpiderEggWeightDyes,     "scripts/items/trade/dies_item",                1],
+			[::Lewd.Const.SpiderEggWeightCoins,    "scripts/items/loot/ancient_gold_coins_item",   1],
 			[::Lewd.Const.SpiderEggWeightNothing,   null,                                          0]
 		];
 
