@@ -13,7 +13,7 @@ local mod = ::Hooks.register(::Lewd.ID, ::Lewd.Version, ::Lewd.Name);
 mod.require("mod_legends", "mod_msu");
 
 // ::mods_queue(modID, "mod_legends,mod_msu", function()
-mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC", function()
+mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC", ">mod_LuftVampiresOrigin", function()
 {
 	::Lewd.Mod <- ::MSU.Class.Mod(::Lewd.ID, ::Lewd.Version, ::Lewd.Name);
 
@@ -21,6 +21,7 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC", function()
 	::Lewd.Mod.Registry.setUpdateSource(::MSU.System.Registry.ModSourceDomain.GitHub);
 
 	::HasROTU <- ::Hooks.hasMod("mod_ROTUC");
+	::HasRedCourt <- ::Hooks.hasMod("mod_LuftVampiresOrigin");
 
 	// TODO registery for updates
 
@@ -958,6 +959,24 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC", function()
 			_properties.DamageReceivedRegularMult *= chance;
 		};
 	});
+
+	// Hook Red Court hemovore trait: allow armor equipping
+	if (::HasRedCourt)
+	{
+		mod.hook("scripts/skills/traits/hemovore_trait", function(q)
+		{
+			q.onAdded = @(__original) function()
+			{
+				// Call original but then undo the slot locking
+				__original();
+				local items = this.getContainer().getActor().getItems();
+				if (items.getData()[this.Const.ItemSlot.Head][0] == -1)
+					items.getData()[this.Const.ItemSlot.Head][0] = null;
+				if (items.getData()[this.Const.ItemSlot.Body][0] == -1)
+					items.getData()[this.Const.ItemSlot.Body][0] = null;
+			};
+		});
+	}
 
 	// Hook break_free to also remove the lewd_restrained effect
 	mod.hook("scripts/skills/actives/break_free_skill", function(q)
