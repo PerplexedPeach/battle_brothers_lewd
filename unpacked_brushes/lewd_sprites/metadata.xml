@@ -190,4 +190,14 @@
     <sprite id="bust_lewd_piercing_chains_01_front" offsetY="35" ic="FFC8A020" width="140" height="248" img="armor\bust_lewd_piercing_chains_01.png" left="-43" right="59" top="-56" bottom="24"/>
     <sprite id="bust_lewd_piercing_chains_01_back" offsetY="35" ic="FFC8A024" width="140" height="248" img="armor\bust_lewd_piercing_chains_01.png" left="-43" right="59" top="-56" bottom="24"/>
     <sprite id="bust_lewd_piercing_chains_01_dead" offsetX="6" offsetY="10" f="64FD" ic="FFC8A028" width="131" height="125" img="armor\bust_lewd_piercing_chains_01_dead.png" left="-57" right="59" top="-53" bottom="55"/>
+
+    <!-- Lewd Helmets: Bare Head (transparent placeholder) -->
+    <sprite id="bust_lewd_bare_head_01" offsetY="35" ic="FF101010" width="140" height="140" img="helmets\bust_lewd_bare_head_01.png" left="-74" right="66" top="-52" bottom="88"/>
+    <sprite id="bust_lewd_bare_head_01_damaged" offsetY="35" ic="FF101014" width="140" height="140" img="helmets\bust_lewd_bare_head_01.png" left="-74" right="66" top="-52" bottom="88"/>
+    <sprite id="bust_lewd_bare_head_01_dead" offsetX="6" offsetY="10" f="64FC" ic="FF101018" width="140" height="140" img="helmets\bust_lewd_bare_head_01.png" left="-74" right="66" top="-52" bottom="88"/>
+
+    <!-- Lewd Helmets: Facial Piercing Chain (Vanity layer) -->
+    <sprite id="bust_lewd_piercing_chain_01" offsetY="35" ic="FFC8B020" width="140" height="140" img="helmets\bust_lewd_piercing_chain_01.png" left="-74" right="66" top="-52" bottom="88"/>
+    <sprite id="bust_lewd_piercing_chain_01_damaged" offsetY="35" ic="FFC8B024" width="140" height="140" img="helmets\bust_lewd_piercing_chain_01.png" left="-74" right="66" top="-52" bottom="88"/>
+    <sprite id="bust_lewd_piercing_chain_01_dead" offsetX="6" offsetY="10" f="64FB" ic="FFC8B028" width="140" height="140" img="helmets\bust_lewd_piercing_chain_01.png" left="-74" right="66" top="-52" bottom="88"/>
 </brush>
