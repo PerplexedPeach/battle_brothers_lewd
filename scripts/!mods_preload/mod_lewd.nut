@@ -896,6 +896,69 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC", function()
 
 	});
 
+	// Hook Nudist perk: apply bonus based on zero fatigue cost rather than empty slots
+	// This allows lewd clothing (which has 0 stamina penalty) to still benefit from the perk
+	mod.hook("scripts/skills/perks/perk_legend_ubernimble", function(q)
+	{
+		q.getTooltip = @(__original) function()
+		{
+			local tooltip = this.skill.getTooltip();
+			local fm = this.Math.round(this.getChance() * 100);
+			local actor = this.getContainer().getActor();
+			local items = actor.getItems();
+			local bodyitem = items.getItemAtSlot(this.Const.ItemSlot.Body);
+			local headitem = items.getItemAtSlot(this.Const.ItemSlot.Head);
+			local hasFatigueCost = false;
+
+			if (bodyitem != null && bodyitem.getStaminaModifier() < 0)
+				hasFatigueCost = true;
+
+			if (headitem != null && headitem.getStaminaModifier() < 0)
+				hasFatigueCost = true;
+
+			if (!hasFatigueCost)
+			{
+				tooltip.push({
+					id = 6,
+					type = "text",
+					icon = "ui/icons/special.png",
+					text = "Only receive [color=%positive%]" + fm + "%[/color] of any damage to hitpoints from attacks"
+				});
+			}
+			else
+			{
+				tooltip.push({
+					id = 6,
+					type = "text",
+					icon = "ui/tooltips/warning.png",
+					text = "[color=%negative%]This character isn\'t nude.[/color]"
+				});
+			}
+
+			return tooltip;
+		};
+
+		q.onBeforeDamageReceived = @(__original) function( _attacker, _skill, _hitInfo, _properties )
+		{
+			local actor = this.getContainer().getActor();
+			local items = actor.getItems();
+			local bodyitem = items.getItemAtSlot(this.Const.ItemSlot.Body);
+			local headitem = items.getItemAtSlot(this.Const.ItemSlot.Head);
+
+			if (bodyitem != null && bodyitem.getStaminaModifier() < 0)
+				return;
+
+			if (headitem != null && headitem.getStaminaModifier() < 0)
+				return;
+
+			if (_attacker != null && _attacker.getID() == actor.getID() || _skill == null || !_skill.isAttack() || !_skill.isUsingHitchance())
+				return;
+
+			local chance = this.getChance();
+			_properties.DamageReceivedRegularMult *= chance;
+		};
+	});
+
 	// Hook break_free to also remove the lewd_restrained effect
 	mod.hook("scripts/skills/actives/break_free_skill", function(q)
 	{
