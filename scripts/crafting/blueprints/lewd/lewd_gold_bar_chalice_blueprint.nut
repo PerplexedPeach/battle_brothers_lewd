@@ -1,19 +1,15 @@
-this.lewd_piercing_chains_blueprint <- this.inherit("scripts/crafting/blueprint", {
+this.lewd_gold_bar_chalice_blueprint <- this.inherit("scripts/crafting/blueprint", {
 	m = {},
 	function create()
 	{
 		this.blueprint.create();
-		this.m.ID = "blueprint.lewd_piercing_chains";
-		this.m.Type = this.Const.Items.ItemType.Armor;
-		this.m.PreviewCraftable = this.new("scripts/items/legend_armor/lewd/lewd_piercing_chains");
-		this.m.Cost = 250;
+		this.m.ID = "blueprint.lewd_gold_bar_chalice";
+		this.m.Type = this.Const.Items.ItemType.Usable;
+		this.m.PreviewCraftable = this.new("scripts/items/trade/lewd_gold_bar_item");
+		this.m.Cost = 100;
 		local ingredients = [
 			{
-				Script = "scripts/items/trade/lewd_gold_bar_item",
-				Num = 1
-			},
-			{
-				Script = "scripts/items/trade/uncut_gems_item",
+				Script = "scripts/items/loot/golden_chalice_item",
 				Num = 1
 			}
 		];
@@ -38,6 +34,6 @@ this.lewd_piercing_chains_blueprint <- this.inherit("scripts/crafting/blueprint"
 
 	function onCraft( _stash )
 	{
-		_stash.add(this.new("scripts/items/legend_armor/lewd/lewd_piercing_chains"));
+		_stash.add(this.new("scripts/items/trade/lewd_gold_bar_item"));
 	}
 });
