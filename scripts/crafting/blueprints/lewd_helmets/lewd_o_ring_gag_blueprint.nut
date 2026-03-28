@@ -27,7 +27,7 @@ this.lewd_o_ring_gag_blueprint <- this.inherit("scripts/crafting/blueprint", {
 
 	function isQualified()
 	{
-		if (!this.World.Flags.has("lewdRecipePiercingChains"))
+		if (!this.World.Flags.has("lewdRecipeHeadwear"))
 			return false;
 		return true;
 	}

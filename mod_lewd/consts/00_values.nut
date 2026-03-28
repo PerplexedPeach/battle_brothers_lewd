@@ -949,6 +949,10 @@ foreach (name in [
 ::Lewd.Const.DajiHarnessAllureScale <- 2.0;
 ::Lewd.Const.DajiHarnessDomScale <- 1.5;
 
+// Daji Headwear Dream: requires Ethereal + any prior Daji recipe
+::Lewd.Const.DajiHeadwearBaseScore <- 25;
+::Lewd.Const.DajiHeadwearAllureScale <- 2.0;
+
 // Silk Reflection: requires heels + heelSkill
 ::Lewd.Const.SilkReflectionBaseScore <- 40;
 ::Lewd.Const.SilkReflectionAllureScale <- 2.0;

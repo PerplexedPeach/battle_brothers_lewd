@@ -15,7 +15,8 @@ this.lewd_bare_head_blueprint <- this.inherit("scripts/crafting/blueprint", {
 			&& !this.World.Flags.has("lewdRecipeLatexHarness")
 			&& !this.World.Flags.has("lewdRecipeSheerBodysuit")
 			&& !this.World.Flags.has("lewdRecipeFishnets")
-			&& !this.World.Flags.has("lewdRecipePiercingChains"))
+			&& !this.World.Flags.has("lewdRecipePiercingChains")
+			&& !this.World.Flags.has("lewdRecipeHeadwear"))
 			return false;
 		return true;
 	}
