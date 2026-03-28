@@ -7,7 +7,7 @@ this.lewd_latex_harness <- this.inherit("scripts/items/legend_armor/legend_armor
 		this.m.ID = "legend_armor.body.lewd_latex_harness";
 		this.m.Name = "Latex Harness";
 		this.m.Description = "Straps of demon alp skin cured into a supple, form-fitting harness. The material clings to the body as if alive, warm to the touch and faintly luminous in low light. Those who command others find it amplifies their authority.";
-		this.m.ArmorDescription = "A latex harness of demon alp skin";
+		this.m.ArmorDescription = "A latex harness of demon alp skin.";
 		this.m.Variants = [1];
 		this.m.Variant = 1;
 		this.updateVariant();

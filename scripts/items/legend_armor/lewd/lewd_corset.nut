@@ -7,7 +7,7 @@ this.lewd_corset <- this.inherit("scripts/items/legend_armor/legend_armor_upgrad
 		this.m.ID = "legend_armor.body.lewd_corset";
 		this.m.Name = "Black Corset";
 		this.m.Description = "A structured corset of serpent leather dyed midnight black, with gold filigree tracing the boning and clasps. It cinches the waist and lifts the bust with an authority that borders on architectural.";
-		this.m.ArmorDescription = "A gold-accented black corset";
+		this.m.ArmorDescription = "A gold-accented black corset.";
 		this.m.Variants = [1];
 		this.m.Variant = 1;
 		this.updateVariant();

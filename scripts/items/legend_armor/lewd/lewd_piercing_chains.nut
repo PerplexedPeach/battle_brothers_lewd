@@ -7,7 +7,7 @@ this.lewd_piercing_chains <- this.inherit("scripts/items/legend_armor/legend_arm
 		this.m.ID = "legend_armor_upgrade.body.lewd_piercing_chains";
 		this.m.Name = "Piercing Chains";
 		this.m.Description = "Delicate gold chains connecting intimate piercings across the torso. They chime softly with every movement, a sound that makes men lose their train of thought. The deeper one surrenders, the more powerful they become.";
-		this.m.ArmorDescription = "Gold piercing chains";
+		this.m.ArmorDescription = "Gold piercing chains.";
 		this.m.Variants = [1];
 		this.m.Variant = 1;
 		this.updateVariant();

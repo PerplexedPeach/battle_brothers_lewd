@@ -7,7 +7,7 @@ this.lewd_fishnets <- this.inherit("scripts/items/legend_armor/legend_armor_upgr
 		this.m.ID = "legend_armor.body.lewd_fishnets";
 		this.m.Name = "Fishnets";
 		this.m.Description = "Stockings woven from gossamer into a diamond mesh pattern so delicate it looks like it was spun by something not entirely natural. They catch the light in ways that draw the eye and hold it. The higher the heel, the more they flatter the leg.";
-		this.m.ArmorDescription = "A pair of gossamer fishnets";
+		this.m.ArmorDescription = "A pair of gossamer fishnets.";
 		this.m.Variants = [1];
 		this.m.Variant = 1;
 		this.updateVariant();
