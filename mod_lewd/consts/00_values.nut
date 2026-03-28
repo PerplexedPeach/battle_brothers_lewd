@@ -858,8 +858,8 @@ foreach (name in [
 ];
 
 // --- Allure Events (camp encounters with male brothers) ---
-::Lewd.Const.AllureEventCooldownDays <- 5;        // individual event cooldown
-::Lewd.Const.AllureEventSharedCooldownDays <- 3;  // min days between ANY allure event
+::Lewd.Const.AllureEventCooldownDays <- 10;       // individual event cooldown
+::Lewd.Const.AllureEventSharedCooldownDays <- 6;  // min days between ANY allure event
 ::Lewd.Const.AllureEventDomBaseChance <- 50;       // base % for dom success at 0 dom/sub
 ::Lewd.Const.AllureEventDomScoreScale <- 1.5;     // + domSub * this (negative domSub = harder)
 ::Lewd.Const.AllureEventDomMinChance <- 5;        // floor
@@ -867,20 +867,20 @@ foreach (name in [
 
 // Lingering Gaze (mild, low threshold)
 ::Lewd.Const.AllureGazeMinAllure <- 15;
-::Lewd.Const.AllureGazeBaseScore <- 50;
-::Lewd.Const.AllureGazeAllureScale <- 3.0;
+::Lewd.Const.AllureGazeBaseScore <- 25;
+::Lewd.Const.AllureGazeAllureScale <- 1.5;
 ::Lewd.Const.AllureGazeDomSubShift <- 1;          // dom/sub points gained/lost
 
 // Uninvited Touch (medium, no reject option)
 ::Lewd.Const.AllureTouchMinAllure <- 25;
-::Lewd.Const.AllureTouchBaseScore <- 40;
-::Lewd.Const.AllureTouchAllureScale <- 2.5;
+::Lewd.Const.AllureTouchBaseScore <- 20;
+::Lewd.Const.AllureTouchAllureScale <- 1.25;
 ::Lewd.Const.AllureTouchDomSubShift <- 1;
 
 // Night Visitor (intense, high threshold)
 ::Lewd.Const.AllureNightMinAllure <- 35;
-::Lewd.Const.AllureNightBaseScore <- 30;
-::Lewd.Const.AllureNightAllureScale <- 2.0;
+::Lewd.Const.AllureNightBaseScore <- 15;
+::Lewd.Const.AllureNightAllureScale <- 1.0;
 ::Lewd.Const.AllureNightDomSubShift <- 1;
 
 // --- Lewd Clothing ---
@@ -912,6 +912,32 @@ foreach (name in [
 ::Lewd.Const.ClothingPiercingChainsInitiativeScale <- 5;
 ::Lewd.Const.ClothingPiercingChainsHornyChanceBase <- 10;  // % chance on being hit
 ::Lewd.Const.ClothingPiercingChainsHornyChanceScale <- 10; // 10% at sub 0, 20% at sub 30
+
+// --- Helmet Accessories ---
+// Facial Piercing Chain (Vanity layer)
+::Lewd.Const.HeadPiercingChainAllure <- 3;
+::Lewd.Const.HeadPiercingChainReceivedPleasureMult <- 1.10; // +10% pleasure received
+
+// O-Ring Gag (Top layer)
+::Lewd.Const.HeadORingGagAllure <- 2;
+::Lewd.Const.HeadORingGagResolve <- -5;
+::Lewd.Const.HeadORingGagReceivedPleasureMult <- 1.10; // +10% pleasure received
+::Lewd.Const.HeadORingGagOralPleasureBonus <- 3; // flat bonus to oral pleasure dealt and force oral self-pleasure
+
+// Lace Mask (Vanity layer)
+::Lewd.Const.HeadLaceMaskAllure <- 3;
+::Lewd.Const.HeadLaceMaskVision <- -2;
+::Lewd.Const.HeadLaceMaskReceivedPleasureMult <- 1.05; // +5% pleasure received -- sensory deprivation
+
+// Gold Headpiece (Helm layer)
+::Lewd.Const.HeadGoldHeadpieceAllure <- 5;
+::Lewd.Const.HeadGoldHeadpieceResolve <- 5;
+
+// Lewd Seal (permanent curse effect, not an item)
+::Lewd.Const.LewdSealAllure <- 5;
+::Lewd.Const.LewdSealReceivedPleasureMult <- 1.25; // +25% pleasure received
+::Lewd.Const.LewdSealSelfPleasurePerTurn <- 2; // lewd thoughts each turn
+::Lewd.Const.LewdSealPleasureReflectionMult <- 1.15; // +15% pleasure reflected to mounter
 
 // --- Clothing Unlock Events ---
 // Daji Corset Dream: requires Ethereal
