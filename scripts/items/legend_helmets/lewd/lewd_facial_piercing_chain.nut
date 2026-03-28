@@ -32,9 +32,31 @@ this.lewd_facial_piercing_chain <- this.inherit("scripts/items/legend_helmets/le
 		this.m.OverlayIconLarge = this.m.OverlayIcon;
 	}
 
+	function getTooltip()
+	{
+		local result = this.legend_helmet_upgrade.getTooltip();
+		local C = ::Lewd.Const;
+		result.push({ id = 20, type = "text", icon = "ui/icons/allure.png",
+			text = "Allure [color=" + this.Const.UI.Color.PositiveValue + "]+" + C.HeadPiercingChainAllure + "[/color]"
+		});
+		result.push({ id = 21, type = "text", icon = "ui/icons/special.png",
+			text = "[color=" + this.Const.UI.Color.NegativeValue + "]+" + this.Math.floor((C.HeadPiercingChainReceivedPleasureMult - 1.0) * 100) + "%[/color] pleasure received"
+		});
+		return result;
+	}
+
+	function onArmorTooltip( _result )
+	{
+		this.legend_helmet_upgrade.onArmorTooltip(_result);
+		_result.push({ id = 20, type = "text", icon = "ui/icons/special.png",
+			text = "+" + ::Lewd.Const.HeadPiercingChainAllure + " Allure, +" + this.Math.floor((::Lewd.Const.HeadPiercingChainReceivedPleasureMult - 1.0) * 100) + "% pleasure received"
+		});
+	}
+
 	function onUpdateProperties( _properties )
 	{
 		this.legend_helmet_upgrade.onUpdateProperties(_properties);
-		_properties.Allure += 5;
+		_properties.Allure += ::Lewd.Const.HeadPiercingChainAllure;
+		_properties.ReceivedPleasureMult *= ::Lewd.Const.HeadPiercingChainReceivedPleasureMult;
 	}
 });

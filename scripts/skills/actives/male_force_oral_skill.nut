@@ -51,6 +51,11 @@ this.male_force_oral_skill <- this.inherit("scripts/skills/actives/male_sex_skil
 		local oralPts = ::Lewd.Mastery.getMasteryPoints(_target, "effects.lewd_mastery_oral");
 		if (oralPts > 0)
 			selfP += this.Math.floor(oralPts * ::Lewd.Const.MaleForceOralOralMasteryScale);
+
+		// O-ring gag on target: open mouth = more pleasure for the one being sucked
+		if (_target.getSkills().hasSkill("legend_helmet_upgrade.head.lewd_o_ring_gag"))
+			selfP += ::Lewd.Const.HeadORingGagOralPleasureBonus;
+
 		return selfP;
 	}
 

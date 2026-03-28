@@ -89,10 +89,17 @@ this.oral_skill <- this.inherit("scripts/skills/actives/female_sex_skill", {
 
 	function calculateMasteryPleasureBonus()
 	{
+		local bonus = 0;
 		local pts = this.getMasteryPoints();
 		if (pts >= ::Lewd.Const.MasteryOralPleasureThreshold)
-			return ::Lewd.Const.MasteryOralPleasureBonus;
-		return 0;
+			bonus += ::Lewd.Const.MasteryOralPleasureBonus;
+
+		// O-ring gag bonus: open mouth = better oral
+		local user = this.getContainer().getActor();
+		if (user.getSkills().hasSkill("legend_helmet_upgrade.head.lewd_o_ring_gag"))
+			bonus += ::Lewd.Const.HeadORingGagOralPleasureBonus;
+
+		return bonus;
 	}
 
 	function getSelfPleasure()

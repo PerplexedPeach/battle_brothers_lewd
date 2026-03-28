@@ -200,4 +200,25 @@
     <sprite id="bust_lewd_piercing_chain_01" offsetY="35" ic="FFC8B020" width="140" height="140" img="helmets\bust_lewd_piercing_chain_01.png" left="-74" right="66" top="-52" bottom="88"/>
     <sprite id="bust_lewd_piercing_chain_01_damaged" offsetY="35" ic="FFC8B024" width="140" height="140" img="helmets\bust_lewd_piercing_chain_01.png" left="-74" right="66" top="-52" bottom="88"/>
     <sprite id="bust_lewd_piercing_chain_01_dead" offsetX="6" offsetY="10" f="64FB" ic="FFC8B028" width="140" height="140" img="helmets\bust_lewd_piercing_chain_01.png" left="-74" right="66" top="-52" bottom="88"/>
+
+    <!-- Lewd Helmets: O-Ring Gag (Top layer) -->
+    <sprite id="bust_lewd_o_ring_gag_01" offsetY="35" ic="FFC8B030" width="140" height="140" img="helmets\bust_lewd_o_ring_gag_01.png" left="-74" right="66" top="-52" bottom="88"/>
+    <sprite id="bust_lewd_o_ring_gag_01_damaged" offsetY="35" ic="FFC8B034" width="140" height="140" img="helmets\bust_lewd_o_ring_gag_01.png" left="-74" right="66" top="-52" bottom="88"/>
+    <sprite id="bust_lewd_o_ring_gag_01_dead" offsetX="6" offsetY="10" f="64FA" ic="FFC8B038" width="140" height="140" img="helmets\bust_lewd_o_ring_gag_01.png" left="-74" right="66" top="-52" bottom="88"/>
+
+    <!-- Lewd Helmets: Lace Mask (Vanity layer) -->
+    <sprite id="bust_lewd_lace_mask_01" offsetY="35" ic="FFC8B040" width="140" height="140" img="helmets\bust_lewd_lace_mask_01.png" left="-74" right="66" top="-52" bottom="88"/>
+    <sprite id="bust_lewd_lace_mask_01_damaged" offsetY="35" ic="FFC8B044" width="140" height="140" img="helmets\bust_lewd_lace_mask_01.png" left="-74" right="66" top="-52" bottom="88"/>
+    <sprite id="bust_lewd_lace_mask_01_dead" offsetX="6" offsetY="10" f="64F9" ic="FFC8B048" width="140" height="140" img="helmets\bust_lewd_lace_mask_01.png" left="-74" right="66" top="-52" bottom="88"/>
+
+    <!-- Lewd Helmets: Gold Headpiece (Helm layer) -->
+    <sprite id="bust_lewd_gold_headpiece_01" offsetY="35" ic="FFC8B050" width="140" height="140" img="helmets\bust_lewd_gold_headpiece_01.png" left="-74" right="66" top="-52" bottom="88"/>
+    <sprite id="bust_lewd_gold_headpiece_01_damaged" offsetY="35" ic="FFC8B054" width="140" height="140" img="helmets\bust_lewd_gold_headpiece_01.png" left="-74" right="66" top="-52" bottom="88"/>
+    <sprite id="bust_lewd_gold_headpiece_01_dead" offsetX="6" offsetY="10" f="64F8" ic="FFC8B058" width="140" height="140" img="helmets\bust_lewd_gold_headpiece_01.png" left="-74" right="66" top="-52" bottom="88"/>
+
+    <!-- Lewd Seal (permanent curse effect overlay, 4 stages) -->
+    <sprite id="bust_lewd_seal_1" offsetY="35" ic="FFC8B060" width="140" height="140" img="entity\bust_lewd_seal_1.png" left="-74" right="66" top="-52" bottom="88"/>
+    <sprite id="bust_lewd_seal_2" offsetY="35" ic="FFC8B064" width="140" height="140" img="entity\bust_lewd_seal_2.png" left="-74" right="66" top="-52" bottom="88"/>
+    <sprite id="bust_lewd_seal_3" offsetY="35" ic="FFC8B068" width="140" height="140" img="entity\bust_lewd_seal_3.png" left="-74" right="66" top="-52" bottom="88"/>
+    <sprite id="bust_lewd_seal_4" offsetY="35" ic="FFC8B06C" width="140" height="140" img="entity\bust_lewd_seal_4.png" left="-74" right="66" top="-52" bottom="88"/>
 </brush>
