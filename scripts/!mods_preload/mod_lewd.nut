@@ -1399,6 +1399,35 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC", ">mod_LuftVampiresOrigin", f
 		};
 	});
 
+	// Hook updateLook to restore lewd world map figure after camp/town leave
+	mod.hook("scripts/states/world/asset_manager", function(q)
+	{
+		q.updateLook = @(__original) function( _updateTo = -1 )
+		{
+			__original(_updateTo);
+
+			local player = this.World.State.getPlayer();
+			if (player == null) return;
+
+			local woman = ::Lewd.Transform.target();
+			if (woman == null) return;
+
+			local figureBrush = null;
+			if (woman.getSkills().hasSkill("trait.ethereal"))
+				figureBrush = "figure_player_ethereal";
+			else if (woman.getSkills().hasSkill("trait.delicate"))
+				figureBrush = "figure_player_delicate";
+			else if (woman.getSkills().hasSkill("trait.dainty"))
+				figureBrush = "figure_player_dainty";
+
+			if (figureBrush != null)
+			{
+				player.getSprite("body").setBrush(figureBrush);
+				player.getSprite("body").setHorizontalFlipping(false);
+			}
+		};
+	});
+
 	// Register pleasure bar CSS
 	::mods_registerCSS("mod_lewd/pleasure_bar.css");
 
