@@ -9,7 +9,11 @@ this.lewd_o_ring_gag_blueprint <- this.inherit("scripts/crafting/blueprint", {
 		this.m.Cost = 150;
 		local ingredients = [
 			{
-				Script = "scripts/items/trade/lewd_gold_bar_item",
+				Script = "scripts/items/trade/legend_silver_ingots_item",
+				Num = 1
+			},
+			{
+				Script = "scripts/items/trade/furs_item",
 				Num = 1
 			}
 		];

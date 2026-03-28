@@ -9,7 +9,11 @@ this.lewd_lace_mask_blueprint <- this.inherit("scripts/crafting/blueprint", {
 		this.m.Cost = 200;
 		local ingredients = [
 			{
-				Script = "scripts/items/trade/lewd_gold_bar_item",
+				Script = "scripts/items/trade/silk_item",
+				Num = 1
+			},
+			{
+				Script = "scripts/items/misc/spider_silk_item",
 				Num = 1
 			}
 		];
