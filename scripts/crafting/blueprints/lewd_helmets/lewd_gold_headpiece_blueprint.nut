@@ -31,7 +31,7 @@ this.lewd_gold_headpiece_blueprint <- this.inherit("scripts/crafting/blueprint",
 
 	function isQualified()
 	{
-		if (!this.World.Flags.has("lewdRecipePiercingChains"))
+		if (!this.World.Flags.has("lewdRecipeGoldHeadpiece"))
 			return false;
 		return true;
 	}
