@@ -953,6 +953,21 @@ foreach (name in [
 ::Lewd.Const.DajiHeadwearBaseScore <- 25;
 ::Lewd.Const.DajiHeadwearAllureScale <- 2.0;
 
+// Daji Incubus Quest: requires Ethereal + both corset + harness recipes + wearing harness
+::Lewd.Const.DajiIncubusBaseScore <- 25;
+::Lewd.Const.DajiIncubusAllureScale <- 2.0;
+::Lewd.Const.IncubusHP <- 300;
+::Lewd.Const.IncubusArmor <- 100;
+::Lewd.Const.IncubusAllure <- 80;
+::Lewd.Const.IncubusMeleeSkill <- 100;
+::Lewd.Const.IncubusMeleeDef <- 50;
+::Lewd.Const.IncubusRangedDef <- 40;
+::Lewd.Const.IncubusInitiative <- 120;
+::Lewd.Const.IncubusResolve <- 80;
+::Lewd.Const.IncubusHaremCount <- 4;
+::Lewd.Const.IncubusQuestSpawnMinDist <- 5;
+::Lewd.Const.IncubusQuestSpawnMaxDist <- 10;
+
 // Silk Reflection: requires heels + heelSkill
 ::Lewd.Const.SilkReflectionBaseScore <- 40;
 ::Lewd.Const.SilkReflectionAllureScale <- 2.0;
