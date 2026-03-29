@@ -41,11 +41,10 @@ On the Wake screen:
 - Script: `scripts/entity/tactical/enemies/lewd_incubus`
 - Base: reskinned human male
 - HP: ~300, high armor (100/100), moderate stats
-- MeleeSkill: 80, MeleeDef: 25, RangedDef: 15, Initiative: 120, Resolve: 80, Bravery: 999 (Ignore morale)
+- MeleeSkill: 100, MeleeDef: 50, RangedDef: 40, Initiative: 120, Resolve: 80, Bravery: 999 (Ignore morale)
 - Damage reduction or healing: grant the Conqueror perk (heals from causing climax, already exists)
 - Has all male sex skills (grope, force oral, penetrate vaginal, penetrate anal)
-- Unique ability: on combat start, applies Lewd Seal stage 1 to the player character
-- When the incubus directly causes the player to climax, the seal advances one stage
+- When the incubus directly causes the player to climax, the seal advances one stage (or inflicts stage 1 if not afflicted)
 - High allure to trigger horny on the player
 - Custom tactical sprite (TODO -- placeholder with existing male sprite initially)
 
@@ -64,22 +63,14 @@ The seal advances ONLY when the incubus directly causes the player character to 
 
 ### Implementation
 
-Hook into `climax_effect` (the effect that fires when pleasure overflows):
+The seal effect wraps the actor's `onClimax` function when added, and restores it on removal. Zero changes to shared code (climax_effect, addPleasure).
 
-1. In `onCombatStarted` (via `lewd_info_effect` or a new hook): detect incubus presence, set `lewdFightingIncubus` stat flag, apply seal stage 1 to the player character
-2. In `climax_effect`: when the actor who climaxed is the player character AND the source of the climax is the incubus (tracked via `addPleasure(amount, source)` -- the source entity), advance the seal
-3. The `addPleasure` function already takes a source parameter. The climax_effect needs to know who caused the overflow. Check if the last source of pleasure was the incubus.
+1. `lewd_seal_effect.onAdded()`: wraps `actor.onClimax` to call `seal.onActorClimax()` after the original
+2. `onActorClimax()`: reads `actor.m.LastPleasureSourceID` (already tracked by `addPleasure`), resolves the source entity, checks if it has `racial.lewd_incubus` skill. If yes, advances the seal.
+3. `lewd_seal_effect.onRemoved()`: restores the original `onClimax`
+4. The incubus entity has a `racial.lewd_incubus` passive skill as its identifier
 
-### Tracking Climax Source
-
-The `addPleasure(amount, source)` already passes a source actor. The climax_effect fires when pleasure exceeds PleasureMax. We need to thread the source through to the climax check. Options:
-
-**Approach: Store last pleasure source on the actor**
-- In the hooked `addPleasure`, store `m.LastPleasureSource = source` before the climax check
-- In `climax_effect.onAdded()` (fires when climax triggers), read `actor.m.LastPleasureSource`
-- If it matches the incubus entity, advance the seal
-
-This is clean because `addPleasure` is already the single choke point and already receives the source.
+This approach is self-contained: the wrap only exists while the seal is on the actor, and `LastPleasureSourceID` is already set by the existing `addPleasure` hook.
 
 ## Post-Battle Events
 
@@ -89,7 +80,7 @@ Fires via the location's `OnDestroyed` field when the lair is cleared.
 
 **If seal stage < 4:** The seal fades. Remove the `lewd_seal_effect` from the player. Narrative: the incubus's mark dissolves without his power sustaining it. You proved stronger.
 
-**If seal stage == 4:** The seal is permanent. Do NOT remove it. Narrative: the seal burned too deep. Daji is disappointed -- you let him complete his brand. You are marked as his even in death, though the creature itself is gone. The seal's power remains.
+**If seal stage == 4:** The seal is permanent. Do NOT remove it. Narrative: the seal burned too deep. Daji is disappointed -- you let him complete his brand. You are marked as his even in death, though the creature itself is gone (but not forever - they are a manifestation of people's lust). The seal's power remains.
 
 **Both paths:** Unlock `lewdRecipeGoldHeadpiece` flag. The gold headpiece was the incubus's crown, now yours as a trophy. Add it to stash or grant knowledge.
 

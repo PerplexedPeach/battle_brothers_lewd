@@ -7,7 +7,8 @@
 //          permanently horny (with partial offset), +allure, +pleasure reflection
 this.lewd_seal_effect <- this.inherit("scripts/skills/skill", {
 	m = {
-		Stage = 1
+		Stage = 1,
+		OriginalClimax = null
 	},
 	function create()
 	{
@@ -153,14 +154,51 @@ this.lewd_seal_effect <- this.inherit("scripts/skills/skill", {
 		local actor = this.getContainer().getActor();
 		if (this.m.Stage >= 3 && actor.getMoraleState() != this.Const.MoraleState.Ignore)
 			actor.setMoraleState(this.Const.MoraleState.Confident);
+
+		// Wrap actor's onClimax to detect incubus-caused climaxes
+		if ("onClimax" in actor && this.m.OriginalClimax == null)
+		{
+			this.m.OriginalClimax = actor.onClimax;
+			local seal = this.WeakTableRef(this);
+			actor.onClimax = function() {
+				seal.m.OriginalClimax();
+				seal.onActorClimax();
+			};
+		}
 	}
 
 	function onRemoved()
 	{
 		local actor = this.getContainer().getActor();
+
+		// Restore original onClimax
+		if (this.m.OriginalClimax != null)
+		{
+			actor.onClimax = this.m.OriginalClimax;
+			this.m.OriginalClimax = null;
+		}
+
 		if (actor.hasSprite("lewd_seal"))
 			actor.getSprite("lewd_seal").Visible = false;
 		actor.setDirty(true);
+	}
+
+	function onActorClimax()
+	{
+		if (this.m.Stage >= 4) return;
+
+		local actor = this.getContainer().getActor();
+		if (actor.m.LastPleasureSourceID < 0) return;
+
+		local source = this.Tactical.getEntityByID(actor.m.LastPleasureSourceID);
+		if (source == null) return;
+
+		// Only advance if the incubus directly caused the climax
+		if (source.getSkills().hasSkill("racial.lewd_incubus"))
+		{
+			this.advance();
+			this.Tactical.EventLog.log("[color=" + this.Const.UI.Color.NegativeValue + "]The incubus's seal burns deeper into " + this.Const.UI.getColorizedEntityName(actor) + "'s mind (Stage " + this.m.Stage + ")[/color]");
+		}
 	}
 
 	function onUpdate( _properties )
