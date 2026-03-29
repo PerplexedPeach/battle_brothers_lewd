@@ -138,6 +138,45 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC", ">mod_LuftVampiresOrigin", f
 	local lewdHairs = ["lewd_01", "lewd_02", "lewd_03", "lewd_04", "lewd_05", "lewd_06"];
 	::Const.Hair.BarberFemale.extend(lewdHairs);
 
+	// Fix Legends bug: setGender(0) doesn't restore face/body/hair pools after setGender(1).
+	// human_gender.nut can call setGender(1) during create() (setting AllFemale pools),
+	// then legend_randomized_unit_abstract.onInit() calls setGender(0) which resets m.Gender
+	// but leaves pools pointing at AllFemale -- causing female sprites on male-gendered entities.
+	// Save male pools before the female switch and restore them when switching back.
+	mod.hook("scripts/entity/tactical/human", function(q)
+	{
+		q.m._savedMaleFaces <- null;
+		q.m._savedMaleBodies <- null;
+		q.m._savedMaleHairs <- null;
+		q.m._savedMaleBeards <- null;
+
+		q.setGender = @(__original) function(_v, _reroll = true)
+		{
+			if (_v == 1 && this.m._savedMaleFaces == null)
+			{
+				this.m._savedMaleFaces = this.m.Faces;
+				this.m._savedMaleBodies = this.m.Bodies;
+				this.m._savedMaleHairs = this.m.Hairs;
+				this.m._savedMaleBeards = this.m.Beards;
+			}
+
+			__original(_v, _reroll);
+
+			if (_v != 1 && this.m._savedMaleFaces != null)
+			{
+				this.m.Faces = this.m._savedMaleFaces;
+				this.m.Bodies = this.m._savedMaleBodies;
+				this.m.Hairs = this.m._savedMaleHairs;
+				if (this.m._savedMaleBeards != null)
+					this.m.Beards = this.m._savedMaleBeards;
+				this.m._savedMaleFaces = null;
+				this.m._savedMaleBodies = null;
+				this.m._savedMaleHairs = null;
+				this.m._savedMaleBeards = null;
+			}
+		};
+	});
+
 	mod.hook("scripts/entity/tactical/actor", function (q)
 	{
 		// Add Pleasure as a member variable on actor (same pattern as m.Fatigue)
@@ -1201,6 +1240,19 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC", ">mod_LuftVampiresOrigin", f
 
 				// Clear after fire() so onUpdateScore can still see the flag
 				this.World.Statistics.getFlags().set("lewdFoughtHexen", false);
+			}
+
+			// --- Incubus seal cleanup ---
+			// Remove incomplete seal after any combat (the defeated event handles stage 4)
+			local sealWoman = ::Lewd.Transform.target();
+			if (sealWoman != null)
+			{
+				local seal = sealWoman.getSkills().getSkillByID("effects.lewd_seal");
+				if (seal != null && seal.getStage() < 4)
+				{
+					sealWoman.getSkills().removeByID("effects.lewd_seal");
+					::logInfo("[mod_lewd] Removed incomplete lewd seal (stage " + seal.getStage() + ") after combat");
+				}
 			}
 
 			// --- Restore world map figure based on current trait ---

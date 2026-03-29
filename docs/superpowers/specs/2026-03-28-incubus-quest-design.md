@@ -103,8 +103,8 @@ List items on the Wake screen:
 ::Lewd.Const.DajiIncubusAllureScale <- 2.0
 ::Lewd.Const.IncubusHP <- 300
 ::Lewd.Const.IncubusArmor <- 100
-::Lewd.Const.IncubusAllure <- 40
-::Lewd.Const.IncubusMeleeSkill <- 80
+::Lewd.Const.IncubusAllure <- 80
+::Lewd.Const.IncubusMeleeSkill <- 100
 ::Lewd.Const.IncubusHaremCount <- 4
 ```
 
