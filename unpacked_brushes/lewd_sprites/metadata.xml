@@ -221,4 +221,8 @@
     <sprite id="bust_lewd_seal_2" offsetY="35" ic="FFC8B064" width="140" height="140" img="entity\bust_lewd_seal_2.png" left="-74" right="66" top="-52" bottom="88"/>
     <sprite id="bust_lewd_seal_3" offsetY="35" ic="FFC8B068" width="140" height="140" img="entity\bust_lewd_seal_3.png" left="-74" right="66" top="-52" bottom="88"/>
     <sprite id="bust_lewd_seal_4" offsetY="35" ic="FFC8B06C" width="140" height="140" img="entity\bust_lewd_seal_4.png" left="-74" right="66" top="-52" bottom="88"/>
+
+    <!-- Incubus hair (copied from Legends hair_black_21, unique ID to avoid base game shadowing) -->
+    <sprite id="hair_lewd_incubus" offsetY="35" ic="FF365A74" width="104" height="142" img="entity\hair_lewd_incubus.png" left="-23" right="31" top="-11" bottom="51"/>
+    <sprite id="hair_lewd_incubus_dead" offsetX="6" offsetY="10" f="64F2" f1="-15" f2="-15" ic="FF375C75" width="131" height="125" img="entity\hair_lewd_incubus_dead.png" left="-49" right="15" top="-61" bottom="-17"/>
 </brush>
