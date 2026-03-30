@@ -75,11 +75,12 @@ this.lewd_horny_effect <- this.inherit("scripts/skills/skill", {
 
 		this.m.TurnsLeft = ::Lewd.Const.HornyDuration;
 
-		// Show horny sprite overlay
+		// Show horny sprite overlay (suppress if lewd seal is visible to avoid clutter)
 		if (actor.hasSprite("status_horny"))
 		{
+			local sealVisible = actor.hasSprite("lewd_seal") && actor.getSprite("lewd_seal").Visible;
 			actor.getSprite("status_horny").setBrush("bust_horny");
-			actor.getSprite("status_horny").Visible = true;
+			actor.getSprite("status_horny").Visible = !sealVisible;
 			actor.setDirty(true);
 		}
 

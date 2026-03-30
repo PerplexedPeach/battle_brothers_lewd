@@ -47,11 +47,19 @@ this.lewd_seal_effect <- this.inherit("scripts/skills/skill", {
 	{
 		this.m.Icon = "skills/lewd_seal_" + this.m.Stage + ".png";
 
+		if (this.getContainer() == null) return;
 		local actor = this.getContainer().getActor();
 		if (actor != null && actor.hasSprite("lewd_seal"))
 		{
-			actor.getSprite("lewd_seal").setBrush("bust_lewd_seal_" + this.m.Stage);
-			actor.getSprite("lewd_seal").Visible = true;
+			local sealSprite = actor.getSprite("lewd_seal");
+			sealSprite.setBrush("bust_lewd_seal_" + this.m.Stage);
+			sealSprite.setHorizontalFlipping(!actor.isPlayerControlled());
+			sealSprite.Visible = true;
+
+			// Suppress horny hearts when seal is visible
+			if (actor.hasSprite("status_horny"))
+				actor.getSprite("status_horny").Visible = false;
+
 			actor.setDirty(true);
 		}
 	}
@@ -234,6 +242,12 @@ this.lewd_seal_effect <- this.inherit("scripts/skills/skill", {
 	function onTurnStart()
 	{
 		local actor = this.getContainer().getActor();
+
+		// Sealed targets are permanently horny, re-apply if removed
+		if (!actor.getSkills().hasSkill("effects.lewd_horny"))
+		{
+			actor.getSkills().add(this.new("scripts/skills/effects/lewd_horny_effect"));
+		}
 
 		// Enforce Confident morale at stage 3+
 		if (this.m.Stage >= 3
