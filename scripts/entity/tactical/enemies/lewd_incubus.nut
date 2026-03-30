@@ -24,6 +24,7 @@ this.lewd_incubus <- this.inherit("scripts/entity/tactical/enemies/bandit_raider
 		b.Stamina = 200;
 		b.FatigueRecoveryRate = 25;
 		b.Allure = C.IncubusAllure;
+		b.PleasureMax = 150;
 		b.ActionPoints = 12;
 		b.IsImmuneToKnockBackAndGrab = true;
 		b.IsImmuneToStun = true;

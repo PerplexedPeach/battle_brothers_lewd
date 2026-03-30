@@ -514,6 +514,7 @@
 // Enemy-specific bonuses
 ::Lewd.Const.OrgasmThresholdMinibossBonus <- 2;
 ::Lewd.Const.OrgasmThresholdOrcBonus <- 1;
+::Lewd.Const.OrgasmThresholdIncubus <- 15;
 
 // --- Mount AP Discount ---
 ::Lewd.Const.MountedAPDiscount <- 1; // AP reduction for vaginal/anal when already mounted with target

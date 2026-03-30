@@ -34,18 +34,44 @@ this.lewd_incubus_temple_location <- this.inherit("scripts/entity/world/location
 			}
 		}, false);
 
-		// Harem thralls: match party size, minimum 5
 		local haremCount = this.Math.max(5, this.World.getPlayerRoster().getAll().len());
-		for (local i = 0; i < haremCount; i++)
+
+		// 1 favored concubine always
+		this.Const.World.Common.addTroop(this, {
+			Type = {
+				ID = this.Const.EntityType.Militia,
+				Variant = 0,
+				Strength = 120,
+				Cost = 120,
+				Row = 2,
+				Script = "scripts/entity/tactical/enemies/lewd_incubus_favored_concubine"
+			}
+		}, false);
+
+		// Remaining harem: 25% concubines, rest thralls
+		for (local i = 1; i < haremCount; i++)
 		{
+			local script;
+			local str;
+			if (this.Math.rand(1, 100) <= 25)
+			{
+				script = "scripts/entity/tactical/enemies/lewd_incubus_concubine";
+				str = 80;
+			}
+			else
+			{
+				script = "scripts/entity/tactical/enemies/lewd_incubus_thrall";
+				str = 50;
+			}
+
 			this.Const.World.Common.addTroop(this, {
 				Type = {
 					ID = this.Const.EntityType.Militia,
 					Variant = 0,
-					Strength = 50,
-					Cost = 50,
+					Strength = str,
+					Cost = str,
 					Row = this.Math.rand(0, 3),
-					Script = "scripts/entity/tactical/enemies/lewd_incubus_thrall"
+					Script = script
 				}
 			}, false);
 		}

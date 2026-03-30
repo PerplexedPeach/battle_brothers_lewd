@@ -1,9 +1,9 @@
-this.lewd_incubus_thrall <- this.inherit("scripts/entity/tactical/enemies/bandit_raider", {
+this.lewd_incubus_concubine <- this.inherit("scripts/entity/tactical/enemies/bandit_raider", {
 	m = {},
 	function create()
 	{
 		this.bandit_raider.create();
-		this.m.Name = "Branded Thrall";
+		this.m.Name = "Concubine";
 		this.m.IsGeneratingKillName = false;
 		this.setGender(1);
 	}
@@ -13,14 +13,14 @@ this.lewd_incubus_thrall <- this.inherit("scripts/entity/tactical/enemies/bandit
 		this.bandit_raider.onInit();
 
 		local b = this.m.BaseProperties;
-		b.Hitpoints = 80;
-		b.MeleeSkill = 50;
-		b.MeleeDefense = 20;
-		b.RangedDefense = 10;
-		b.Initiative = 100;
+		b.Hitpoints = 95;
+		b.MeleeSkill = 60;
+		b.MeleeDefense = 30;
+		b.RangedDefense = 15;
+		b.Initiative = 115;
 		b.Bravery = 200;
-		b.Stamina = 120;
-		b.Allure = 30;
+		b.Stamina = 140;
+		b.Allure = 45;
 		b.ActionPoints = 9;
 		this.m.ActionPoints = 9;
 		this.m.Hitpoints = b.Hitpoints;
@@ -42,6 +42,9 @@ this.lewd_incubus_thrall <- this.inherit("scripts/entity/tactical/enemies/bandit
 
 		this.m.Skills.add(this.new("scripts/skills/perks/perk_nimble"));
 
+		// Dainty trait
+		this.m.Skills.add(this.new("scripts/skills/traits/dainty_trait"));
+
 		// Female sex skills
 		this.m.Skills.add(this.new("scripts/skills/actives/hands_skill"));
 		this.m.Skills.add(this.new("scripts/skills/actives/oral_skill"));
@@ -49,6 +52,22 @@ this.lewd_incubus_thrall <- this.inherit("scripts/entity/tactical/enemies/bandit
 
 	function assignRandomEquipment()
 	{
-		this.m.Items.equip(this.new("scripts/items/weapons/dagger"));
+		if (this.Math.rand(1, 100) <= 50)
+			this.m.Items.equip(this.new("scripts/items/weapons/battle_whip"));
+		else
+			this.m.Items.equip(this.new("scripts/items/weapons/dagger"));
+
+		local armor;
+		if (this.Math.rand(1, 100) <= 50)
+		{
+			armor = this.new("scripts/items/legend_armor/lewd/lewd_nude_frame");
+		}
+		else
+		{
+			armor = this.new("scripts/items/legend_armor/lewd/lewd_sheer_bodysuit");
+		}
+
+		armor.setUpgrade(this.new("scripts/items/legend_armor/lewd/lewd_corset"));
+		this.m.Items.equip(armor);
 	}
 });

@@ -358,6 +358,9 @@
 	// Enemy-specific bonuses
 	if (!_actor.isPlayerControlled())
 	{
+		if (_actor.getSkills().hasSkill("racial.lewd_incubus"))
+			return ::Lewd.Const.OrgasmThresholdIncubus;
+
 		if ("IsMiniboss" in _actor.m && _actor.m.IsMiniboss)
 			threshold += ::Lewd.Const.OrgasmThresholdMinibossBonus;
 
