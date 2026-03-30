@@ -81,10 +81,13 @@ this.dainty_trait <- this.inherit("scripts/skills/traits/character_trait", {
 		if (!actor.getSkills().hasSkill("actives.tease"))
 			actor.getSkills().add(this.new("scripts/skills/actives/seduce_skill"));
 
-		// Seduction Arts perk tree
-		local bg = actor.getBackground();
-		if (bg != null && !bg.hasPerkGroup(::Const.Perks.SeductionArtsTree))
-			bg.addPerkGroup(::Const.Perks.SeductionArtsTree.Tree);
+		// Seduction Arts perk tree (player-only: enemies have no background)
+		if ("getBackground" in actor)
+		{
+			local bg = actor.getBackground();
+			if (bg != null && !bg.hasPerkGroup(::Const.Perks.SeductionArtsTree))
+				bg.addPerkGroup(::Const.Perks.SeductionArtsTree.Tree);
+		}
 
 		// Grant perk points (flag prevents double-granting on load)
 		if (!actor.getFlags().has("lewdDaintyPerkPointGranted"))
