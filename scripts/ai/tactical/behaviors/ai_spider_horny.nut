@@ -1,6 +1,6 @@
-// AI behavior for horny spiders -- webs alluring targets, then injects eggs.
+// AI behavior for horny spiders -- injects eggs into rooted targets, webs non-rooted targets.
 // Horny-gated: only evaluates when the spider has the horny effect.
-// Two-phase: if adjacent target is not webbed, web them first; if webbed, inject.
+// Prefers inject on rooted targets (any root source, not just web) over webbing new targets.
 // Allure-scaled scoring like other beast species.
 this.ai_spider_horny <- this.inherit("scripts/ai/tactical/behavior", {
 	m = {

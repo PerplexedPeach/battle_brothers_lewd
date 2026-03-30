@@ -389,7 +389,6 @@
 // --- Horny Effect ---
 ::Lewd.Const.HornyDuration <- 2;
 ::Lewd.Const.HornyApplyChance <- 50;      // % on sex ability hit
-::Lewd.Const.HornyResolvePenalty <- -15;
 ::Lewd.Const.HornyInitiativeMult <- 0.85; // -15%
 ::Lewd.Const.HornyMeleeDefPenalty <- -5;
 ::Lewd.Const.HornyDamageRemoveThreshold <- 10;
@@ -781,6 +780,7 @@
 ::Lewd.Const.SpiderEggWeightPet <- 4;                       // weight: spider companion
 ::Lewd.Const.SpiderEggWeightRarePet <- 1;                   // weight: rare spider companion
 ::Lewd.Const.AIBehaviorIDSpiderHorny <- 0;                  // set dynamically in mod_lewd.nut
+::Lewd.Const.AIBehaviorIDFemaleHorny <- 0;                  // set dynamically in mod_lewd.nut
 
 // --- Stub missing Legend entity types for older Legends versions ---
 foreach (name in [

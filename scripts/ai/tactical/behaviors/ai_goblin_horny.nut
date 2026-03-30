@@ -2,7 +2,7 @@
 // Differs from generic ai_horny:
 // - Prioritizes restrained targets above all others
 // - Among non-restrained targets, prefers those surrounded by more goblins
-// - Rooted/restrained targets: weighted random penetrate (vaginal 50%, anal 30%, oral 20%)
+// - Rooted targets: weighted random penetrate (weights from GoblinPenetrateWeight* constants)
 // - Non-restrained targets: grope only
 // - Fallback: grope if AP too low for penetration
 this.ai_goblin_horny <- this.inherit("scripts/ai/tactical/behavior", {

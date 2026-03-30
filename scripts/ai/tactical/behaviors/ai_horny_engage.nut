@@ -1,8 +1,8 @@
 // AI movement behavior for horny entities — seeks out alluring female targets
-// Scores targets by: allure - (distance * AllurePerTile)
-// Each tile of distance costs ~10 allure, creating emergent behavior of
-// preferring attractive targets further away over less attractive ones nearby
-// Skips adjacent targets (handled by ai_horny which uses sex skills)
+// Scores targets by: allure - (distance * HornyAIEngageAllurePerTile)
+// Each tile of distance costs AllurePerTile allure (see 00_values.nut), creating
+// emergent behavior of preferring attractive nearby targets over distant ones
+// Skips adjacent targets (handled by species-specific or generic ai_horny behaviors)
 this.ai_horny_engage <- this.inherit("scripts/ai/tactical/behavior", {
 	m = {
 		TargetTile = null,

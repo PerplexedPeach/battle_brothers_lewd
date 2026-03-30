@@ -1,5 +1,5 @@
 // Horny status effect — applied by sex abilities (50% on hit) and entrancing beauty
-// Debuffs: -15 Resolve, -15% Initiative, -5 Melee Defense
+// Debuffs: -15% Initiative, -5 Melee Defense
 // Sex abilities auto-hit horny targets
 // Lasts 2 turns, refreshable
 this.lewd_horny_effect <- this.inherit("scripts/skills/skill", {
