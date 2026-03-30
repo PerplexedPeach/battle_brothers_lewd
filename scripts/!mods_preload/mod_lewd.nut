@@ -45,6 +45,8 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC", ">mod_LuftVampiresOrigin", f
 	::Const.AI.Behavior.ID.LewdOrcHorny <- count++;
 	::Const.AI.Behavior.ID.LewdUnholdHorny <- count++;
 	::Const.AI.Behavior.ID.LewdSpiderHorny <- count++;
+	::Const.AI.Behavior.ID.LewdFemaleHorny <- count++;
+	::Const.AI.Behavior.ID.LewdFemaleHornyEngage <- count++;
 	::Const.AI.Behavior.ID.COUNT = count;
 	::Const.AI.Behavior.Name.push("LewdHorny");
 	::Const.AI.Behavior.Name.push("LewdHornyEngage");
@@ -56,6 +58,8 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC", ">mod_LuftVampiresOrigin", f
 	::Const.AI.Behavior.Name.push("LewdOrcHorny");
 	::Const.AI.Behavior.Name.push("LewdUnholdHorny");
 	::Const.AI.Behavior.Name.push("LewdSpiderHorny");
+	::Const.AI.Behavior.Name.push("LewdFemaleHorny");
+	::Const.AI.Behavior.Name.push("LewdFemaleHornyEngage");
 	::Lewd.Const.AIBehaviorIDHorny = ::Const.AI.Behavior.ID.LewdHorny;
 	::Lewd.Const.AIBehaviorIDHornyEngage = ::Const.AI.Behavior.ID.LewdHornyEngage;
 	::Lewd.Const.AIBehaviorIDPiledriver = ::Const.AI.Behavior.ID.LewdPiledriver;
@@ -66,6 +70,8 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC", ">mod_LuftVampiresOrigin", f
 	::Lewd.Const.AIBehaviorIDOrcHorny = ::Const.AI.Behavior.ID.LewdOrcHorny;
 	::Lewd.Const.AIBehaviorIDUnholdHorny = ::Const.AI.Behavior.ID.LewdUnholdHorny;
 	::Lewd.Const.AIBehaviorIDSpiderHorny = ::Const.AI.Behavior.ID.LewdSpiderHorny;
+	::Lewd.Const.AIBehaviorIDFemaleHorny = ::Const.AI.Behavior.ID.LewdFemaleHorny;
+	::Lewd.Const.AIBehaviorIDFemaleHornyEngage = ::Const.AI.Behavior.ID.LewdFemaleHornyEngage;
 
 	// --- Mod Settings ---
 	local page = ::Lewd.Mod.ModSettings.addPage("General");

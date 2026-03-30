@@ -781,6 +781,7 @@
 ::Lewd.Const.SpiderEggWeightRarePet <- 1;                   // weight: rare spider companion
 ::Lewd.Const.AIBehaviorIDSpiderHorny <- 0;                  // set dynamically in mod_lewd.nut
 ::Lewd.Const.AIBehaviorIDFemaleHorny <- 0;                  // set dynamically in mod_lewd.nut
+::Lewd.Const.AIBehaviorIDFemaleHornyEngage <- 0;            // set dynamically in mod_lewd.nut
 
 // --- Stub missing Legend entity types for older Legends versions ---
 foreach (name in [
