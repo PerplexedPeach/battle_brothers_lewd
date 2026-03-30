@@ -21,10 +21,12 @@ this.lewd_incubus_concubine <- this.inherit("scripts/entity/tactical/enemies/ban
 		b.Bravery = 200;
 		b.Stamina = 140;
 		b.Allure = 45;
+		b.PleasureMax = 120;
 		b.ActionPoints = 9;
 		this.m.ActionPoints = 9;
 		this.m.Hitpoints = b.Hitpoints;
 		this.m.CurrentProperties = clone b;
+		this.m.MoraleState = this.Const.MoraleState.Ignore;
 
 		// Force matching ethnicity for face + body
 		this.setGender(1);
@@ -40,7 +42,29 @@ this.lewd_incubus_concubine <- this.inherit("scripts/entity/tactical/enemies/ban
 		this.getSprite("dirt").Visible = false;
 		this.getSprite("body_blood").Visible = false;
 
+		// Combat perks
 		this.m.Skills.add(this.new("scripts/skills/perks/perk_nimble"));
+		this.m.Skills.add(this.new("scripts/skills/perks/perk_dodge"));
+		this.m.Skills.add(this.new("scripts/skills/perks/perk_backstabber"));
+		this.m.Skills.add(this.new("scripts/skills/perks/perk_overwhelm"));
+
+		// Lewd seal stage 4 (permanently branded)
+		local seal = this.new("scripts/skills/effects/lewd_seal_effect");
+		seal.setStage(4);
+		this.m.Skills.add(seal);
+
+		// Permanently horny
+		this.m.Skills.add(this.new("scripts/skills/effects/lewd_horny_effect"));
+
+		// Lewd perks (unlock skills + passives)
+		this.m.Skills.add(this.new("scripts/skills/perks/perk_lewd_nimble_fingers"));
+		this.m.Skills.add(this.new("scripts/skills/perks/perk_lewd_oral_arts"));
+		this.m.Skills.add(this.new("scripts/skills/perks/perk_lewd_mounting"));
+		this.m.Skills.add(this.new("scripts/skills/perks/perk_lewd_shameless"));
+		this.m.Skills.add(this.new("scripts/skills/perks/perk_lewd_sensual_focus"));
+		this.m.Skills.add(this.new("scripts/skills/perks/perk_lewd_pliant_body"));
+
+		this.m.Skills.add(this.new("scripts/skills/effects/entrancing_beauty_effect"));
 
 		// Dainty trait
 		this.m.Skills.add(this.new("scripts/skills/traits/dainty_trait"));
@@ -48,6 +72,21 @@ this.lewd_incubus_concubine <- this.inherit("scripts/entity/tactical/enemies/ban
 		// Female sex skills
 		this.m.Skills.add(this.new("scripts/skills/actives/hands_skill"));
 		this.m.Skills.add(this.new("scripts/skills/actives/oral_skill"));
+		this.m.Skills.add(this.new("scripts/skills/actives/vaginal_skill"));
+
+		// Mastery (tier 2: hands 50, oral 70, vaginal 50)
+		local mh = this.new("scripts/skills/effects/lewd_mastery_hands_effect");
+		mh.m.Points = 50;
+		this.m.Skills.add(mh);
+		local mo = this.new("scripts/skills/effects/lewd_mastery_oral_effect");
+		mo.m.Points = 70;
+		this.m.Skills.add(mo);
+		local mv = this.new("scripts/skills/effects/lewd_mastery_vaginal_effect");
+		mv.m.Points = 50;
+		this.m.Skills.add(mv);
+
+		// Inject female sex AI behavior
+		this.getAIAgent().addBehavior(this.new("scripts/ai/tactical/behaviors/ai_female_horny"));
 	}
 
 	function assignRandomEquipment()

@@ -21,10 +21,12 @@ this.lewd_incubus_thrall <- this.inherit("scripts/entity/tactical/enemies/bandit
 		b.Bravery = 200;
 		b.Stamina = 120;
 		b.Allure = 30;
+		b.PleasureMax = 120;
 		b.ActionPoints = 9;
 		this.m.ActionPoints = 9;
 		this.m.Hitpoints = b.Hitpoints;
 		this.m.CurrentProperties = clone b;
+		this.m.MoraleState = this.Const.MoraleState.Ignore;
 
 		// Force matching ethnicity for face + body
 		this.setGender(1);
@@ -40,15 +42,38 @@ this.lewd_incubus_thrall <- this.inherit("scripts/entity/tactical/enemies/bandit
 		this.getSprite("dirt").Visible = false;
 		this.getSprite("body_blood").Visible = false;
 
+		// Combat perks
 		this.m.Skills.add(this.new("scripts/skills/perks/perk_nimble"));
+		this.m.Skills.add(this.new("scripts/skills/perks/perk_dodge"));
+
+		// Lewd seal stage 4 (permanently branded)
+		local seal = this.new("scripts/skills/effects/lewd_seal_effect");
+		seal.setStage(4);
+		this.m.Skills.add(seal);
+
+		// Permanently horny
+		this.m.Skills.add(this.new("scripts/skills/effects/lewd_horny_effect"));
+
+		// Lewd perks (unlock skills + passives)
+		this.m.Skills.add(this.new("scripts/skills/perks/perk_lewd_nimble_fingers"));
+		this.m.Skills.add(this.new("scripts/skills/perks/perk_lewd_oral_arts"));
+		this.m.Skills.add(this.new("scripts/skills/perks/perk_lewd_mounting"));
+		this.m.Skills.add(this.new("scripts/skills/perks/perk_lewd_shameless"));
 
 		// Female sex skills
 		this.m.Skills.add(this.new("scripts/skills/actives/hands_skill"));
 		this.m.Skills.add(this.new("scripts/skills/actives/oral_skill"));
+		this.m.Skills.add(this.new("scripts/skills/actives/vaginal_skill"));
+
+		// Inject female sex AI behavior
+		this.getAIAgent().addBehavior(this.new("scripts/ai/tactical/behaviors/ai_female_horny"));
 	}
 
 	function assignRandomEquipment()
 	{
-		this.m.Items.equip(this.new("scripts/items/weapons/dagger"));
+		if (this.Math.rand(1, 100) <= 20)
+			this.m.Items.equip(this.new("scripts/items/weapons/battle_whip"));
+		else
+			this.m.Items.equip(this.new("scripts/items/weapons/dagger"));
 	}
 });

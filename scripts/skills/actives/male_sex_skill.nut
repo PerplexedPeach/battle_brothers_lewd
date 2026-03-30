@@ -1,5 +1,5 @@
 // Base class for male/aggressor sex abilities (grope, force oral, penetrate, mating press)
-// Simpler than female_sex_skill — no tiers or mastery system
+// Mastery tracked via Debauchery perks: wandering_hands (grope), carnal_knowledge (penetration+oral), forced_entry (anal)
 // Children set member variables in create()
 // Usable by enemies when horny, and eventually by male player characters via perks
 this.male_sex_skill <- this.inherit("scripts/skills/actives/sex_skill_base", {

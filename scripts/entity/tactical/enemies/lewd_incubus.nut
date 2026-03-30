@@ -58,19 +58,59 @@ this.lewd_incubus <- this.inherit("scripts/entity/tactical/enemies/bandit_raider
 		// Racial identifier (lewd seal checks for this)
 		this.m.Skills.add(this.new("scripts/skills/racial/incubus_lewd_racial"));
 
+		// Permanently horny
+		this.m.Skills.add(this.new("scripts/skills/effects/lewd_horny_effect"));
+
 		// Male sex skills
 		this.m.Skills.add(this.new("scripts/skills/actives/male_grope_skill"));
 		this.m.Skills.add(this.new("scripts/skills/actives/male_force_oral_skill"));
 		this.m.Skills.add(this.new("scripts/skills/actives/male_penetrate_vaginal_skill"));
 		this.m.Skills.add(this.new("scripts/skills/actives/male_penetrate_anal_skill"));
 
-		// Conqueror perk: heals from causing climax
-		this.m.Skills.add(this.new("scripts/skills/perks/perk_lewd_conqueror"));
+		// Debauchery perks (unlock mastery for male sex skills)
+		this.m.Skills.add(this.new("scripts/skills/perks/perk_lewd_wandering_hands"));
+		this.m.Skills.add(this.new("scripts/skills/perks/perk_lewd_carnal_knowledge"));
+		this.m.Skills.add(this.new("scripts/skills/perks/perk_lewd_forced_entry"));
 
-		// Extra combat perks
+		// Male mastery (all capped)
+		local mg = this.getSkills().getSkillByID("effects.male_mastery_grope");
+		if (mg != null) mg.m.Points = 60;
+		local mp = this.getSkills().getSkillByID("effects.male_mastery_penetration");
+		if (mp != null) mp.m.Points = 80;
+		local ma = this.getSkills().getSkillByID("effects.male_mastery_anal");
+		if (ma != null) ma.m.Points = 80;
+
+		// Lewd perks
+		this.m.Skills.add(this.new("scripts/skills/perks/perk_lewd_conqueror"));
+		this.m.Skills.add(this.new("scripts/skills/perks/perk_lewd_soul_harvest"));
+		this.m.Skills.add(this.new("scripts/skills/perks/perk_lewd_alluring_presence"));
+		this.m.Skills.add(this.new("scripts/skills/perks/perk_lewd_sensual_focus"));
+		this.m.Skills.add(this.new("scripts/skills/perks/perk_lewd_essence_feed"));
+		this.m.Skills.add(this.new("scripts/skills/perks/perk_lewd_unquenchable"));
+		this.m.Skills.add(this.new("scripts/skills/perks/perk_lewd_transcendence"));
+
+		// Defense perks
+		this.m.Skills.add(this.new("scripts/skills/perks/perk_nimble"));
+		this.m.Skills.add(this.new("scripts/skills/perks/perk_legend_ubernimble"));
+		this.m.Skills.add(this.new("scripts/skills/perks/perk_dodge"));
 		this.m.Skills.add(this.new("scripts/skills/perks/perk_hold_out"));
 		this.m.Skills.add(this.new("scripts/skills/perks/perk_nine_lives"));
 		this.m.Skills.add(this.new("scripts/skills/perks/perk_steel_brow"));
+		this.m.Skills.add(this.new("scripts/skills/perks/perk_anticipation"));
+
+		// Offense perks
+		this.m.Skills.add(this.new("scripts/skills/perks/perk_overwhelm"));
+		this.m.Skills.add(this.new("scripts/skills/perks/perk_backstabber"));
+		this.m.Skills.add(this.new("scripts/skills/perks/perk_duelist"));
+
+		// Mobility perks
+		this.m.Skills.add(this.new("scripts/skills/perks/perk_relentless"));
+		this.m.Skills.add(this.new("scripts/skills/perks/perk_footwork"));
+		this.m.Skills.add(this.new("scripts/skills/perks/perk_pathfinder"));
+
+		// Inject horny AI behaviors (bypasses horny effect's MoraleState.Ignore gate)
+		this.getAIAgent().addBehavior(this.new("scripts/ai/tactical/behaviors/ai_horny"));
+		this.getAIAgent().addBehavior(this.new("scripts/ai/tactical/behaviors/ai_horny_engage"));
 	}
 
 	function assignRandomEquipment()

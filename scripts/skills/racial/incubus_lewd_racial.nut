@@ -31,4 +31,14 @@ this.incubus_lewd_racial <- this.inherit("scripts/skills/skill", {
 		this.m.SealApplied = true;
 		::logInfo("[incubus] Applied lewd seal stage 1 to " + woman.getName());
 	}
+
+	function onTurnStart()
+	{
+		// Permanently horny: re-apply if removed by damage or expiry
+		local actor = this.getContainer().getActor();
+		if (!actor.getSkills().hasSkill("effects.lewd_horny"))
+		{
+			actor.getSkills().add(this.new("scripts/skills/effects/lewd_horny_effect"));
+		}
+	}
 });
