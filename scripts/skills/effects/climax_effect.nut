@@ -400,7 +400,7 @@ this.climax_effect <- this.inherit("scripts/skills/skill", {
 				}
 			}
 
-			actor.kill(killer, null, this.Const.FatalityType.None, true);
+			actor.kill(killer, this, this.Const.FatalityType.None, true);
 			return;
 		}
 

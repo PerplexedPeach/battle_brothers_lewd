@@ -391,7 +391,8 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC", ">mod_LuftVampiresOrigin", f
 					if (_d.Actor.m.LastPleasureSourceID >= 0)
 						killer = _d.Tactical.getEntityByID(_d.Actor.m.LastPleasureSourceID);
 					if (killer != null && !killer.isAlive()) killer = null;
-					_d.Actor.kill(killer, null, _d.FatalityNone, true);
+					local killSkill = _d.Actor.getSkills().getSkillByID("effects.climax");
+					_d.Actor.kill(killer, killSkill, _d.FatalityNone, true);
 				}, { Actor = actor, Tactical = Tactical, FatalityNone = FatalityNone });
 			}
 		}
