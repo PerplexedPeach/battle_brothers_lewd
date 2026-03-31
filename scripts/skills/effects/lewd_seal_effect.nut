@@ -139,7 +139,7 @@ this.lewd_seal_effect <- this.inherit("scripts/skills/skill", {
 				result.push({ id = 10, type = "text", icon = "ui/icons/bravery.png",
 					text = "[color=" + pos + "]Permanently Confident[/color]" });
 				result.push({ id = 11, type = "text", icon = "ui/icons/special.png",
-					text = "[color=" + neg + "]Permanently Horny[/color]" });
+					text = "[color=" + neg + "]Permanently Horny[/color] (negative effects negated)" });
 				result.push({ id = 12, type = "text", icon = "ui/icons/allure.png",
 					text = "Allure [color=" + pos + "]+" + C.LewdSealAllure + "[/color]" });
 				result.push({ id = 13, type = "text", icon = "ui/icons/special.png",
