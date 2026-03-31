@@ -20,7 +20,7 @@ this.lewd_incubus_favored_concubine <- this.inherit("scripts/entity/tactical/ene
 		b.Initiative = 130;
 		b.Bravery = 200;
 		b.Stamina = 160;
-		b.Allure = 60;
+		b.Allure = 100;
 		b.PleasureMax = 120;
 		b.ActionPoints = 10;
 		this.m.ActionPoints = 10;

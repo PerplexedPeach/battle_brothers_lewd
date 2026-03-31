@@ -20,7 +20,7 @@ this.lewd_incubus_concubine <- this.inherit("scripts/entity/tactical/enemies/ban
 		b.Initiative = 115;
 		b.Bravery = 200;
 		b.Stamina = 140;
-		b.Allure = 45;
+		b.Allure = 80;
 		b.PleasureMax = 120;
 		b.ActionPoints = 9;
 		this.m.ActionPoints = 9;

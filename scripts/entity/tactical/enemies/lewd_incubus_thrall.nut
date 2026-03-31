@@ -20,7 +20,7 @@ this.lewd_incubus_thrall <- this.inherit("scripts/entity/tactical/enemies/bandit
 		b.Initiative = 100;
 		b.Bravery = 200;
 		b.Stamina = 120;
-		b.Allure = 30;
+		b.Allure = 60;
 		b.PleasureMax = 120;
 		b.ActionPoints = 9;
 		this.m.ActionPoints = 9;

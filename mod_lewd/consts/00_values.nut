@@ -960,7 +960,7 @@ foreach (name in [
 ::Lewd.Const.DajiIncubusAllureScale <- 2.0;
 ::Lewd.Const.IncubusHP <- 300;
 ::Lewd.Const.IncubusArmor <- 100;
-::Lewd.Const.IncubusAllure <- 80;
+::Lewd.Const.IncubusAllure <- 120;
 ::Lewd.Const.IncubusMeleeSkill <- 120;
 ::Lewd.Const.IncubusMeleeDef <- 60;
 ::Lewd.Const.IncubusRangedDef <- 40;
