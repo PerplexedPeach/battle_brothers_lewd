@@ -22,7 +22,11 @@ this.perk_lewd_soul_harvest <- this.inherit("scripts/skills/skill", {
 		local actor = this.getContainer().getActor();
 		local healAmount = this.Math.max(1, this.Math.floor(_targetEntity.getHitpointsMax() * ::Lewd.Const.SoulHarvestKillHealPct));
 		actor.setHitpoints(this.Math.min(actor.getHitpointsMax(), actor.getHitpoints() + healAmount));
-
+		if (!actor.isHiddenToPlayer())
+		{
+			this.spawnIcon("status_effect_79", actor.getTile());
+			this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(actor) + " harvests [color=" + this.Const.UI.Color.PositiveValue + "]" + healAmount + "[/color] health from " + this.Const.UI.getColorizedEntityName(_targetEntity) + "'s death");
+		}
 		::logInfo("[soul_harvest] " + actor.getName() + " harvested " + healAmount + " HP from killing Horny " + _targetEntity.getName());
 	}
 });

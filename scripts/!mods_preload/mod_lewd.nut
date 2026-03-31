@@ -907,6 +907,11 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC", ">mod_LuftVampiresOrigin", f
 				local pleasureMax = actor.getCurrentProperties().getPleasureMax();
 				local healAmount = this.Math.max(1, this.Math.floor(pleasureMax * ::Lewd.Const.SoulHarvestClimaxHealPct));
 				source.setHitpoints(this.Math.min(source.getHitpointsMax(), source.getHitpoints() + healAmount));
+				if (!source.isHiddenToPlayer())
+				{
+					this.spawnIcon("status_effect_79", source.getTile());
+					this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(source) + " harvests [color=" + this.Const.UI.Color.PositiveValue + "]" + healAmount + "[/color] health from " + this.Const.UI.getColorizedEntityName(actor) + "'s climax");
+				}
 				::logInfo("[soul_harvest] " + source.getName() + " healed " + healAmount + " HP from " + actor.getName() + "'s climax");
 			}
 

@@ -14,8 +14,8 @@ this.lewd_incubus_concubine <- this.inherit("scripts/entity/tactical/enemies/ban
 
 		local b = this.m.BaseProperties;
 		b.Hitpoints = 95;
-		b.MeleeSkill = 60;
-		b.MeleeDefense = 30;
+		b.MeleeSkill = 80;
+		b.MeleeDefense = 40;
 		b.RangedDefense = 15;
 		b.Initiative = 115;
 		b.Bravery = 200;

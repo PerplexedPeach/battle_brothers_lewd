@@ -28,6 +28,7 @@ this.lewd_incubus <- this.inherit("scripts/entity/tactical/enemies/bandit_raider
 		b.ActionPoints = 12;
 		b.IsImmuneToKnockBackAndGrab = true;
 		b.IsImmuneToStun = true;
+		b.PleasureReflectionMult = 3.0;
 
 		this.m.ActionPoints = 12;
 		this.m.Hitpoints = b.Hitpoints;
@@ -116,6 +117,8 @@ this.lewd_incubus <- this.inherit("scripts/entity/tactical/enemies/bandit_raider
 	function assignRandomEquipment()
 	{
 		// No armor -- incubus fights naked
-		this.m.Items.equip(this.new("scripts/items/weapons/named/named_battle_whip"));
+		local w = this.new("scripts/items/weapons/named/named_battle_whip");
+		w.m.Name = "Incubus' Tongue";
+		this.m.Items.equip(w);
 	}
 });

@@ -14,8 +14,8 @@ this.lewd_incubus_thrall <- this.inherit("scripts/entity/tactical/enemies/bandit
 
 		local b = this.m.BaseProperties;
 		b.Hitpoints = 80;
-		b.MeleeSkill = 50;
-		b.MeleeDefense = 20;
+		b.MeleeSkill = 70;
+		b.MeleeDefense = 30;
 		b.RangedDefense = 10;
 		b.Initiative = 100;
 		b.Bravery = 200;
@@ -59,6 +59,8 @@ this.lewd_incubus_thrall <- this.inherit("scripts/entity/tactical/enemies/bandit
 		this.m.Skills.add(this.new("scripts/skills/perks/perk_lewd_oral_arts"));
 		this.m.Skills.add(this.new("scripts/skills/perks/perk_lewd_mounting"));
 		this.m.Skills.add(this.new("scripts/skills/perks/perk_lewd_shameless"));
+
+		this.m.Skills.add(this.new("scripts/skills/effects/entrancing_beauty_effect"));
 
 		// Female sex skills
 		this.m.Skills.add(this.new("scripts/skills/actives/hands_skill"));
