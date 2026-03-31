@@ -117,8 +117,8 @@ this.delicate_trait <- this.inherit("scripts/skills/traits/character_trait", {
 				bg.addPerkGroup(::Const.Perks.SeductionArtsTree.Tree);
 		}
 
-		// Grant perk points (flag prevents double-granting on load)
-		if (!actor.getFlags().has("lewdDelicatePerkPointGranted"))
+		// Grant perk points (player-only: enemies have no PerkPoints)
+		if ("PerkPoints" in actor.m && !actor.getFlags().has("lewdDelicatePerkPointGranted"))
 		{
 			actor.m.PerkPoints += ::Lewd.Const.PerkPointsFromDelicate;
 			actor.getFlags().set("lewdDelicatePerkPointGranted", true);

@@ -89,8 +89,8 @@ this.dainty_trait <- this.inherit("scripts/skills/traits/character_trait", {
 				bg.addPerkGroup(::Const.Perks.SeductionArtsTree.Tree);
 		}
 
-		// Grant perk points (flag prevents double-granting on load)
-		if (!actor.getFlags().has("lewdDaintyPerkPointGranted"))
+		// Grant perk points (player-only: enemies have no PerkPoints)
+		if ("PerkPoints" in actor.m && !actor.getFlags().has("lewdDaintyPerkPointGranted"))
 		{
 			actor.m.PerkPoints += ::Lewd.Const.PerkPointsFromDainty;
 			actor.getFlags().set("lewdDaintyPerkPointGranted", true);
