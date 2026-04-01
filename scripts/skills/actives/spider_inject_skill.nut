@@ -13,8 +13,9 @@ this.spider_inject_skill <- this.inherit("scripts/skills/skill", {
 		this.m.IconDisabled = "skills/active_110.png";
 		this.m.Overlay = "";
 		this.m.SoundOnUse = [
-			"sounds/enemies/dlc2/spider_idle_0.wav",
-			"sounds/enemies/dlc2/spider_idle_1.wav"
+			"sounds/enemies/dlc2/giant_spider_idle_01.wav",
+			"sounds/enemies/dlc2/giant_spider_idle_02.wav",
+			"sounds/enemies/dlc2/giant_spider_idle_03.wav"
 		];
 		this.m.Type = this.Const.SkillType.Active;
 		this.m.Order = this.Const.SkillOrder.UtilityTargeted;

@@ -3,7 +3,8 @@
 this.lewd_spider_pet_item <- this.inherit("scripts/items/accessory/accessory", {
 	m = {
 		Skill = null,
-		PetName = ""
+		PetName = "",
+		Entity = null
 	},
 	function create()
 	{
@@ -41,6 +42,16 @@ this.lewd_spider_pet_item <- this.inherit("scripts/items/accessory/accessory", {
 			}
 		];
 		return result;
+	}
+
+	function setEntity( _e )
+	{
+		this.m.Entity = _e;
+	}
+
+	function getEntity()
+	{
+		return this.m.Entity;
 	}
 
 	function setPetName( _name )
