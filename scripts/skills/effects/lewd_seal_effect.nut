@@ -159,7 +159,7 @@ this.lewd_seal_effect <- this.inherit("scripts/skills/skill", {
 		this.updateVisuals();
 
 		local actor = this.getContainer().getActor();
-		if (this.m.Stage >= 3 && actor.getMoraleState() != this.Const.MoraleState.Ignore)
+		if (this.m.Stage >= 3 && actor.getMoraleState() != this.Const.MoraleState.Ignore && "getID" in actor)
 			actor.setMoraleState(this.Const.MoraleState.Confident);
 	}
 
