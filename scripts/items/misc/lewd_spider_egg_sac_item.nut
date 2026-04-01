@@ -1,21 +1,23 @@
-// Spider Egg Sac -- stackable lootbox item from spider oviposition.
-// Equip to a character's accessory slot to open one egg and roll the loot table.
-// Remaining eggs in the stack are returned to the stash.
+// Spider Egg Sac -- right-click consumable lootbox item from spider oviposition.
+// Right-click on a character to crack one egg and roll the loot table.
+// If the sac contains multiple eggs, the remainder stays in the stash.
 this.lewd_spider_egg_sac_item <- this.inherit("scripts/items/item", {
 	m = {
-		Amount = 1
+		Amount = 1,
+		IsStackable = true
 	},
 	function create()
 	{
 		this.item.create();
 		this.m.ID = "misc.lewd_spider_egg_sac";
 		this.m.Name = "Spider Egg Sac";
-		this.m.Description = "A translucent silk sac pulsing faintly with life. Equip to a character to crack one open and see what hatches. May contain gossamer, or something more exotic.";
-		this.m.Icon = "misc/inventory_webknecht_silk.png";
-		this.m.SlotType = this.Const.ItemSlot.Accessory;
-		this.m.ItemType = this.Const.Items.ItemType.Misc | this.Const.Items.ItemType.Loot;
+		this.m.Description = "A translucent silk sac pulsing faintly with life. Right-click on a character to crack one open and see what hatches. May contain gossamer, or something more exotic.";
+		this.m.Icon = "misc/inventory_spider_egg_sac.png";
+		this.m.SlotType = this.Const.ItemSlot.None;
+		this.m.ItemType = this.Const.Items.ItemType.Usable;
 		this.m.IsDroppedAsLoot = true;
 		this.m.IsAllowedInBag = false;
+		this.m.IsUsable = true;
 		this.m.Value = 200;
 	}
 
@@ -29,10 +31,18 @@ this.lewd_spider_egg_sac_item <- this.inherit("scripts/items/item", {
 		return this.m.Amount;
 	}
 
+	function isAmountShown()
+	{
+		return this.m.Amount > 1;
+	}
+
+	function getAmountString()
+	{
+		return "" + this.m.Amount;
+	}
+
 	function getName()
 	{
-		if (this.m.Amount > 1)
-			return "Spider Egg Sac (x" + this.m.Amount + ")";
 		return "Spider Egg Sac";
 	}
 
@@ -53,7 +63,7 @@ this.lewd_spider_egg_sac_item <- this.inherit("scripts/items/item", {
 				id = 10,
 				type = "text",
 				icon = "ui/icons/special.png",
-				text = "Equip to open one egg and discover what's inside"
+				text = "Right-click on a character to open one egg and discover what's inside"
 			}
 		];
 
@@ -70,16 +80,29 @@ this.lewd_spider_egg_sac_item <- this.inherit("scripts/items/item", {
 		return result;
 	}
 
-	function onEquip()
+	function onUse( _actor, _item = null )
 	{
-		this.item.onEquip();
-
 		local stash = this.World.Assets.getStash();
 
-		// Roll the loot table for one egg
 		this.openOneEgg(stash);
 
-		// Return remaining eggs to stash as a new item
+		// Leave eggshells behind, stacking with existing pile if present
+		local existingShells = null;
+		foreach (item in stash.getItems())
+		{
+			if (item != null && item.getID() == "misc.lewd_spider_eggshells")
+			{
+				existingShells = item;
+				break;
+			}
+		}
+
+		if (existingShells != null)
+			existingShells.setAmount(existingShells.getAmount() + 1);
+		else
+			stash.add(this.new("scripts/items/misc/lewd_spider_eggshells_item"));
+
+		// Consume this item; put remainder back as new stack
 		if (this.m.Amount > 1)
 		{
 			local remaining = this.new("scripts/items/misc/lewd_spider_egg_sac_item");
@@ -87,24 +110,42 @@ this.lewd_spider_egg_sac_item <- this.inherit("scripts/items/item", {
 			stash.add(remaining);
 		}
 
-		// Mark this item as spent
-		this.m.Amount = 0;
-		this.m.Name = "Empty Egg Sac";
-		this.m.Description = "A spent egg sac. Discard this.";
-		this.m.Value = 0;
+		return true;
+	}
+
+	function rollSpiderName()
+	{
+		local names = [
+			"Silk", "Fang", "Whisper", "Needle", "Shade",
+			"Tangle", "Spinner", "Lurk", "Weaver", "Skitter",
+			"Gossamer", "Nib", "Dusk", "Midge", "Petal",
+			"Bramble", "Cricket", "Wisp", "Thistle", "Flicker",
+			"Cobweb", "Scuttle", "Nimble", "Sprig", "Glint"
+		];
+		return names[this.Math.rand(0, names.len() - 1)];
+	}
+
+	function rollRareSpiderName()
+	{
+		local names = [
+			"Iridessa", "Vesper", "Nocturne", "Obsidian", "Aurelis",
+			"Phantom", "Eclipse", "Shimmer", "Veilweaver", "Starfang",
+			"Duskmantle", "Gossameris", "Prism", "Nightwhisper", "Opalith"
+		];
+		return names[this.Math.rand(0, names.len() - 1)];
 	}
 
 	function openOneEgg( _stash )
 	{
-		// [weight, scriptPath (null = nothing), quantity]
+		// [weight, scriptPath (null = nothing), quantity, isPet]
 		local lootTable = [
-			[::Lewd.Const.SpiderEggWeightRarePet,  "scripts/items/misc/lewd_rare_spider_pet_item", 1],
-			[::Lewd.Const.SpiderEggWeightPet,      "scripts/items/misc/lewd_spider_pet_item",      1],
-			[::Lewd.Const.SpiderEggWeightSilk2,    "scripts/items/misc/spider_silk_item",          2],
-			[::Lewd.Const.SpiderEggWeightSilk1,    "scripts/items/misc/spider_silk_item",          1],
-			[::Lewd.Const.SpiderEggWeightDyes,     "scripts/items/trade/dies_item",                1],
-			[::Lewd.Const.SpiderEggWeightCoins,    "scripts/items/loot/ancient_gold_coins_item",   1],
-			[::Lewd.Const.SpiderEggWeightNothing,   null,                                          0]
+			[::Lewd.Const.SpiderEggWeightRarePet,  "scripts/items/misc/lewd_rare_spider_pet_item", 1, true],
+			[::Lewd.Const.SpiderEggWeightPet,      "scripts/items/misc/lewd_spider_pet_item",      1, true],
+			[::Lewd.Const.SpiderEggWeightSilk2,    "scripts/items/misc/spider_silk_item",          2, false],
+			[::Lewd.Const.SpiderEggWeightSilk1,    "scripts/items/misc/spider_silk_item",          1, false],
+			[::Lewd.Const.SpiderEggWeightDyes,     "scripts/items/trade/dies_item",                1, false],
+			[::Lewd.Const.SpiderEggWeightCoins,    "scripts/items/loot/ancient_gold_coins_item",   1, false],
+			[::Lewd.Const.SpiderEggWeightNothing,   null,                                          0, false]
 		];
 
 		local totalWeight = 0;
@@ -121,11 +162,17 @@ this.lewd_spider_egg_sac_item <- this.inherit("scripts/items/item", {
 			{
 				local script = entry[1];
 				local qty = entry[2];
+				local isPet = entry[3];
 
 				if (script != null)
 				{
 					for (local i = 0; i < qty; i++)
-						_stash.add(this.new(script));
+					{
+						local item = this.new(script);
+						if (isPet)
+							item.setPetName(script.find("rare") != null ? this.rollRareSpiderName() : this.rollSpiderName());
+						_stash.add(item);
+					}
 					::logInfo("[egg_sac] " + script + " x" + qty + " (roll=" + roll + "/" + totalWeight + ")");
 				}
 				else

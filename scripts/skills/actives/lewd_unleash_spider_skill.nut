@@ -12,8 +12,8 @@ this.lewd_unleash_spider_skill <- this.inherit("scripts/skills/skill", {
 		this.m.ID = "actives.lewd_unleash_spider";
 		this.m.Name = "Unleash Spider";
 		this.m.Description = "Release your spider companion onto the battlefield.";
-		this.m.Icon = "skills/active_110.png";
-		this.m.IconDisabled = "skills/active_110_bw.png";
+		this.m.Icon = "skills/lewd_unleash_spider.png";
+		this.m.IconDisabled = "skills/lewd_unleash_spider_bw.png";
 		this.m.Overlay = "";
 		this.m.SoundOnUse = [
 			"sounds/enemies/dlc2/spider_idle_0.wav"
@@ -30,11 +30,6 @@ this.lewd_unleash_spider_skill <- this.inherit("scripts/skills/skill", {
 		this.m.FatigueCost = 15;
 		this.m.MinRange = 1;
 		this.m.MaxRange = 1;
-	}
-
-	function setItem( _item )
-	{
-		this.m.Item = _item;
 	}
 
 	function setEntityScript( _script )

@@ -521,6 +521,28 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC", ">mod_LuftVampiresOrigin", f
 		};
 	});
 
+	// Merge stackable items when dragged onto each other in stash
+	// Items opt in by setting m.IsStackable = true and implementing getAmount/setAmount
+	mod.hook("scripts/items/stash_container", function(q)
+	{
+		q.swap = @(__original) function(_sourceIndex, _targetIndex) {
+			if (_sourceIndex != _targetIndex && this.isValidSlot(_sourceIndex) && this.isValidSlot(_targetIndex))
+			{
+				local src = this.m.Items[_sourceIndex];
+				local dst = this.m.Items[_targetIndex];
+				if (src != null && dst != null
+					&& "IsStackable" in src.m && src.m.IsStackable
+					&& src.getID() == dst.getID())
+				{
+					dst.setAmount(dst.getAmount() + src.getAmount());
+					this.m.Items[_sourceIndex] = null;
+					return true;
+				}
+			}
+			return __original(_sourceIndex, _targetIndex);
+		};
+	});
+
 	// Block natural weapons from leaving the character (stash, ground, displaced by equip)
 	mod.hook("scripts/ui/screens/character/character_screen", function(q)
 	{
