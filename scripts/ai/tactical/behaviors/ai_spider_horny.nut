@@ -33,6 +33,9 @@ this.ai_spider_horny <- this.inherit("scripts/ai/tactical/behavior", {
 		local injectSkill = _entity.getSkills().getSkillByID("actives.spider_inject");
 		local webSkill = _entity.getSkills().getSkillByID("actives.web");
 		local myTile = _entity.getTile();
+		local ap = _entity.getActionPoints();
+
+		::logInfo("[ai_spider_horny] " + _entity.getName() + " evaluating (AP:" + ap + " inject:" + (injectSkill != null) + " web:" + (webSkill != null) + ")");
 
 		// Scan adjacent tiles for alluring female targets
 		local bestInjectTarget = null;
@@ -43,6 +46,7 @@ this.ai_spider_horny <- this.inherit("scripts/ai/tactical/behavior", {
 		local bestWebAllure = 0;
 		local bestWebTile = null;
 
+		local adjCount = 0;
 		for (local i = 0; i < 6; i++)
 		{
 			if (!myTile.hasNextTile(i)) continue;
@@ -54,6 +58,7 @@ this.ai_spider_horny <- this.inherit("scripts/ai/tactical/behavior", {
 			if (target.getGender() != 1) continue;
 			if (target.getPleasureMax() <= 0) continue;
 
+			adjCount++;
 			local allure = target.allure();
 
 			// If target is rooted (webbed): candidate for inject
@@ -69,11 +74,15 @@ this.ai_spider_horny <- this.inherit("scripts/ai/tactical/behavior", {
 						bestInjectTile = adjTile;
 					}
 				}
+				else
+				{
+					::logInfo("[ai_spider_horny]   inject rejected for " + target.getName() + " (usable:" + (injectSkill != null ? injectSkill.isUsable() : "null") + " affordable:" + (injectSkill != null ? injectSkill.isAffordable() : "null") + ")");
+				}
 			}
 			else
 			{
 				// Target not webbed: candidate for webbing
-				if (webSkill != null && webSkill.isAffordable()
+				if (webSkill != null && webSkill.isUsable() && webSkill.isAffordable()
 					&& !target.getCurrentProperties().IsImmuneToKnockBackAndGrab)
 				{
 					if (allure > bestWebAllure)
@@ -82,6 +91,10 @@ this.ai_spider_horny <- this.inherit("scripts/ai/tactical/behavior", {
 						bestWebTarget = target;
 						bestWebTile = adjTile;
 					}
+				}
+				else
+				{
+					::logInfo("[ai_spider_horny]   web rejected for " + target.getName() + " (skill:" + (webSkill != null) + " usable:" + (webSkill != null ? webSkill.isUsable() : "null") + " affordable:" + (webSkill != null ? webSkill.isAffordable() : "null") + " immuneGrab:" + target.getCurrentProperties().IsImmuneToKnockBackAndGrab + ")");
 				}
 			}
 		}
@@ -106,13 +119,14 @@ this.ai_spider_horny <- this.inherit("scripts/ai/tactical/behavior", {
 			return score;
 		}
 
+		::logInfo("[ai_spider_horny] " + _entity.getName() + " no targets (adjCandidates:" + adjCount + ")");
 		return this.Const.AI.Behavior.Score.Zero;
 	}
 
 	function onExecute( _entity )
 	{
 		::logInfo("[ai_spider_horny] onExecute called for " + _entity.getName());
-		if (!_entity.isAlive()) return false;
+		if (!_entity.isAlive()) return true;
 
 		if (this.m.TargetTile != null && this.m.SkillToUse != null)
 		{
@@ -120,7 +134,10 @@ this.ai_spider_horny <- this.inherit("scripts/ai/tactical/behavior", {
 			{
 				local result = this.m.SkillToUse.use(this.m.TargetTile);
 				::logInfo("[ai_spider_horny] " + this.m.SkillToUse.getID() + " result=" + result);
-				return result;
+				// Always return true so the engine re-evaluates rather than re-executing
+				// this behavior in a loop. The skill.use() return value is not a reliable
+				// done/not-done signal (web skill onUse returns null on success).
+				return true;
 			}
 			else
 			{
@@ -128,6 +145,6 @@ this.ai_spider_horny <- this.inherit("scripts/ai/tactical/behavior", {
 			}
 		}
 
-		return false;
+		return true;
 	}
 });

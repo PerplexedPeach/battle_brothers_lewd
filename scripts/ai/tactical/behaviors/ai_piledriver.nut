@@ -142,7 +142,7 @@ this.ai_piledriver <- this.inherit("scripts/ai/tactical/behavior", {
 	function onExecute( _entity )
 	{
 		::logInfo("[ai_piledriver] onExecute called for " + _entity.getName());
-		if (!_entity.isAlive()) return false;
+		if (!_entity.isAlive()) return true;
 
 		if (this.m.IsEngaging && this.m.MoveTile != null)
 		{
@@ -172,7 +172,9 @@ this.ai_piledriver <- this.inherit("scripts/ai/tactical/behavior", {
 			{
 				local result = skill.use(this.m.TargetTile);
 				::logInfo("[ai_piledriver] skill.use result=" + result);
-				return result;
+				// Always return true: skill.use returns null on success (void onUse),
+				// which would be treated as falsy and loop forever.
+				return true;
 			}
 			else
 			{
@@ -180,6 +182,6 @@ this.ai_piledriver <- this.inherit("scripts/ai/tactical/behavior", {
 			}
 		}
 
-		return false;
+		return true;
 	}
 });

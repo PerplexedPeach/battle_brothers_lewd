@@ -91,8 +91,7 @@ this.lewd_horny_effect <- this.inherit("scripts/skills/skill", {
 
 		if (isMaleHumanoid)
 		{
-			local isGoblin = ::Lewd.Mastery.isGoblin(actor);
-			::logInfo("[horny] " + actor.getName() + " became horny (gender:" + actor.getGender() + " playerControlled:" + actor.isPlayerControlled() + " goblin:" + isGoblin + ")");
+			::logInfo("[horny] " + actor.getName() + " became horny (gender:" + actor.getGender() + " playerControlled:" + actor.isPlayerControlled() + " goblin:" + ::Lewd.Mastery.isGoblin(actor) + ")");
 
 			// Grant male sex skills if not already present
 			if (!actor.getSkills().hasSkill("actives.male_grope"))
@@ -103,57 +102,52 @@ this.lewd_horny_effect <- this.inherit("scripts/skills/skill", {
 				actor.getSkills().add(this.new("scripts/skills/actives/male_penetrate_vaginal_skill"));
 				actor.getSkills().add(this.new("scripts/skills/actives/male_penetrate_anal_skill"));
 			}
-
-			// Inject AI horny behaviors only for non-player entities
-			if (!actor.isPlayerControlled())
-			{
-				local agent = actor.getAIAgent();
-				if (agent != null && !this.m.HasAIBehavior)
-				{
-					if (isGoblin)
-					{
-						// Goblins use species-specific horny behavior + shared engage + idle
-						::logInfo("[horny]   injecting GOBLIN AI behaviors for " + actor.getName());
-						agent.addBehavior(this.new("scripts/ai/tactical/behaviors/ai_goblin_horny"));
-						agent.addBehavior(this.new("scripts/ai/tactical/behaviors/ai_horny_engage"));
-						agent.addBehavior(this.new("scripts/ai/tactical/behaviors/ai_horny_idle"));
-					}
-					else if (::Lewd.Mastery.isOrc(actor))
-					{
-						// Orcs use species-specific horny behavior (claim-aware) + shared engage
-						// No idle -- orcs fight normally when they can't find a sex target
-						::logInfo("[horny]   injecting ORC AI behaviors for " + actor.getName());
-						agent.addBehavior(this.new("scripts/ai/tactical/behaviors/ai_orc_horny"));
-						agent.addBehavior(this.new("scripts/ai/tactical/behaviors/ai_horny_engage"));
-					}
-					else if (::Lewd.Mastery.isUnhold(actor))
-					{
-						// Unholds use piledriver when horny + shared engage for long-range movement
-						::logInfo("[horny]   injecting UNHOLD AI behaviors for " + actor.getName());
-						agent.addBehavior(this.new("scripts/ai/tactical/behaviors/ai_unhold_horny"));
-						agent.addBehavior(this.new("scripts/ai/tactical/behaviors/ai_horny_engage"));
-					}
-					else if (::Lewd.Mastery.isSpider(actor))
-					{
-						// Spiders web then inject eggs + shared engage for long-range movement
-						::logInfo("[horny]   injecting SPIDER AI behaviors for " + actor.getName());
-						agent.addBehavior(this.new("scripts/ai/tactical/behaviors/ai_spider_horny"));
-						agent.addBehavior(this.new("scripts/ai/tactical/behaviors/ai_horny_engage"));
-					}
-					else
-					{
-						::logInfo("[horny]   injecting AI behaviors for " + actor.getName());
-						agent.addBehavior(this.new("scripts/ai/tactical/behaviors/ai_horny"));
-						agent.addBehavior(this.new("scripts/ai/tactical/behaviors/ai_horny_engage"));
-					}
-					this.m.HasAIBehavior = true;
-				}
-
-			}
 		}
 		else
 		{
-			::logInfo("[horny] " + actor.getName() + " became horny (no skills: gender=" + actor.getGender() + " moraleIgnore=" + (actor.getMoraleState() == this.Const.MoraleState.Ignore) + " humanoid=" + ::Lewd.Mastery.isHumanoid(actor) + ")");
+			::logInfo("[horny] " + actor.getName() + " became horny (no male skills: gender=" + actor.getGender() + " humanoid=" + ::Lewd.Mastery.isHumanoid(actor) + ")");
+		}
+
+		// Inject AI horny behaviors for non-player entities
+		// Separate from sex skill granting -- spiders/unholds aren't humanoid but still need AI
+		if (!actor.isPlayerControlled())
+		{
+			local agent = actor.getAIAgent();
+			if (agent != null && !this.m.HasAIBehavior)
+			{
+				if (::Lewd.Mastery.isGoblin(actor))
+				{
+					::logInfo("[horny]   injecting GOBLIN AI behaviors for " + actor.getName());
+					agent.addBehavior(this.new("scripts/ai/tactical/behaviors/ai_goblin_horny"));
+					agent.addBehavior(this.new("scripts/ai/tactical/behaviors/ai_horny_engage"));
+					agent.addBehavior(this.new("scripts/ai/tactical/behaviors/ai_horny_idle"));
+				}
+				else if (::Lewd.Mastery.isOrc(actor))
+				{
+					::logInfo("[horny]   injecting ORC AI behaviors for " + actor.getName());
+					agent.addBehavior(this.new("scripts/ai/tactical/behaviors/ai_orc_horny"));
+					agent.addBehavior(this.new("scripts/ai/tactical/behaviors/ai_horny_engage"));
+				}
+				else if (::Lewd.Mastery.isUnhold(actor))
+				{
+					::logInfo("[horny]   injecting UNHOLD AI behaviors for " + actor.getName());
+					agent.addBehavior(this.new("scripts/ai/tactical/behaviors/ai_unhold_horny"));
+					agent.addBehavior(this.new("scripts/ai/tactical/behaviors/ai_horny_engage"));
+				}
+				else if (::Lewd.Mastery.isSpider(actor))
+				{
+					::logInfo("[horny]   injecting SPIDER AI behaviors for " + actor.getName());
+					agent.addBehavior(this.new("scripts/ai/tactical/behaviors/ai_spider_horny"));
+					agent.addBehavior(this.new("scripts/ai/tactical/behaviors/ai_horny_engage"));
+				}
+				else if (isMaleHumanoid)
+				{
+					::logInfo("[horny]   injecting AI behaviors for " + actor.getName());
+					agent.addBehavior(this.new("scripts/ai/tactical/behaviors/ai_horny"));
+					agent.addBehavior(this.new("scripts/ai/tactical/behaviors/ai_horny_engage"));
+				}
+				this.m.HasAIBehavior = true;
+			}
 		}
 	}
 
