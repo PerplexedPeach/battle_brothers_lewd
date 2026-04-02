@@ -92,7 +92,7 @@
 ::Lewd.Const.CharmResistGoblin <- 5;
 ::Lewd.Const.CharmResistUnhold <- 20;
 ::Lewd.Const.CharmResistWolf <- 20;
-::Lewd.Const.CharmResistSpider <- 25;
+::Lewd.Const.CharmResistSpider <- 0;
 ::Lewd.Const.CharmResistAlp <- 30;
 ::Lewd.Const.CharmResistLindwurm <- 25;
 
@@ -764,7 +764,7 @@
 ::Lewd.Const.SpiderWebAIScorePerAllure <- 12;               // web scoring slightly below inject so inject wins on re-eval
 ::Lewd.Const.SpiderInjectAP <- 5;                           // AP cost to inject (web=6 + inject=5 = 11, exactly spider's AP pool)
 ::Lewd.Const.SpiderInjectFatigue <- 15;
-::Lewd.Const.SpiderInjectPleasure <- 40;                    // significant pleasure -- designed to push target toward climax
+::Lewd.Const.SpiderInjectPleasure <- 30;                    // pleasure per injection -- multiple injections push toward climax
 ::Lewd.Const.SpiderEggInitPenalty <- -5;                    // per egg stack
 ::Lewd.Const.SpiderEggMeleeDefPenalty <- -2;                // per egg stack
 ::Lewd.Const.SpiderEggRangedDefPenalty <- -2;               // per egg stack
@@ -788,7 +788,7 @@ foreach (name in [
 	"LegendGoblinHarrier", "LegendGoblinBerserker", "LegendGoblinTribeDefender",
 	"LegendGoblinDirewolfRider", "LegendGoblinWhiteDirewolfRider",
 	"LegendGoblinWitchDoctor", "LegendGoblinPlunderer",
-	"LegendOrcElite", "LegendOrcBehemoth",
+	"LegendOrcElite", "LegendOrcBehemoth", "LegendOrcTyrant", "LegendOrcMadBerserker",
 	"LegendRockUnhold",
 	"LegendWhiteDirewolf", "LegendWhiteWarwolf",
 	"LegendRedbackSpider", "LegendSpiderCluster",
@@ -823,7 +823,9 @@ foreach (name in [
 	::Const.EntityType.OrcWarrior,
 	::Const.EntityType.OrcWarlord,
 	::Const.EntityType.LegendOrcElite,
-	::Const.EntityType.LegendOrcBehemoth
+	::Const.EntityType.LegendOrcBehemoth,
+	::Const.EntityType.LegendOrcTyrant,
+	::Const.EntityType.LegendOrcMadBerserker
 ];
 
 ::Lewd.Const.UnholdEntityTypes <- [
