@@ -1,36 +1,41 @@
-// Spider Eggs effect -- injury-like debuff from spider oviposition.
-// Deposited when character climaxes while flagged as spider-injected.
-// Persists after battle for SpiderEggDuration days, then produces egg sac loot items.
-this.spider_eggs_effect <- this.inherit("scripts/skills/skill", {
+// Spider Eggs injury -- from spider oviposition.
+// Added by spider_inject_skill. Each climax while carrying adds +1 stack
+// via onOwnerClimax. Persists after battle for SpiderEggDuration days, then produces egg sac loot items.
+this.spider_eggs_effect <- this.inherit("scripts/skills/injury/injury", {
 	m = {
-		EggCount = 1,
+		EggCount = 0,
 		DaysLeft = 0
 	},
 	function create()
 	{
+		this.injury.create();
 		this.m.ID = "effects.spider_eggs";
 		this.m.Name = "Holding Eggs";
 		this.m.Description = "Spider eggs have been implanted inside you. Each clutch weighs you down and saps your strength.";
-		this.m.Icon = "skills/status_effect_110.png";
-		this.m.IconMini = "";
-		this.m.Type = this.Const.SkillType.StatusEffect;
-		this.m.Order = this.Const.SkillOrder.Last;
-		this.m.IsActive = false;
-		this.m.IsStacking = false;
-		this.m.IsHidden = false;
-		this.m.IsSerialized = true;
-		this.m.IsRemovedAfterBattle = false;
+		this.m.Icon = "skills/lewd_spider_eggs.png";
+		this.m.IconMini = "lewd_spider_eggs_mini";
+		this.m.DropIcon = "lewd_spider_eggs";
+		this.m.IsHealingMentioned = false;
+		this.m.IsTreatable = false;
+		this.m.IsContentWithReserve = false;
 	}
 
 	function onAdded()
 	{
-		this.m.DaysLeft = ::Lewd.Const.SpiderEggDuration;
+		if (this.m.DaysLeft == 0)
+			this.m.DaysLeft = ::Lewd.Const.SpiderEggDuration;
+		this.m.IsHidden = this.m.EggCount <= 0;
+
+		if (!this.m.IsHidden)
+			this.injury.onAdded();
+
 		::logInfo("[spider_eggs] " + this.getContainer().getActor().getName() + " now holds " + this.m.EggCount + " eggs (" + this.m.DaysLeft + " days)");
 	}
 
 	function addEgg()
 	{
 		this.m.EggCount += 1;
+		this.m.IsHidden = false;
 		::logInfo("[spider_eggs] " + this.getContainer().getActor().getName() + " now holds " + this.m.EggCount + " eggs");
 	}
 
@@ -105,6 +110,30 @@ this.spider_eggs_effect <- this.inherit("scripts/skills/skill", {
 		_properties.Stamina += ::Lewd.Const.SpiderEggMaxFatiguePenalty * n;
 	}
 
+	// Called by onClimax notification -- each climax adds another egg clutch
+	function onOwnerClimax( _actor, _source )
+	{
+		this.addEgg();
+
+		if (_actor.isPlacedOnMap())
+			this.spawnIcon("lewd_spider_eggs", _actor.getTile());
+
+		this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(_actor) + " feels another clutch settling deep inside...");
+		::logInfo("[spider_eggs] " + _actor.getName() + " climaxed -- now holds " + this.m.EggCount + " eggs");
+	}
+
+	function onCombatFinished()
+	{
+		this.injury.onCombatFinished();
+
+		if (this.m.EggCount <= 0)
+		{
+			::logInfo("[spider_eggs] " + this.getContainer().getActor().getName() + " has 0 eggs, removing quietly");
+			this.removeSelf();
+		}
+	}
+
+	// Custom day countdown -- not using injury's healing time system
 	function onNewDay()
 	{
 		this.m.DaysLeft--;
@@ -125,23 +154,31 @@ this.spider_eggs_effect <- this.inherit("scripts/skills/skill", {
 		local stash = this.World.Assets.getStash();
 		::logInfo("[spider_eggs] " + actor.getName() + " eggs hatching: producing egg sac with " + this.m.EggCount + " eggs");
 
-		// Produce one stacked egg sac item
 		local item = this.new("scripts/items/misc/lewd_spider_egg_sac_item");
 		item.setAmount(this.m.EggCount);
 		if (!stash.add(item))
 			::logInfo("[spider_eggs] Stash full, could not add egg sac");
+
+		// Fire narrative event
+		local evt = this.World.Events.getEvent("event.lewd_spider_eggs_hatch");
+		if (evt != null)
+		{
+			evt.m.Woman = actor;
+			evt.m.EggCount = this.m.EggCount;
+			this.World.Events.fire("event.lewd_spider_eggs_hatch", false);
+		}
 	}
 
 	function onSerialize( _out )
 	{
-		this.skill.onSerialize(_out);
+		this.injury.onSerialize(_out);
 		_out.writeU8(this.m.EggCount);
 		_out.writeU8(this.m.DaysLeft);
 	}
 
 	function onDeserialize( _in )
 	{
-		this.skill.onDeserialize(_in);
+		this.injury.onDeserialize(_in);
 		this.m.EggCount = _in.readU8();
 		this.m.DaysLeft = _in.readU8();
 	}

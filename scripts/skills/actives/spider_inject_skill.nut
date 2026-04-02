@@ -1,6 +1,6 @@
 // Spider Inject: spider oviposits into a rooted (webbed) target.
-// Applies significant pleasure. Egg is deposited when the TARGET climaxes
-// (tracked via lewdSpiderInjected flag, checked by climax_effect).
+// Adds spider_eggs_effect (the persistent egg injury). Each subsequent climax
+// adds +1 egg stack via onOwnerClimax on the effect itself.
 // Requires target to be rooted (from web or other source).
 this.spider_inject_skill <- this.inherit("scripts/skills/skill", {
 	m = {},
@@ -9,9 +9,9 @@ this.spider_inject_skill <- this.inherit("scripts/skills/skill", {
 		this.m.ID = "actives.spider_inject";
 		this.m.Name = "Oviposit";
 		this.m.Description = "Inject eggs into a helpless, immobilized prey.";
-		this.m.Icon = "skills/active_110.png";
-		this.m.IconDisabled = "skills/active_110.png";
-		this.m.Overlay = "";
+		this.m.Icon = "skills/lewd_spider_oviposit.png";
+		this.m.IconDisabled = "skills/lewd_spider_oviposit_bw.png";
+		this.m.Overlay = "lewd_spider_oviposit";
 		this.m.SoundOnUse = [
 			"sounds/enemies/dlc2/giant_spider_idle_01.wav",
 			"sounds/enemies/dlc2/giant_spider_idle_02.wav",
@@ -78,15 +78,65 @@ this.spider_inject_skill <- this.inherit("scripts/skills/skill", {
 			this.Tactical.EventLog.log(this.Const.UI.getColorizedEntityName(_user) + " injects into " + this.Const.UI.getColorizedEntityName(target));
 		}
 
-		// Schedule the actual effect application
+		// Play multi-shake animation mimicking vaginal penetration
+		this.playInjectAnimation(_user, _targetTile);
+
+		// Schedule effect application after animation completes
 		local tag = {
-			Skill = this,
 			User = _user,
-			Target = target,
-			TargetTile = _targetTile
+			Target = target
 		};
-		this.Time.scheduleEvent(this.TimeUnit.Virtual, 400, this.onApplyEffect.bindenv(this), tag);
+		this.Time.scheduleEvent(this.TimeUnit.Virtual, 2000, this.onApplyEffect.bindenv(this), tag);
 		return true;
+	}
+
+	function playInjectAnimation( _user, _targetTile )
+	{
+		local target = _targetTile.getEntity();
+		if (_user.isHiddenToPlayer() && target.isHiddenToPlayer()) return;
+
+		local userTile = _user.getTile();
+		local dir = userTile.getDirectionTo(_targetTile);
+		local beyondTile = _targetTile.hasNextTile(dir) ? _targetTile.getNextTile(dir) : _targetTile;
+
+		local webSounds = [
+			"sounds/enemies/dlc2/giant_spider_shoot_net_hit_01.wav",
+			"sounds/enemies/dlc2/giant_spider_shoot_net_hit_02.wav",
+			"sounds/enemies/dlc2/giant_spider_shoot_net_hit_03.wav"
+		];
+
+		// 4 shakes at 500ms intervals -- spider thrusts toward target, target pushed away
+		for (local i = 0; i < 4; i++)
+		{
+			local delay = i * 500;
+			local isLast = i == 3;
+			local uInt = isLast ? 4 : 3;
+			local tInt = isLast ? 6 : 5;
+			local webSound = webSounds[this.Math.rand(0, webSounds.len() - 1)];
+			local moanSound = i == 0
+				? ::Lewd.Const.SoundIntenseMoans[this.Math.rand(0, ::Lewd.Const.SoundIntenseMoans.len() - 1)]
+				: null;
+
+			this.Time.scheduleEvent(this.TimeUnit.Virtual, delay,
+				function(_d) {
+					if (_d.User.isAlive())
+					{
+						this.Tactical.getShaker().cancel(_d.User);
+						this.Tactical.getShaker().shake(_d.User, _d.TargetTile, _d.UInt);
+						this.Sound.play(_d.WebSound, this.Const.Sound.Volume.Skill, _d.User.getPos());
+					}
+					if (_d.Target.isAlive())
+					{
+						this.Tactical.getShaker().cancel(_d.Target);
+						this.Tactical.getShaker().shake(_d.Target, _d.BeyondTile, _d.TInt);
+						if (_d.MoanSound != null)
+							this.Sound.play(_d.MoanSound, this.Const.Sound.Volume.Skill, _d.Target.getPos());
+					}
+				}.bindenv(this),
+				{ User = _user, Target = target, TargetTile = _targetTile, BeyondTile = beyondTile, UInt = uInt, TInt = tInt, WebSound = webSound, MoanSound = moanSound });
+		}
+
+		this.Tactical.getCamera().quake(_user, target, 2.0, 0.1, 0.2);
 	}
 
 	function onApplyEffect( _tag )
@@ -96,17 +146,11 @@ this.spider_inject_skill <- this.inherit("scripts/skills/skill", {
 
 		if (!target.isAlive()) return;
 
-		// Shake visuals
-		if (_tag.TargetTile.IsVisibleForPlayer)
-		{
-			local shakeDir = target.getTile().getDirectionTo(user.getTile());
-			this.Tactical.getShaker().shake(target, _tag.TargetTile, 2, shakeDir, 400);
-		}
+		// Add egg injury -- each climax while carrying adds +1 stack via onOwnerClimax
+		if (!target.getSkills().hasSkill("effects.spider_eggs"))
+			target.getSkills().add(this.new("scripts/skills/effects/spider_eggs_effect"));
 
-		// Flag target as spider-injected: climax_effect will deposit egg on climax
-		target.getFlags().set("lewdSpiderInjected", true);
-
-		// Apply significant pleasure to target
+		// Apply pleasure to push target toward climax
 		local pleasure = ::Lewd.Const.SpiderInjectPleasure;
 		target.addPleasure(pleasure, user);
 		::logInfo("[spider_inject] " + user.getName() + " injected " + target.getName() + " (+" + pleasure + " pleasure)");

@@ -30,4 +30,7 @@
   <sprite id="lewd_restrain" ic="FF4C4B4D" img="skills/lewd_restrain.png" />
   <sprite id="lewd_restrained_mini" ic="FF4C4B4D" img="skills/mini/lewd_restrained_mini.png" />
   <sprite id="lewd_flight" ic="FF4C4B4D" img="skills/lewd_flight.png" />
+  <sprite id="lewd_spider_eggs" ic="FF4C4B4D" img="skills/lewd_spider_eggs.png" />
+  <sprite id="lewd_spider_eggs_mini" ic="FF4C4B4D" img="skills/lewd_spider_eggs_mini.png" />
+  <sprite id="lewd_spider_oviposit" ic="FF4C4B4D" img="skills/lewd_spider_oviposit.png" />
 </brush>
