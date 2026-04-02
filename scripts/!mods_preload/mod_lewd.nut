@@ -359,6 +359,28 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC", ">mod_LuftVampiresOrigin", f
 			this.getSkills().add(effect);
 			// onAdded() fires here: sound, overlay, Shameless, Insatiable, DomSub, cum facial
 
+			// Notify skills about this climax -- creature-specific reactions
+			// onOwnerClimax: called on the climaxing actor's skills
+			// onTargetClimax: called on the source creature's skills
+			local sourceEntity = this.m.LastPleasureSourceID >= 0
+				? this.Tactical.getEntityByID(this.m.LastPleasureSourceID)
+				: null;
+			local skills = this.getSkills().m.Skills;
+			for (local i = 0; i < skills.len(); i++)
+			{
+				if ("onOwnerClimax" in skills[i])
+					skills[i].onOwnerClimax(this, sourceEntity);
+			}
+			if (sourceEntity != null && sourceEntity.isAlive())
+			{
+				local srcSkills = sourceEntity.getSkills().m.Skills;
+				for (local i = 0; i < srcSkills.len(); i++)
+				{
+					if ("onTargetClimax" in srcSkills[i])
+						srcSkills[i].onTargetClimax(sourceEntity, this);
+				}
+			}
+
 			// Check defeat AFTER perks have fired
 			if (::Lewd.Const.OrgasmDefeatEnabled)
 			{
