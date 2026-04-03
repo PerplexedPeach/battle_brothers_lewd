@@ -21,6 +21,11 @@ this.climax_effect <- this.inherit("scripts/skills/skill", {
 		this.m.TurnsLeft = _turns;
 	}
 
+	function isRanged()
+	{
+		return false;
+	}
+
 	function getTooltip()
 	{
 		return [
