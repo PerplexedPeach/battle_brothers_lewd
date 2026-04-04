@@ -1,5 +1,5 @@
 // Spider Eggs injury -- from spider oviposition.
-// Added by spider_inject_skill. Each climax while carrying adds +1 stack
+// Added by spider_inject_skill. Each climax from a spider source adds +1 stack
 // via onOwnerClimax. Persists after battle for SpiderEggDuration days, then produces egg sac loot items.
 this.spider_eggs_effect <- this.inherit("scripts/skills/injury/injury", {
 	m = {
@@ -110,9 +110,27 @@ this.spider_eggs_effect <- this.inherit("scripts/skills/injury/injury", {
 		_properties.Stamina += ::Lewd.Const.SpiderEggMaxFatiguePenalty * n;
 	}
 
-	// Called by onClimax notification -- each climax adds another egg clutch
+	// Called by onClimax notification -- each climax adds another egg clutch,
+	// but ONLY if the source is a spider (not goblins, orcs, etc.)
 	function onOwnerClimax( _actor, _source )
 	{
+		if (_source == null)
+			return;
+
+		local sourceType = _source.getType();
+		local isSpider = false;
+		foreach (t in ::Lewd.Const.SpiderEntityTypes)
+		{
+			if (sourceType == t)
+			{
+				isSpider = true;
+				break;
+			}
+		}
+
+		if (!isSpider)
+			return;
+
 		this.addEgg();
 
 		if (_actor.isPlacedOnMap())
