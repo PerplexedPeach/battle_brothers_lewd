@@ -1,6 +1,6 @@
 ::Lewd <- {
 	ID = "mod_lewd",
-	Version = "1.10.4",
+	Version = "1.10.5",
 	Name = "Lewdness",
 	IsStartingNewCampaign = false
 };
@@ -1537,6 +1537,22 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC", function()
 				player.getSprite("body").setBrush(figureBrush);
 				player.getSprite("body").setHorizontalFlipping(false);
 			}
+		};
+	});
+
+	// Add lewd skill books to marketplace shops (size >= 2 settlements)
+	mod.hook("scripts/entity/world/settlements/buildings/marketplace_building", function(q)
+	{
+		q.fillStash = @(__original) function( _list, _stash, _priceMult, _allowDamagedEquipment = false )
+		{
+			if (this.m.Settlement.getSize() >= 2)
+			{
+				_list.extend([
+					{ R = 50, P = 1.0, S = "misc/lewd_seduction_skill_book_item" },
+					{ R = 50, P = 1.0, S = "misc/lewd_debauchery_skill_book_item" }
+				]);
+			}
+			__original(_list, _stash, _priceMult, _allowDamagedEquipment);
 		};
 	});
 
