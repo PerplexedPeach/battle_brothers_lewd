@@ -110,9 +110,9 @@ this.delicate_trait <- this.inherit("scripts/skills/traits/character_trait", {
 		}
 
 		// Seduction Arts perk tree (player-only: enemies have no background)
-		if ("getBackground" in actor)
+		if ("Background" in actor.m)
 		{
-			local bg = actor.getBackground();
+			local bg = actor.m.Background;
 			if (bg != null && !bg.hasPerkGroup(::Const.Perks.SeductionArtsTree))
 				bg.addPerkGroup(::Const.Perks.SeductionArtsTree.Tree);
 		}
