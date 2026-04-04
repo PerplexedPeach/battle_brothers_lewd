@@ -159,13 +159,16 @@ this.spider_eggs_effect <- this.inherit("scripts/skills/injury/injury", {
 		if (!stash.add(item))
 			::logInfo("[spider_eggs] Stash full, could not add egg sac");
 
-		// Fire narrative event
+		// Queue for narrative event -- only the first push actually fires;
+		// subsequent characters are shown via the event's internal queue
 		local evt = this.World.Events.getEvent("event.lewd_spider_eggs_hatch");
 		if (evt != null)
 		{
-			evt.m.Woman = actor;
-			evt.m.EggCount = this.m.EggCount;
-			this.World.Events.fire("event.lewd_spider_eggs_hatch", false);
+			local isFirst = evt.m.Queue.len() == 0;
+			evt.m.Queue.push({ actor = actor, eggCount = this.m.EggCount });
+
+			if (isFirst)
+				this.World.Events.fire("event.lewd_spider_eggs_hatch", false);
 		}
 	}
 
