@@ -1,6 +1,6 @@
 ::Lewd <- {
 	ID = "mod_lewd",
-	Version = "1.10.1",
+	Version = "1.10.2",
 	Name = "Lewdness",
 	IsStartingNewCampaign = false
 };
@@ -730,7 +730,10 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC", function()
 			}
 
 			// Debauchery: requires male + Outlaw
-			if (isFemale || !bg.isBackgroundType(::Const.BackgroundType.Outlaw))
+			// Only clean up if we injected the tree (hasPerkGroup) -- don't touch
+			// perks acquired through other mechanics (e.g. Scaling Beggar steal)
+			if ((isFemale || !bg.isBackgroundType(::Const.BackgroundType.Outlaw))
+				&& bg.hasPerkGroup(::Const.Perks.DebaucheryTree))
 			{
 				toRemove.extend([
 					::Const.Perks.PerkDefs.LewdWanderingHands,
