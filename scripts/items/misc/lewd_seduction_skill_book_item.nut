@@ -19,6 +19,13 @@ this.lewd_seduction_skill_book_item <- ::inherit("scripts/items/misc/legend_skil
 		this.m.PerkGroupSelection = this.m.PerkGroups[0].Name;
 	}
 
+	function isAbleToUseScroll( _actor )
+	{
+		if (_actor.getGender() != 1)
+			return "This manual is written for a female audience.";
+		return this.legend_skill_book.isAbleToUseScroll(_actor);
+	}
+
 	function addScrollCounter( _actor )
 	{
 		_actor.getFlags().set("LegendsSkillBookCount", 1);
