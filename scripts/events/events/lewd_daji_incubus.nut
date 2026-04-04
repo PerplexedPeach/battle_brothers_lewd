@@ -152,15 +152,12 @@ this.lewd_daji_incubus <- this.inherit("scripts/events/event", {
 		}
 
 		local isWearingHarness = false;
-		if ("m" in body && "Upgrades" in body.m)
+		foreach (id in body.getUpgradeIDs())
 		{
-			foreach (u in body.m.Upgrades)
+			if (id == "legend_armor.body.lewd_latex_harness")
 			{
-				if (u != null && u.getID() == "legend_armor.body.lewd_latex_harness")
-				{
-					isWearingHarness = true;
-					break;
-				}
+				isWearingHarness = true;
+				break;
 			}
 		}
 

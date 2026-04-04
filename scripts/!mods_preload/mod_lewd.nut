@@ -1067,13 +1067,12 @@ mod.queue(">mod_legends", ">mod_msu", ">mod_ROTUC", function()
 		{
 			q.onAdded = @(__original) function()
 			{
-				// Call original but then undo the slot locking
-				__original();
 				local items = this.getContainer().getActor().getItems();
-				if (items.getData()[this.Const.ItemSlot.Head][0] == -1)
-					items.getData()[this.Const.ItemSlot.Head][0] = null;
-				if (items.getData()[this.Const.ItemSlot.Body][0] == -1)
-					items.getData()[this.Const.ItemSlot.Body][0] = null;
+				local head = items.getData()[this.Const.ItemSlot.Head][0];
+				local body = items.getData()[this.Const.ItemSlot.Body][0];
+				__original();
+				items.getData()[this.Const.ItemSlot.Head][0] = head != -1 ? head : null;
+				items.getData()[this.Const.ItemSlot.Body][0] = body != -1 ? body : null;
 			};
 		});
 	}
