@@ -152,10 +152,9 @@ this.lewd_daji_incubus <- this.inherit("scripts/events/event", {
 		}
 
 		local isWearingHarness = false;
-		if ("getUpgrades" in body)
+		if ("m" in body && "Upgrades" in body.m)
 		{
-			local upgrades = body.getUpgrades();
-			foreach (u in upgrades)
+			foreach (u in body.m.Upgrades)
 			{
 				if (u != null && u.getID() == "legend_armor.body.lewd_latex_harness")
 				{
